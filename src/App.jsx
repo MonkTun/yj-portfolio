@@ -18,7 +18,7 @@ function App() {
   const [menuOpen, setMenuOpen] = useState(false);
 
   return (
-    <BrowserRouter basename="/yj-portfolio">
+    <BrowserRouter>
       <UseScrollToSection />
       <div className="relative">
         <div
