@@ -35,10 +35,9 @@ export const Home = ({ isLoaded }) => {
               />
 
               <p className="text-gray-400 text-lg mb-8 max-w-lg mx-auto">
-                A passionate developer specializing in building exceptional
-                digital experiences. you can customize this section to include
-                more about yourself. developing web applications, mobile apps,
-                or any other projects you want to showcase.
+                A passionate indie game developer majoring in Computer Science
+                and Game Design. I create immersive gaming experiences through
+                innovative design and engaging gameplay mechanics.
               </p>
 
               <div className="flex justify-center space-x-4">

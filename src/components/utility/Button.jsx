@@ -5,6 +5,8 @@ export const Button = ({
   className,
   href,
   variant = "primary",
+  target,
+  rel,
   ...props
 }) => {
   const baseStyles =
@@ -22,7 +24,13 @@ export const Button = ({
   const Component = href ? "a" : "button";
 
   return (
-    <Component href={href} className={classes} {...props}>
+    <Component
+      href={href}
+      className={classes}
+      target={href ? target : undefined}
+      rel={href ? rel : undefined}
+      {...props}
+    >
       {children}
     </Component>
   );

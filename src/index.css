@@ -60,3 +60,38 @@ body {
   opacity: 1;
   transform: translateY(0);
 }
+
+@layer base {
+  h1 {
+    /* text-5xl md:text-6xl */
+    font-size: 1.5rem; /* mobile base, will be overridden by media query */
+    font-weight: 700;
+    margin-bottom: 2rem;
+    /* gradient text matching SectionHeading */
+    background: linear-gradient(to right, #3b82f6, #06b6d4);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    text-align: center;
+  }
+
+  @media (min-width: 768px) {
+    h1 {
+      font-size: 2.25rem; /* md:text-6xl approx */
+    }
+  }
+
+  h2 {
+    font-size: 1.375rem; /* text-3xl approx */
+    font-weight: 600;
+    margin-bottom: 1.5rem;
+    color: #f3f4f6; /* text-gray-100 */
+    text-align: left;
+  }
+
+  @media (min-width: 768px) {
+    h2 {
+      font-size: 1.875rem; /* md:text-4xl approx */
+    }
+  }
+}

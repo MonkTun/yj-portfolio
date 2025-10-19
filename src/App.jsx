@@ -9,6 +9,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { NoPage } from "./pages/NoPage";
 import { Overdawn } from "./pages/Overdawn";
 import { Dawngeon } from "./pages/Dawngeon";
+import { HeadlessHotel } from "./pages/HeadlessHotel";
 import { MMM } from "./pages/MMM";
 import UseScrollToSection from "./components/utility/UseScrollToSection";
 
@@ -41,7 +42,7 @@ function App() {
               <Route path="overdawn" element={<Overdawn />} />
               <Route path="move-move-melon" element={<MMM />} />
               <Route path="dawngeon" element={<Dawngeon />} />
-              <Route path="headless-hotel" element={<NoPage />} />
+              <Route path="headless-hotel" element={<HeadlessHotel />} />
             </Route>
             <Route path="*" element={<NoPage />} />
           </Routes>

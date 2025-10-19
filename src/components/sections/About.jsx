@@ -5,13 +5,25 @@ export const About = () => {
   const technicalSkills = [
     "Unity Engine",
     "Unreal Engine",
+    "C#",
+    "C++",
     "React",
     "JavaScript",
+    "Tailwind CSS",
     "HTML",
     "CSS",
   ];
 
-  const designSkills = ["Aseprite", "Adobie Premier", "Miro", "Figma"];
+  const designSkills = [
+    "Aseprite",
+    "Adobe Photoshop",
+    "Adobe Premiere Pro",
+    "Miro",
+    "Figma",
+    "Blender",
+    "Logic Pro",
+    "MagicaVoxel",
+  ];
 
   return (
     <section
@@ -24,14 +36,12 @@ export const About = () => {
 
           <div className="rounded-xl p-8 border-white/10 border hover:-translate-y-1 transition-all ">
             <p className="text-gray-300 mb-6">
-              passionate developer specializing in building exceptional digital
-              experiences. With a strong foundation in both front-end and
-              back-end technologies, I strive to create seamless and engaging
-              user interfaces while ensuring robust functionality. My expertise
-              lies in developing web applications, mobile apps, and other
-              innovative projects that make a difference. I am dedicated to
-              continuous learning and staying updated with the latest industry
-              trends to deliver cutting-edge solutions.
+              I am a passionate indie game developer majoring in Computer
+              Science and Games at the University of Southern California. I
+              create immersive gaming experiences through innovative design and
+              engaging gameplay mechanics. With a strong foundation in both
+              technical and artistic aspects of game development, I strive to
+              bring unique and captivating worlds to life.
             </p>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -51,7 +61,7 @@ export const About = () => {
               </div>
 
               <div className="rounded-xl p-6 hover:-translate-y-1 transition-all">
-                <h3 className="text-xl font-bold mb-4">Design</h3>
+                <h3 className="text-xl font-bold mb-4">Design & Art</h3>
                 <div className="flex flex-wrap gap-2">
                   {designSkills.map((skill, key) => (
                     <span
@@ -67,7 +77,7 @@ export const About = () => {
             </div>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-8">
+          {/* <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-8">
             <div className="p-6 rounded-xl border-white/10 border hover:-translate-y-1 transition-all">
               <h3 className="text-xl font-bold mb-4">🎓 Education</h3>
               <ul className="list-disc list-inside text-gray-300 space-y-2">
@@ -104,7 +114,7 @@ export const About = () => {
                 </div>
               </div>
             </div>
-          </div>
+          </div> */}
         </div>
       </RevealOnScroll>
     </section>
