@@ -5,6 +5,22 @@ import { SectionHeading } from "../utility/SectionHeading";
 
 const projectData = [
   {
+    title: "Thang",
+    description:
+      "Thang is a casual multiplayer shooter where players compete to freeze each other in a fast paced, action-packed environment.",
+    skills: [
+      "Unreal Engine",
+      "C++",
+      "Blueprints",
+      "AWSGameLift",
+      "MongoDB",
+      "NextJS",
+      "FirebaseAuth",
+    ],
+    projectLink: "/projects/thang",
+    imageUrl: getPublicPath("projects/thangPoster.png"),
+  },
+  {
     title: "Overdawn",
     description:
       "Overdawn is a 2.5D, bullet time shooter set in a dystopian city of Andrean. As a blood-thirst merc, hunt down your enemies and defy against your destiny. Now—lock in. Slow time and find your flow state. Punch a hole in your enemy's head—because it's you or them.",

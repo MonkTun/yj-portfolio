@@ -7,6 +7,7 @@ import { MobileMenu } from "./components/utility/MobileMenu";
 import HomePage from "./pages/HomePage";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { NoPage } from "./pages/NoPage";
+import { Thang } from "./pages/Thang";
 import { Overdawn } from "./pages/Overdawn";
 import { Dawngeon } from "./pages/Dawngeon";
 import { HeadlessHotel } from "./pages/HeadlessHotel";
@@ -39,6 +40,7 @@ function App() {
             <Route path="/" element={<HomePage isLoaded={isloaded} />} />
             <Route path="/home" element={<HomePage isLoaded={isloaded} />} />
             <Route path="/projects">
+              <Route path="thang" element={<Thang />} />
               <Route path="overdawn" element={<Overdawn />} />
               <Route path="move-move-melon" element={<MMM />} />
               <Route path="dawngeon" element={<Dawngeon />} />
