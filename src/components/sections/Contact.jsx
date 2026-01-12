@@ -35,7 +35,7 @@ export const Contact = () => {
       className="min-h-screen flex items-center justify-center py-20"
     >
       <RevealOnScroll>
-        <div className="px-4 w-150">
+        <div className="w-full max-w-3xl mx-auto px-4">
           <SectionHeading>Get in Touch</SectionHeading>
           <form className="space-y-6" onSubmit={handleSubmit}>
             <div className="relative">

@@ -77,34 +77,84 @@ const BlurText = ({
     stepCount === 1 ? 0 : i / (stepCount - 1)
   );
 
+  const animateKeyframes = buildKeyframes(fromSnapshot, toSnapshots);
+
+  const buildTransition = (index) => {
+    const spanTransition = {
+      duration: totalDuration,
+      times,
+      delay: (index * delay) / 1000,
+    };
+    spanTransition.ease = easing;
+    return spanTransition;
+  };
+
+  if (animateBy === "letters") {
+    const words = text.split(" ");
+    let globalIndex = 0;
+
+    return (
+      <p
+        ref={ref}
+        className={`blur-text ${className} flex flex-wrap justify-center text-center`}
+      >
+        {words.map((word, wordIndex) => {
+          const letters = word.split("");
+          const isLastWord = wordIndex === words.length - 1;
+
+          return (
+            <span
+              key={`word-${wordIndex}`}
+              className="inline-flex whitespace-nowrap"
+            >
+              {letters.map((letter, letterIndex) => {
+                const currentIndex = globalIndex++;
+                const isLastLetterOverall =
+                  isLastWord && letterIndex === letters.length - 1;
+
+                return (
+                  <motion.span
+                    className="inline-block will-change-[transform,filter,opacity]"
+                    key={`letter-${wordIndex}-${letterIndex}`}
+                    initial={fromSnapshot}
+                    animate={inView ? animateKeyframes : fromSnapshot}
+                    transition={buildTransition(currentIndex)}
+                    onAnimationComplete={
+                      isLastLetterOverall ? onAnimationComplete : undefined
+                    }
+                  >
+                    {letter}
+                  </motion.span>
+                );
+              })}
+              {!isLastWord && <span>&nbsp;</span>}
+            </span>
+          );
+        })}
+      </p>
+    );
+  }
+
   return (
-    <p ref={ref} className={`blur-text ${className} flex flex-wrap`}>
-      {elements.map((segment, index) => {
-        const animateKeyframes = buildKeyframes(fromSnapshot, toSnapshots);
-
-        const spanTransition = {
-          duration: totalDuration,
-          times,
-          delay: (index * delay) / 1000,
-        };
-        spanTransition.ease = easing;
-
-        return (
-          <motion.span
-            className="inline-block will-change-[transform,filter,opacity]"
-            key={index}
-            initial={fromSnapshot}
-            animate={inView ? animateKeyframes : fromSnapshot}
-            transition={spanTransition}
-            onAnimationComplete={
-              index === elements.length - 1 ? onAnimationComplete : undefined
-            }
-          >
-            {segment === " " ? "\u00A0" : segment}
-            {animateBy === "words" && index < elements.length - 1 && "\u00A0"}
-          </motion.span>
-        );
-      })}
+    <p
+      ref={ref}
+      className={`blur-text ${className} flex flex-wrap justify-center text-center`}
+    >
+      {elements.map((segment, index) => (
+        <motion.span
+          className="inline-block will-change-[transform,filter,opacity]"
+          key={index}
+          initial={fromSnapshot}
+          animate={inView ? animateKeyframes : fromSnapshot}
+          transition={buildTransition(index)}
+          onAnimationComplete={
+            index === elements.length - 1 ? onAnimationComplete : undefined
+          }
+        >
+          {segment}
+          {index < elements.length - 1 && "\u00A0"}
+        </motion.span>
+      ))}
     </p>
   );
 };
