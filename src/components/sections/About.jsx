@@ -1,5 +1,6 @@
 import { RevealOnScroll } from "../utility/RevealOnScroll";
 import { SectionHeading } from "../utility/SectionHeading";
+import { Button } from "../utility/Button";
 
 export const About = () => {
   const technicalSkills = [
@@ -75,6 +76,17 @@ export const About = () => {
                 </div>
               </div>
             </div>
+          </div>
+
+          <div className="mt-8 flex justify-center flex-wrap gap-4">
+            <Button
+              href="/resume.pdf"
+              variant="primary"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Resume
+            </Button>
           </div>
 
           {/* <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-8">
