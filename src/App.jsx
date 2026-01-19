@@ -12,6 +12,7 @@ import { Overdawn } from "./pages/Overdawn";
 import { Dawngeon } from "./pages/Dawngeon";
 import { HeadlessHotel } from "./pages/HeadlessHotel";
 import { MMM } from "./pages/MMM";
+import { Resume } from "./pages/Resume";
 import UseScrollToSection from "./components/utility/UseScrollToSection";
 
 function App() {
@@ -46,6 +47,7 @@ function App() {
               <Route path="dawngeon" element={<Dawngeon />} />
               <Route path="headless-hotel" element={<HeadlessHotel />} />
             </Route>
+            <Route path="/resume" element={<Resume />} />
             <Route path="*" element={<NoPage />} />
           </Routes>
           <footer className="py-6 text-center text-gray-500 text-sm">
