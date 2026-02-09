@@ -19,8 +19,8 @@ export const Dawngeon = () => {
           <li>Project Duration: ~2 years</li>
           <li>Tech Stack: Unity (C#), GitHub, and XCode</li>
           <li>
-            Primary Role(s): Solo Developer, Programmer, Arist, Game Designer,
-            Narrative Designer, and Sound Designer
+            Primary Role(s): Solo Developer, Programmer, Artist, Technical
+            Designer, Game Designer, Narrative Designer, and Sound Designer
           </li>
         </ul>
       </DescriptionSection>
@@ -46,9 +46,11 @@ export const Dawngeon = () => {
             <SectionHeading>Dawngeon</SectionHeading>
             <p className="mt-4 text-gray-300 leading-relaxed">
               Dawngeon is pixel rogue-like role playing game (RPG) that I
-              originally developed for the Appstore. I wanted to build a fun 2D
-              roguelike adventure with emphasis in replayability and
-              storytelling that you can play wherever you want, even without
+              originally developed for the Appstore. I spearheaded end-to-end
+              development of the game using Unity and C#, prioritizing
+              mobile-first UX and "juicy" interaction feedback. I wanted to
+              build a fun 2D roguelike adventure with emphasis in replayability
+              and storytelling that you can play wherever you want, even without
               wifi. This was my first time creating a mobile game, and I learned
               to use XCode, experienced App publishing, and received numerous
               user feedback and support.
@@ -85,7 +87,7 @@ export const Dawngeon = () => {
                 <li>21M impressions on Appstore</li>
                 <li>140K+ downloads worldwide</li>
                 <li>4.6/5.0 star rating on Appstore</li>
-                <li>Charted on AppStore's Adventure Game category</li>
+                <li>Charted 130th on AppStore's Adventure Game category</li>
               </ul>
             </div>
             <div className="w-full flex items-center justify-center h-full">

@@ -18,7 +18,7 @@ export const HeadlessHotel = () => {
           <li>Project Type: Game Jam</li>
           <li>Project Duration: 1 week</li>
           <li>Tech Stack: Unity (C#) and Github</li>
-          <li>Primary Role: Enginee and Artist</li>
+          <li>Primary Role: Engineer, Designer, and Artist</li>
         </ul>
       </DescriptionSection>
 

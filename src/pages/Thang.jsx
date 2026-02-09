@@ -22,7 +22,9 @@ export const Thang = () => {
             Tech Stack: Unreal Engine, NextJS, MongoDB, FirebaseAuth, and AWS
             GameLift
           </li>
-          <li>Primary Role: Multiplayer System Engineer</li>
+          <li>
+            Primary Role: Multiplayer System Engineer and Technical Designer
+          </li>
         </ul>
       </DescriptionSection>
 
@@ -53,8 +55,9 @@ export const Thang = () => {
             <h2 className="text-left text-2xl font-bold mb-4">Core Systems</h2>
             <p className="text-gray-300 leading-relaxed">
               Engineered 5+ core systems, including a Server-Side Rewind (SSR)
-              algorithm for latency compensation, friends and party system, and
-              Matchmaking and dedicated server hosting via AWS GameLift.
+              algorithm for latency compensation to ensure fluid, latency-free
+              input. This enabled high-fidelity interactions, including
+              shooting, state-based freezing, and complex tag mechanics.
             </p>
           </div>
           <div>
@@ -63,6 +66,27 @@ export const Thang = () => {
               Programmed a complex network of gameplay systems using C++ and
               Blueprints in Unreal Engine, including player movement, shooting
               mechanics, freeze mechanics, and power-ups.
+            </p>
+          </div>
+          <div>
+            <h2 className="text-left text-2xl font-bold mb-4">
+              Full-Stack Architecture
+            </h2>
+            <p className="text-gray-300 leading-relaxed">
+              Architected a full-stack ecosystem for Thang by integrating a UE5
+              client with a RESTful backend (Next.js, Node.js) and NoSQL
+              (MongoDB). Managed secure identity via Firebase Auth and Vercel
+              deployment to ensure a seamless cross-platform experience.
+            </p>
+          </div>
+          <div>
+            <h2 className="text-left text-2xl font-bold mb-4">
+              Party & Matchmaking UX
+            </h2>
+            <p className="text-gray-300 leading-relaxed">
+              Designed and implemented end-to-end Party & Matchmaking UX using
+              AWS GameLift, prioritizing frictionless user flow across
+              distributed, dedicated server instances.
             </p>
           </div>
         </div>

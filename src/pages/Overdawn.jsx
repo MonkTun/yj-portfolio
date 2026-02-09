@@ -22,7 +22,8 @@ export const Overdawn = () => {
             Spinner
           </li>
           <li>
-            Primary Role(s): Game Director, Lead Engineer, Design, and Artist{" "}
+            Primary Role(s): Game Director, Lead Engineer, Technical Designer,
+            and Artist
           </li>
         </ul>
       </DescriptionSection>
@@ -94,6 +95,7 @@ export const Overdawn = () => {
                   Finalist
                 </a>
               </li>
+              <li>Tencent GWB 2025 - Student Category Bronze Award</li>
               <li>
                 <a
                   href="https://sageawards.promote.fyi/"
@@ -137,10 +139,15 @@ export const Overdawn = () => {
           assembling a team of talented individuals who shared my vision.
           Recruiting wasn't all that easy, but I managed to find passionate team
           members through game development clubs and networking events. The team
-          grew to team of over 20 members, including programmers, artists,
+          grew to team of over 30 members, including programmers, artists,
           designers, and writers. As a now director and lead engineer of
           Overdawn, I am forever grateful for the dedication and hard work of my
           team members who have helped bring this project to life.
+        </p>
+        <p className="mt-4">
+          I led the design and implementation of 60+ gameplay systems, bridging
+          the gap between creative vision and engineering constraints on Unity
+          and C#.
         </p>
       </div>
 

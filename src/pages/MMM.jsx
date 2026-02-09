@@ -14,7 +14,9 @@ export const MMM = () => {
       <DescriptionSection>
         <ul className="list-disc list-inside">
           <li>Project Status: On Going</li>
-          <li>Project Type: USC's Advanced Game Project (AGP)</li>
+          <li>
+            Project Type: USC's Advanced Game Project (AGP) - 40+ member team
+          </li>
           <li>Project Duration: ~6 months</li>
           <li>Tech Stack: Unity (C#) and Perforce</li>
           <li>Primary Role: Engineer</li>
@@ -29,7 +31,8 @@ export const MMM = () => {
             Programmed a camera management system that allows for dynamic camera
             positioning and movement. Integrated various camera modes allowing
             the designers to switch between different camera transition
-            behaviors.
+            behaviors. Implemented dynamic camera management to enhance the
+            tactile 'weight' and responsiveness of character movement.
           </p>
           <h2 className="text-left mt-8">UI Manager & Joystick</h2>
           <p>
@@ -39,6 +42,12 @@ export const MMM = () => {
             transitions and interactions. Created dynamic joystick controls for
             mobile platforms, providing players with intuitive and responsive
             input methods.
+          </p>
+          <h2 className="text-left mt-8">Designer Tools</h2>
+          <p>
+            Shipped key features by developing 4+ designer-friendly custom tools
+            that streamlined level design and asset management directly within
+            the engine.
           </p>
           <h2 className="text-left mt-8">Debugging</h2>
           <p>
