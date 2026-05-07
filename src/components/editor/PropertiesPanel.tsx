@@ -1085,7 +1085,7 @@ function SectionBackgroundEditor({
         kind: "prismatic-burst",
         intensity: 1,
         speed: 1,
-        colorA: "#C45A3A",
+        colorA: "#5C8A3A",
         colorB: "#0F0D0B",
         overlay: 0,
         tint: "none",

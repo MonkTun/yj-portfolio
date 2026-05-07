@@ -14,15 +14,46 @@
    ============================================================ */
 
 :root {
-  /* Color */
-  --muted: oklch(0.97 0 0);
-  --muted-foreground: oklch(0.556 0 0);
-  --surface: #1a1714;
-  --surface-foreground: #e8dfcf;
-  --border: oklch(0.922 0 0);
-  --accent: oklch(0.97 0 0);
-  --accent-foreground: oklch(0.205 0 0);
-  --ring: oklch(0.708 0 0);
+  /* ---------- core palette: organic but dark editorial ----------
+     Authoritative source — see CLAUDE.md "Current direction".
+     Don't blend in extra accents; hierarchy comes from type, not color. */
+  --background: #0F0D0B;
+  --foreground: #E8DFCF;
+  --muted: #1A1714;
+  --muted-foreground: #8A8275;
+  --surface: #1A1714;
+  --surface-foreground: #E8DFCF;
+  --border: #2A2520;
+  --accent: #5C8A3A;
+  --accent-foreground: #FFFFFF;
+  --ring: #5C8A3A;
+
+  /* ---------- shadcn primitives — retuned to fit the dark theme ----------
+     These tokens get pulled in whenever a shadcn component is used; their
+     values just need to be coherent with the palette above. */
+  --card: var(--surface);
+  --card-foreground: var(--foreground);
+  --popover: var(--surface);
+  --popover-foreground: var(--foreground);
+  --primary: var(--foreground);
+  --primary-foreground: var(--background);
+  --secondary: var(--surface);
+  --secondary-foreground: var(--foreground);
+  --destructive: oklch(0.704 0.191 22.216);
+  --input: var(--border);
+  --chart-1: var(--accent);
+  --chart-2: oklch(0.7 0.12 60);
+  --chart-3: oklch(0.62 0.08 30);
+  --chart-4: oklch(0.5 0.06 20);
+  --chart-5: oklch(0.4 0.04 10);
+  --sidebar: var(--surface);
+  --sidebar-foreground: var(--foreground);
+  --sidebar-primary: var(--accent);
+  --sidebar-primary-foreground: var(--accent-foreground);
+  --sidebar-accent: var(--surface);
+  --sidebar-accent-foreground: var(--foreground);
+  --sidebar-border: var(--border);
+  --sidebar-ring: var(--accent);
 
   /* Radii — restrained; editorial, not friendly. */
   --radius-sm: 2px;
@@ -34,31 +65,6 @@
   --duration: 600ms;
   --duration-slow: 900ms;
   --ease: cubic-bezier(0.16, 1, 0.3, 1);
-  --background: oklch(1 0 0);
-  --foreground: oklch(0.145 0 0);
-  --card: oklch(1 0 0);
-  --card-foreground: oklch(0.145 0 0);
-  --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.145 0 0);
-  --primary: oklch(0.205 0 0);
-  --primary-foreground: oklch(0.985 0 0);
-  --secondary: oklch(0.97 0 0);
-  --secondary-foreground: oklch(0.205 0 0);
-  --destructive: oklch(0.577 0.245 27.325);
-  --input: oklch(0.922 0 0);
-  --chart-1: oklch(0.87 0 0);
-  --chart-2: oklch(0.556 0 0);
-  --chart-3: oklch(0.439 0 0);
-  --chart-4: oklch(0.371 0 0);
-  --chart-5: oklch(0.269 0 0);
-  --sidebar: oklch(0.985 0 0);
-  --sidebar-foreground: oklch(0.145 0 0);
-  --sidebar-primary: oklch(0.205 0 0);
-  --sidebar-primary-foreground: oklch(0.985 0 0);
-  --sidebar-accent: oklch(0.97 0 0);
-  --sidebar-accent-foreground: oklch(0.205 0 0);
-  --sidebar-border: oklch(0.922 0 0);
-  --sidebar-ring: oklch(0.708 0 0);
 }
 
 /* Tailwind v4 theme — exposes tokens as utilities

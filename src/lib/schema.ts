@@ -210,7 +210,7 @@ export const sectionBackgroundSchema = z.discriminatedUnion("type", [
     intensity: z.number().min(0).max(2).default(1),
     speed: z.number().min(0).max(3).default(1),
     /** Two color stops — used as primary/secondary by every kind. */
-    colorA: z.string().default("#C45A3A"),
+    colorA: z.string().default("#5C8A3A"),
     colorB: z.string().default("#0F0D0B"),
     overlay: z.number().min(0).max(100).default(0),
     tint: imageTintSchema.default("none"),
