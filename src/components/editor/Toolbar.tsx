@@ -31,7 +31,10 @@ export function Toolbar({
   onRedo,
   onSave,
 }: Props) {
-  const baseHref = slug === "home" ? "/" : `/${slug}`;
+  // Every editable page renders through the public root with a `?preview=`
+  // override, so the editor preview link bypasses the construction-page
+  // default no matter which slug is being edited.
+  const baseHref = `/?preview=${encodeURIComponent(slug)}`;
   const previewHref = previewAnchor ? `${baseHref}#${previewAnchor}` : baseHref;
 
   // If there are unsaved changes, the public route would render stale JSON

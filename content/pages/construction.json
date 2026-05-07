@@ -1,0 +1,115 @@
+{
+  "meta": {
+    "title": "Youngje Park — Under construction",
+    "description": "The site is being rebuilt. Back soon."
+  },
+  "sections": [
+    {
+      "id": "sec_construction_hero",
+      "background": {
+        "type": "reactbits",
+        "kind": "prismatic-burst",
+        "intensity": 1,
+        "speed": 1,
+        "colorA": "#C45A3A",
+        "colorB": "#0F0D0B",
+        "overlay": 0,
+        "tint": "none",
+        "tintOpacity": 0,
+        "mobileFallbackBreakpoint": 768,
+        "mobileFallbackKind": "gradient"
+      },
+      "padding": "lg",
+      "minHeight": "screen",
+      "align": "center",
+      "blocks": [
+        {
+          "id": "blk_construction_kicker",
+          "layout": {
+            "col": 3,
+            "colSpan": 8,
+            "row": 1,
+            "rowSpan": 3
+          },
+          "type": "text",
+          "props": {
+            "content": "Notice to visitors",
+            "variant": "kicker",
+            "align": "left",
+            "color": "muted",
+            "transform": "none"
+          }
+        },
+        {
+          "id": "blk_construction_headline",
+          "layout": {
+            "col": 3,
+            "colSpan": 10,
+            "row": 5,
+            "rowSpan": 36
+          },
+          "type": "text",
+          "props": {
+            "content": "UNDER<br>CONSTRUCTION.",
+            "variant": "h1",
+            "align": "left",
+            "color": "foreground",
+            "transform": "none",
+            "lineHeight": 0.92,
+            "letterSpacing": -0.025
+          }
+        },
+        {
+          "id": "blk_construction_year",
+          "layout": {
+            "col": 1,
+            "colSpan": 4,
+            "row": 65,
+            "rowSpan": 3
+          },
+          "type": "text",
+          "props": {
+            "content": "MMXXVI — in progress",
+            "variant": "kicker",
+            "align": "left",
+            "color": "muted",
+            "transform": "none"
+          }
+        },
+        {
+          "id": "blk_construction_github",
+          "layout": {
+            "col": 9,
+            "colSpan": 4,
+            "row": 65,
+            "rowSpan": 3
+          },
+          "type": "button",
+          "props": {
+            "label": "GitHub ↗",
+            "href": "https://github.com/MonkTun",
+            "variant": "ghost",
+            "align": "right"
+          }
+        },
+        {
+          "id": "blk_construction_body",
+          "layout": {
+            "col": 3,
+            "colSpan": 7,
+            "row": 44,
+            "rowSpan": 18
+          },
+          "type": "text",
+          "props": {
+            "content": "<em>The studio is being rebuilt from the press up. LA, new type, new ink. Come back in a few weeks — or write, and I'll send a note when it's ready.</em>",
+            "variant": "body",
+            "align": "left",
+            "color": "foreground",
+            "transform": "none"
+          }
+        }
+      ]
+    }
+  ]
+}

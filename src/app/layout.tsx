@@ -1,7 +1,11 @@
 import type { Metadata } from "next";
 import localFont from "next/font/local";
-import { Newsreader, IBM_Plex_Mono } from "next/font/google";
+import { Newsreader, IBM_Plex_Mono, Geist } from "next/font/google";
 import "./globals.css";
+import { cn } from "@/lib/utils";
+
+const geist = Geist({subsets:['latin'],variable:'--font-sans'});
+
 
 // Karepefx — display face for headlines, hero, drop caps, kickers when bold.
 // Local OTFs in src/fonts/karepefx, six weights.
@@ -45,7 +49,7 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${karepefx.variable} ${newsreader.variable} ${plexMono.variable} antialiased`}
+      className={cn("antialiased", karepefx.variable, newsreader.variable, plexMono.variable, "font-sans", geist.variable)}
     >
       <body className="relative min-h-screen bg-background text-foreground font-body">
         {children}

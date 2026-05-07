@@ -35,11 +35,11 @@ export async function POST(req: Request) {
     );
   }
 
-  // Bust any cached server render of the affected route so the public site
-  // reflects the just-saved JSON immediately.
-  const publicPath = body.slug === "home" ? "/" : `/${body.slug}`;
+  // Every editable page renders through `/` (with an optional ?preview=<slug>
+  // override) or via the not-found route, so a single revalidate of `/` is
+  // enough to bust any cached render of the just-saved JSON.
   try {
-    revalidatePath(publicPath);
+    revalidatePath("/");
   } catch {
     // revalidatePath can throw outside a render context in edge cases;
     // a soft-fail is fine in dev — the file is already written.

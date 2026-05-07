@@ -18,6 +18,7 @@ import {
   SectionVideoBackground,
   sectionBackgroundStyle,
 } from "@/components/SectionRenderer";
+import { SectionReactBitsBackground } from "@/components/SectionReactBitsBackground";
 import { cn } from "@/lib/utils";
 
 import { SectionGrid } from "./SectionGrid";
@@ -97,6 +98,7 @@ export function SectionFrame({
       >
         <SectionImageBackground bg={section.background} />
         <SectionVideoBackground bg={section.background} />
+        <SectionReactBitsBackground bg={section.background} />
 
         <div className="relative w-full max-w-7xl mx-auto px-6 md:px-10">
           {/* 12-col grid guide — appears whenever this section is the focus

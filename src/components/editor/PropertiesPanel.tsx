@@ -1000,14 +1000,31 @@ const BG_TYPE_OPTIONS = [
   { id: "color-accent", label: "Accent" },
   { id: "image", label: "Image" },
   { id: "video", label: "Video" },
+  { id: "reactbits", label: "Bits" },
 ] as const;
 
 function bgIdOf(bg: SectionBackground): string {
   if (bg.type === "transparent") return "transparent";
   if (bg.type === "color") return `color-${bg.token}`;
   if (bg.type === "image") return "image";
-  return "video";
+  if (bg.type === "video") return "video";
+  return "reactbits";
 }
+
+const RB_KIND_OPTIONS = [
+  { id: "prismatic-burst", label: "Prismatic Burst" },
+  { id: "grid-scan", label: "Grid Scan" },
+  { id: "grainient", label: "Grainient" },
+  { id: "light-pillar", label: "Light Pillar" },
+  { id: "liquid-ether", label: "Liquid Ether" },
+] as const;
+
+const RB_FALLBACK_OPTIONS = [
+  { id: "none", label: "Off — render bits everywhere" },
+  { id: "gradient", label: "Soft gradient" },
+  { id: "blur-dark", label: "Blurred — dark" },
+  { id: "blur-accent", label: "Blurred — accent" },
+] as const;
 
 function SectionBackgroundEditor({
   bg,
@@ -1059,6 +1076,22 @@ function SectionBackgroundEditor({
         loop: true,
         tint: "none",
         tintOpacity: 0,
+      });
+    }
+    if (id === "reactbits") {
+      if (bg.type === "reactbits") return onChange(bg);
+      return onChange({
+        type: "reactbits",
+        kind: "prismatic-burst",
+        intensity: 1,
+        speed: 1,
+        colorA: "#C45A3A",
+        colorB: "#0F0D0B",
+        overlay: 0,
+        tint: "none",
+        tintOpacity: 0,
+        mobileFallbackBreakpoint: 768,
+        mobileFallbackKind: "gradient",
       });
     }
   }
@@ -1222,6 +1255,170 @@ function SectionBackgroundEditor({
             />
             <p className="text-xs text-foreground/40 italic">
               Darkens the video so foreground text stays readable.
+            </p>
+          </Field>
+
+          <Field label="tint">
+            <TintPicker
+              tint={bg.tint}
+              opacity={bg.tintOpacity}
+              onChange={(patch) =>
+                onChange({
+                  ...bg,
+                  ...(patch.tint !== undefined ? { tint: patch.tint } : {}),
+                  ...(patch.tintOpacity !== undefined
+                    ? { tintOpacity: patch.tintOpacity }
+                    : {}),
+                })
+              }
+            />
+          </Field>
+        </>
+      )}
+
+      {bg.type === "reactbits" && (
+        <>
+          <Field label="kind">
+            <SegmentBar
+              options={RB_KIND_OPTIONS.map((o) => o.id)}
+              labels={Object.fromEntries(
+                RB_KIND_OPTIONS.map((o) => [o.id, o.label])
+              )}
+              value={bg.kind}
+              onChange={(v) =>
+                onChange({ ...bg, kind: v as typeof bg.kind })
+              }
+            />
+            <p className="text-xs text-foreground/40 italic mt-1.5">
+              Each kind is its own JS chunk — only the one you pick is
+              shipped to visitors of this page. Run{" "}
+              <span className="font-mono">npx jsrepo add …</span> from the
+              install command on its reactbits.dev page to replace the
+              placeholder; the wrapper will pick it up automatically.
+            </p>
+          </Field>
+
+          <Field label={`intensity — ${bg.intensity.toFixed(2)}`}>
+            <input
+              type="range"
+              min={0}
+              max={2}
+              step={0.05}
+              value={bg.intensity}
+              onChange={(e) =>
+                onChange({ ...bg, intensity: parseFloat(e.target.value) })
+              }
+              className="w-full accent-accent"
+            />
+          </Field>
+
+          <Field label={`speed — ${bg.speed.toFixed(2)}×`}>
+            <input
+              type="range"
+              min={0}
+              max={3}
+              step={0.05}
+              value={bg.speed}
+              onChange={(e) =>
+                onChange({ ...bg, speed: parseFloat(e.target.value) })
+              }
+              className="w-full accent-accent"
+            />
+          </Field>
+
+          <Field label="primary color">
+            <div className="flex items-center gap-2">
+              <input
+                type="color"
+                value={bg.colorA}
+                onChange={(e) => onChange({ ...bg, colorA: e.target.value })}
+                className="h-9 w-12 rounded-sm border border-border bg-transparent cursor-pointer"
+              />
+              <input
+                className={cn(inputCls, "font-mono text-xs")}
+                value={bg.colorA}
+                onChange={(e) => onChange({ ...bg, colorA: e.target.value })}
+              />
+            </div>
+          </Field>
+
+          <Field label="secondary color">
+            <div className="flex items-center gap-2">
+              <input
+                type="color"
+                value={bg.colorB}
+                onChange={(e) => onChange({ ...bg, colorB: e.target.value })}
+                className="h-9 w-12 rounded-sm border border-border bg-transparent cursor-pointer"
+              />
+              <input
+                className={cn(inputCls, "font-mono text-xs")}
+                value={bg.colorB}
+                onChange={(e) => onChange({ ...bg, colorB: e.target.value })}
+              />
+            </div>
+          </Field>
+
+          <hr className="rule" />
+
+          <Field
+            label={`mobile fallback (≤ ${bg.mobileFallbackBreakpoint}px)`}
+          >
+            <SegmentBar
+              options={RB_FALLBACK_OPTIONS.map((o) => o.id)}
+              labels={Object.fromEntries(
+                RB_FALLBACK_OPTIONS.map((o) => [o.id, o.label])
+              )}
+              value={bg.mobileFallbackKind}
+              onChange={(v) =>
+                onChange({
+                  ...bg,
+                  mobileFallbackKind: v as typeof bg.mobileFallbackKind,
+                })
+              }
+            />
+            <p className="text-xs text-foreground/40 italic mt-1.5">
+              On viewports narrower than the breakpoint, the WebGL chunk
+              isn&apos;t even fetched — the simple CSS bg below renders
+              instead. Saves bandwidth and keeps phones smooth.
+            </p>
+          </Field>
+
+          <Field label={`breakpoint — ${bg.mobileFallbackBreakpoint}px`}>
+            <input
+              type="range"
+              min={0}
+              max={1280}
+              step={32}
+              value={bg.mobileFallbackBreakpoint}
+              onChange={(e) =>
+                onChange({
+                  ...bg,
+                  mobileFallbackBreakpoint: parseInt(e.target.value, 10) || 0,
+                })
+              }
+              className="w-full accent-accent"
+            />
+          </Field>
+
+          <hr className="rule" />
+
+          <Field label={`overlay — ${bg.overlay}%`}>
+            <input
+              type="range"
+              min={0}
+              max={90}
+              step={1}
+              value={bg.overlay}
+              onChange={(e) =>
+                onChange({
+                  ...bg,
+                  overlay: parseInt(e.target.value, 10) || 0,
+                })
+              }
+              className="w-full accent-accent"
+            />
+            <p className="text-xs text-foreground/40 italic">
+              Darkens the bg so foreground text stays readable.
             </p>
           </Field>
 

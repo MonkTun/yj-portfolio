@@ -196,6 +196,32 @@ export const sectionBackgroundSchema = z.discriminatedUnion("type", [
     tint: imageTintSchema.default("none"),
     tintOpacity: z.number().int().min(0).max(100).default(0),
   }),
+  z.object({
+    type: z.literal("reactbits"),
+    kind: z.enum([
+      "prismatic-burst",
+      "grid-scan",
+      "grainient",
+      "light-pillar",
+      "liquid-ether",
+    ]),
+    /** Shared simple controls; per-kind components map them to their own
+     *  prop names. Keeping them shared keeps the panel UI manageable. */
+    intensity: z.number().min(0).max(2).default(1),
+    speed: z.number().min(0).max(3).default(1),
+    /** Two color stops — used as primary/secondary by every kind. */
+    colorA: z.string().default("#C45A3A"),
+    colorB: z.string().default("#0F0D0B"),
+    overlay: z.number().min(0).max(100).default(0),
+    tint: imageTintSchema.default("none"),
+    tintOpacity: z.number().int().min(0).max(100).default(0),
+    /** Below this viewport px width, swap to the cheap CSS fallback so
+     *  mobile devices skip the WebGL chunk entirely. 0 disables. */
+    mobileFallbackBreakpoint: z.number().int().min(0).max(2000).default(768),
+    mobileFallbackKind: z
+      .enum(["none", "gradient", "blur-dark", "blur-accent"])
+      .default("gradient"),
+  }),
 ]);
 
 export const sectionPaddingSchema = z.enum(["none", "sm", "md", "lg", "xl"]);

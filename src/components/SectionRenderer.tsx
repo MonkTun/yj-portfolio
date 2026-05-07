@@ -8,6 +8,7 @@ import {
   imageTransformCss,
 } from "@/components/atoms/imageStyles";
 import { youtubeEmbedUrl } from "@/lib/youtube";
+import { SectionReactBitsBackground } from "@/components/SectionReactBitsBackground";
 
 export const SECTION_PADDING_CLASS = {
   none: "py-0",
@@ -73,6 +74,7 @@ export function SectionRenderer({ section, renderBlock }: Props) {
     >
       <SectionImageBackground bg={section.background} />
       <SectionVideoBackground bg={section.background} />
+      <SectionReactBitsBackground bg={section.background} />
 
       <div
         className="relative w-full max-w-7xl mx-auto px-6 md:px-10 grid grid-cols-12 gap-x-4"

@@ -3,6 +3,17 @@ import { listPages } from "@/lib/content";
 
 export const dynamic = "force-dynamic";
 
+// Maps a content slug to the URL where it actually shows up in production.
+// `construction` is the public landing; `404` is served via the not-found
+// route; `home` is hidden behind ?preview= until the construction page is
+// retired. Everything else falls back to /<slug> for now.
+function publicLabel(slug: string): string {
+  if (slug === "construction") return "/";
+  if (slug === "404") return "(404 fallback)";
+  if (slug === "home") return "/?preview=home";
+  return `/${slug}`;
+}
+
 export default async function AdminIndex() {
   const slugs = await listPages();
 
@@ -25,9 +36,7 @@ export default async function AdminIndex() {
                 className="group flex items-baseline justify-between gap-6 py-6 transition-colors hover:bg-surface/40 px-2 -mx-2"
               >
                 <div>
-                  <p className="kicker">
-                    /{slug === "home" ? "" : slug}
-                  </p>
+                  <p className="kicker">{publicLabel(slug)}</p>
                   <p className="font-display text-3xl mt-2">
                     {slug.split("/").pop()}
                   </p>
