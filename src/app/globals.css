@@ -1,0 +1,305 @@
+@import "tailwindcss";
+@import "react-grid-layout/css/styles.css";
+@import "react-resizable/css/styles.css";
+
+/* ============================================================
+   Design tokens — organic but dark editorial.
+   See CLAUDE.md "Current direction" for rationale.
+   Read these via Tailwind utilities; never hard-code values
+   in components.
+   ============================================================ */
+
+:root {
+  /* Color */
+  --background: #0f0d0b;
+  --foreground: #e8dfcf;
+  --muted: #1a1714;
+  --muted-foreground: #8a8275;
+  --surface: #1a1714;
+  --surface-foreground: #e8dfcf;
+  --border: #2a2520;
+  --accent: #5c8a3a;
+  --accent-foreground: #ffffff;
+  --ring: #5c8a3a;
+
+  /* Radii — restrained; editorial, not friendly. */
+  --radius-sm: 2px;
+  --radius: 4px;
+  --radius-lg: 8px;
+
+  /* Motion */
+  --duration-fast: 200ms;
+  --duration: 600ms;
+  --duration-slow: 900ms;
+  --ease: cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* Tailwind v4 theme — exposes tokens as utilities
+   (bg-background, text-foreground, font-display, etc.). */
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-surface: var(--surface);
+  --color-surface-foreground: var(--surface-foreground);
+  --color-border: var(--border);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-ring: var(--ring);
+
+  --font-display: var(--font-display);
+  --font-body: var(--font-body);
+  --font-mono: var(--font-mono);
+
+  --radius-sm: var(--radius-sm);
+  --radius-md: var(--radius);
+  --radius-lg: var(--radius-lg);
+}
+
+/* ============================================================
+   Base
+   ============================================================ */
+
+html {
+  color-scheme: dark;
+}
+
+body {
+  font-family: var(--font-body), Georgia, serif;
+  font-size: 18px;
+  line-height: 1.6;
+  font-feature-settings: "kern", "liga", "onum";
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+::selection {
+  background: var(--accent);
+  color: var(--accent-foreground);
+}
+
+/* Shared component classes live in @layer components so that Tailwind
+   utility classes (text-*, bg-*, etc.) can override them. Without the
+   layer wrapper, unlayered CSS sits AFTER Tailwind's utilities in the
+   cascade and silently clobbers things like `text-accent-foreground`
+   on a button that also has `kicker`. Always wrap shared classes that
+   set `color`, `background`, etc. in @layer components. */
+@layer components {
+  /* Display face — Karepefx, geometric / futurist. Tightened tracking and
+     leading for headline use; the heavy weights (800/900) carry the largest
+     sizes and the lighter ones (400–500) handle mid-display contexts. */
+  .font-display,
+  [class*="font-display"] {
+    font-family: var(--font-display), Georgia, serif;
+    letter-spacing: -0.02em;
+    line-height: 0.92;
+    font-feature-settings: "kern", "liga", "ss01";
+  }
+
+  /* Mono kicker — uppercase, tracked out, small.
+     Used for section numbers, dates, captions, credit lines. */
+  .kicker {
+    font-family: var(--font-mono), ui-monospace, monospace;
+    font-size: 11px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--muted-foreground);
+    font-feature-settings: "tnum";
+  }
+
+  /* Editorial rule — hairline divider used between sections. */
+  .rule {
+    border: 0;
+    border-top: 1px solid var(--border);
+    margin: 0;
+  }
+
+  /* Anchor — accent underline draws in left to right. */
+  a.editorial-link {
+    position: relative;
+    color: inherit;
+    text-decoration: none;
+    background-image: linear-gradient(var(--accent), var(--accent));
+    background-repeat: no-repeat;
+    background-size: 0% 1px;
+    background-position: 0 100%;
+    transition: background-size var(--duration-fast) var(--ease),
+      color var(--duration-fast) var(--ease);
+  }
+  a.editorial-link:hover {
+    background-size: 100% 1px;
+    color: var(--accent);
+  }
+}
+
+/* ============================================================
+   Atmosphere — capped at THREE devices:
+     grain + warm vignette (body-level)
+     glassmorphism (chrome-level via .glass-panel utility)
+   Body atmospherics: pointer-events none, fixed.
+   ============================================================ */
+
+.grain {
+  position: fixed;
+  inset: 0;
+  z-index: 60;
+  pointer-events: none;
+  opacity: 0.06;
+  mix-blend-mode: screen;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='200' height='200'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 1  0 0 0 0 0.95  0 0 0 0 0.85  0 0 0 0.8 0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
+  background-size: 200px 200px;
+}
+
+.vignette {
+  position: fixed;
+  inset: 0;
+  z-index: 50;
+  pointer-events: none;
+  background: radial-gradient(
+    ellipse at center,
+    transparent 55%,
+    rgba(0, 0, 0, 0.35) 100%
+  );
+}
+
+/* Glassmorphism — frosted surface for floating chrome:
+   editor toolbar, palette, properties panel, popovers,
+   per-block floating toolbars. Body content does not use this. */
+.glass-panel {
+  background: color-mix(in oklab, var(--surface) 55%, transparent);
+  backdrop-filter: blur(20px) saturate(140%);
+  -webkit-backdrop-filter: blur(20px) saturate(140%);
+  border: 1px solid color-mix(in oklab, var(--foreground) 7%, transparent);
+  box-shadow:
+    0 1px 0 color-mix(in oklab, var(--foreground) 4%, transparent) inset,
+    0 20px 60px -20px rgba(0, 0, 0, 0.5);
+}
+
+.glass-strong {
+  background: color-mix(in oklab, var(--surface) 75%, transparent);
+  backdrop-filter: blur(28px) saturate(160%);
+  -webkit-backdrop-filter: blur(28px) saturate(160%);
+  border: 1px solid color-mix(in oklab, var(--foreground) 9%, transparent);
+}
+
+.glass-subtle {
+  background: color-mix(in oklab, var(--surface) 35%, transparent);
+  backdrop-filter: blur(14px) saturate(130%);
+  -webkit-backdrop-filter: blur(14px) saturate(130%);
+  border: 1px solid color-mix(in oklab, var(--foreground) 5%, transparent);
+}
+
+/* ============================================================
+   react-grid-layout overrides — match the editor's look.
+   8 resize handles styled as Figma-style accent squares,
+   visible only when the block is selected.
+   ============================================================ */
+
+.react-grid-item.react-grid-placeholder {
+  background: color-mix(in oklab, var(--accent) 22%, transparent) !important;
+  border: 1.5px dashed var(--accent);
+  border-radius: 4px;
+  opacity: 1 !important;
+  transition: none;
+}
+
+.react-grid-item.react-draggable-dragging {
+  cursor: grabbing !important;
+  z-index: 30 !important;
+  opacity: 0.92;
+  transition: none;
+}
+
+/* The currently-selected block floats above any overlapping siblings so
+   its toolbar pill, resize grips and outline are never clipped by a block
+   that happens to share the same grid cells. RGL applies `react-grid-item`
+   directly to the element we render (via cloneElement), so our
+   `is-selected` class lands on the same node — not a descendant. Dragging
+   (z 30) still wins on top. */
+.react-grid-item.is-selected {
+  z-index: 20;
+}
+
+/* Resize handles only mount when the item is `isResizable: true`, which
+   we set per-block based on selection. So when a handle is in the DOM it
+   should always be visible. */
+.react-grid-item > .react-resizable-handle {
+  background-image: none;
+  width: 12px;
+  height: 12px;
+  pointer-events: auto;
+  padding: 0;
+}
+
+/* The visible square — white fill with accent border; reads as a
+   "grip" the user can grab. Slight shadow lifts it off the block. */
+.react-grid-item > .react-resizable-handle::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: var(--background);
+  border: 1.5px solid var(--accent);
+  border-radius: 2px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
+}
+
+/* Re-position handles so their CENTERS sit on the block edge, not
+   their corners (which is the default and looks off-center). */
+.react-grid-item > .react-resizable-handle-se {
+  bottom: -6px; right: -6px; cursor: nwse-resize;
+}
+.react-grid-item > .react-resizable-handle-sw {
+  bottom: -6px; left: -6px; cursor: nesw-resize;
+}
+.react-grid-item > .react-resizable-handle-ne {
+  top: -6px; right: -6px; cursor: nesw-resize;
+}
+.react-grid-item > .react-resizable-handle-nw {
+  top: -6px; left: -6px; cursor: nwse-resize;
+}
+.react-grid-item > .react-resizable-handle-e {
+  top: 50%; right: -6px; transform: translateY(-50%); cursor: ew-resize;
+}
+.react-grid-item > .react-resizable-handle-w {
+  top: 50%; left: -6px; transform: translateY(-50%); cursor: ew-resize;
+}
+.react-grid-item > .react-resizable-handle-n {
+  top: -6px; left: 50%; transform: translateX(-50%); cursor: ns-resize;
+}
+.react-grid-item > .react-resizable-handle-s {
+  bottom: -6px; left: 50%; transform: translateX(-50%); cursor: ns-resize;
+}
+
+/* ============================================================
+   Reveal — one orchestrated page-load animation.
+   Apply [data-reveal] to children of a section to stagger them.
+   ============================================================ */
+
+@keyframes reveal {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+[data-reveal] {
+  opacity: 0;
+  animation: reveal var(--duration) var(--ease) forwards;
+  animation-delay: calc(var(--reveal-delay, 0) * 1ms);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  [data-reveal] {
+    animation: none;
+    opacity: 1;
+    transform: none;
+  }
+  a.editorial-link {
+    transition: none;
+  }
+}

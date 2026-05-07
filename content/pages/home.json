@@ -1,0 +1,535 @@
+{
+  "meta": {
+    "title": "Youngje Park — Portfolio",
+    "description": "Designer & engineer working between games, tools, and craft."
+  },
+  "sections": [
+    {
+      "id": "sec_hero",
+      "background": {
+        "type": "transparent"
+      },
+      "padding": "xl",
+      "minHeight": "screen",
+      "align": "center",
+      "blocks": [
+        {
+          "id": "blk_hero_kicker",
+          "layout": {
+            "col": 2,
+            "colSpan": 8,
+            "row": 1,
+            "rowSpan": 3
+          },
+          "type": "text",
+          "props": {
+            "content": "§ 00 — Youngje Park, b. Seoul",
+            "variant": "kicker",
+            "align": "left",
+            "color": "muted",
+            "transform": "none"
+          }
+        },
+        {
+          "id": "blk_hero_name",
+          "layout": {
+            "col": 2,
+            "colSpan": 11,
+            "row": 6,
+            "rowSpan": 36
+          },
+          "type": "text",
+          "props": {
+            "content": "Youngje<br>Park.",
+            "variant": "h1",
+            "align": "left",
+            "color": "foreground",
+            "transform": "upper",
+            "lineHeight": 0.75,
+            "letterSpacing": -0.025
+          }
+        },
+        {
+          "id": "blk_hero_tagline",
+          "layout": {
+            "col": 8,
+            "colSpan": 5,
+            "row": 43,
+            "rowSpan": 24
+          },
+          "type": "text",
+          "props": {
+            "content": "Designer &amp; engineer building games, tools, and the occasional thing in between. Currently making worlds in Unity and interfaces on the web.",
+            "variant": "body",
+            "align": "left",
+            "color": "foreground",
+            "transform": "none"
+          }
+        },
+        {
+          "id": "blk_47de8074",
+          "layout": {
+            "col": 2,
+            "colSpan": 5,
+            "row": 26,
+            "rowSpan": 51
+          },
+          "type": "image",
+          "props": {
+            "src": "/uploads/img-3101-mounkf1r-no-bg-mouo26o3.png",
+            "alt": "",
+            "fit": "cover",
+            "radius": 112,
+            "filter": "noir",
+            "focalX": 50,
+            "focalY": 50,
+            "rotate": 0,
+            "flipX": true,
+            "flipY": false,
+            "blur": 0,
+            "tint": "none",
+            "tintOpacity": 0
+          }
+        }
+      ]
+    },
+    {
+      "id": "sec_about_title",
+      "background": {
+        "type": "image",
+        "src": "/uploads/img-3101-mounkf1r.jpeg",
+        "overlay": 79,
+        "filter": "noir",
+        "focalX": 50,
+        "focalY": 50,
+        "rotate": 0,
+        "flipX": false,
+        "flipY": false,
+        "blur": 0,
+        "tint": "none",
+        "tintOpacity": 0
+      },
+      "padding": "lg",
+      "minHeight": "auto",
+      "align": "top",
+      "blocks": [
+        {
+          "id": "blk_about_num",
+          "layout": {
+            "col": 2,
+            "colSpan": 3,
+            "row": 1,
+            "rowSpan": 3
+          },
+          "type": "text",
+          "props": {
+            "content": "§ 01",
+            "variant": "kicker",
+            "align": "left",
+            "color": "muted",
+            "transform": "none"
+          }
+        },
+        {
+          "id": "blk_about_rule",
+          "layout": {
+            "col": 5,
+            "colSpan": 7,
+            "row": 2,
+            "rowSpan": 1
+          },
+          "type": "line",
+          "props": {
+            "thickness": 1,
+            "color": "border"
+          }
+        },
+        {
+          "id": "blk_about_title",
+          "layout": {
+            "col": 2,
+            "colSpan": 10,
+            "row": 6,
+            "rowSpan": 18
+          },
+          "type": "text",
+          "props": {
+            "content": "On making.",
+            "variant": "h2",
+            "align": "left",
+            "color": "foreground",
+            "transform": "none"
+          }
+        }
+      ]
+    },
+    {
+      "id": "sec_intro",
+      "background": {
+        "type": "transparent"
+      },
+      "padding": "md",
+      "minHeight": "auto",
+      "align": "top",
+      "blocks": [
+        {
+          "id": "blk_intro_body",
+          "layout": {
+            "col": 2,
+            "colSpan": 7,
+            "row": 1,
+            "rowSpan": 30
+          },
+          "type": "text",
+          "props": {
+            "content": "I work in the seams — between systems and surfaces, between the engineer who insists on rigor and the designer who insists on warmth. Most of what I build lives somewhere between a game, a tool, and a small, opinionated argument about how software should feel.",
+            "variant": "body",
+            "align": "left",
+            "color": "foreground",
+            "transform": "none"
+          }
+        }
+      ]
+    },
+    {
+      "id": "sec_work_title",
+      "background": {
+        "type": "transparent"
+      },
+      "padding": "lg",
+      "minHeight": "auto",
+      "align": "top",
+      "blocks": [
+        {
+          "id": "blk_work_num",
+          "layout": {
+            "col": 2,
+            "colSpan": 3,
+            "row": 1,
+            "rowSpan": 3
+          },
+          "type": "text",
+          "props": {
+            "content": "§ 02",
+            "variant": "kicker",
+            "align": "left",
+            "color": "muted",
+            "transform": "none"
+          }
+        },
+        {
+          "id": "blk_work_rule",
+          "layout": {
+            "col": 5,
+            "colSpan": 7,
+            "row": 2,
+            "rowSpan": 1
+          },
+          "type": "line",
+          "props": {
+            "thickness": 1,
+            "color": "border"
+          }
+        },
+        {
+          "id": "blk_work_title",
+          "layout": {
+            "col": 2,
+            "colSpan": 10,
+            "row": 6,
+            "rowSpan": 18
+          },
+          "type": "text",
+          "props": {
+            "content": "Selected work.",
+            "variant": "h2",
+            "align": "left",
+            "color": "foreground",
+            "transform": "none"
+          }
+        }
+      ]
+    },
+    {
+      "id": "sec_proj_overdawn",
+      "background": {
+        "type": "transparent"
+      },
+      "padding": "md",
+      "minHeight": "auto",
+      "align": "top",
+      "blocks": [
+        {
+          "id": "blk_overdawn_meta",
+          "layout": {
+            "col": 2,
+            "colSpan": 6,
+            "row": 1,
+            "rowSpan": 3
+          },
+          "type": "text",
+          "props": {
+            "content": "2025 — Director / Engineer",
+            "variant": "kicker",
+            "align": "left",
+            "color": "muted",
+            "transform": "none"
+          }
+        },
+        {
+          "id": "blk_overdawn_title",
+          "layout": {
+            "col": 2,
+            "colSpan": 6,
+            "row": 5,
+            "rowSpan": 8
+          },
+          "type": "text",
+          "props": {
+            "content": "Overdawn.",
+            "variant": "h3",
+            "align": "left",
+            "color": "foreground",
+            "transform": "none"
+          }
+        },
+        {
+          "id": "blk_overdawn_summary",
+          "layout": {
+            "col": 2,
+            "colSpan": 5,
+            "row": 14,
+            "rowSpan": 12
+          },
+          "type": "text",
+          "props": {
+            "content": "An action-RPG built in Unity. Custom inventory, save, and quest systems written from first principles.",
+            "variant": "body",
+            "align": "left",
+            "color": "foreground",
+            "transform": "none"
+          }
+        },
+        {
+          "id": "blk_overdawn_image",
+          "layout": {
+            "col": 8,
+            "colSpan": 4,
+            "row": 1,
+            "rowSpan": 30
+          },
+          "type": "image",
+          "props": {
+            "src": "",
+            "alt": "Overdawn",
+            "fit": "cover",
+            "aspect": "4/5",
+            "radius": 0,
+            "filter": "none",
+            "focalX": 50,
+            "focalY": 50,
+            "rotate": 0,
+            "flipX": false,
+            "flipY": false,
+            "blur": 0,
+            "tint": "none",
+            "tintOpacity": 0
+          }
+        }
+      ]
+    },
+    {
+      "id": "sec_proj_dawngeon",
+      "background": {
+        "type": "transparent"
+      },
+      "padding": "md",
+      "minHeight": "auto",
+      "align": "top",
+      "blocks": [
+        {
+          "id": "blk_dawngeon_meta",
+          "layout": {
+            "col": 6,
+            "colSpan": 6,
+            "row": 1,
+            "rowSpan": 3
+          },
+          "type": "text",
+          "props": {
+            "content": "2024 — Solo developer",
+            "variant": "kicker",
+            "align": "left",
+            "color": "muted",
+            "transform": "none"
+          }
+        },
+        {
+          "id": "blk_dawngeon_title",
+          "layout": {
+            "col": 6,
+            "colSpan": 6,
+            "row": 5,
+            "rowSpan": 8
+          },
+          "type": "text",
+          "props": {
+            "content": "Dawngeon.",
+            "variant": "h3",
+            "align": "left",
+            "color": "foreground",
+            "transform": "none"
+          }
+        },
+        {
+          "id": "blk_dawngeon_summary",
+          "layout": {
+            "col": 6,
+            "colSpan": 5,
+            "row": 14,
+            "rowSpan": 12
+          },
+          "type": "text",
+          "props": {
+            "content": "Procedurally-generated dungeon crawler. Won the Global Dev Wave Cup.",
+            "variant": "body",
+            "align": "left",
+            "color": "foreground",
+            "transform": "none"
+          }
+        },
+        {
+          "id": "blk_dawngeon_image",
+          "layout": {
+            "col": 2,
+            "colSpan": 4,
+            "row": 1,
+            "rowSpan": 30
+          },
+          "type": "image",
+          "props": {
+            "src": "",
+            "alt": "Dawngeon",
+            "fit": "cover",
+            "aspect": "4/5",
+            "radius": 0,
+            "filter": "none",
+            "focalX": 50,
+            "focalY": 50,
+            "rotate": 0,
+            "flipX": false,
+            "flipY": false,
+            "blur": 0,
+            "tint": "none",
+            "tintOpacity": 0
+          }
+        }
+      ]
+    },
+    {
+      "id": "sec_quote",
+      "background": {
+        "type": "transparent"
+      },
+      "padding": "xl",
+      "minHeight": "auto",
+      "align": "center",
+      "blocks": [
+        {
+          "id": "blk_quote",
+          "layout": {
+            "col": 3,
+            "colSpan": 8,
+            "row": 1,
+            "rowSpan": 24
+          },
+          "type": "quote",
+          "props": {
+            "quote": "The work I love most is the work that knows what it is.",
+            "attribution": "Note to self, 2024"
+          }
+        }
+      ]
+    },
+    {
+      "id": "sec_footer",
+      "background": {
+        "type": "transparent"
+      },
+      "padding": "lg",
+      "minHeight": "auto",
+      "align": "top",
+      "blocks": [
+        {
+          "id": "blk_footer_kicker",
+          "layout": {
+            "col": 2,
+            "colSpan": 6,
+            "row": 1,
+            "rowSpan": 3
+          },
+          "type": "text",
+          "props": {
+            "content": "Get in touch",
+            "variant": "kicker",
+            "align": "left",
+            "color": "muted",
+            "transform": "none"
+          }
+        },
+        {
+          "id": "blk_footer_email",
+          "layout": {
+            "col": 2,
+            "colSpan": 7,
+            "row": 5,
+            "rowSpan": 14
+          },
+          "type": "text",
+          "props": {
+            "content": "peroni014@gmail.com",
+            "variant": "h2",
+            "align": "left",
+            "color": "foreground",
+            "transform": "none",
+            "fontSize": 87
+          }
+        },
+        {
+          "id": "blk_footer_links",
+          "layout": {
+            "col": 9,
+            "colSpan": 3,
+            "row": 5,
+            "rowSpan": 8
+          },
+          "type": "text",
+          "props": {
+            "content": "GitHub ↗<br>LinkedIn ↗<br>Resume ↗",
+            "variant": "kicker",
+            "align": "left",
+            "color": "foreground",
+            "transform": "none"
+          }
+        },
+        {
+          "id": "blk_footer_colophon",
+          "layout": {
+            "col": 2,
+            "colSpan": 10,
+            "row": 22,
+            "rowSpan": 3
+          },
+          "type": "text",
+          "props": {
+            "content": "© Youngje Park — set in Karepefx &amp; Newsreader",
+            "variant": "kicker",
+            "align": "left",
+            "color": "muted",
+            "transform": "none"
+          }
+        }
+      ]
+    }
+  ]
+}

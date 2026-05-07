@@ -1,16 +1,35 @@
-# React + Vite
+# YJ's Portfolio
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Personal portfolio for Youngje Park, plus a self-built admin layer for arranging UI elements visually (drag-and-drop, "DIY Framer"–style).
 
-Currently, two official plugins are available:
+This repo replaces the previous Vite version. It lives at the same Vercel project so domain settings carry over.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## Stack
 
-## React Compiler
+- Next.js 16 (App Router)
+- React 19, TypeScript
+- Tailwind CSS v4
+- ESLint
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+## Getting started
 
-## Expanding the ESLint configuration
+```bash
+npm install
+npm run dev
+```
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+Open http://localhost:3000.
+
+## Scripts
+
+- `npm run dev` — start the dev server
+- `npm run build` — production build
+- `npm run start` — run the production build
+- `npm run lint` — lint the project
+
+## Layout
+
+- `src/app` — App Router routes, layouts, and global styles
+- `public` — static assets
+
+The portfolio surface and the `/admin` editor will live alongside each other under `src/app` once they're built out.
