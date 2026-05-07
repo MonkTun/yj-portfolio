@@ -66,10 +66,10 @@ export function NewPageForm({ existing }: { existing: string[] }) {
             value={slug}
             onChange={(e) => setSlug(e.target.value)}
             placeholder="about, work/dawngeon, contact"
-            className="w-full bg-background border border-border rounded-sm px-3 py-2 font-mono text-sm focus:outline-none focus:border-accent transition-colors"
+            className="w-full bg-background border border-border rounded-sm px-3 py-2 font-sans text-sm focus:outline-none focus:border-accent transition-colors"
           />
           {cleanSlug && (
-            <span className="block mt-1 text-xs text-foreground/60 font-mono">
+            <span className="block mt-1 text-xs text-foreground/60 font-sans">
               /{cleanSlug}
             </span>
           )}
@@ -99,7 +99,7 @@ export function NewPageForm({ existing }: { existing: string[] }) {
       {slugInvalid && (
         <p className="text-xs italic text-foreground/70">
           Slug must start with a letter or digit and use only{" "}
-          <code className="font-mono">a–z 0–9 - /</code>.
+          <code className="font-sans">a–z 0–9 - /</code>.
         </p>
       )}
       {err && (

@@ -83,7 +83,6 @@
 
   --font-display: var(--font-display);
   --font-body: var(--font-body);
-  --font-mono: var(--font-mono);
 
   --radius-sm: var(--radius-sm);
   --radius-md: var(--radius);
@@ -129,7 +128,9 @@ html {
 
 body {
   font-family: var(--font-body), Georgia, serif;
-  font-size: 18px;
+  /* Inherits from the active palette's body knob — also drives the body
+     variant's clamp() max in atomStyles.ts, so one knob shrinks both. */
+  font-size: var(--text-body, 1.125rem);
   line-height: 1.6;
   font-feature-settings: "kern", "liga", "onum";
   -webkit-font-smoothing: antialiased;

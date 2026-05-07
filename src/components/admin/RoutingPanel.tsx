@@ -57,7 +57,7 @@ export function RoutingPanel({ initialConfig, pages }: Props) {
         <div>
           <p className="kicker">Routing</p>
           <p className="text-foreground/60 italic text-sm mt-1">
-            Decides which page renders at <code className="font-mono">/</code>{" "}
+            Decides which page renders at <code className="font-sans">/</code>{" "}
             and what shows up for unknown URLs.
           </p>
         </div>
@@ -73,13 +73,13 @@ export function RoutingPanel({ initialConfig, pages }: Props) {
           Construction mode —{" "}
           {config.constructionMode ? (
             <span className="text-foreground">
-              <code className="font-mono">/</code> shows{" "}
-              <code className="font-mono">{config.constructionSlug}</code>
+              <code className="font-sans">/</code> shows{" "}
+              <code className="font-sans">{config.constructionSlug}</code>
             </span>
           ) : (
             <span className="text-foreground">
-              <code className="font-mono">/</code> shows{" "}
-              <code className="font-mono">{config.homeSlug}</code>
+              <code className="font-sans">/</code> shows{" "}
+              <code className="font-sans">{config.homeSlug}</code>
             </span>
           )}
         </p>
@@ -156,7 +156,7 @@ function RoleAssignment({
       <select
         value={value}
         onChange={(e) => onChange(e.target.value)}
-        className="mt-1.5 w-full bg-background border border-border rounded-sm px-3 py-2 font-mono text-sm focus:outline-none focus:border-accent transition-colors appearance-none cursor-pointer"
+        className="mt-1.5 w-full bg-background border border-border rounded-sm px-3 py-2 font-sans text-sm focus:outline-none focus:border-accent transition-colors appearance-none cursor-pointer"
       >
         {!pages.includes(value) && (
           <option value={value}>(missing) {value}</option>

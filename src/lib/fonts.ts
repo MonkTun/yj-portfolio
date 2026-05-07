@@ -9,29 +9,27 @@
      1. layout.tsx imports each font once via next/font and binds
         it to a per-font CSS variable (e.g. `--font-playfair-display`).
      2. The active palette names a font for each role (display, body,
-        sans, mono). layout.tsx maps those names back to the CSS
-        variables and sets the role variables (--font-display, etc.)
-        as inline style on <html>.
+        sans). layout.tsx maps those names back to the CSS variables
+        and sets the role variables (--font-display, etc.) as inline
+        style on <html>.
      3. globals.css and Tailwind utilities continue to read the role
         variables, oblivious to which concrete font is in use.
    ============================================================ */
 
-export type FontRole = "display" | "body" | "sans" | "mono";
+export type FontRole = "display" | "body" | "sans";
 
-export const FONT_ROLES: FontRole[] = ["display", "body", "sans", "mono"];
+export const FONT_ROLES: FontRole[] = ["display", "body", "sans"];
 
 export const FONT_ROLE_LABELS: Record<FontRole, string> = {
   display: "Display",
   body: "Body",
   sans: "Sans",
-  mono: "Mono",
 };
 
 export const FONT_ROLE_HINTS: Record<FontRole, string> = {
   display: "Hero, headlines, drop caps.",
   body: "Running text, captions, paragraphs.",
   sans: "Kickers, micro-labels, UI chrome.",
-  mono: "Code, dates, tabular figures.",
 };
 
 export type FontOption = {
@@ -88,7 +86,7 @@ export const FONT_OPTIONS: FontOption[] = [
     cssVar: "--font-bricolage",
     fallback: "sans-serif",
     flavour: "Quirky modern sans",
-    roles: ["sans"],
+    roles: ["sans", "body"],
   },
   {
     id: "dm-sans",
@@ -96,15 +94,18 @@ export const FONT_OPTIONS: FontOption[] = [
     cssVar: "--font-dm-sans",
     fallback: "sans-serif",
     flavour: "Neutral geometric sans",
-    roles: ["sans"],
+    roles: ["sans", "body"],
   },
+  // ---- Monospaced faces, repurposed -------------------------------------
+  // No dedicated mono role anymore — but the technical-feeling rhythm of a
+  // monospace works as a body or kicker face when used deliberately.
   {
     id: "ibm-plex-mono",
     label: "IBM Plex Mono",
     cssVar: "--font-ibm-plex-mono",
     fallback: "monospace",
     flavour: "Editorial monospace",
-    roles: ["mono"],
+    roles: ["body", "sans"],
   },
   {
     id: "jetbrains-mono",
@@ -112,7 +113,34 @@ export const FONT_OPTIONS: FontOption[] = [
     cssVar: "--font-jetbrains-mono",
     fallback: "monospace",
     flavour: "Technical monospace",
-    roles: ["mono"],
+    roles: ["body", "sans"],
+  },
+  // ---- Pixel fonts (opt-in; preload:false in layout.tsx) -----------------
+  // Allowed in display + sans only — pixel faces at body sizes get
+  // unreadable fast.
+  {
+    id: "galmuri9",
+    label: "Galmuri9",
+    cssVar: "--font-galmuri9",
+    fallback: "monospace",
+    flavour: "9px Korean pixel display",
+    roles: ["display", "sans"],
+  },
+  {
+    id: "pf-stardust",
+    label: "PF Stardust",
+    cssVar: "--font-pf-stardust",
+    fallback: "monospace",
+    flavour: "Chunky pixel display",
+    roles: ["display", "sans"],
+  },
+  {
+    id: "pf-stardust-s",
+    label: "PF Stardust S",
+    cssVar: "--font-pf-stardust-s",
+    fallback: "monospace",
+    flavour: "Condensed pixel display",
+    roles: ["display", "sans"],
   },
 ];
 
@@ -122,7 +150,6 @@ export const DEFAULT_FONTS: Record<FontRole, string> = {
   display: "karepefx",
   body: "playfair-display",
   sans: "bricolage",
-  mono: "ibm-plex-mono",
 };
 
 export function fontOptionsForRole(role: FontRole): FontOption[] {

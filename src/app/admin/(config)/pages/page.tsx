@@ -78,10 +78,10 @@ export default async function PagesIndex() {
         <h1 className="font-display text-6xl mt-4">Pages</h1>
         <p className="mt-4 text-foreground/70 italic max-w-2xl">
           The editor writes JSON straight to{" "}
-          <code className="font-mono text-sm">content/pages/</code>. Save, then{" "}
-          <code className="font-mono text-sm">git commit</code> to publish. Use
+          <code className="font-sans text-sm">content/pages/</code>. Save, then{" "}
+          <code className="font-sans text-sm">git commit</code> to publish. Use
           a slash in the slug (e.g.{" "}
-          <code className="font-mono text-sm">work/new-thing</code>) to file a
+          <code className="font-sans text-sm">work/new-thing</code>) to file a
           page under a group.
         </p>
       </header>

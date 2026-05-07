@@ -169,6 +169,12 @@ export const sectionBackgroundSchema = z.discriminatedUnion("type", [
     type: z.literal("color"),
     token: z.enum(["background", "surface", "accent"]),
   }),
+  // Inverse section. Foreground becomes the background, background becomes
+  // the text color — so on a dark page this paints a section in the warm
+  // cream (--foreground) with dark text. Descendants reading --background
+  // / --foreground (Tailwind text-foreground, bg-surface, etc.) pick up
+  // the swapped values via an inner wrapper; see sectionBackgroundStyle.
+  z.object({ type: z.literal("reverse") }),
   z.object({
     type: z.literal("image"),
     src: z.string(),
@@ -305,7 +311,19 @@ export const paletteFontsSchema = z.object({
   display: fontId.default("karepefx"),
   body: fontId.default("playfair-display"),
   sans: fontId.default("bricolage"),
-  mono: fontId.default("ibm-plex-mono"),
+});
+
+// Type scale knobs. Two values:
+//   - body: the body variant's clamp() max AND the body element's
+//     inherited font-size. So this knob shrinks running text everywhere.
+//   - header: the h1 variant's clamp() max. h2 = header × 0.5,
+//     h3 = header × 0.25, so the headline cascade scales together.
+// Both expressed in rem; mins and the viewport-scale factor inside clamp()
+// stay fixed in atomStyles.ts so the fluid behavior at small viewports
+// doesn't change with the knob.
+export const paletteSizesSchema = z.object({
+  body: z.number().min(0.75).max(2).default(1.125),
+  header: z.number().min(2).max(20).default(12),
 });
 
 export const paletteSchema = z.object({
@@ -319,7 +337,10 @@ export const paletteSchema = z.object({
     display: "karepefx",
     body: "playfair-display",
     sans: "bricolage",
-    mono: "ibm-plex-mono",
+  }),
+  sizes: paletteSizesSchema.default({
+    body: 1.125,
+    header: 12,
   }),
 });
 
@@ -330,6 +351,7 @@ export const themeSchema = z.object({
 
 export type PaletteColors = z.infer<typeof paletteColorsSchema>;
 export type PaletteFonts = z.infer<typeof paletteFontsSchema>;
+export type PaletteSizes = z.infer<typeof paletteSizesSchema>;
 export type Palette = z.infer<typeof paletteSchema>;
 export type Theme = z.infer<typeof themeSchema>;
 

@@ -271,7 +271,7 @@ function BlockProps({
 
       <hr className="rule" />
       <Field label="layout">
-        <p className="text-xs text-foreground/50 italic font-mono">
+        <p className="text-xs text-foreground/50 italic font-sans">
           col {block.layout.col}, span {block.layout.colSpan} · row{" "}
           {block.layout.row ?? "auto"}, span {block.layout.rowSpan ?? "auto"}
         </p>
@@ -295,7 +295,7 @@ function TextBlockProps({
       <Field label="content (HTML)">
         <textarea
           rows={5}
-          className={cn(inputCls, "font-mono text-xs")}
+          className={cn(inputCls, "font-sans text-xs")}
           value={props.content}
           onChange={(e) => onUpdate({ content: e.target.value })}
         />
@@ -513,7 +513,7 @@ function ImageBlockProps({
 
       <Field label="aspect ratio (CSS, optional)">
         <input
-          className={cn(inputCls, "font-mono text-xs")}
+          className={cn(inputCls, "font-sans text-xs")}
           placeholder="4/5"
           value={props.aspect ?? ""}
           onChange={(e) => onUpdate({ aspect: e.target.value || undefined })}
@@ -566,7 +566,7 @@ function ImageBlockProps({
 
       <Field label="link href (optional)">
         <input
-          className={cn(inputCls, "font-mono text-xs")}
+          className={cn(inputCls, "font-sans text-xs")}
           value={props.href ?? ""}
           onChange={(e) => onUpdate({ href: e.target.value || undefined })}
         />
@@ -574,7 +574,7 @@ function ImageBlockProps({
 
       <Field label="src (manual path)">
         <input
-          className={cn(inputCls, "font-mono text-xs")}
+          className={cn(inputCls, "font-sans text-xs")}
           placeholder="/uploads/foo.jpg"
           value={props.src}
           onChange={(e) => onUpdate({ src: e.target.value })}
@@ -780,7 +780,7 @@ function FocalPointPicker({
           />
         )}
       </div>
-      <p className="text-xs text-foreground/40 italic font-mono">
+      <p className="text-xs text-foreground/40 italic font-sans">
         {x}%, {y}%
       </p>
     </div>
@@ -1013,6 +1013,7 @@ const BG_TYPE_OPTIONS = [
   { id: "color-bg", label: "Page" },
   { id: "color-surface", label: "Surface" },
   { id: "color-accent", label: "Accent" },
+  { id: "reverse", label: "Reverse" },
   { id: "image", label: "Image" },
   { id: "video", label: "Video" },
   { id: "reactbits", label: "Bits" },
@@ -1021,6 +1022,7 @@ const BG_TYPE_OPTIONS = [
 function bgIdOf(bg: SectionBackground): string {
   if (bg.type === "transparent") return "transparent";
   if (bg.type === "color") return `color-${bg.token}`;
+  if (bg.type === "reverse") return "reverse";
   if (bg.type === "image") return "image";
   if (bg.type === "video") return "video";
   return "reactbits";
@@ -1063,6 +1065,7 @@ function SectionBackgroundEditor({
       return onChange({ type: "color", token: "surface" });
     if (id === "color-accent")
       return onChange({ type: "color", token: "accent" });
+    if (id === "reverse") return onChange({ type: "reverse" });
     if (id === "image") {
       // Preserve src/effects if we already had an image bg.
       if (bg.type === "image") return onChange(bg);
@@ -1124,6 +1127,13 @@ function SectionBackgroundEditor({
           onChange={setType}
         />
       </Field>
+
+      {bg.type === "reverse" && (
+        <p className="text-xs text-foreground/40 italic">
+          Flips the section: foreground becomes the background and vice-versa.
+          Useful for a single light spread inside an otherwise-dark page.
+        </p>
+      )}
 
       {bg.type === "image" && (
         <>
@@ -1197,7 +1207,7 @@ function SectionBackgroundEditor({
         <>
           <Field label="YouTube URL">
             <input
-              className={cn(inputCls, "font-mono text-xs")}
+              className={cn(inputCls, "font-sans text-xs")}
               placeholder="https://www.youtube.com/watch?v=..."
               value={bg.url}
               onChange={(e) => onChange({ ...bg, url: e.target.value })}
@@ -1332,7 +1342,7 @@ function SectionBackgroundEditor({
             <p className="text-xs text-foreground/40 italic mt-1.5">
               Each kind is its own JS chunk — only the one you pick is
               shipped to visitors of this page. Run{" "}
-              <span className="font-mono">npx jsrepo add …</span> from the
+              <span className="font-sans">npx jsrepo add …</span> from the
               install command on its reactbits.dev page to replace the
               placeholder; the wrapper will pick it up automatically.
             </p>
@@ -1375,7 +1385,7 @@ function SectionBackgroundEditor({
                 className="h-9 w-12 rounded-sm border border-border bg-transparent cursor-pointer"
               />
               <input
-                className={cn(inputCls, "font-mono text-xs")}
+                className={cn(inputCls, "font-sans text-xs")}
                 value={bg.colorA}
                 onChange={(e) => onChange({ ...bg, colorA: e.target.value })}
               />
@@ -1391,7 +1401,7 @@ function SectionBackgroundEditor({
                 className="h-9 w-12 rounded-sm border border-border bg-transparent cursor-pointer"
               />
               <input
-                className={cn(inputCls, "font-mono text-xs")}
+                className={cn(inputCls, "font-sans text-xs")}
                 value={bg.colorB}
                 onChange={(e) => onChange({ ...bg, colorB: e.target.value })}
               />
@@ -1708,7 +1718,7 @@ function VideoBlockProps({
     <>
       <Field label="YouTube URL or video id">
         <input
-          className={cn(inputCls, "font-mono text-xs")}
+          className={cn(inputCls, "font-sans text-xs")}
           placeholder="https://www.youtube.com/watch?v=..."
           value={props.url}
           onChange={(e) => onUpdate({ url: e.target.value })}
@@ -1729,7 +1739,7 @@ function VideoBlockProps({
 
       <Field label="aspect ratio (CSS)">
         <input
-          className={cn(inputCls, "font-mono text-xs")}
+          className={cn(inputCls, "font-sans text-xs")}
           placeholder="16/9"
           value={props.aspect}
           onChange={(e) => onUpdate({ aspect: e.target.value || "16/9" })}
@@ -1885,7 +1895,7 @@ function ButtonBlockProps({
       </Field>
       <Field label="href">
         <input
-          className={cn(inputCls, "font-mono text-xs")}
+          className={cn(inputCls, "font-sans text-xs")}
           value={props.href}
           onChange={(e) => onUpdate({ href: e.target.value })}
           placeholder="/about, https://…, #section-id"

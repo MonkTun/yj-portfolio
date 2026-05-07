@@ -1,5 +1,10 @@
 import type { CSSProperties } from "react";
-import type { Palette, PaletteColors, PaletteFonts } from "./schema";
+import type {
+  Palette,
+  PaletteColors,
+  PaletteFonts,
+  PaletteSizes,
+} from "./schema";
 import { resolveFont, FONT_ROLES } from "./fonts";
 
 // Default palette — mirrors the values committed to globals.css :root so a
@@ -21,7 +26,10 @@ export const DEFAULT_PALETTE: Palette = {
     display: "karepefx",
     body: "playfair-display",
     sans: "bricolage",
-    mono: "ibm-plex-mono",
+  },
+  sizes: {
+    body: 1.125,
+    header: 12,
   },
 };
 
@@ -69,3 +77,40 @@ export function paletteToFontVars(fonts: PaletteFonts): CSSProperties {
   }
   return out as CSSProperties;
 }
+
+/** Type-scale CSS variables read by atomStyles.ts and the body element.
+ *  Both knobs are stored as plain numbers (rem) and emitted as `<n>rem`. */
+export function paletteToSizeVars(sizes: PaletteSizes): CSSProperties {
+  return {
+    "--text-body": `${sizes.body}rem`,
+    "--text-header": `${sizes.header}rem`,
+  } as CSSProperties;
+}
+
+/** Hint table for the size knobs — used by the ThemePanel to label the
+ *  number inputs and show what each knob actually drives. */
+export const SIZE_FIELDS: Array<{
+  key: keyof PaletteSizes;
+  label: string;
+  hint: string;
+  min: number;
+  max: number;
+  step: number;
+}> = [
+  {
+    key: "body",
+    label: "Body",
+    hint: "Running text + body element. 1.125rem ≈ 18px.",
+    min: 0.75,
+    max: 2,
+    step: 0.0625,
+  },
+  {
+    key: "header",
+    label: "Header",
+    hint: "h1 max; h2 = ½, h3 = ¼. 12rem ≈ 192px.",
+    min: 2,
+    max: 20,
+    step: 0.25,
+  },
+];

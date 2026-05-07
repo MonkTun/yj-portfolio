@@ -3,7 +3,7 @@
   "palettes": [
     {
       "id": "editorial-dark",
-      "name": "Editorial dark",
+      "name": "OVERDAWN",
       "colors": {
         "background": "#0F0D0B",
         "foreground": "#E8DFCF",
@@ -16,13 +16,16 @@
       "fonts": {
         "display": "karepefx",
         "body": "crimson-pro",
-        "sans": "bricolage",
-        "mono": "ibm-plex-mono"
+        "sans": "galmuri9"
+      },
+      "sizes": {
+        "body": 1.125,
+        "header": 12
       }
     },
     {
       "id": "editorial-dark-copy",
-      "name": "Editorial dark copy",
+      "name": "Editorial dark",
       "colors": {
         "background": "#0F0D0B",
         "foreground": "#E8DFCF",
@@ -35,8 +38,11 @@
       "fonts": {
         "display": "karepefx",
         "body": "playfair-display",
-        "sans": "bricolage",
-        "mono": "ibm-plex-mono"
+        "sans": "bricolage"
+      },
+      "sizes": {
+        "body": 1.125,
+        "header": 12
       }
     }
   ]

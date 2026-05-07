@@ -12,7 +12,11 @@ import {
 import "./globals.css";
 import { cn } from "@/lib/utils";
 import { loadTheme } from "@/lib/content";
-import { paletteToCssVars, paletteToFontVars } from "@/lib/theme";
+import {
+  paletteToCssVars,
+  paletteToFontVars,
+  paletteToSizeVars,
+} from "@/lib/theme";
 
 // ============================================================
 // Font registry — every font listed in src/lib/fonts.ts must be
@@ -32,6 +36,44 @@ const karepefx = localFont({
     { path: "../fonts/karepefx/Karepefx-Bold.otf", weight: "700", style: "normal" },
     { path: "../fonts/karepefx/Karepefx-Extrabold.otf", weight: "800", style: "normal" },
     { path: "../fonts/karepefx/Karepefx-Black.otf", weight: "900", style: "normal" },
+  ],
+});
+
+// ---- Pixel display faces ------------------------------------------------
+// Optional opt-in via the palette. preload:false because they're loud, 4MB
+// in Galmuri's case (full Korean glyph coverage), and only the active
+// palette's fonts should ever block the first paint.
+
+// Galmuri9 — 9px Korean pixel font with full Hangul + Latin coverage.
+// Single weight; works as a display or kicker.
+const galmuri9 = localFont({
+  variable: "--font-galmuri9",
+  display: "swap",
+  preload: false,
+  src: [
+    { path: "../fonts/galmuri9/Galmuri9.ttf", weight: "400", style: "normal" },
+  ],
+});
+
+// PF Stardust — chunky pixel display, regular + bold.
+const pfStardust = localFont({
+  variable: "--font-pf-stardust",
+  display: "swap",
+  preload: false,
+  src: [
+    { path: "../fonts/pf-stardust/PFStardust-Regular.ttf", weight: "400", style: "normal" },
+    { path: "../fonts/pf-stardust/PFStardust-Bold.ttf", weight: "700", style: "normal" },
+  ],
+});
+
+// PF Stardust S — small / condensed companion to PF Stardust.
+const pfStardustS = localFont({
+  variable: "--font-pf-stardust-s",
+  display: "swap",
+  preload: false,
+  src: [
+    { path: "../fonts/pf-stardust-s/PFStardustS-Regular.ttf", weight: "400", style: "normal" },
+    { path: "../fonts/pf-stardust-s/PFStardustS-Bold.ttf", weight: "700", style: "normal" },
   ],
 });
 
@@ -106,6 +148,7 @@ export default async function RootLayout({
   const paletteVars = {
     ...paletteToCssVars(active.colors),
     ...paletteToFontVars(active.fonts),
+    ...paletteToSizeVars(active.sizes),
   };
 
   return (
@@ -121,6 +164,9 @@ export default async function RootLayout({
         dmSans.variable,
         plexMono.variable,
         jetbrainsMono.variable,
+        galmuri9.variable,
+        pfStardust.variable,
+        pfStardustS.variable,
       )}
       style={paletteVars}
     >

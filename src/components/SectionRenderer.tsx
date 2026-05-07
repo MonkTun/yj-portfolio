@@ -33,17 +33,44 @@ export const SECTION_ALIGN_CLASS = {
 const ROW_HEIGHT_PX = 8;
 
 /**
- * Class for a section background that's a color token. Image backgrounds
- * are now rendered as a real <img> element (see SectionImageBackground)
- * so all the same non-destructive effects as the Image atom apply.
+ * Class + style for a section background. Image / video / reactbits get
+ * rendered as siblings (see the dedicated components below); this helper
+ * handles the simpler cases inline.
+ *
+ * For `type: "reverse"` we paint the section in `--foreground` and then
+ * remap `--background` / `--foreground` on an inner wrapper so descendants
+ * (text-foreground utilities, bg-surface, etc.) inherit the swapped
+ * values. Single-element swap would create a CSS variable cycle, so the
+ * capture (`--swap-bg`/`--swap-fg`) lives on the section and the swap
+ * lives on the inner content div — see `innerStyle` below.
  */
 export function sectionBackgroundStyle(
-  bg: Section["background"]
-): { className?: string } {
+  bg: Section["background"],
+): {
+  className?: string;
+  style?: React.CSSProperties;
+  innerStyle?: React.CSSProperties;
+} {
   if (bg.type === "color") {
     if (bg.token === "background") return {};
     if (bg.token === "surface") return { className: "bg-surface" };
     if (bg.token === "accent") return { className: "bg-accent text-accent-foreground" };
+  }
+  if (bg.type === "reverse") {
+    return {
+      className: "bg-foreground text-background",
+      style: {
+        // Capture the original tokens so the inner wrapper can read them
+        // back without referencing the to-be-redefined names directly.
+        ["--swap-bg" as string]: "var(--background)",
+        ["--swap-fg" as string]: "var(--foreground)",
+      } as React.CSSProperties,
+      innerStyle: {
+        // Now flip them for everything inside.
+        ["--background" as string]: "var(--swap-fg)",
+        ["--foreground" as string]: "var(--swap-bg)",
+      } as React.CSSProperties,
+    };
   }
   return {};
 }
@@ -56,7 +83,9 @@ type Props = {
 };
 
 export function SectionRenderer({ section, renderBlock }: Props) {
-  const { className } = sectionBackgroundStyle(section.background);
+  const { className, style, innerStyle } = sectionBackgroundStyle(
+    section.background,
+  );
 
   return (
     <section
@@ -64,6 +93,7 @@ export function SectionRenderer({ section, renderBlock }: Props) {
       // editor's "Preview" button can deep-link to wherever the user left
       // off — see Editor.tsx for how that's computed.
       id={section.id}
+      style={style}
       className={cn(
         "relative w-full flex overflow-hidden",
         SECTION_PADDING_CLASS[section.padding],
@@ -80,6 +110,7 @@ export function SectionRenderer({ section, renderBlock }: Props) {
         className="relative w-full max-w-7xl mx-auto px-6 md:px-10 grid grid-cols-12 gap-x-4"
         style={{
           gridAutoRows: `${ROW_HEIGHT_PX}px`,
+          ...innerStyle,
         }}
       >
         {section.blocks.map((block) =>

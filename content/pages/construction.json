@@ -11,8 +11,8 @@
         "kind": "prismatic-burst",
         "intensity": 1,
         "speed": 0.4,
-        "colorA": "#c06e21",
-        "colorB": "#2b00ff",
+        "colorA": "#33c021",
+        "colorB": "#000000",
         "overlay": 0,
         "tint": "none",
         "tintOpacity": 0,
@@ -79,8 +79,8 @@
         {
           "id": "blk_construction_github",
           "layout": {
-            "col": 9,
-            "colSpan": 4,
+            "col": 11,
+            "colSpan": 2,
             "row": 65,
             "rowSpan": 3
           },
@@ -89,7 +89,8 @@
             "label": "GitHub ↗",
             "href": "https://github.com/MonkTun",
             "variant": "ghost",
-            "align": "right"
+            "align": "right",
+            "newTab": false
           }
         },
         {

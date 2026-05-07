@@ -40,7 +40,15 @@ export function AddSectionInline({
     <div
       ref={ref}
       onClick={(e) => e.stopPropagation()}
-      className={cn("relative group/insert", alwaysVisible ? "h-10" : "h-4")}
+      // Inter-section insert. When `alwaysVisible` (empty page state) we
+      // claim real layout space; otherwise we keep the 16px hover surface
+      // but cancel the height with negative vertical margins so adjacent
+      // sections render flush and a section's background paints all the
+      // way to the next section's edge.
+      className={cn(
+        "relative group/insert z-20",
+        alwaysVisible ? "h-10" : "h-4 -my-2",
+      )}
     >
       <div
         aria-hidden

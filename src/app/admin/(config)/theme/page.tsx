@@ -14,7 +14,7 @@ export default async function ThemeIndex() {
         <p className="mt-4 text-foreground/70 italic max-w-2xl">
           Edit the seven core color tokens that drive the entire site. Save as
           many palettes as you like; the active one is injected as CSS
-          variables on <code className="font-mono">&lt;html&gt;</code>.
+          variables on <code className="font-sans">&lt;html&gt;</code>.
         </p>
       </header>
 

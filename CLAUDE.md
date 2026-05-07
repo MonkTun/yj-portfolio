@@ -54,7 +54,10 @@ Components read tokens via Tailwind utilities (`bg-background`, `text-foreground
 
 ### 4. Motion
 
-The site is **kinetic**, not restrained — closer to [measured.site](https://www.measured.site/) than to a static print spread. Motion is a primary expressive medium, not a finishing touch; without it, the layout is half-built.
+The site is **kinetic**, not restrained — closer to [measured.site](https://www.measured.site/) and [aaronlee.design](https://aaronlee.design/) than to a static print spread. Motion is a primary expressive medium, not a finishing touch; without it, the layout is half-built.
+
+- **measured.site** is the reference for *layout-level* motion: scroll-driven scale, pinned section sequences, parallax, kinetic marquees, dimensional case-study reveals.
+- **aaronlee.design** is the reference for *signature 3D / WebGL moments*: Three.js / Blender-style hero set-pieces and one-off animated artworks that anchor a page. The existing WebGL components in [src/components/bits/](src/components/bits/) (LiquidEther, PrismaticBurst, Grainient, etc.) are the on-disk vocabulary for this — wrap and theme them through the registry, don't drop in new WebGL libraries casually.
 
 - Use `motion/react` for app-level animation and scroll-driven motion (`useScroll`, `useTransform`, `whileInView`, `whileHover`, `LazyMotion`).
 - **Scroll is a first-class input.** Pinning, parallax, scale-on-scroll, scroll-linked transforms, sticky stacked cards, horizontal scroll sections, kinetic marquees — all in vocabulary, all encouraged when they serve the composition.
@@ -119,7 +122,7 @@ No purples. No blue greys. No pure white *as a body / background color* — whit
 
 **Motion vocabulary**:
 
-The reference is [measured.site](https://www.measured.site/) — kinetic, scroll-driven, dimensional — translated into the dark editorial palette. Motion carries the layout.
+The references are [measured.site](https://www.measured.site/) (scroll-driven layout motion) and [aaronlee.design](https://aaronlee.design/) (signature 3D / WebGL hero moments) — both translated into the dark editorial palette. Motion carries the layout.
 
 - **Tempo**: default `600ms`, fast `200ms` (hovers, micro-states), slow `900ms` (scroll-linked reveals, hero entrances). Signature easing `cubic-bezier(0.16, 1, 0.3, 1)` (ease-out-expo). Tokens: `--duration-fast`, `--duration`, `--duration-slow`, `--ease`.
 - **Scroll-driven motion** (use freely):

@@ -4,7 +4,10 @@ import { useMemo, useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
 import {
   paletteToCssVars,
+  paletteToFontVars,
+  paletteToSizeVars,
   PALETTE_FIELDS,
+  SIZE_FIELDS,
 } from "@/lib/theme";
 import {
   fontOptionsForRole,
@@ -14,7 +17,12 @@ import {
   FONT_ROLE_LABELS,
   type FontRole,
 } from "@/lib/fonts";
-import type { Palette, PaletteColors, Theme } from "@/lib/schema";
+import type {
+  Palette,
+  PaletteColors,
+  PaletteSizes,
+  Theme,
+} from "@/lib/schema";
 
 type Props = { initialTheme: Theme };
 
@@ -102,6 +110,15 @@ export function ThemePanel({ initialTheme }: Props) {
     });
   }
 
+  function updateSize(id: string, key: keyof PaletteSizes, value: number) {
+    commit({
+      ...theme,
+      palettes: theme.palettes.map((p) =>
+        p.id === id ? { ...p, sizes: { ...p.sizes, [key]: value } } : p,
+      ),
+    });
+  }
+
   function remove(id: string) {
     if (theme.palettes.length <= 1) return;
     const remaining = theme.palettes.filter((p) => p.id !== id);
@@ -119,6 +136,7 @@ export function ThemePanel({ initialTheme }: Props) {
       name: `${source.name} copy`,
       colors: { ...source.colors },
       fonts: { ...source.fonts },
+      sizes: { ...source.sizes },
     };
     setEditingId(id);
     commit({ ...theme, palettes: [...theme.palettes, next] });
@@ -135,6 +153,7 @@ export function ThemePanel({ initialTheme }: Props) {
       name: "Untitled",
       colors: { ...active.colors },
       fonts: { ...active.fonts },
+      sizes: { ...active.sizes },
     };
     setEditingId(id);
     commit({ ...theme, palettes: [...theme.palettes, next] });
@@ -148,7 +167,7 @@ export function ThemePanel({ initialTheme }: Props) {
           <p className="text-foreground/60 italic text-sm mt-1">
             Edit colors and fonts together. Activate one to apply it
             site-wide — values are injected as CSS variables on{" "}
-            <code className="font-mono">&lt;html&gt;</code>.
+            <code className="font-sans">&lt;html&gt;</code>.
           </p>
         </div>
         <div className="flex items-center gap-3 shrink-0">
@@ -182,6 +201,7 @@ export function ThemePanel({ initialTheme }: Props) {
             onChangeName={(name) => update(palette.id, { name })}
             onChangeColor={(key, value) => updateColor(palette.id, key, value)}
             onChangeFont={(role, value) => updateFont(palette.id, role, value)}
+            onChangeSize={(key, value) => updateSize(palette.id, key, value)}
           />
         ))}
       </ul>
@@ -205,6 +225,7 @@ function PaletteRow({
   onChangeName,
   onChangeColor,
   onChangeFont,
+  onChangeSize,
 }: {
   palette: Palette;
   isActive: boolean;
@@ -217,6 +238,7 @@ function PaletteRow({
   onChangeName: (name: string) => void;
   onChangeColor: (key: keyof PaletteColors, value: string) => void;
   onChangeFont: (role: FontRole, value: string) => void;
+  onChangeSize: (key: keyof PaletteSizes, value: number) => void;
 }) {
   // Standalone preview: render the swatch row inside its own scope so the
   // values represent THIS palette's colors, not the active one. The inline
@@ -224,6 +246,17 @@ function PaletteRow({
   const previewStyle = useMemo(
     () => paletteToCssVars(palette.colors),
     [palette.colors],
+  );
+
+  // Full preview style — includes colors, fonts AND sizes — so the combined
+  // type-hierarchy preview inside the editing pane reflects every knob.
+  const fullPreviewStyle = useMemo(
+    () => ({
+      ...paletteToCssVars(palette.colors),
+      ...paletteToFontVars(palette.fonts),
+      ...paletteToSizeVars(palette.sizes),
+    }),
+    [palette.colors, palette.fonts, palette.sizes],
   );
 
   return (
@@ -288,6 +321,8 @@ function PaletteRow({
 
       {isEditing && (
         <div className="border-t border-border px-4 py-4 space-y-6">
+          <TypePreview style={fullPreviewStyle} paletteName={palette.name} />
+
           <label className="block">
             <span className="kicker block mb-1.5">Name</span>
             <input
@@ -314,7 +349,7 @@ function PaletteRow({
 
           <div>
             <p className="kicker mb-3">Fonts</p>
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
               {FONT_ROLES.map((role) => (
                 <FontField
                   key={role}
@@ -325,9 +360,69 @@ function PaletteRow({
               ))}
             </div>
           </div>
+
+          <div>
+            <p className="kicker mb-3">Sizes</p>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+              {SIZE_FIELDS.map((field) => (
+                <SizeField
+                  key={field.key}
+                  field={field}
+                  value={palette.sizes[field.key]}
+                  onCommit={(next) => onChangeSize(field.key, next)}
+                />
+              ))}
+            </div>
+          </div>
         </div>
       )}
     </li>
+  );
+}
+
+/** Combined type-hierarchy preview. Renders kicker → display → body inline,
+ *  using the palette being previewed (via inline CSS vars on the wrapper)
+ *  rather than the globally-active one. Sizes scale from the palette's
+ *  --text-header / --text-body so the preview reflects the size knobs too.
+ */
+function TypePreview({
+  style,
+  paletteName,
+}: {
+  style: React.CSSProperties;
+  paletteName: string;
+}) {
+  return (
+    <div
+      className="rounded-sm border overflow-hidden"
+      style={{
+        ...style,
+        background: "var(--background)",
+        color: "var(--foreground)",
+        borderColor: "var(--border)",
+      }}
+    >
+      <div className="px-6 py-7 sm:px-8 sm:py-9">
+        <p className="kicker">§ {paletteName} — type preview</p>
+        <p
+          className="font-display mt-3 leading-[0.9] tracking-[-0.02em] font-black"
+          style={{ fontSize: "calc(var(--text-header) * 0.34)" }}
+        >
+          The quick brown fox
+        </p>
+        <p
+          className="mt-4 max-w-prose"
+          style={{
+            fontFamily: "var(--font-body)",
+            fontSize: "var(--text-body)",
+            lineHeight: 1.55,
+          }}
+        >
+          Pack my box with five dozen liquor jugs — running text in the body
+          face. <em>Italics handle nuance, publications, and asides.</em>
+        </p>
+      </div>
+    </div>
   );
 }
 
@@ -342,11 +437,6 @@ function FontField({
 }) {
   const options = useMemo(() => fontOptionsForRole(role), [role]);
   const resolved = resolveFont(value, role);
-  // Render the preview using the font's per-font CSS variable directly so
-  // the menu shows the actual face even when this palette isn't active.
-  const previewStyle = {
-    fontFamily: `var(${resolved.cssVar}), ${resolved.fallback}`,
-  } as const;
 
   return (
     <label className="block">
@@ -354,7 +444,7 @@ function FontField({
       <select
         value={value}
         onChange={(e) => onChange(e.target.value)}
-        className="w-full bg-background border border-border rounded-sm px-3 py-2 font-mono text-sm focus:outline-none focus:border-accent transition-colors appearance-none cursor-pointer"
+        className="w-full bg-background border border-border rounded-sm px-3 py-2 font-sans text-sm focus:outline-none focus:border-accent transition-colors appearance-none cursor-pointer"
       >
         {/* Surface unknown ids so the user can see what's saved on disk
             without it silently snapping to the role default. */}
@@ -367,16 +457,70 @@ function FontField({
           </option>
         ))}
       </select>
-      <p
-        className="mt-2 text-xl leading-tight truncate"
-        style={previewStyle}
-        aria-hidden
-      >
-        The quick brown fox
-      </p>
       <p className="text-xs italic text-foreground/40 mt-1">
         {resolved.flavour} — {FONT_ROLE_HINTS[role]}
       </p>
+    </label>
+  );
+}
+
+function SizeField({
+  field,
+  value,
+  onCommit,
+}: {
+  field: (typeof SIZE_FIELDS)[number];
+  value: number;
+  onCommit: (next: number) => void;
+}) {
+  // Same draft pattern as ColorField — we accept partial keystrokes and
+  // only commit when the value parses to a number in range.
+  const [draft, setDraft] = useState(String(value));
+  const [lastValue, setLastValue] = useState(value);
+  if (lastValue !== value) {
+    setLastValue(value);
+    setDraft(String(value));
+  }
+
+  function clamp(n: number) {
+    return Math.max(field.min, Math.min(field.max, n));
+  }
+
+  function commitDraft(raw: string) {
+    const parsed = Number(raw);
+    if (Number.isFinite(parsed)) {
+      const clamped = clamp(parsed);
+      if (clamped !== value) onCommit(clamped);
+      else setDraft(String(value));
+    } else {
+      setDraft(String(value));
+    }
+  }
+
+  return (
+    <label className="block">
+      <span className="kicker block mb-1.5">{field.label}</span>
+      <div className="flex items-stretch gap-2">
+        <input
+          type="number"
+          step={field.step}
+          min={field.min}
+          max={field.max}
+          value={draft}
+          onChange={(e) => setDraft(e.target.value)}
+          onBlur={(e) => commitDraft(e.target.value.trim())}
+          onKeyDown={(e) => {
+            if (e.key === "Enter") {
+              e.preventDefault();
+              commitDraft(draft.trim());
+              (e.target as HTMLInputElement).blur();
+            }
+          }}
+          className="flex-1 min-w-0 bg-background border border-border rounded-sm px-3 py-2 font-sans text-sm focus:outline-none focus:border-accent transition-colors"
+        />
+        <span className="kicker self-center text-foreground/40">rem</span>
+      </div>
+      <p className="text-xs italic text-foreground/40 mt-1">{field.hint}</p>
     </label>
   );
 }
@@ -477,7 +621,7 @@ function ColorField({
             }
           }}
           placeholder="#000000"
-          className="flex-1 min-w-0 bg-background border border-border rounded-sm px-3 font-mono text-sm focus:outline-none focus:border-accent transition-colors"
+          className="flex-1 min-w-0 bg-background border border-border rounded-sm px-3 font-sans text-sm focus:outline-none focus:border-accent transition-colors"
         />
       </div>
       <p className="text-xs italic text-foreground/40 mt-1">{hint}</p>

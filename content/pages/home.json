@@ -14,27 +14,10 @@
       "align": "center",
       "blocks": [
         {
-          "id": "blk_hero_kicker",
-          "layout": {
-            "col": 2,
-            "colSpan": 8,
-            "row": 1,
-            "rowSpan": 3
-          },
-          "type": "text",
-          "props": {
-            "content": "§ 00 — Youngje Park, b. Seoul",
-            "variant": "kicker",
-            "align": "left",
-            "color": "muted",
-            "transform": "none"
-          }
-        },
-        {
           "id": "blk_hero_name",
           "layout": {
             "col": 2,
-            "colSpan": 11,
+            "colSpan": 6,
             "row": 6,
             "rowSpan": 36
           },
@@ -59,7 +42,7 @@
           },
           "type": "text",
           "props": {
-            "content": "Designer &amp; engineer building games, tools, and the occasional thing in between. Currently making worlds in Unity and interfaces on the web.",
+            "content": "Designer &amp; engineer building games, tools, and the occasional thing in between. Currently making worlds in Unreal Engine and some stuff on the web.",
             "variant": "body",
             "align": "left",
             "color": "foreground",
@@ -96,7 +79,7 @@
     {
       "id": "sec_proj_thang",
       "background": {
-        "type": "transparent"
+        "type": "reverse"
       },
       "padding": "md",
       "minHeight": "auto",
@@ -185,7 +168,7 @@
           "layout": {
             "col": 2,
             "colSpan": 3,
-            "row": 30,
+            "row": 34,
             "rowSpan": 5
           },
           "type": "button",
@@ -202,7 +185,17 @@
     {
       "id": "sec_proj_overdawn",
       "background": {
-        "type": "transparent"
+        "type": "reactbits",
+        "kind": "light-pillar",
+        "intensity": 1,
+        "speed": 1,
+        "colorA": "#3e1353",
+        "colorB": "#0F0D0B",
+        "overlay": 40,
+        "tint": "none",
+        "tintOpacity": 0,
+        "mobileFallbackBreakpoint": 768,
+        "mobileFallbackKind": "gradient"
       },
       "padding": "md",
       "minHeight": "auto",
@@ -287,39 +280,11 @@
           }
         },
         {
-          "id": "blk_overdawn_btn",
-          "layout": {
-            "col": 7,
-            "colSpan": 3,
-            "row": 30,
-            "rowSpan": 5
-          },
-          "type": "button",
-          "props": {
-            "label": "Read more →",
-            "href": "/work/overdawn",
-            "variant": "ghost",
-            "align": "left",
-            "newTab": false
-          }
-        }
-      ]
-    },
-    {
-      "id": "sec_proj_dawngeon",
-      "background": {
-        "type": "transparent"
-      },
-      "padding": "md",
-      "minHeight": "auto",
-      "align": "top",
-      "blocks": [
-        {
           "id": "blk_dawngeon_meta",
           "layout": {
             "col": 2,
             "colSpan": 6,
-            "row": 1,
+            "row": 94,
             "rowSpan": 3
           },
           "type": "text",
@@ -336,7 +301,7 @@
           "layout": {
             "col": 2,
             "colSpan": 6,
-            "row": 5,
+            "row": 98,
             "rowSpan": 8
           },
           "type": "text",
@@ -353,7 +318,7 @@
           "layout": {
             "col": 2,
             "colSpan": 5,
-            "row": 14,
+            "row": 107,
             "rowSpan": 14
           },
           "type": "text",
@@ -370,7 +335,7 @@
           "layout": {
             "col": 8,
             "colSpan": 4,
-            "row": 1,
+            "row": 85,
             "rowSpan": 61
           },
           "type": "image",
@@ -397,7 +362,7 @@
           "layout": {
             "col": 2,
             "colSpan": 3,
-            "row": 30,
+            "row": 122,
             "rowSpan": 5
           },
           "type": "button",
@@ -408,13 +373,80 @@
             "align": "left",
             "newTab": false
           }
+        },
+        {
+          "id": "blk_overdawn_btn",
+          "layout": {
+            "col": 7,
+            "colSpan": 3,
+            "row": 34,
+            "rowSpan": 5
+          },
+          "type": "button",
+          "props": {
+            "label": "Read more →",
+            "href": "/work/overdawn",
+            "variant": "ghost",
+            "align": "left",
+            "newTab": false
+          }
+        },
+        {
+          "id": "blk_e84a9761",
+          "layout": {
+            "col": 7,
+            "colSpan": 1,
+            "row": 50,
+            "rowSpan": 9
+          },
+          "type": "image",
+          "props": {
+            "src": "/projects/gdwcBadge.png",
+            "alt": "",
+            "fit": "contain",
+            "radius": 0,
+            "filter": "none",
+            "focalX": 50,
+            "focalY": 50,
+            "rotate": 0,
+            "flipX": false,
+            "flipY": false,
+            "blur": 0,
+            "tint": "none",
+            "tintOpacity": 0
+          }
+        },
+        {
+          "id": "blk_dc5a8b59",
+          "layout": {
+            "col": 8,
+            "colSpan": 1,
+            "row": 50,
+            "rowSpan": 9
+          },
+          "type": "image",
+          "props": {
+            "src": "/uploads/bronze-mov6xp8l.avif",
+            "alt": "",
+            "fit": "contain",
+            "radius": 0,
+            "filter": "none",
+            "focalX": 50,
+            "focalY": 50,
+            "rotate": 0,
+            "flipX": false,
+            "flipY": false,
+            "blur": 0,
+            "tint": "none",
+            "tintOpacity": 0
+          }
         }
       ]
     },
     {
       "id": "sec_proj_mmm",
       "background": {
-        "type": "transparent"
+        "type": "reverse"
       },
       "padding": "md",
       "minHeight": "auto",
@@ -651,7 +683,8 @@
     {
       "id": "sec_footer",
       "background": {
-        "type": "transparent"
+        "type": "color",
+        "token": "accent"
       },
       "padding": "lg",
       "minHeight": "auto",
@@ -690,23 +723,6 @@
             "color": "foreground",
             "transform": "none",
             "fontSize": 87
-          }
-        },
-        {
-          "id": "blk_footer_links",
-          "layout": {
-            "col": 9,
-            "colSpan": 3,
-            "row": 5,
-            "rowSpan": 8
-          },
-          "type": "text",
-          "props": {
-            "content": "GitHub ↗<br>LinkedIn ↗<br>Resume ↗",
-            "variant": "kicker",
-            "align": "left",
-            "color": "foreground",
-            "transform": "none"
           }
         },
         {

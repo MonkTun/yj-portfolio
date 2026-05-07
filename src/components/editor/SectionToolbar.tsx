@@ -305,7 +305,7 @@ function BackgroundPicker({
               });
             }
           }}
-          className="w-full bg-background border border-border rounded-sm px-2 py-1.5 text-sm font-mono outline-none focus:border-accent"
+          className="w-full bg-background border border-border rounded-sm px-2 py-1.5 text-sm font-sans outline-none focus:border-accent"
         />
       </label>
       <p className="kicker text-foreground/40 italic">

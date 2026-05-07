@@ -71,7 +71,11 @@ export function SectionFrame({
     opacity: isDragging ? 0.5 : 1,
   };
 
-  const { className: bgClass } = sectionBackgroundStyle(section.background);
+  const {
+    className: bgClass,
+    style: bgStyle,
+    innerStyle: bgInnerStyle,
+  } = sectionBackgroundStyle(section.background);
 
   return (
     <div
@@ -84,6 +88,7 @@ export function SectionFrame({
           e.stopPropagation();
           onSelectSection();
         }}
+        style={bgStyle}
         className={cn(
           "relative w-full flex overflow-hidden",
           SECTION_PADDING_CLASS[section.padding],
@@ -100,7 +105,10 @@ export function SectionFrame({
         <SectionVideoBackground bg={section.background} />
         <SectionReactBitsBackground bg={section.background} />
 
-        <div className="relative w-full max-w-7xl mx-auto px-6 md:px-10">
+        <div
+          className="relative w-full max-w-7xl mx-auto px-6 md:px-10"
+          style={bgInnerStyle}
+        >
           {/* 12-col grid guide — appears whenever this section is the focus
               so the user understands where blocks snap. Sits behind the
               actual grid at z-0; SectionGrid renders on top. */}
