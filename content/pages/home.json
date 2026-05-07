@@ -602,7 +602,7 @@
           },
           "type": "text",
           "props": {
-            "content": "Wake up in a hotel of horrors and find the way out. Built solo for Brackey's 2024 Game Jam.",
+            "content": "Wake up in a hotel of horrors and find the way out. Built for Brackey's 2024 Game Jam.",
             "variant": "body",
             "align": "left",
             "color": "foreground",
