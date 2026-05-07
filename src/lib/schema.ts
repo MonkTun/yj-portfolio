@@ -192,6 +192,10 @@ export const sectionBackgroundSchema = z.discriminatedUnion("type", [
     muted: z.boolean().default(true),
     loop: z.boolean().default(true),
     start: z.number().int().min(0).optional(),
+    /** Playback speed. YouTube's IFrame API only accepts a fixed set of
+     *  rates — 0.25, 0.5, 0.75, 1, 1.25, 1.5, 1.75, 2 — so the editor UI
+     *  exposes those discretely; off-list values are coerced server-side. */
+    playbackRate: z.number().min(0.25).max(2).default(1),
     /** Color tint overlay (no mask — videos are opaque, full rect). */
     tint: imageTintSchema.default("none"),
     tintOpacity: z.number().int().min(0).max(100).default(0),

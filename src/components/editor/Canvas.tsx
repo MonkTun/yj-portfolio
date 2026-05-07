@@ -96,7 +96,11 @@ export function Canvas({
           items={page.sections.map((s) => s.id)}
           strategy={verticalListSortingStrategy}
         >
-          <AddSectionInline onSelect={(tpl) => onAddSection(tpl, 0)} />
+          <AddSectionInline
+            onSelect={(tpl) => onAddSection(tpl, 0)}
+            alwaysVisible={page.sections.length === 0}
+            withLabel={page.sections.length === 0}
+          />
           {page.sections.map((section, i) => {
             const sectionActive =
               (selection.type === "section" &&
@@ -157,10 +161,9 @@ export function Canvas({
       </DndContext>
 
       {page.sections.length === 0 && (
-        <div className="h-[60vh] flex items-center justify-center pointer-events-none">
+        <div className="h-[40vh] flex items-center justify-center pointer-events-none">
           <p className="text-foreground/40 italic">
-            Empty page — click <span className="text-accent">+</span> above to
-            insert a section.
+            Empty page — use the button above to add your first section.
           </p>
         </div>
       )}

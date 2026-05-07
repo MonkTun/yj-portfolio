@@ -10,9 +10,20 @@ import { PlusIcon } from "./icons";
 
 type Props = {
   onSelect: (template: SectionTemplate) => void;
+  /**
+   * Force the + control to render visibly instead of hiding behind a hover
+   * state. Used on empty pages so the only entry point is discoverable.
+   */
+  alwaysVisible?: boolean;
+  /** Render a labelled pill ("+ Add section") instead of the bare circle. */
+  withLabel?: boolean;
 };
 
-export function AddSectionInline({ onSelect }: Props) {
+export function AddSectionInline({
+  onSelect,
+  alwaysVisible = false,
+  withLabel = false,
+}: Props) {
   const [open, setOpen] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
 
@@ -29,13 +40,13 @@ export function AddSectionInline({ onSelect }: Props) {
     <div
       ref={ref}
       onClick={(e) => e.stopPropagation()}
-      className="relative h-4 group/insert"
+      className={cn("relative group/insert", alwaysVisible ? "h-10" : "h-4")}
     >
       <div
         aria-hidden
         className={cn(
           "absolute inset-x-0 top-1/2 -translate-y-1/2 h-px transition-opacity duration-200",
-          open
+          open || alwaysVisible
             ? "bg-accent opacity-100"
             : "bg-accent opacity-0 group-hover/insert:opacity-50"
         )}
@@ -46,11 +57,15 @@ export function AddSectionInline({ onSelect }: Props) {
           onClick={() => setOpen((o) => !o)}
           aria-label="Insert section here"
           className={cn(
-            "h-7 w-7 rounded-full glass-strong flex items-center justify-center text-foreground/85 hover:text-accent transition-opacity",
-            open ? "opacity-100" : "opacity-0 group-hover/insert:opacity-100"
+            "rounded-full glass-strong flex items-center justify-center text-foreground/85 hover:text-accent transition-opacity",
+            withLabel ? "kicker px-4 h-9 gap-2" : "h-7 w-7",
+            open || alwaysVisible
+              ? "opacity-100"
+              : "opacity-0 group-hover/insert:opacity-100"
           )}
         >
           <PlusIcon />
+          {withLabel && <span>Add section</span>}
         </button>
       </div>
 

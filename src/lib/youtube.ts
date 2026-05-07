@@ -32,6 +32,12 @@ export type YouTubeEmbedOptions = {
   controls?: boolean;
   /** Start position in seconds. */
   start?: number;
+  /** Add ?enablejsapi=1 so the iframe accepts postMessage commands
+   *  (setPlaybackRate, etc.). */
+  enableJsApi?: boolean;
+  /** Required by YouTube alongside enableJsApi when sending postMessage
+   *  commands cross-origin. Pass `window.location.origin` from the client. */
+  origin?: string;
 };
 
 /**
@@ -55,6 +61,8 @@ export function youtubeEmbedUrl(
   }
   if (opts.controls === false) params.set("controls", "0");
   if (opts.start && opts.start > 0) params.set("start", String(opts.start));
+  if (opts.enableJsApi) params.set("enablejsapi", "1");
+  if (opts.origin) params.set("origin", opts.origin);
   params.set("rel", "0");
   params.set("modestbranding", "1");
   params.set("playsinline", "1");

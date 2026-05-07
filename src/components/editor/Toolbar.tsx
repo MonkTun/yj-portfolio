@@ -67,10 +67,22 @@ export function Toolbar({
         ? "text-foreground"
         : "text-foreground/50";
 
+  // Internal nav out of the editor. The browser-level beforeunload guard in
+  // Editor.tsx covers refresh/close, but Next.js client-side navigation
+  // doesn't trigger it — so we intercept the click here when dirty.
+  function handleLeaveEditor(e: React.MouseEvent<HTMLAnchorElement>) {
+    if (!dirty) return;
+    const ok = window.confirm(
+      "You have unsaved changes. Leave anyway?\n\n(Save first to keep your edits.)"
+    );
+    if (!ok) e.preventDefault();
+  }
+
   return (
     <header className="h-14 shrink-0 glass-strong border-b border-border flex items-center px-4 gap-4 z-50">
       <Link
         href="/admin"
+        onClick={handleLeaveEditor}
         className="kicker hover:text-accent transition-colors"
       >
         ← Pages

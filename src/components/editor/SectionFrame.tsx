@@ -15,10 +15,10 @@ import {
   SECTION_MIN_HEIGHT_CLASS,
   SECTION_PADDING_CLASS,
   SectionImageBackground,
-  SectionVideoBackground,
   sectionBackgroundStyle,
 } from "@/components/SectionRenderer";
 import { SectionReactBitsBackground } from "@/components/SectionReactBitsBackground";
+import { SectionVideoBackground } from "@/components/SectionVideoBackground";
 import { cn } from "@/lib/utils";
 
 import { SectionGrid } from "./SectionGrid";

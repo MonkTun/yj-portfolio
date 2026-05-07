@@ -28,6 +28,10 @@ const inputCls =
 type Props = {
   page: Page;
   selection: Selection;
+  /** All page slugs in the project — feeds the Button block's link picker. */
+  availablePages?: string[];
+  /** The slug currently being edited; excluded from the picker. */
+  currentSlug?: string;
   onUpdateMeta: (meta: Page["meta"]) => void;
   onUpdateSection: (sectionId: string, patch: Partial<Section>) => void;
   onUpdateBlockProps: (
@@ -40,6 +44,8 @@ type Props = {
 export function PropertiesPanel({
   page,
   selection,
+  availablePages = [],
+  currentSlug,
   onUpdateMeta,
   onUpdateSection,
   onUpdateBlockProps,
@@ -64,6 +70,8 @@ export function PropertiesPanel({
   return (
     <BlockProps
       block={block}
+      availablePages={availablePages}
+      currentSlug={currentSlug}
       onUpdate={(patch) =>
         onUpdateBlockProps(section.id, block.id, patch)
       }
@@ -157,9 +165,13 @@ function SectionProps({
 
 function BlockProps({
   block,
+  availablePages = [],
+  currentSlug,
   onUpdate,
 }: {
   block: Block;
+  availablePages?: string[];
+  currentSlug?: string;
   onUpdate: (patch: Record<string, unknown>) => void;
 }) {
   const entry = atomRegistry[block.type];
@@ -189,6 +201,8 @@ function BlockProps({
               align: string;
             }
           }
+          availablePages={availablePages}
+          currentSlug={currentSlug}
           onUpdate={onUpdate}
         />
       )}
@@ -1074,6 +1088,7 @@ function SectionBackgroundEditor({
         overlay: 40,
         muted: true,
         loop: true,
+        playbackRate: 1,
         tint: "none",
         tintOpacity: 0,
       });
@@ -1236,6 +1251,30 @@ function SectionBackgroundEditor({
                 });
               }}
             />
+          </Field>
+
+          <Field label={`speed — ${bg.playbackRate}×`}>
+            <SegmentBar
+              options={["0.25", "0.5", "0.75", "1", "1.25", "1.5", "1.75", "2"]}
+              value={String(bg.playbackRate)}
+              onChange={(v) =>
+                onChange({ ...bg, playbackRate: parseFloat(v) })
+              }
+              labels={{
+                "0.25": "0.25×",
+                "0.5": "0.5×",
+                "0.75": "0.75×",
+                "1": "1×",
+                "1.25": "1.25×",
+                "1.5": "1.5×",
+                "1.75": "1.75×",
+                "2": "2×",
+              }}
+            />
+            <p className="text-xs text-foreground/40 italic mt-1.5">
+              YouTube only allows these eight rates — anything else gets
+              snapped to the nearest one.
+            </p>
           </Field>
 
           <Field label={`overlay — ${bg.overlay}%`}>
@@ -1782,11 +1821,34 @@ function ToggleBtn({
 
 function ButtonBlockProps({
   props,
+  availablePages = [],
+  currentSlug,
   onUpdate,
 }: {
   props: { label: string; href: string; variant: string; align: string };
+  availablePages?: string[];
+  currentSlug?: string;
   onUpdate: (patch: Record<string, unknown>) => void;
 }) {
+  // Construction is the public landing — link to it as "/" rather than
+  // "/construction" so behavior matches the routing.
+  const slugToHref = (slug: string) =>
+    slug === "construction" ? "/" : `/${slug}`;
+
+  // What's currently selected in the picker, derived from href. We pick the
+  // longest-matching slug so /work/dawngeon doesn't get matched as /work.
+  const pickerValue: string = (() => {
+    if (props.href === "/") return "construction";
+    const candidates = availablePages
+      .filter((s) => slugToHref(s) === props.href)
+      .sort((a, b) => b.length - a.length);
+    return candidates[0] ?? "";
+  })();
+
+  const pickablePages = availablePages.filter(
+    (s) => s !== currentSlug && s !== "404"
+  );
+
   return (
     <>
       <Field label="label">
@@ -1796,11 +1858,30 @@ function ButtonBlockProps({
           onChange={(e) => onUpdate({ label: e.target.value })}
         />
       </Field>
+      <Field label="link to page">
+        <select
+          className={cn(inputCls, "appearance-none cursor-pointer")}
+          value={pickerValue}
+          onChange={(e) => {
+            const v = e.target.value;
+            if (!v) return; // "(custom URL)" — leave href as the user typed it
+            onUpdate({ href: slugToHref(v) });
+          }}
+        >
+          <option value="">(custom URL — type below)</option>
+          {pickablePages.map((slug) => (
+            <option key={slug} value={slug}>
+              {slug === "construction" ? "/  (construction)" : `/${slug}`}
+            </option>
+          ))}
+        </select>
+      </Field>
       <Field label="href">
         <input
           className={cn(inputCls, "font-mono text-xs")}
           value={props.href}
           onChange={(e) => onUpdate({ href: e.target.value })}
+          placeholder="/about, https://…, #section-id"
         />
       </Field>
       <Field label="variant">

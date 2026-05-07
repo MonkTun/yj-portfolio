@@ -1,5 +1,5 @@
 import { notFound } from "next/navigation";
-import { loadPage } from "@/lib/content";
+import { listPages, loadPage } from "@/lib/content";
 import { Editor } from "@/components/editor/Editor";
 
 export const dynamic = "force-dynamic";
@@ -19,5 +19,19 @@ export default async function EditPage({ params }: Props) {
     notFound();
   }
 
-  return <Editor slug={slug} initialPage={page} />;
+  // Available pages feed the button-block "link to page" dropdown.
+  let availablePages: string[] = [];
+  try {
+    availablePages = await listPages();
+  } catch {
+    availablePages = [];
+  }
+
+  return (
+    <Editor
+      slug={slug}
+      initialPage={page}
+      availablePages={availablePages}
+    />
+  );
 }

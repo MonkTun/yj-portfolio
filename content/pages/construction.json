@@ -10,14 +10,14 @@
         "type": "reactbits",
         "kind": "prismatic-burst",
         "intensity": 1,
-        "speed": 1,
+        "speed": 0.4,
         "colorA": "#c06e21",
-        "colorB": "#0F0D0B",
+        "colorB": "#2b00ff",
         "overlay": 0,
         "tint": "none",
         "tintOpacity": 0,
         "mobileFallbackBreakpoint": 768,
-        "mobileFallbackKind": "gradient"
+        "mobileFallbackKind": "blur-accent"
       },
       "padding": "lg",
       "minHeight": "screen",

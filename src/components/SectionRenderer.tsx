@@ -7,8 +7,8 @@ import {
   imageTintMaskStyle,
   imageTransformCss,
 } from "@/components/atoms/imageStyles";
-import { youtubeEmbedUrl } from "@/lib/youtube";
 import { SectionReactBitsBackground } from "@/components/SectionReactBitsBackground";
+import { SectionVideoBackground } from "@/components/SectionVideoBackground";
 
 export const SECTION_PADDING_CLASS = {
   none: "py-0",
@@ -136,64 +136,6 @@ export function mobileHiddenClass(block: Block): string {
  * Image atom apply the same way here. Sits behind everything in the
  * section; the overlay is a separate div on top of it.
  */
-/**
- * YouTube background with object-cover-style scaling. The inner div is
- * sized to *at least* fill the container in both axes while keeping its
- * 16:9 aspect — whichever min wins decides the final size, the other axis
- * grows past the container, and `overflow-hidden` on the section crops it.
- * Pure CSS; no resize observer needed.
- */
-export function SectionVideoBackground({
-  bg,
-}: {
-  bg: Section["background"];
-}) {
-  if (bg.type !== "video") return null;
-  const embed = youtubeEmbedUrl(bg.url, {
-    autoplay: true,
-    muted: bg.muted,
-    loop: bg.loop,
-    controls: false,
-    start: bg.start,
-  });
-  if (!embed) return null;
-  const tintClass = imageTintBgClass[bg.tint];
-  const showTint = tintClass !== null && bg.tintOpacity > 0;
-  return (
-    <>
-      <div className="absolute inset-0 pointer-events-none overflow-hidden">
-        <div
-          className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 min-w-full min-h-full"
-          style={{ aspectRatio: "16 / 9" }}
-        >
-          <iframe
-            src={embed}
-            title="Section background video"
-            className="absolute inset-0 h-full w-full pointer-events-none"
-            allow="autoplay; encrypted-media; picture-in-picture"
-            tabIndex={-1}
-            aria-hidden
-          />
-        </div>
-      </div>
-      {bg.overlay > 0 && (
-        <div
-          aria-hidden
-          className="absolute inset-0 bg-background pointer-events-none"
-          style={{ opacity: bg.overlay / 100 }}
-        />
-      )}
-      {showTint && (
-        <div
-          aria-hidden
-          className={cn("absolute inset-0 pointer-events-none", tintClass)}
-          style={{ opacity: bg.tintOpacity / 100 }}
-        />
-      )}
-    </>
-  );
-}
-
 export function SectionImageBackground({ bg }: { bg: Section["background"] }) {
   if (bg.type !== "image" || !bg.src) return null;
   const tintClass = imageTintBgClass[bg.tint];

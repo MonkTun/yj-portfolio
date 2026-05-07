@@ -38,9 +38,11 @@ function clone<T>(v: T): T {
 type Props = {
   slug: string;
   initialPage: Page;
+  /** Other page slugs in the project — used by the Button block's link picker. */
+  availablePages?: string[];
 };
 
-export function Editor({ slug, initialPage }: Props) {
+export function Editor({ slug, initialPage, availablePages = [] }: Props) {
   const router = useRouter();
 
   const [savedPage, setSavedPage] = useState<Page>(initialPage);
@@ -464,6 +466,8 @@ export function Editor({ slug, initialPage }: Props) {
           <PropertiesPanel
             page={page}
             selection={selection}
+            availablePages={availablePages}
+            currentSlug={slug}
             onUpdateMeta={updateMeta}
             onUpdateSection={updateSection}
             onUpdateBlockProps={updateBlockProps}
