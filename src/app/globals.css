@@ -159,15 +159,17 @@ body {
     font-feature-settings: "kern", "liga", "ss01";
   }
 
-  /* Mono kicker — uppercase, tracked out, small.
-     Used for section numbers, dates, captions, credit lines. */
+  /* Sans kicker — uppercase, tracked out, small. Bricolage Grotesque at 500
+     gives the labels editorial presence without coding-font noise. Mono is
+     reserved for things that genuinely *are* code or tabular figures. */
   .kicker {
-    font-family: var(--font-mono), ui-monospace, monospace;
+    font-family: var(--font-sans), ui-sans-serif, system-ui, sans-serif;
     font-size: 11px;
-    letter-spacing: 0.14em;
+    font-weight: 500;
+    letter-spacing: 0.12em;
     text-transform: uppercase;
     color: var(--muted-foreground);
-    font-feature-settings: "tnum";
+    font-feature-settings: "tnum", "ss01";
   }
 
   /* Editorial rule — hairline divider used between sections. */

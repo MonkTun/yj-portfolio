@@ -4,7 +4,16 @@ import { NextResponse } from "next/server";
 
 export const runtime = "nodejs";
 
-const UPLOAD_DIR = path.join(process.cwd(), "public", "uploads");
+const PUBLIC_DIR = path.join(process.cwd(), "public");
+
+// Folders under /public that the library exposes as one merged image pool.
+// Each entry maps a directory name to its public URL prefix. `uploads` is
+// where the in-app uploader writes; `projects` holds vendored project
+// imagery restored from the previous Vite build. Both surface as picks.
+const LIBRARY_ROOTS: Array<{ dir: string; urlPrefix: string }> = [
+  { dir: "uploads", urlPrefix: "/uploads" },
+  { dir: "projects", urlPrefix: "/projects" },
+];
 
 const IMAGE_EXT = new Set([
   ".jpg",
@@ -16,42 +25,51 @@ const IMAGE_EXT = new Set([
   ".svg",
 ]);
 
-/**
- * Lists every file currently in /public/uploads as a usable image library
- * for the editor. Newest first, by mtime.
- */
-export async function GET() {
-  if (process.env.NODE_ENV !== "development") {
-    return new NextResponse(null, { status: 404 });
-  }
+type Item = { src: string; name: string; size: number; mtime: number };
 
+async function listRoot(dir: string, urlPrefix: string): Promise<Item[]> {
+  const abs = path.join(PUBLIC_DIR, dir);
   let entries: string[];
   try {
-    entries = await fs.readdir(UPLOAD_DIR);
-  } catch (err: unknown) {
-    if ((err as NodeJS.ErrnoException).code === "ENOENT") {
-      return NextResponse.json({ items: [] });
-    }
-    return NextResponse.json(
-      { error: "Failed to read uploads", detail: String(err) },
-      { status: 500 }
-    );
+    entries = await fs.readdir(abs);
+  } catch (err) {
+    if ((err as NodeJS.ErrnoException).code === "ENOENT") return [];
+    throw err;
   }
-
-  const items = await Promise.all(
+  return Promise.all(
     entries
       .filter((name) => IMAGE_EXT.has(path.extname(name).toLowerCase()))
       .map(async (name) => {
-        const stat = await fs.stat(path.join(UPLOAD_DIR, name));
+        const stat = await fs.stat(path.join(abs, name));
         return {
-          src: `/uploads/${name}`,
+          src: `${urlPrefix}/${name}`,
           name,
           size: stat.size,
           mtime: stat.mtimeMs,
         };
       })
   );
+}
 
-  items.sort((a, b) => b.mtime - a.mtime);
-  return NextResponse.json({ items });
+/**
+ * Lists every file currently in /public/uploads and /public/projects as a
+ * merged image library for the editor. Newest first, by mtime.
+ */
+export async function GET() {
+  if (process.env.NODE_ENV !== "development") {
+    return new NextResponse(null, { status: 404 });
+  }
+
+  try {
+    const lists = await Promise.all(
+      LIBRARY_ROOTS.map(({ dir, urlPrefix }) => listRoot(dir, urlPrefix))
+    );
+    const items = lists.flat().sort((a, b) => b.mtime - a.mtime);
+    return NextResponse.json({ items });
+  } catch (err) {
+    return NextResponse.json(
+      { error: "Failed to read library", detail: String(err) },
+      { status: 500 }
+    );
+  }
 }

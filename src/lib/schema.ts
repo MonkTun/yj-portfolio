@@ -273,6 +273,66 @@ export const siteConfigSchema = z.object({
 
 export type SiteConfig = z.infer<typeof siteConfigSchema>;
 
+/* ----- Theme / palettes -----
+   A palette is a named bundle of the seven core color tokens. Many can be
+   saved; one is active and gets injected as CSS variables on <html> in
+   src/app/layout.tsx. Lives at content/theme.json. */
+
+const hexColor = z
+  .string()
+  .regex(/^#[0-9a-fA-F]{6}$/, "Use a 6-digit hex like #5C8A3A");
+
+export const paletteColorsSchema = z.object({
+  background: hexColor,
+  foreground: hexColor,
+  mutedForeground: hexColor,
+  surface: hexColor,
+  border: hexColor,
+  accent: hexColor,
+  accentForeground: hexColor,
+});
+
+// Font choice per role. Defaults are filled in by zod when the field is
+// missing on disk so older theme.json files (no `fonts` block) keep parsing.
+// Validation that an id actually maps to a known font in the registry is
+// done in the API route — keeping the runtime registry out of the schema
+// avoids importing client-side font config into shared types.
+const fontId = z
+  .string()
+  .regex(/^[a-z0-9][a-z0-9-]*$/, "Lowercase letters, digits and dashes");
+
+export const paletteFontsSchema = z.object({
+  display: fontId.default("karepefx"),
+  body: fontId.default("playfair-display"),
+  sans: fontId.default("bricolage"),
+  mono: fontId.default("ibm-plex-mono"),
+});
+
+export const paletteSchema = z.object({
+  id: z
+    .string()
+    .min(1)
+    .regex(/^[a-z0-9][a-z0-9-]*$/, "Lowercase letters, digits and dashes"),
+  name: z.string().min(1).max(60),
+  colors: paletteColorsSchema,
+  fonts: paletteFontsSchema.default({
+    display: "karepefx",
+    body: "playfair-display",
+    sans: "bricolage",
+    mono: "ibm-plex-mono",
+  }),
+});
+
+export const themeSchema = z.object({
+  activePaletteId: z.string().min(1),
+  palettes: z.array(paletteSchema).min(1),
+});
+
+export type PaletteColors = z.infer<typeof paletteColorsSchema>;
+export type PaletteFonts = z.infer<typeof paletteFontsSchema>;
+export type Palette = z.infer<typeof paletteSchema>;
+export type Theme = z.infer<typeof themeSchema>;
+
 /* ----- Inferred types ----- */
 
 export type BlockLayout = z.infer<typeof blockLayoutSchema>;

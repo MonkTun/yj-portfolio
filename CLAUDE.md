@@ -54,10 +54,17 @@ Components read tokens via Tailwind utilities (`bg-background`, `text-foreground
 
 ### 4. Motion
 
-- Use `motion/react` for app-level animation; CSS transitions for hover/focus micro-states.
-- Favor a few high-impact moments (one well-orchestrated page load with staggered reveals, a signature transition between case studies) over scattered micro-interactions.
-- Durations and easings come from tokens (`--ease-out-expo`, `--duration-slow`, etc.), not literals.
-- Respect `prefers-reduced-motion` — gate decorative motion behind it.
+The site is **kinetic**, not restrained — closer to [measured.site](https://www.measured.site/) than to a static print spread. Motion is a primary expressive medium, not a finishing touch; without it, the layout is half-built.
+
+- Use `motion/react` for app-level animation and scroll-driven motion (`useScroll`, `useTransform`, `whileInView`, `whileHover`, `LazyMotion`).
+- **Scroll is a first-class input.** Pinning, parallax, scale-on-scroll, scroll-linked transforms, sticky stacked cards, horizontal scroll sections, kinetic marquees — all in vocabulary, all encouraged when they serve the composition.
+- **Hover scale is allowed and encouraged** where it adds presence: images, cards, media tiles, buttons can grow `scale: 1 → 1.02–1.06`, tilt slightly, lift with a token shadow. Magnitude stays tasteful; easing comes from `var(--ease)`. Bouncy spring overshoots / wobbles are still out.
+- A page can have many animated moments — what matters is that each is **deliberate and on-tempo**, not that the page is sparse. Compose, don't sprinkle. If two motions fight for attention in the same viewport, one of them is wrong.
+- Durations and easings come from tokens (`--duration-fast`, `--duration`, `--duration-slow`, `--ease`, plus any new ones you add). Literals in JSX are still a smell.
+- Respect `prefers-reduced-motion` — collapse all decorative scroll / scale / parallax / marquee motion to opacity-only fades when set. Non-negotiable.
+- The editor exposes motion as **first-class, per-instance props** (see § 6). YJ should be able to give any block a reveal style, hover behavior, scroll-linked transform, and pin behavior without writing code.
+
+Still out: spring overshoots on hover, neon glows / halos, scanlines, reveal-on-every-block confetti, scroll-jacked snap-section nav that hijacks the wheel.
 
 ### 5. Atmosphere over flatness
 
@@ -68,6 +75,10 @@ Solid white-on-white is the AI-slop default. Add depth deliberately: gradient me
 The admin editor and the public site render from the **same component registry**. A placeable element is a tuple of `{ component, propsSchema, defaults }`; the editor edits the props, the renderer renders the component. This is what keeps the two surfaces visually identical and prevents the editor from drifting into its own look.
 
 Practical consequence: when adding a new visual block, register it in the component registry (location TBD when editor work starts) so the editor can place it. Don't build editor-only versions of components.
+
+**Motion is a first-class prop, not a behavior baked into a component.** Every placeable block exposes a `motion` prop bag — reveal style, hover behavior (scale / tilt / shadow lift / tint), scroll-linked transform (scale, translate, rotate, opacity, blur), pin / sticky behavior, parallax depth, transition timing — that the editor's properties panel edits directly. Schema lives next to the registry; defaults are sensible (a block placed with zero configuration still feels alive). This is what lets YJ build measured.site-grade dynamic landing pages without forking components per scroll trick.
+
+The editor must also support **per-element keyframe authoring** (start state, end state, scroll range or trigger) so a block isn't limited to the prebuilt presets. Presets are the fast path; raw keyframes are the escape hatch.
 
 ### Current direction — organic but dark editorial
 
@@ -108,11 +119,23 @@ No purples. No blue greys. No pure white *as a body / background color* — whit
 
 **Motion vocabulary**:
 
-- Slow and considered. Default duration `600ms`, signature easing `cubic-bezier(0.16, 1, 0.3, 1)` (ease-out-expo).
-- Page-load: staggered reveals, 60–80ms stagger, subtle vertical offset (8–12px) + opacity. One orchestrated reveal per page, not on every block.
-- Hover: 200ms tints; never scale-jumps. Accent underline draws in left-to-right on links.
-- Tokens: `--duration-fast` 200ms, `--duration` 600ms, `--duration-slow` 900ms, `--ease` cubic-bezier above.
-- Honor `prefers-reduced-motion` — disable decorative motion when set.
+The reference is [measured.site](https://www.measured.site/) — kinetic, scroll-driven, dimensional — translated into the dark editorial palette. Motion carries the layout.
+
+- **Tempo**: default `600ms`, fast `200ms` (hovers, micro-states), slow `900ms` (scroll-linked reveals, hero entrances). Signature easing `cubic-bezier(0.16, 1, 0.3, 1)` (ease-out-expo). Tokens: `--duration-fast`, `--duration`, `--duration-slow`, `--ease`.
+- **Scroll-driven motion** (use freely):
+  - Scale-on-scroll: hero / featured images scale `0.9 → 1` (or `1 → 1.05`) as they pass through the viewport.
+  - Pinned sections: `position: sticky` + `useScroll` to drive transforms while a section is held — stacked-card reveals, image-stack shuffles, kinetic type that scrubs as you scroll.
+  - Parallax: foreground / background move at different rates (subtle, ±40–80px, token-driven).
+  - Horizontal scroll lockups for selected-work strips and image grids.
+  - Marquee bands (logos, kinetic display type) at constant velocity, pause on hover.
+  - Scroll-progress-driven typography: leading / tracking / weight transitions tied to scroll position on hero or section breaks.
+- **Hover** (allowed and encouraged):
+  - `scale: 1 → 1.02–1.06` for images and cards, `1 → 1.04` for buttons. `var(--duration-fast)` with `var(--ease)`.
+  - Slight tilt (rotateX/Y up to 4deg) on media tiles when desired, gated behind an editor prop.
+  - Token-driven shadow lift, accent tint, accent underline (left-to-right draw on links).
+  - Custom cursor: oversized circular cursor that grows / inverts when over interactive elements — implement once globally.
+- **Page transitions**: orchestrated entrances per route — hero text mask-reveals, image clip-paths open, accent lines scribble in. Each route has a signature opening, not just a generic fade.
+- **Reduced motion**: collapse all scroll-linked transforms, scale, parallax, marquees to opacity-only fades. Grain and vignette stay static regardless.
 
 **Atmospheric devices** (capped at three — *do not stack more*):
 
@@ -127,6 +150,7 @@ That's it. No purple gradients, no neon, no glow halos, no scanlines, no mesh bl
 - Don't lighten the background to "soften" the design — the dark IS the design.
 - Don't introduce a second accent color "for variety". Hierarchy comes from type weight and scale, not color.
 - Don't switch sans for "readability" on long body — Newsreader at the right size IS readable. If it's not, fix the size, not the font.
+- **Don't apply scroll-linked transforms, parallax, scale, or hover scale to long-form body copy.** Reveals on body paragraphs are opacity-only (with a small Y offset at most). Kinetics belong on display type, media, and chrome — readability beats motion when there's a paragraph to read.
 - **Never hardcode color literals (`#abc`, `rgb(...)`, `rgba(...)`) inside JSX `className` strings or inline `style`** — even for shadows, glows, ring colors, tinted overlays, or one-off rgba tints. Read tokens through Tailwind utilities (`bg-accent`, `text-accent-foreground`, `border-accent`, `ring-accent`) or `var(--token)` in CSS. If you need a tinted shadow off the accent, add a token (e.g. `--accent-glow`) — don't paste the rgb of the current accent in 12 places, because the next palette swap turns them stale and the editor and site go out of sync. The terracotta-shadow regression in `Toolbar.tsx` / `BlockToolbar.tsx` / `atoms/Button.tsx` (May 2026) is exactly this failure.
 - **Shared component CSS classes in `globals.css` that set `color`, `background`, or `border` MUST live inside `@layer components`.** Unlayered CSS sits *after* Tailwind's utilities in the cascade, so `.kicker { color: var(--muted-foreground) }` defined at the top level will silently clobber `text-accent-foreground` on any element that has both classes — which is exactly how the editor's right-panel toggle buttons ended up with sepia-grey text on the green accent. If you're tempted to add a class to `globals.css`, wrap it in `@layer components` unless it is intentionally meant to win against utilities (and document why it's unlayered if so).
 

@@ -3,12 +3,16 @@ import path from "node:path";
 import {
   pageSchema,
   siteConfigSchema,
+  themeSchema,
   type Page,
   type SiteConfig,
+  type Theme,
 } from "./schema";
+import { DEFAULT_PALETTE } from "./theme";
 
 const CONTENT_ROOT = path.join(process.cwd(), "content", "pages");
 const SITE_CONFIG_FILE = path.join(process.cwd(), "content", "site.json");
+const THEME_FILE = path.join(process.cwd(), "content", "theme.json");
 
 function pageFile(slug: string) {
   // Reject path-traversal attempts. We only ever accept slugs with a
@@ -70,6 +74,45 @@ export async function saveSiteConfig(
     SITE_CONFIG_FILE,
     JSON.stringify(validated, null, 2) + "\n",
     "utf8"
+  );
+  return validated;
+}
+
+/**
+ * Load the theme (palette list + active palette). Falls back to a single
+ * default palette so the site renders before the file is created.
+ */
+export async function loadTheme(): Promise<Theme> {
+  try {
+    const raw = await fs.readFile(THEME_FILE, "utf8");
+    return themeSchema.parse(JSON.parse(raw));
+  } catch {
+    return {
+      activePaletteId: DEFAULT_PALETTE.id,
+      palettes: [DEFAULT_PALETTE],
+    };
+  }
+}
+
+/** Persist the theme. Validates first; activePaletteId must exist in the
+ *  palette list (otherwise the site would render with no tokens). */
+export async function saveTheme(theme: unknown): Promise<Theme> {
+  const validated = themeSchema.parse(theme);
+  if (!validated.palettes.some((p) => p.id === validated.activePaletteId)) {
+    throw new Error(
+      `activePaletteId "${validated.activePaletteId}" is not in the palette list`,
+    );
+  }
+  const ids = new Set<string>();
+  for (const p of validated.palettes) {
+    if (ids.has(p.id)) throw new Error(`Duplicate palette id: ${p.id}`);
+    ids.add(p.id);
+  }
+  await fs.mkdir(path.dirname(THEME_FILE), { recursive: true });
+  await fs.writeFile(
+    THEME_FILE,
+    JSON.stringify(validated, null, 2) + "\n",
+    "utf8",
   );
   return validated;
 }

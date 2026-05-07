@@ -1,0 +1,43 @@
+{
+  "activePaletteId": "editorial-dark",
+  "palettes": [
+    {
+      "id": "editorial-dark",
+      "name": "Editorial dark",
+      "colors": {
+        "background": "#0F0D0B",
+        "foreground": "#E8DFCF",
+        "mutedForeground": "#8A8275",
+        "surface": "#1A1714",
+        "border": "#2A2520",
+        "accent": "#5C8A3A",
+        "accentForeground": "#FFFFFF"
+      },
+      "fonts": {
+        "display": "karepefx",
+        "body": "crimson-pro",
+        "sans": "bricolage",
+        "mono": "ibm-plex-mono"
+      }
+    },
+    {
+      "id": "editorial-dark-copy",
+      "name": "Editorial dark copy",
+      "colors": {
+        "background": "#0F0D0B",
+        "foreground": "#E8DFCF",
+        "mutedForeground": "#8A8275",
+        "surface": "#1A1714",
+        "border": "#2A2520",
+        "accent": "#893939",
+        "accentForeground": "#FFFFFF"
+      },
+      "fonts": {
+        "display": "karepefx",
+        "body": "playfair-display",
+        "sans": "bricolage",
+        "mono": "ibm-plex-mono"
+      }
+    }
+  ]
+}
