@@ -1,0 +1,431 @@
+{
+  "meta": {
+    "title": "Headless Hotel — Youngje Park",
+    "description": "A horror escape made for Brackey's 2024 Game Jam in 7 days."
+  },
+  "sections": [
+    {
+      "id": "sec_hh_hero",
+      "background": { "type": "transparent" },
+      "padding": "xl",
+      "minHeight": "screen",
+      "align": "center",
+      "blocks": [
+        {
+          "id": "blk_hh_hero_kicker",
+          "layout": { "col": 2, "colSpan": 8, "row": 1, "rowSpan": 3 },
+          "type": "text",
+          "props": {
+            "content": "§ Selected work — Brackey's 2024 Jam, 7 days",
+            "variant": "kicker",
+            "align": "left",
+            "color": "muted",
+            "transform": "none"
+          }
+        },
+        {
+          "id": "blk_hh_hero_title",
+          "layout": { "col": 2, "colSpan": 11, "row": 6, "rowSpan": 36 },
+          "type": "text",
+          "props": {
+            "content": "Headless<br>Hotel.",
+            "variant": "h1",
+            "align": "left",
+            "color": "foreground",
+            "transform": "none",
+            "lineHeight": 0.85,
+            "letterSpacing": -0.025
+          }
+        },
+        {
+          "id": "blk_hh_hero_tagline",
+          "layout": { "col": 2, "colSpan": 7, "row": 44, "rowSpan": 24 },
+          "type": "text",
+          "props": {
+            "content": "Wake up in a hotel of horrors. One job: get out alive. Find the key, find the exit, and don't look back. Made in 7 days for Brackey's 2024 Game Jam.",
+            "variant": "body",
+            "align": "left",
+            "color": "foreground",
+            "transform": "none"
+          }
+        }
+      ]
+    },
+    {
+      "id": "sec_hh_poster",
+      "background": { "type": "transparent" },
+      "padding": "md",
+      "minHeight": "auto",
+      "align": "top",
+      "blocks": [
+        {
+          "id": "blk_hh_poster",
+          "layout": { "col": 2, "colSpan": 11, "row": 1, "rowSpan": 60 },
+          "type": "image",
+          "props": {
+            "src": "/projects/headlessHotelTitle.png",
+            "alt": "Headless Hotel title",
+            "fit": "cover",
+            "aspect": "16/9",
+            "radius": 0,
+            "filter": "none",
+            "focalX": 50,
+            "focalY": 50,
+            "rotate": 0,
+            "flipX": false,
+            "flipY": false,
+            "blur": 0,
+            "tint": "none",
+            "tintOpacity": 0
+          }
+        }
+      ]
+    },
+    {
+      "id": "sec_hh_vitals",
+      "background": { "type": "transparent" },
+      "padding": "lg",
+      "minHeight": "auto",
+      "align": "top",
+      "blocks": [
+        {
+          "id": "blk_hh_vitals_kicker",
+          "layout": { "col": 2, "colSpan": 4, "row": 1, "rowSpan": 3 },
+          "type": "text",
+          "props": {
+            "content": "Vital signs",
+            "variant": "kicker",
+            "align": "left",
+            "color": "muted",
+            "transform": "none"
+          }
+        },
+        {
+          "id": "blk_hh_vitals_rule",
+          "layout": { "col": 7, "colSpan": 5, "row": 2, "rowSpan": 1 },
+          "type": "line",
+          "props": { "thickness": 1, "color": "border" }
+        },
+        {
+          "id": "blk_hh_vitals_body",
+          "layout": { "col": 2, "colSpan": 10, "row": 6, "rowSpan": 28 },
+          "type": "text",
+          "props": {
+            "content": "<strong>Status</strong> — Released<br><strong>Type</strong> — Game Jam<br><strong>Duration</strong> — 1 week<br><strong>Stack</strong> — Unity (C#), GitHub<br><strong>Role</strong> — Engineer, designer, artist",
+            "variant": "body",
+            "align": "left",
+            "color": "foreground",
+            "transform": "none"
+          }
+        },
+        {
+          "id": "blk_hh_btn_itch",
+          "layout": { "col": 2, "colSpan": 3, "row": 36, "rowSpan": 5 },
+          "type": "button",
+          "props": {
+            "label": "Play on itch.io",
+            "href": "https://henry-hamster.itch.io/headless-hotel",
+            "variant": "primary",
+            "align": "left",
+            "newTab": true
+          }
+        }
+      ]
+    },
+    {
+      "id": "sec_hh_screenshot",
+      "background": { "type": "transparent" },
+      "padding": "md",
+      "minHeight": "auto",
+      "align": "top",
+      "blocks": [
+        {
+          "id": "blk_hh_screenshot",
+          "layout": { "col": 2, "colSpan": 11, "row": 1, "rowSpan": 56 },
+          "type": "image",
+          "props": {
+            "src": "/projects/HHscreenshot.png",
+            "alt": "Headless Hotel gameplay",
+            "fit": "cover",
+            "aspect": "16/9",
+            "radius": 0,
+            "filter": "none",
+            "focalX": 50,
+            "focalY": 50,
+            "rotate": 0,
+            "flipX": false,
+            "flipY": false,
+            "blur": 0,
+            "tint": "none",
+            "tintOpacity": 0
+          }
+        }
+      ]
+    },
+    {
+      "id": "sec_hh_systems_title",
+      "background": { "type": "transparent" },
+      "padding": "lg",
+      "minHeight": "auto",
+      "align": "top",
+      "blocks": [
+        {
+          "id": "blk_hh_systems_num",
+          "layout": { "col": 2, "colSpan": 3, "row": 1, "rowSpan": 3 },
+          "type": "text",
+          "props": {
+            "content": "§ 01",
+            "variant": "kicker",
+            "align": "left",
+            "color": "muted",
+            "transform": "none"
+          }
+        },
+        {
+          "id": "blk_hh_systems_rule",
+          "layout": { "col": 5, "colSpan": 7, "row": 2, "rowSpan": 1 },
+          "type": "line",
+          "props": { "thickness": 1, "color": "border" }
+        },
+        {
+          "id": "blk_hh_systems_h2",
+          "layout": { "col": 2, "colSpan": 10, "row": 6, "rowSpan": 18 },
+          "type": "text",
+          "props": {
+            "content": "Built in seven days.",
+            "variant": "h2",
+            "align": "left",
+            "color": "foreground",
+            "transform": "none"
+          }
+        }
+      ]
+    },
+    {
+      "id": "sec_hh_inventory",
+      "background": { "type": "transparent" },
+      "padding": "md",
+      "minHeight": "auto",
+      "align": "top",
+      "blocks": [
+        {
+          "id": "blk_hh_inventory_kicker",
+          "layout": { "col": 2, "colSpan": 5, "row": 1, "rowSpan": 3 },
+          "type": "text",
+          "props": {
+            "content": "Items &amp; inventory",
+            "variant": "kicker",
+            "align": "left",
+            "color": "muted",
+            "transform": "none"
+          }
+        },
+        {
+          "id": "blk_hh_inventory_body",
+          "layout": { "col": 2, "colSpan": 5, "row": 5, "rowSpan": 28 },
+          "type": "text",
+          "props": {
+            "content": "Pick up, store, and use the things you find. The inventory ties directly into the puzzle layer — every item is potentially the key to the next door.",
+            "variant": "body",
+            "align": "left",
+            "color": "foreground",
+            "transform": "none"
+          }
+        },
+        {
+          "id": "blk_hh_inventory_image",
+          "layout": { "col": 8, "colSpan": 5, "row": 1, "rowSpan": 32 },
+          "type": "image",
+          "props": {
+            "src": "/projects/HHInventorySystem.png",
+            "alt": "Inventory system",
+            "fit": "contain",
+            "radius": 0,
+            "filter": "none",
+            "focalX": 50,
+            "focalY": 50,
+            "rotate": 0,
+            "flipX": false,
+            "flipY": false,
+            "blur": 0,
+            "tint": "none",
+            "tintOpacity": 0
+          }
+        }
+      ]
+    },
+    {
+      "id": "sec_hh_crafting",
+      "background": { "type": "transparent" },
+      "padding": "md",
+      "minHeight": "auto",
+      "align": "top",
+      "blocks": [
+        {
+          "id": "blk_hh_crafting_kicker",
+          "layout": { "col": 8, "colSpan": 5, "row": 1, "rowSpan": 3 },
+          "type": "text",
+          "props": {
+            "content": "Crafting",
+            "variant": "kicker",
+            "align": "left",
+            "color": "muted",
+            "transform": "none"
+          }
+        },
+        {
+          "id": "blk_hh_crafting_body",
+          "layout": { "col": 8, "colSpan": 5, "row": 5, "rowSpan": 28 },
+          "type": "text",
+          "props": {
+            "content": "Combine items into something stronger. Crafting rewards exploration — the recipes themselves are scattered through the level, so progress and discovery feed each other.",
+            "variant": "body",
+            "align": "left",
+            "color": "foreground",
+            "transform": "none"
+          }
+        },
+        {
+          "id": "blk_hh_crafting_image",
+          "layout": { "col": 2, "colSpan": 5, "row": 1, "rowSpan": 32 },
+          "type": "image",
+          "props": {
+            "src": "/projects/HHCraftingSystem.png",
+            "alt": "Crafting system",
+            "fit": "contain",
+            "radius": 0,
+            "filter": "none",
+            "focalX": 50,
+            "focalY": 50,
+            "rotate": 0,
+            "flipX": false,
+            "flipY": false,
+            "blur": 0,
+            "tint": "none",
+            "tintOpacity": 0
+          }
+        }
+      ]
+    },
+    {
+      "id": "sec_hh_ui",
+      "background": { "type": "transparent" },
+      "padding": "md",
+      "minHeight": "auto",
+      "align": "top",
+      "blocks": [
+        {
+          "id": "blk_hh_ui_kicker",
+          "layout": { "col": 2, "colSpan": 4, "row": 1, "rowSpan": 3 },
+          "type": "text",
+          "props": {
+            "content": "UI &amp; scene management",
+            "variant": "kicker",
+            "align": "left",
+            "color": "muted",
+            "transform": "none"
+          }
+        },
+        {
+          "id": "blk_hh_ui_body",
+          "layout": { "col": 2, "colSpan": 10, "row": 5, "rowSpan": 22 },
+          "type": "text",
+          "props": {
+            "content": "A UI management layer that orchestrates every screen in the game, plus the menus and scene transitions that hold the experience together. The framework had to be small enough to ship in a week and clean enough to not embarrass me later.",
+            "variant": "body",
+            "align": "left",
+            "color": "foreground",
+            "transform": "none"
+          }
+        }
+      ]
+    },
+    {
+      "id": "sec_hh_post",
+      "background": { "type": "transparent" },
+      "padding": "md",
+      "minHeight": "auto",
+      "align": "top",
+      "blocks": [
+        {
+          "id": "blk_hh_post_kicker",
+          "layout": { "col": 2, "colSpan": 4, "row": 1, "rowSpan": 3 },
+          "type": "text",
+          "props": {
+            "content": "Post-processing",
+            "variant": "kicker",
+            "align": "left",
+            "color": "muted",
+            "transform": "none"
+          }
+        },
+        {
+          "id": "blk_hh_post_body",
+          "layout": { "col": 2, "colSpan": 10, "row": 5, "rowSpan": 18 },
+          "type": "text",
+          "props": {
+            "content": "Bloom, color grading, and ambient occlusion through Unity's Post-Processing Stack to push the atmosphere closer to where it needed to be — closer to dread, further from default.",
+            "variant": "body",
+            "align": "left",
+            "color": "foreground",
+            "transform": "none"
+          }
+        }
+      ]
+    },
+    {
+      "id": "sec_hh_player",
+      "background": { "type": "transparent" },
+      "padding": "md",
+      "minHeight": "auto",
+      "align": "top",
+      "blocks": [
+        {
+          "id": "blk_hh_player_kicker",
+          "layout": { "col": 2, "colSpan": 4, "row": 1, "rowSpan": 3 },
+          "type": "text",
+          "props": {
+            "content": "Player",
+            "variant": "kicker",
+            "align": "left",
+            "color": "muted",
+            "transform": "none"
+          }
+        },
+        {
+          "id": "blk_hh_player_body",
+          "layout": { "col": 2, "colSpan": 10, "row": 5, "rowSpan": 18 },
+          "type": "text",
+          "props": {
+            "content": "Designed and animated the player character. Tuned the controller and the surrounding physics so movement reads as responsive but afraid — a small detail that flavors the entire game.",
+            "variant": "body",
+            "align": "left",
+            "color": "foreground",
+            "transform": "none"
+          }
+        }
+      ]
+    },
+    {
+      "id": "sec_hh_outro",
+      "background": { "type": "transparent" },
+      "padding": "lg",
+      "minHeight": "auto",
+      "align": "top",
+      "blocks": [
+        {
+          "id": "blk_hh_outro_back",
+          "layout": { "col": 2, "colSpan": 3, "row": 1, "rowSpan": 5 },
+          "type": "button",
+          "props": {
+            "label": "← Back to index",
+            "href": "/",
+            "variant": "ghost",
+            "align": "left",
+            "newTab": false
+          }
+        }
+      ]
+    }
+  ]
+}

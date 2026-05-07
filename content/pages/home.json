@@ -94,77 +94,7 @@
       ]
     },
     {
-      "id": "sec_about_title",
-      "background": {
-        "type": "image",
-        "src": "/uploads/img-3101-mounkf1r.jpeg",
-        "overlay": 79,
-        "filter": "noir",
-        "focalX": 50,
-        "focalY": 50,
-        "rotate": 0,
-        "flipX": false,
-        "flipY": false,
-        "blur": 0,
-        "tint": "none",
-        "tintOpacity": 0
-      },
-      "padding": "lg",
-      "minHeight": "auto",
-      "align": "top",
-      "blocks": [
-        {
-          "id": "blk_about_num",
-          "layout": {
-            "col": 2,
-            "colSpan": 3,
-            "row": 1,
-            "rowSpan": 3
-          },
-          "type": "text",
-          "props": {
-            "content": "§ 01",
-            "variant": "kicker",
-            "align": "left",
-            "color": "muted",
-            "transform": "none"
-          }
-        },
-        {
-          "id": "blk_about_rule",
-          "layout": {
-            "col": 5,
-            "colSpan": 7,
-            "row": 2,
-            "rowSpan": 1
-          },
-          "type": "line",
-          "props": {
-            "thickness": 1,
-            "color": "border"
-          }
-        },
-        {
-          "id": "blk_about_title",
-          "layout": {
-            "col": 2,
-            "colSpan": 10,
-            "row": 6,
-            "rowSpan": 18
-          },
-          "type": "text",
-          "props": {
-            "content": "On making.",
-            "variant": "h2",
-            "align": "left",
-            "color": "foreground",
-            "transform": "none"
-          }
-        }
-      ]
-    },
-    {
-      "id": "sec_intro",
+      "id": "sec_proj_thang",
       "background": {
         "type": "transparent"
       },
@@ -173,44 +103,16 @@
       "align": "top",
       "blocks": [
         {
-          "id": "blk_intro_body",
+          "id": "blk_thang_meta",
           "layout": {
             "col": 2,
-            "colSpan": 7,
-            "row": 1,
-            "rowSpan": 30
-          },
-          "type": "text",
-          "props": {
-            "content": "I work in the seams — between systems and surfaces, between the engineer who insists on rigor and the designer who insists on warmth. Most of what I build lives somewhere between a game, a tool, and a small, opinionated argument about how software should feel.",
-            "variant": "body",
-            "align": "left",
-            "color": "foreground",
-            "transform": "none"
-          }
-        }
-      ]
-    },
-    {
-      "id": "sec_work_title",
-      "background": {
-        "type": "transparent"
-      },
-      "padding": "lg",
-      "minHeight": "auto",
-      "align": "top",
-      "blocks": [
-        {
-          "id": "blk_work_num",
-          "layout": {
-            "col": 2,
-            "colSpan": 3,
+            "colSpan": 6,
             "row": 1,
             "rowSpan": 3
           },
           "type": "text",
           "props": {
-            "content": "§ 02",
+            "content": "2025 — Multiplayer engineer",
             "variant": "kicker",
             "align": "left",
             "color": "muted",
@@ -218,34 +120,81 @@
           }
         },
         {
-          "id": "blk_work_rule",
-          "layout": {
-            "col": 5,
-            "colSpan": 7,
-            "row": 2,
-            "rowSpan": 1
-          },
-          "type": "line",
-          "props": {
-            "thickness": 1,
-            "color": "border"
-          }
-        },
-        {
-          "id": "blk_work_title",
+          "id": "blk_thang_title",
           "layout": {
             "col": 2,
-            "colSpan": 10,
-            "row": 6,
-            "rowSpan": 18
+            "colSpan": 6,
+            "row": 5,
+            "rowSpan": 8
           },
           "type": "text",
           "props": {
-            "content": "Selected work.",
-            "variant": "h2",
+            "content": "Thang.",
+            "variant": "h3",
             "align": "left",
             "color": "foreground",
             "transform": "none"
+          }
+        },
+        {
+          "id": "blk_thang_summary",
+          "layout": {
+            "col": 2,
+            "colSpan": 5,
+            "row": 14,
+            "rowSpan": 14
+          },
+          "type": "text",
+          "props": {
+            "content": "A casual multiplayer freeze-tag shooter built on UE5, with a Next.js / MongoDB backend on AWS GameLift. Architected client-to-cloud end-to-end.",
+            "variant": "body",
+            "align": "left",
+            "color": "foreground",
+            "transform": "none"
+          }
+        },
+        {
+          "id": "blk_thang_image",
+          "layout": {
+            "col": 8,
+            "colSpan": 4,
+            "row": 1,
+            "rowSpan": 59
+          },
+          "type": "image",
+          "props": {
+            "src": "/projects/thangPoster.png",
+            "alt": "Thang",
+            "fit": "cover",
+            "href": "/work/thang",
+            "aspect": "4/5",
+            "radius": 50,
+            "filter": "none",
+            "focalX": 50,
+            "focalY": 50,
+            "rotate": 0,
+            "flipX": false,
+            "flipY": false,
+            "blur": 0,
+            "tint": "none",
+            "tintOpacity": 0
+          }
+        },
+        {
+          "id": "blk_thang_btn",
+          "layout": {
+            "col": 2,
+            "colSpan": 3,
+            "row": 30,
+            "rowSpan": 5
+          },
+          "type": "button",
+          "props": {
+            "label": "Read more →",
+            "href": "/work/thang",
+            "variant": "ghost",
+            "align": "left",
+            "newTab": false
           }
         }
       ]
@@ -262,14 +211,14 @@
         {
           "id": "blk_overdawn_meta",
           "layout": {
-            "col": 2,
+            "col": 7,
             "colSpan": 6,
             "row": 1,
             "rowSpan": 3
           },
           "type": "text",
           "props": {
-            "content": "2025 — Director / Engineer",
+            "content": "Since 2022 — Director / Lead engineer",
             "variant": "kicker",
             "align": "left",
             "color": "muted",
@@ -279,7 +228,7 @@
         {
           "id": "blk_overdawn_title",
           "layout": {
-            "col": 2,
+            "col": 7,
             "colSpan": 6,
             "row": 5,
             "rowSpan": 8
@@ -296,14 +245,14 @@
         {
           "id": "blk_overdawn_summary",
           "layout": {
-            "col": 2,
+            "col": 7,
             "colSpan": 5,
             "row": 14,
-            "rowSpan": 12
+            "rowSpan": 14
           },
           "type": "text",
           "props": {
-            "content": "An action-RPG built in Unity. Custom inventory, save, and quest systems written from first principles.",
+            "content": "A 2.5D bullet-time shooter built in Unity. Custom inventory, save, and quest systems written from first principles for a 30+ person team.",
             "variant": "body",
             "align": "left",
             "color": "foreground",
@@ -313,18 +262,19 @@
         {
           "id": "blk_overdawn_image",
           "layout": {
-            "col": 8,
+            "col": 2,
             "colSpan": 4,
             "row": 1,
-            "rowSpan": 30
+            "rowSpan": 59
           },
           "type": "image",
           "props": {
-            "src": "",
+            "src": "/projects/overdawnTitle.png",
             "alt": "Overdawn",
             "fit": "cover",
+            "href": "/work/overdawn",
             "aspect": "4/5",
-            "radius": 0,
+            "radius": 49,
             "filter": "none",
             "focalX": 50,
             "focalY": 50,
@@ -337,20 +287,20 @@
           }
         },
         {
-          "id": "blk_82403e82",
+          "id": "blk_overdawn_btn",
           "layout": {
-            "col": 2,
-            "colSpan": 2,
-            "row": 29,
+            "col": 7,
+            "colSpan": 3,
+            "row": 30,
             "rowSpan": 5
           },
           "type": "button",
           "props": {
-            "label": "Click me",
-            "href": "https://www.holowand.world",
-            "variant": "primary",
+            "label": "Read more →",
+            "href": "/work/overdawn",
+            "variant": "ghost",
             "align": "left",
-            "newTab": true
+            "newTab": false
           }
         }
       ]
@@ -367,14 +317,14 @@
         {
           "id": "blk_dawngeon_meta",
           "layout": {
-            "col": 6,
+            "col": 2,
             "colSpan": 6,
             "row": 1,
             "rowSpan": 3
           },
           "type": "text",
           "props": {
-            "content": "2024 — Solo developer",
+            "content": "2022 — Solo developer",
             "variant": "kicker",
             "align": "left",
             "color": "muted",
@@ -384,7 +334,7 @@
         {
           "id": "blk_dawngeon_title",
           "layout": {
-            "col": 6,
+            "col": 2,
             "colSpan": 6,
             "row": 5,
             "rowSpan": 8
@@ -401,14 +351,14 @@
         {
           "id": "blk_dawngeon_summary",
           "layout": {
-            "col": 6,
+            "col": 2,
             "colSpan": 5,
             "row": 14,
-            "rowSpan": 12
+            "rowSpan": 14
           },
           "type": "text",
           "props": {
-            "content": "Procedurally-generated dungeon crawler. Won the Global Dev Wave Cup.",
+            "content": "A pixel rogue-like RPG for the App Store. 140K+ downloads, 4.6 stars, charted #130 in Adventure. My first ship.",
             "variant": "body",
             "align": "left",
             "color": "foreground",
@@ -418,18 +368,19 @@
         {
           "id": "blk_dawngeon_image",
           "layout": {
-            "col": 2,
+            "col": 8,
             "colSpan": 4,
             "row": 1,
-            "rowSpan": 30
+            "rowSpan": 61
           },
           "type": "image",
           "props": {
-            "src": "",
+            "src": "/projects/dawngeonTitle.png",
             "alt": "Dawngeon",
             "fit": "cover",
+            "href": "/work/dawngeon",
             "aspect": "4/5",
-            "radius": 0,
+            "radius": 50,
             "filter": "none",
             "focalX": 50,
             "focalY": 50,
@@ -439,6 +390,235 @@
             "blur": 0,
             "tint": "none",
             "tintOpacity": 0
+          }
+        },
+        {
+          "id": "blk_dawngeon_btn",
+          "layout": {
+            "col": 2,
+            "colSpan": 3,
+            "row": 30,
+            "rowSpan": 5
+          },
+          "type": "button",
+          "props": {
+            "label": "Read more →",
+            "href": "/work/dawngeon",
+            "variant": "ghost",
+            "align": "left",
+            "newTab": false
+          }
+        }
+      ]
+    },
+    {
+      "id": "sec_proj_mmm",
+      "background": {
+        "type": "transparent"
+      },
+      "padding": "md",
+      "minHeight": "auto",
+      "align": "top",
+      "blocks": [
+        {
+          "id": "blk_mmm_meta",
+          "layout": {
+            "col": 7,
+            "colSpan": 6,
+            "row": 1,
+            "rowSpan": 3
+          },
+          "type": "text",
+          "props": {
+            "content": "2024 — Engineer, USC AGP",
+            "variant": "kicker",
+            "align": "left",
+            "color": "muted",
+            "transform": "none"
+          }
+        },
+        {
+          "id": "blk_mmm_title",
+          "layout": {
+            "col": 7,
+            "colSpan": 6,
+            "row": 5,
+            "rowSpan": 8
+          },
+          "type": "text",
+          "props": {
+            "content": "Move Move Melon.",
+            "variant": "h3",
+            "align": "left",
+            "color": "foreground",
+            "transform": "none"
+          }
+        },
+        {
+          "id": "blk_mmm_summary",
+          "layout": {
+            "col": 7,
+            "colSpan": 5,
+            "row": 14,
+            "rowSpan": 14
+          },
+          "type": "text",
+          "props": {
+            "content": "A whimsical 3D on-rails collection game, built with a 40+ person team. Camera, UI, designer tools, and player feel.",
+            "variant": "body",
+            "align": "left",
+            "color": "foreground",
+            "transform": "none"
+          }
+        },
+        {
+          "id": "blk_mmm_image",
+          "layout": {
+            "col": 2,
+            "colSpan": 4,
+            "row": 1,
+            "rowSpan": 61
+          },
+          "type": "image",
+          "props": {
+            "src": "/projects/mmmTitle.png",
+            "alt": "Move Move Melon",
+            "fit": "cover",
+            "href": "/work/move-move-melon",
+            "aspect": "4/5",
+            "radius": 50,
+            "filter": "none",
+            "focalX": 50,
+            "focalY": 50,
+            "rotate": 0,
+            "flipX": false,
+            "flipY": false,
+            "blur": 0,
+            "tint": "none",
+            "tintOpacity": 0
+          }
+        },
+        {
+          "id": "blk_mmm_btn",
+          "layout": {
+            "col": 7,
+            "colSpan": 3,
+            "row": 31,
+            "rowSpan": 5
+          },
+          "type": "button",
+          "props": {
+            "label": "Read more →",
+            "href": "/work/move-move-melon",
+            "variant": "ghost",
+            "align": "left",
+            "newTab": false
+          }
+        }
+      ]
+    },
+    {
+      "id": "sec_proj_hh",
+      "background": {
+        "type": "transparent"
+      },
+      "padding": "md",
+      "minHeight": "auto",
+      "align": "top",
+      "blocks": [
+        {
+          "id": "blk_hh_meta",
+          "layout": {
+            "col": 2,
+            "colSpan": 6,
+            "row": 1,
+            "rowSpan": 3
+          },
+          "type": "text",
+          "props": {
+            "content": "2024 — 7-day game jam",
+            "variant": "kicker",
+            "align": "left",
+            "color": "muted",
+            "transform": "none"
+          }
+        },
+        {
+          "id": "blk_hh_title",
+          "layout": {
+            "col": 2,
+            "colSpan": 6,
+            "row": 5,
+            "rowSpan": 8
+          },
+          "type": "text",
+          "props": {
+            "content": "Headless Hotel.",
+            "variant": "h3",
+            "align": "left",
+            "color": "foreground",
+            "transform": "none"
+          }
+        },
+        {
+          "id": "blk_hh_summary",
+          "layout": {
+            "col": 2,
+            "colSpan": 5,
+            "row": 14,
+            "rowSpan": 14
+          },
+          "type": "text",
+          "props": {
+            "content": "Wake up in a hotel of horrors and find the way out. Built solo for Brackey's 2024 Game Jam.",
+            "variant": "body",
+            "align": "left",
+            "color": "foreground",
+            "transform": "none"
+          }
+        },
+        {
+          "id": "blk_hh_image",
+          "layout": {
+            "col": 8,
+            "colSpan": 4,
+            "row": 1,
+            "rowSpan": 38
+          },
+          "type": "image",
+          "props": {
+            "src": "/projects/headlessHotelTitle.png",
+            "alt": "Headless Hotel",
+            "fit": "cover",
+            "href": "/work/headless-hotel",
+            "aspect": "4/5",
+            "radius": 50,
+            "filter": "none",
+            "focalX": 50,
+            "focalY": 50,
+            "rotate": 0,
+            "flipX": false,
+            "flipY": false,
+            "blur": 0,
+            "tint": "none",
+            "tintOpacity": 0
+          }
+        },
+        {
+          "id": "blk_hh_btn",
+          "layout": {
+            "col": 2,
+            "colSpan": 3,
+            "row": 30,
+            "rowSpan": 5
+          },
+          "type": "button",
+          "props": {
+            "label": "Read more →",
+            "href": "/work/headless-hotel",
+            "variant": "ghost",
+            "align": "left",
+            "newTab": false
           }
         }
       ]

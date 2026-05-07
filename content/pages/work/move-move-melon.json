@@ -1,0 +1,349 @@
+{
+  "meta": {
+    "title": "Move Move Melon — Youngje Park",
+    "description": "USC Advanced Game Project. Engineer on a 40+ person team."
+  },
+  "sections": [
+    {
+      "id": "sec_mmm_hero",
+      "background": { "type": "transparent" },
+      "padding": "xl",
+      "minHeight": "screen",
+      "align": "center",
+      "blocks": [
+        {
+          "id": "blk_mmm_hero_kicker",
+          "layout": { "col": 2, "colSpan": 8, "row": 1, "rowSpan": 3 },
+          "type": "text",
+          "props": {
+            "content": "§ Selected work — USC AGP, Engineer",
+            "variant": "kicker",
+            "align": "left",
+            "color": "muted",
+            "transform": "none"
+          }
+        },
+        {
+          "id": "blk_mmm_hero_title",
+          "layout": { "col": 2, "colSpan": 11, "row": 6, "rowSpan": 36 },
+          "type": "text",
+          "props": {
+            "content": "Move Move<br>Melon!",
+            "variant": "h1",
+            "align": "left",
+            "color": "foreground",
+            "transform": "none",
+            "lineHeight": 0.85,
+            "letterSpacing": -0.025
+          }
+        },
+        {
+          "id": "blk_mmm_hero_tagline",
+          "layout": { "col": 2, "colSpan": 7, "row": 44, "rowSpan": 24 },
+          "type": "text",
+          "props": {
+            "content": "A whimsical 3D on-rails collection game. You play as Melon, a hamster racing through snack-filled venues on her toy ice-cream maker — fast-paced, colorful, deliciously chaotic.",
+            "variant": "body",
+            "align": "left",
+            "color": "foreground",
+            "transform": "none"
+          }
+        }
+      ]
+    },
+    {
+      "id": "sec_mmm_poster",
+      "background": { "type": "transparent" },
+      "padding": "md",
+      "minHeight": "auto",
+      "align": "top",
+      "blocks": [
+        {
+          "id": "blk_mmm_poster",
+          "layout": { "col": 2, "colSpan": 11, "row": 1, "rowSpan": 60 },
+          "type": "image",
+          "props": {
+            "src": "/projects/mmmTitleWide.png",
+            "alt": "Move Move Melon key art",
+            "fit": "cover",
+            "aspect": "16/9",
+            "radius": 0,
+            "filter": "none",
+            "focalX": 50,
+            "focalY": 50,
+            "rotate": 0,
+            "flipX": false,
+            "flipY": false,
+            "blur": 0,
+            "tint": "none",
+            "tintOpacity": 0
+          }
+        }
+      ]
+    },
+    {
+      "id": "sec_mmm_vitals",
+      "background": { "type": "transparent" },
+      "padding": "lg",
+      "minHeight": "auto",
+      "align": "top",
+      "blocks": [
+        {
+          "id": "blk_mmm_vitals_kicker",
+          "layout": { "col": 2, "colSpan": 4, "row": 1, "rowSpan": 3 },
+          "type": "text",
+          "props": {
+            "content": "Vital signs",
+            "variant": "kicker",
+            "align": "left",
+            "color": "muted",
+            "transform": "none"
+          }
+        },
+        {
+          "id": "blk_mmm_vitals_rule",
+          "layout": { "col": 7, "colSpan": 5, "row": 2, "rowSpan": 1 },
+          "type": "line",
+          "props": { "thickness": 1, "color": "border" }
+        },
+        {
+          "id": "blk_mmm_vitals_body",
+          "layout": { "col": 2, "colSpan": 10, "row": 6, "rowSpan": 28 },
+          "type": "text",
+          "props": {
+            "content": "<strong>Status</strong> — Ongoing<br><strong>Type</strong> — USC Advanced Game Project, 40+ team<br><strong>Duration</strong> — ~6 months<br><strong>Stack</strong> — Unity (C#), Perforce<br><strong>Role</strong> — Engineer",
+            "variant": "body",
+            "align": "left",
+            "color": "foreground",
+            "transform": "none"
+          }
+        }
+      ]
+    },
+    {
+      "id": "sec_mmm_systems_title",
+      "background": { "type": "transparent" },
+      "padding": "lg",
+      "minHeight": "auto",
+      "align": "top",
+      "blocks": [
+        {
+          "id": "blk_mmm_systems_num",
+          "layout": { "col": 2, "colSpan": 3, "row": 1, "rowSpan": 3 },
+          "type": "text",
+          "props": {
+            "content": "§ 01",
+            "variant": "kicker",
+            "align": "left",
+            "color": "muted",
+            "transform": "none"
+          }
+        },
+        {
+          "id": "blk_mmm_systems_rule",
+          "layout": { "col": 5, "colSpan": 7, "row": 2, "rowSpan": 1 },
+          "type": "line",
+          "props": { "thickness": 1, "color": "border" }
+        },
+        {
+          "id": "blk_mmm_systems_h2",
+          "layout": { "col": 2, "colSpan": 10, "row": 6, "rowSpan": 18 },
+          "type": "text",
+          "props": {
+            "content": "What I shipped.",
+            "variant": "h2",
+            "align": "left",
+            "color": "foreground",
+            "transform": "none"
+          }
+        }
+      ]
+    },
+    {
+      "id": "sec_mmm_camera",
+      "background": { "type": "transparent" },
+      "padding": "md",
+      "minHeight": "auto",
+      "align": "top",
+      "blocks": [
+        {
+          "id": "blk_mmm_camera_kicker",
+          "layout": { "col": 2, "colSpan": 4, "row": 1, "rowSpan": 3 },
+          "type": "text",
+          "props": {
+            "content": "Camera manager",
+            "variant": "kicker",
+            "align": "left",
+            "color": "muted",
+            "transform": "none"
+          }
+        },
+        {
+          "id": "blk_mmm_camera_body",
+          "layout": { "col": 2, "colSpan": 10, "row": 5, "rowSpan": 22 },
+          "type": "text",
+          "props": {
+            "content": "A camera management layer with switchable transition behaviors so designers can pick the right cut or follow on a per-section basis. Tuned to give the character movement real tactile weight — the camera does as much work as the controller.",
+            "variant": "body",
+            "align": "left",
+            "color": "foreground",
+            "transform": "none"
+          }
+        }
+      ]
+    },
+    {
+      "id": "sec_mmm_ui",
+      "background": { "type": "transparent" },
+      "padding": "md",
+      "minHeight": "auto",
+      "align": "top",
+      "blocks": [
+        {
+          "id": "blk_mmm_ui_kicker",
+          "layout": { "col": 2, "colSpan": 4, "row": 1, "rowSpan": 3 },
+          "type": "text",
+          "props": {
+            "content": "UI manager &amp; joystick",
+            "variant": "kicker",
+            "align": "left",
+            "color": "muted",
+            "transform": "none"
+          }
+        },
+        {
+          "id": "blk_mmm_ui_body",
+          "layout": { "col": 2, "colSpan": 10, "row": 5, "rowSpan": 22 },
+          "type": "text",
+          "props": {
+            "content": "A persistent-singleton UI manager that owns menus, HUDs, and pop-ups across scenes — plus a dynamic joystick for mobile that gives players intuitive, responsive input from the first frame.",
+            "variant": "body",
+            "align": "left",
+            "color": "foreground",
+            "transform": "none"
+          }
+        }
+      ]
+    },
+    {
+      "id": "sec_mmm_tools",
+      "background": { "type": "transparent" },
+      "padding": "md",
+      "minHeight": "auto",
+      "align": "top",
+      "blocks": [
+        {
+          "id": "blk_mmm_tools_kicker",
+          "layout": { "col": 2, "colSpan": 4, "row": 1, "rowSpan": 3 },
+          "type": "text",
+          "props": {
+            "content": "Designer tools",
+            "variant": "kicker",
+            "align": "left",
+            "color": "muted",
+            "transform": "none"
+          }
+        },
+        {
+          "id": "blk_mmm_tools_body",
+          "layout": { "col": 2, "colSpan": 10, "row": 5, "rowSpan": 16 },
+          "type": "text",
+          "props": {
+            "content": "Shipped 4+ designer-friendly editor tools that streamlined level design and asset management directly inside Unity, so authoring stayed close to the engine.",
+            "variant": "body",
+            "align": "left",
+            "color": "foreground",
+            "transform": "none"
+          }
+        }
+      ]
+    },
+    {
+      "id": "sec_mmm_debug",
+      "background": { "type": "transparent" },
+      "padding": "md",
+      "minHeight": "auto",
+      "align": "top",
+      "blocks": [
+        {
+          "id": "blk_mmm_debug_kicker",
+          "layout": { "col": 2, "colSpan": 4, "row": 1, "rowSpan": 3 },
+          "type": "text",
+          "props": {
+            "content": "Debugging",
+            "variant": "kicker",
+            "align": "left",
+            "color": "muted",
+            "transform": "none"
+          }
+        },
+        {
+          "id": "blk_mmm_debug_body",
+          "layout": { "col": 2, "colSpan": 10, "row": 5, "rowSpan": 24 },
+          "type": "text",
+          "props": {
+            "content": "Stood up Quantum Console for in-game commands, state inspection, and live troubleshooting. Tracked down memory leaks and shader regressions and shipped fixes to keep the build healthy across a fast-moving team.",
+            "variant": "body",
+            "align": "left",
+            "color": "foreground",
+            "transform": "none"
+          }
+        }
+      ]
+    },
+    {
+      "id": "sec_mmm_player",
+      "background": { "type": "transparent" },
+      "padding": "md",
+      "minHeight": "auto",
+      "align": "top",
+      "blocks": [
+        {
+          "id": "blk_mmm_player_kicker",
+          "layout": { "col": 2, "colSpan": 4, "row": 1, "rowSpan": 3 },
+          "type": "text",
+          "props": {
+            "content": "Player",
+            "variant": "kicker",
+            "align": "left",
+            "color": "muted",
+            "transform": "none"
+          }
+        },
+        {
+          "id": "blk_mmm_player_body",
+          "layout": { "col": 2, "colSpan": 10, "row": 5, "rowSpan": 32 },
+          "type": "text",
+          "props": {
+            "content": "Acceleration that scales with the mix-ins the player has collected — the more you gather, the faster you go, which feeds back into the strategy of routing through a level. On the engineering side, optimized movement and manager scripts to eliminate stale references and redundant instances, and migrated the surrounding logic onto an event-driven architecture for modularity.",
+            "variant": "body",
+            "align": "left",
+            "color": "foreground",
+            "transform": "none"
+          }
+        }
+      ]
+    },
+    {
+      "id": "sec_mmm_outro",
+      "background": { "type": "transparent" },
+      "padding": "lg",
+      "minHeight": "auto",
+      "align": "top",
+      "blocks": [
+        {
+          "id": "blk_mmm_outro_back",
+          "layout": { "col": 2, "colSpan": 3, "row": 1, "rowSpan": 5 },
+          "type": "button",
+          "props": {
+            "label": "← Back to index",
+            "href": "/",
+            "variant": "ghost",
+            "align": "left",
+            "newTab": false
+          }
+        }
+      ]
+    }
+  ]
+}

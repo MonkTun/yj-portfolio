@@ -1,0 +1,376 @@
+{
+  "meta": {
+    "title": "Thang — Youngje Park",
+    "description": "A casual multiplayer freeze-tag shooter on UE5, with a Next.js + MongoDB backend on AWS GameLift."
+  },
+  "sections": [
+    {
+      "id": "sec_th_hero",
+      "background": { "type": "transparent" },
+      "padding": "xl",
+      "minHeight": "screen",
+      "align": "center",
+      "blocks": [
+        {
+          "id": "blk_th_hero_kicker",
+          "layout": { "col": 2, "colSpan": 8, "row": 1, "rowSpan": 3 },
+          "type": "text",
+          "props": {
+            "content": "§ Selected work — Multiplayer system engineer",
+            "variant": "kicker",
+            "align": "left",
+            "color": "muted",
+            "transform": "none"
+          }
+        },
+        {
+          "id": "blk_th_hero_title",
+          "layout": { "col": 2, "colSpan": 11, "row": 6, "rowSpan": 36 },
+          "type": "text",
+          "props": {
+            "content": "Thang.",
+            "variant": "h1",
+            "align": "left",
+            "color": "foreground",
+            "transform": "none",
+            "lineHeight": 0.85,
+            "letterSpacing": -0.025
+          }
+        },
+        {
+          "id": "blk_th_hero_tagline",
+          "layout": { "col": 2, "colSpan": 7, "row": 44, "rowSpan": 24 },
+          "type": "text",
+          "props": {
+            "content": "A casual multiplayer shooter where players compete to freeze each other in a fast, action-packed arena. Architected the full ecosystem — UE5 client, Next.js / Node.js / MongoDB backend, Firebase Auth, AWS GameLift.",
+            "variant": "body",
+            "align": "left",
+            "color": "foreground",
+            "transform": "none"
+          }
+        }
+      ]
+    },
+    {
+      "id": "sec_th_poster",
+      "background": { "type": "transparent" },
+      "padding": "md",
+      "minHeight": "auto",
+      "align": "top",
+      "blocks": [
+        {
+          "id": "blk_th_poster",
+          "layout": { "col": 2, "colSpan": 11, "row": 1, "rowSpan": 60 },
+          "type": "image",
+          "props": {
+            "src": "/projects/ThangHorizontal.png",
+            "alt": "Thang poster",
+            "fit": "cover",
+            "aspect": "16/9",
+            "radius": 0,
+            "filter": "none",
+            "focalX": 50,
+            "focalY": 50,
+            "rotate": 0,
+            "flipX": false,
+            "flipY": false,
+            "blur": 0,
+            "tint": "none",
+            "tintOpacity": 0
+          }
+        }
+      ]
+    },
+    {
+      "id": "sec_th_vitals",
+      "background": { "type": "transparent" },
+      "padding": "lg",
+      "minHeight": "auto",
+      "align": "top",
+      "blocks": [
+        {
+          "id": "blk_th_vitals_kicker",
+          "layout": { "col": 2, "colSpan": 4, "row": 1, "rowSpan": 3 },
+          "type": "text",
+          "props": {
+            "content": "Vital signs",
+            "variant": "kicker",
+            "align": "left",
+            "color": "muted",
+            "transform": "none"
+          }
+        },
+        {
+          "id": "blk_th_vitals_rule",
+          "layout": { "col": 7, "colSpan": 5, "row": 2, "rowSpan": 1 },
+          "type": "line",
+          "props": { "thickness": 1, "color": "border" }
+        },
+        {
+          "id": "blk_th_vitals_body",
+          "layout": { "col": 2, "colSpan": 10, "row": 6, "rowSpan": 32 },
+          "type": "text",
+          "props": {
+            "content": "<strong>Status</strong> — Ongoing<br><strong>Type</strong> — Overdawn Studio commercial project<br><strong>Duration</strong> — 2 months<br><strong>Stack</strong> — Unreal Engine 5, Next.js, MongoDB, Firebase Auth, AWS GameLift<br><strong>Role</strong> — Multiplayer system engineer, technical designer",
+            "variant": "body",
+            "align": "left",
+            "color": "foreground",
+            "transform": "none"
+          }
+        },
+        {
+          "id": "blk_th_btn_more",
+          "layout": { "col": 2, "colSpan": 3, "row": 40, "rowSpan": 5 },
+          "type": "button",
+          "props": {
+            "label": "Learn more",
+            "href": "https://thang-backend.vercel.app/",
+            "variant": "primary",
+            "align": "left",
+            "newTab": true
+          }
+        }
+      ]
+    },
+    {
+      "id": "sec_th_systems_title",
+      "background": { "type": "transparent" },
+      "padding": "lg",
+      "minHeight": "auto",
+      "align": "top",
+      "blocks": [
+        {
+          "id": "blk_th_systems_num",
+          "layout": { "col": 2, "colSpan": 3, "row": 1, "rowSpan": 3 },
+          "type": "text",
+          "props": {
+            "content": "§ 01",
+            "variant": "kicker",
+            "align": "left",
+            "color": "muted",
+            "transform": "none"
+          }
+        },
+        {
+          "id": "blk_th_systems_rule",
+          "layout": { "col": 5, "colSpan": 7, "row": 2, "rowSpan": 1 },
+          "type": "line",
+          "props": { "thickness": 1, "color": "border" }
+        },
+        {
+          "id": "blk_th_systems_h2",
+          "layout": { "col": 2, "colSpan": 10, "row": 6, "rowSpan": 18 },
+          "type": "text",
+          "props": {
+            "content": "What I built.",
+            "variant": "h2",
+            "align": "left",
+            "color": "foreground",
+            "transform": "none"
+          }
+        }
+      ]
+    },
+    {
+      "id": "sec_th_core",
+      "background": { "type": "transparent" },
+      "padding": "md",
+      "minHeight": "auto",
+      "align": "top",
+      "blocks": [
+        {
+          "id": "blk_th_core_kicker",
+          "layout": { "col": 2, "colSpan": 5, "row": 1, "rowSpan": 3 },
+          "type": "text",
+          "props": {
+            "content": "Core systems",
+            "variant": "kicker",
+            "align": "left",
+            "color": "muted",
+            "transform": "none"
+          }
+        },
+        {
+          "id": "blk_th_core_h3",
+          "layout": { "col": 2, "colSpan": 5, "row": 5, "rowSpan": 8 },
+          "type": "text",
+          "props": {
+            "content": "Server-side rewind for latency-free input.",
+            "variant": "h3",
+            "align": "left",
+            "color": "foreground",
+            "transform": "none"
+          }
+        },
+        {
+          "id": "blk_th_core_body",
+          "layout": { "col": 2, "colSpan": 10, "row": 14, "rowSpan": 28 },
+          "type": "text",
+          "props": {
+            "content": "Engineered 5+ core systems, including a server-side rewind algorithm for latency compensation that lets shooting, freeze states, and tag mechanics all feel instantaneous regardless of the player's connection. The whole game balances on this — without SSR the rest doesn't matter.",
+            "variant": "body",
+            "align": "left",
+            "color": "foreground",
+            "transform": "none"
+          }
+        }
+      ]
+    },
+    {
+      "id": "sec_th_unreal",
+      "background": { "type": "transparent" },
+      "padding": "md",
+      "minHeight": "auto",
+      "align": "top",
+      "blocks": [
+        {
+          "id": "blk_th_unreal_kicker",
+          "layout": { "col": 2, "colSpan": 5, "row": 1, "rowSpan": 3 },
+          "type": "text",
+          "props": {
+            "content": "Unreal Engine",
+            "variant": "kicker",
+            "align": "left",
+            "color": "muted",
+            "transform": "none"
+          }
+        },
+        {
+          "id": "blk_th_unreal_h3",
+          "layout": { "col": 2, "colSpan": 5, "row": 5, "rowSpan": 8 },
+          "type": "text",
+          "props": {
+            "content": "Movement, shooting, freeze, power-ups.",
+            "variant": "h3",
+            "align": "left",
+            "color": "foreground",
+            "transform": "none"
+          }
+        },
+        {
+          "id": "blk_th_unreal_body",
+          "layout": { "col": 2, "colSpan": 10, "row": 14, "rowSpan": 24 },
+          "type": "text",
+          "props": {
+            "content": "A network of gameplay systems in C++ and Blueprints — player movement, shooting mechanics, freeze states, power-ups — all designed to compose with the rewind layer underneath them.",
+            "variant": "body",
+            "align": "left",
+            "color": "foreground",
+            "transform": "none"
+          }
+        }
+      ]
+    },
+    {
+      "id": "sec_th_stack",
+      "background": { "type": "transparent" },
+      "padding": "md",
+      "minHeight": "auto",
+      "align": "top",
+      "blocks": [
+        {
+          "id": "blk_th_stack_kicker",
+          "layout": { "col": 2, "colSpan": 5, "row": 1, "rowSpan": 3 },
+          "type": "text",
+          "props": {
+            "content": "Full-stack architecture",
+            "variant": "kicker",
+            "align": "left",
+            "color": "muted",
+            "transform": "none"
+          }
+        },
+        {
+          "id": "blk_th_stack_h3",
+          "layout": { "col": 2, "colSpan": 5, "row": 5, "rowSpan": 8 },
+          "type": "text",
+          "props": {
+            "content": "Client, backend, identity, deploy.",
+            "variant": "h3",
+            "align": "left",
+            "color": "foreground",
+            "transform": "none"
+          }
+        },
+        {
+          "id": "blk_th_stack_body",
+          "layout": { "col": 2, "colSpan": 10, "row": 14, "rowSpan": 28 },
+          "type": "text",
+          "props": {
+            "content": "Stitched the UE5 client to a RESTful Next.js / Node.js backend with MongoDB underneath. Identity flows through Firebase Auth; the backend lives on Vercel. The seam between the client and the web stack had to be invisible to players, and is.",
+            "variant": "body",
+            "align": "left",
+            "color": "foreground",
+            "transform": "none"
+          }
+        }
+      ]
+    },
+    {
+      "id": "sec_th_party",
+      "background": { "type": "transparent" },
+      "padding": "md",
+      "minHeight": "auto",
+      "align": "top",
+      "blocks": [
+        {
+          "id": "blk_th_party_kicker",
+          "layout": { "col": 2, "colSpan": 5, "row": 1, "rowSpan": 3 },
+          "type": "text",
+          "props": {
+            "content": "Party &amp; matchmaking",
+            "variant": "kicker",
+            "align": "left",
+            "color": "muted",
+            "transform": "none"
+          }
+        },
+        {
+          "id": "blk_th_party_h3",
+          "layout": { "col": 2, "colSpan": 5, "row": 5, "rowSpan": 8 },
+          "type": "text",
+          "props": {
+            "content": "End-to-end on AWS GameLift.",
+            "variant": "h3",
+            "align": "left",
+            "color": "foreground",
+            "transform": "none"
+          }
+        },
+        {
+          "id": "blk_th_party_body",
+          "layout": { "col": 2, "colSpan": 10, "row": 14, "rowSpan": 24 },
+          "type": "text",
+          "props": {
+            "content": "Designed and shipped the party and matchmaking UX on AWS GameLift, prioritizing a frictionless flow across distributed dedicated server instances. The shortest path from \"open the game\" to \"in a match with friends\" is the one I cared about most.",
+            "variant": "body",
+            "align": "left",
+            "color": "foreground",
+            "transform": "none"
+          }
+        }
+      ]
+    },
+    {
+      "id": "sec_th_outro",
+      "background": { "type": "transparent" },
+      "padding": "lg",
+      "minHeight": "auto",
+      "align": "top",
+      "blocks": [
+        {
+          "id": "blk_th_outro_back",
+          "layout": { "col": 2, "colSpan": 3, "row": 1, "rowSpan": 5 },
+          "type": "button",
+          "props": {
+            "label": "← Back to index",
+            "href": "/",
+            "variant": "ghost",
+            "align": "left",
+            "newTab": false
+          }
+        }
+      ]
+    }
+  ]
+}

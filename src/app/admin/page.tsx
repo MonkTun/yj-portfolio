@@ -26,8 +26,51 @@ function roleBadges(slug: string, config: SiteConfig): string[] {
   return out;
 }
 
+const ROOT_GROUP = "__root__";
+
+// The leading folder segment of a slug doubles as its group. Pages without a
+// slash sit in a default root group rendered first; everything else groups
+// alphabetically under its folder name (e.g. "work/dawngeon" → "work").
+function groupFor(slug: string): string {
+  const i = slug.indexOf("/");
+  return i === -1 ? ROOT_GROUP : slug.slice(0, i);
+}
+
+function leafName(slug: string): string {
+  return slug.split("/").pop() ?? slug;
+}
+
+type Group = { key: string; label: string; slugs: string[] };
+
+function buildGroups(slugs: string[]): Group[] {
+  const map = new Map<string, string[]>();
+  for (const slug of slugs) {
+    const key = groupFor(slug);
+    const list = map.get(key) ?? [];
+    list.push(slug);
+    map.set(key, list);
+  }
+  const root: Group | null = map.has(ROOT_GROUP)
+    ? {
+        key: ROOT_GROUP,
+        label: "Pages",
+        slugs: map.get(ROOT_GROUP)!.slice().sort(),
+      }
+    : null;
+  const folders: Group[] = [...map.entries()]
+    .filter(([k]) => k !== ROOT_GROUP)
+    .sort(([a], [b]) => a.localeCompare(b))
+    .map(([key, list]) => ({
+      key,
+      label: key,
+      slugs: list.slice().sort(),
+    }));
+  return root ? [root, ...folders] : folders;
+}
+
 export default async function AdminIndex() {
   const [slugs, config] = await Promise.all([listPages(), loadSiteConfig()]);
+  const groups = buildGroups(slugs);
 
   return (
     <main className="px-12 py-20">
@@ -38,49 +81,24 @@ export default async function AdminIndex() {
           The editor writes JSON straight to{" "}
           <code className="font-mono text-sm">content/pages/</code>. Save, then{" "}
           <code className="font-mono text-sm">git commit</code> to publish.
+          Use a slash in the slug (e.g.{" "}
+          <code className="font-mono text-sm">work/new-thing</code>) to file
+          a page under a group.
         </p>
 
         <div className="mt-12">
           <RoutingPanel initialConfig={config} pages={slugs} />
         </div>
 
-        <ul className="mt-12 divide-y divide-border border-y border-border">
-          {slugs.map((slug) => {
-            const badges = roleBadges(slug, config);
-            return (
-              <li
-                key={slug}
-                className="group flex items-baseline justify-between gap-6 py-6 transition-colors hover:bg-surface/40 px-2 -mx-2"
-              >
-                <Link
-                  href={`/admin/edit/${slug}`}
-                  className="flex-1 flex items-baseline justify-between gap-6"
-                >
-                  <div>
-                    <p className="kicker flex items-center gap-2 flex-wrap">
-                      <span>{publicLabel(slug, config)}</span>
-                      {badges.map((b) => (
-                        <span
-                          key={b}
-                          className="px-1.5 py-0.5 rounded-sm bg-accent/15 text-accent text-[10px]"
-                        >
-                          {b}
-                        </span>
-                      ))}
-                    </p>
-                    <p className="font-display text-3xl mt-2">
-                      {slug.split("/").pop()}
-                    </p>
-                  </div>
-                  <span className="kicker text-accent transition-transform group-hover:translate-x-1">
-                    Edit →
-                  </span>
-                </Link>
-                <PageRowMenu slug={slug} config={config} />
-              </li>
-            );
-          })}
-        </ul>
+        <div className="mt-12 space-y-12">
+          {groups.map((group) => (
+            <PageGroup
+              key={group.key}
+              group={group}
+              config={config}
+            />
+          ))}
+        </div>
 
         {slugs.length === 0 && (
           <p className="mt-16 text-foreground/60 italic">
@@ -91,5 +109,61 @@ export default async function AdminIndex() {
         <NewPageForm existing={slugs} />
       </div>
     </main>
+  );
+}
+
+function PageGroup({
+  group,
+  config,
+}: {
+  group: Group;
+  config: SiteConfig;
+}) {
+  return (
+    <section>
+      <header className="flex items-baseline justify-between gap-4 pb-3 border-b border-border">
+        <h2 className="kicker text-foreground">{group.label}</h2>
+        <span className="kicker text-foreground/40">
+          {group.slugs.length} {group.slugs.length === 1 ? "page" : "pages"}
+        </span>
+      </header>
+      <ul className="divide-y divide-border">
+        {group.slugs.map((slug) => {
+          const badges = roleBadges(slug, config);
+          return (
+            <li
+              key={slug}
+              className="group flex items-baseline justify-between gap-6 py-6 transition-colors hover:bg-surface/40 px-2 -mx-2"
+            >
+              <Link
+                href={`/admin/edit/${slug}`}
+                className="flex-1 flex items-baseline justify-between gap-6"
+              >
+                <div>
+                  <p className="kicker flex items-center gap-2 flex-wrap">
+                    <span>{publicLabel(slug, config)}</span>
+                    {badges.map((b) => (
+                      <span
+                        key={b}
+                        className="px-1.5 py-0.5 rounded-sm bg-accent/15 text-accent text-[10px]"
+                      >
+                        {b}
+                      </span>
+                    ))}
+                  </p>
+                  <p className="font-display text-3xl mt-2">
+                    {leafName(slug)}
+                  </p>
+                </div>
+                <span className="kicker text-accent transition-transform group-hover:translate-x-1">
+                  Edit →
+                </span>
+              </Link>
+              <PageRowMenu slug={slug} config={config} />
+            </li>
+          );
+        })}
+      </ul>
+    </section>
   );
 }

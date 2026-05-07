@@ -1,0 +1,1296 @@
+{
+  "meta": {
+    "title": "Overdawn — Youngje Park",
+    "description": "A 2.5D bullet-time shooter built in Unity. Director and lead engineer."
+  },
+  "sections": [
+    {
+      "id": "sec_od_hero",
+      "background": { "type": "transparent" },
+      "padding": "xl",
+      "minHeight": "screen",
+      "align": "center",
+      "blocks": [
+        {
+          "id": "blk_od_hero_kicker",
+          "layout": { "col": 2, "colSpan": 8, "row": 1, "rowSpan": 3 },
+          "type": "text",
+          "props": {
+            "content": "§ Selected work — 2025, Director / Lead engineer",
+            "variant": "kicker",
+            "align": "left",
+            "color": "muted",
+            "transform": "none"
+          }
+        },
+        {
+          "id": "blk_od_hero_title",
+          "layout": { "col": 2, "colSpan": 11, "row": 6, "rowSpan": 36 },
+          "type": "text",
+          "props": {
+            "content": "Overdawn.",
+            "variant": "h1",
+            "align": "left",
+            "color": "foreground",
+            "transform": "none",
+            "lineHeight": 0.85,
+            "letterSpacing": -0.025
+          }
+        },
+        {
+          "id": "blk_od_hero_tagline",
+          "layout": { "col": 2, "colSpan": 7, "row": 44, "rowSpan": 24 },
+          "type": "text",
+          "props": {
+            "content": "A 2.5D bullet-time shooter built in Unity. As a blood-thirst merc in the dystopian city of Andrean, slow time, find your flow state, and punch a hole through the people trying to kill you.",
+            "variant": "body",
+            "align": "left",
+            "color": "foreground",
+            "transform": "none"
+          }
+        }
+      ]
+    },
+    {
+      "id": "sec_od_poster",
+      "background": { "type": "transparent" },
+      "padding": "md",
+      "minHeight": "auto",
+      "align": "top",
+      "blocks": [
+        {
+          "id": "blk_od_poster",
+          "layout": { "col": 2, "colSpan": 11, "row": 1, "rowSpan": 60 },
+          "type": "image",
+          "props": {
+            "src": "/projects/overdawnWide.png",
+            "alt": "Overdawn key art",
+            "fit": "cover",
+            "aspect": "16/9",
+            "radius": 0,
+            "filter": "none",
+            "focalX": 50,
+            "focalY": 50,
+            "rotate": 0,
+            "flipX": false,
+            "flipY": false,
+            "blur": 0,
+            "tint": "none",
+            "tintOpacity": 0
+          }
+        }
+      ]
+    },
+    {
+      "id": "sec_od_vitals",
+      "background": { "type": "transparent" },
+      "padding": "lg",
+      "minHeight": "auto",
+      "align": "top",
+      "blocks": [
+        {
+          "id": "blk_od_vitals_kicker",
+          "layout": { "col": 2, "colSpan": 4, "row": 1, "rowSpan": 3 },
+          "type": "text",
+          "props": {
+            "content": "Vital signs",
+            "variant": "kicker",
+            "align": "left",
+            "color": "muted",
+            "transform": "none"
+          }
+        },
+        {
+          "id": "blk_od_vitals_rule",
+          "layout": { "col": 7, "colSpan": 5, "row": 2, "rowSpan": 1 },
+          "type": "line",
+          "props": { "thickness": 1, "color": "border" }
+        },
+        {
+          "id": "blk_od_vitals_body",
+          "layout": { "col": 2, "colSpan": 10, "row": 6, "rowSpan": 28 },
+          "type": "text",
+          "props": {
+            "content": "<strong>Status</strong> — Ongoing<br><strong>Type</strong> — Commercial<br><strong>Duration</strong> — ~3 years<br><strong>Stack</strong> — Unity (C#), SteamAPI, GitHub, Odin Inspector, Yarn Spinner<br><strong>Role</strong> — Game director, lead engineer, technical designer, artist",
+            "variant": "body",
+            "align": "left",
+            "color": "foreground",
+            "transform": "none"
+          }
+        }
+      ]
+    },
+    {
+      "id": "sec_od_trailer_title",
+      "background": { "type": "transparent" },
+      "padding": "lg",
+      "minHeight": "auto",
+      "align": "top",
+      "blocks": [
+        {
+          "id": "blk_od_trailer_num",
+          "layout": { "col": 2, "colSpan": 3, "row": 1, "rowSpan": 3 },
+          "type": "text",
+          "props": {
+            "content": "§ 01",
+            "variant": "kicker",
+            "align": "left",
+            "color": "muted",
+            "transform": "none"
+          }
+        },
+        {
+          "id": "blk_od_trailer_rule",
+          "layout": { "col": 5, "colSpan": 7, "row": 2, "rowSpan": 1 },
+          "type": "line",
+          "props": { "thickness": 1, "color": "border" }
+        },
+        {
+          "id": "blk_od_trailer_h2",
+          "layout": { "col": 2, "colSpan": 10, "row": 6, "rowSpan": 14 },
+          "type": "text",
+          "props": {
+            "content": "Trailer.",
+            "variant": "h2",
+            "align": "left",
+            "color": "foreground",
+            "transform": "none"
+          }
+        }
+      ]
+    },
+    {
+      "id": "sec_od_trailer",
+      "background": { "type": "transparent" },
+      "padding": "md",
+      "minHeight": "auto",
+      "align": "top",
+      "blocks": [
+        {
+          "id": "blk_od_trailer_video",
+          "layout": { "col": 2, "colSpan": 7, "row": 1, "rowSpan": 50 },
+          "type": "video",
+          "props": {
+            "url": "https://www.youtube.com/watch?v=E7KgVHyf0ak",
+            "autoplay": false,
+            "muted": false,
+            "loop": false,
+            "controls": true,
+            "aspect": "16/9",
+            "radius": 0
+          }
+        },
+        {
+          "id": "blk_od_trailer_blurb",
+          "layout": { "col": 9, "colSpan": 4, "row": 4, "rowSpan": 24 },
+          "type": "text",
+          "props": {
+            "content": "Overdawn is a narrative-driven game about memory and consequence. The trailer hints at the world, characters, and a few seconds of the core combat loop — slow time, line up an arc, fire.",
+            "variant": "body",
+            "align": "left",
+            "color": "foreground",
+            "transform": "none"
+          }
+        },
+        {
+          "id": "blk_od_trailer_btn_linktree",
+          "layout": { "col": 9, "colSpan": 3, "row": 30, "rowSpan": 5 },
+          "type": "button",
+          "props": {
+            "label": "Linktree",
+            "href": "https://linktr.ee/overdawn",
+            "variant": "ghost",
+            "align": "left",
+            "newTab": true
+          }
+        },
+        {
+          "id": "blk_od_trailer_btn_steam",
+          "layout": { "col": 9, "colSpan": 3, "row": 36, "rowSpan": 5 },
+          "type": "button",
+          "props": {
+            "label": "Steam Store",
+            "href": "https://store.steampowered.com/app/3519070/Overdawn/",
+            "variant": "primary",
+            "align": "left",
+            "newTab": true
+          }
+        }
+      ]
+    },
+    {
+      "id": "sec_od_awards_title",
+      "background": { "type": "transparent" },
+      "padding": "lg",
+      "minHeight": "auto",
+      "align": "top",
+      "blocks": [
+        {
+          "id": "blk_od_awards_num",
+          "layout": { "col": 2, "colSpan": 3, "row": 1, "rowSpan": 3 },
+          "type": "text",
+          "props": {
+            "content": "§ 02",
+            "variant": "kicker",
+            "align": "left",
+            "color": "muted",
+            "transform": "none"
+          }
+        },
+        {
+          "id": "blk_od_awards_rule",
+          "layout": { "col": 5, "colSpan": 7, "row": 2, "rowSpan": 1 },
+          "type": "line",
+          "props": { "thickness": 1, "color": "border" }
+        },
+        {
+          "id": "blk_od_awards_h2",
+          "layout": { "col": 2, "colSpan": 10, "row": 6, "rowSpan": 14 },
+          "type": "text",
+          "props": {
+            "content": "Awards &amp; recognition.",
+            "variant": "h2",
+            "align": "left",
+            "color": "foreground",
+            "transform": "none"
+          }
+        }
+      ]
+    },
+    {
+      "id": "sec_od_awards",
+      "background": { "type": "transparent" },
+      "padding": "md",
+      "minHeight": "auto",
+      "align": "top",
+      "blocks": [
+        {
+          "id": "blk_od_awards_body",
+          "layout": { "col": 2, "colSpan": 6, "row": 1, "rowSpan": 28 },
+          "type": "text",
+          "props": {
+            "content": "— 2025 Game Development World Championship — Best Student Game finalist.<br>— Tencent GWB 2025 — Student Category, bronze.<br>— 2025 SAGE — Design runner-up.<br>— Featured at the USC Games Expo.",
+            "variant": "body",
+            "align": "left",
+            "color": "foreground",
+            "transform": "none"
+          }
+        },
+        {
+          "id": "blk_od_awards_badge",
+          "layout": { "col": 9, "colSpan": 4, "row": 1, "rowSpan": 28 },
+          "type": "image",
+          "props": {
+            "src": "/projects/gdwcBadge.png",
+            "alt": "GDWC finalist badge",
+            "fit": "contain",
+            "radius": 0,
+            "filter": "none",
+            "focalX": 50,
+            "focalY": 50,
+            "rotate": 0,
+            "flipX": false,
+            "flipY": false,
+            "blur": 0,
+            "tint": "none",
+            "tintOpacity": 0
+          }
+        },
+        {
+          "id": "blk_od_awards_btn_gdwc",
+          "layout": { "col": 2, "colSpan": 3, "row": 31, "rowSpan": 5 },
+          "type": "button",
+          "props": {
+            "label": "GDWC entry",
+            "href": "https://thegdwc.com/games/b665386f-fdca-4ca3-aa1c-a46ac55c31b4",
+            "variant": "ghost",
+            "align": "left",
+            "newTab": true
+          }
+        },
+        {
+          "id": "blk_od_awards_btn_sage",
+          "layout": { "col": 5, "colSpan": 3, "row": 31, "rowSpan": 5 },
+          "type": "button",
+          "props": {
+            "label": "SAGE Awards",
+            "href": "https://sageawards.promote.fyi/",
+            "variant": "ghost",
+            "align": "left",
+            "newTab": true
+          }
+        }
+      ]
+    },
+    {
+      "id": "sec_od_team_title",
+      "background": { "type": "transparent" },
+      "padding": "lg",
+      "minHeight": "auto",
+      "align": "top",
+      "blocks": [
+        {
+          "id": "blk_od_team_num",
+          "layout": { "col": 2, "colSpan": 3, "row": 1, "rowSpan": 3 },
+          "type": "text",
+          "props": {
+            "content": "§ 03",
+            "variant": "kicker",
+            "align": "left",
+            "color": "muted",
+            "transform": "none"
+          }
+        },
+        {
+          "id": "blk_od_team_rule",
+          "layout": { "col": 5, "colSpan": 7, "row": 2, "rowSpan": 1 },
+          "type": "line",
+          "props": { "thickness": 1, "color": "border" }
+        },
+        {
+          "id": "blk_od_team_h2",
+          "layout": { "col": 2, "colSpan": 10, "row": 6, "rowSpan": 14 },
+          "type": "text",
+          "props": {
+            "content": "Founding a team.",
+            "variant": "h2",
+            "align": "left",
+            "color": "foreground",
+            "transform": "none"
+          }
+        }
+      ]
+    },
+    {
+      "id": "sec_od_team_body",
+      "background": { "type": "transparent" },
+      "padding": "md",
+      "minHeight": "auto",
+      "align": "top",
+      "blocks": [
+        {
+          "id": "blk_od_team_body",
+          "layout": { "col": 2, "colSpan": 8, "row": 1, "rowSpan": 60 },
+          "type": "text",
+          "props": {
+            "content": "After releasing Dawngeon in high school, I started Overdawn as a solo project. It iterated for years — from a PvP game into, finally, a bullet-hell, bullet-time shooter. Then I became a college student. I brought the game to USC and started assembling a team of people who shared the vision. Recruiting wasn't easy, but through game-development clubs and networking events the team grew to 30+ — programmers, artists, designers, writers. As director and lead engineer of Overdawn, I'm grateful every day for the people who keep this thing alive.<br><br>I led the design and implementation of 60+ gameplay systems, bridging creative vision and engineering constraints in Unity and C#.",
+            "variant": "body",
+            "align": "left",
+            "color": "foreground",
+            "transform": "none"
+          }
+        }
+      ]
+    },
+    {
+      "id": "sec_od_arch_title",
+      "background": { "type": "transparent" },
+      "padding": "lg",
+      "minHeight": "auto",
+      "align": "top",
+      "blocks": [
+        {
+          "id": "blk_od_arch_num",
+          "layout": { "col": 2, "colSpan": 3, "row": 1, "rowSpan": 3 },
+          "type": "text",
+          "props": {
+            "content": "§ 04",
+            "variant": "kicker",
+            "align": "left",
+            "color": "muted",
+            "transform": "none"
+          }
+        },
+        {
+          "id": "blk_od_arch_rule",
+          "layout": { "col": 5, "colSpan": 7, "row": 2, "rowSpan": 1 },
+          "type": "line",
+          "props": { "thickness": 1, "color": "border" }
+        },
+        {
+          "id": "blk_od_arch_h2",
+          "layout": { "col": 2, "colSpan": 10, "row": 6, "rowSpan": 18 },
+          "type": "text",
+          "props": {
+            "content": "System engineering — the architecture.",
+            "variant": "h2",
+            "align": "left",
+            "color": "foreground",
+            "transform": "none"
+          }
+        }
+      ]
+    },
+    {
+      "id": "sec_od_arch_body",
+      "background": { "type": "transparent" },
+      "padding": "md",
+      "minHeight": "auto",
+      "align": "top",
+      "blocks": [
+        {
+          "id": "blk_od_arch_body",
+          "layout": { "col": 2, "colSpan": 6, "row": 1, "rowSpan": 36 },
+          "type": "text",
+          "props": {
+            "content": "A modular, scalable architecture in Unity and C# that lets distinct game systems — controls, level management, quests — develop in parallel without stepping on each other.<br><br><strong>Scenes.</strong> A central SceneManager handles transitions, async load and unload, and a PersistentGameplay layer that survives scene changes.<br><br><strong>State.</strong> A singleton GameManager owns the high-level states — Main Menu, In-Game, Paused, Game Over — and the transitions between them.<br><br><strong>Events.</strong> A decoupled event bus connects systems without coupling their lifetimes. Same backbone underneath the sequence system.<br><br><strong>Persistence.</strong> A save/load layer that retains player choices and progression across sessions.",
+            "variant": "body",
+            "align": "left",
+            "color": "foreground",
+            "transform": "none"
+          }
+        },
+        {
+          "id": "blk_od_arch_diagram",
+          "layout": { "col": 8, "colSpan": 5, "row": 1, "rowSpan": 40 },
+          "type": "image",
+          "props": {
+            "src": "/projects/ODArchitectureSimplified.png",
+            "alt": "Overdawn architecture diagram",
+            "fit": "contain",
+            "radius": 0,
+            "filter": "none",
+            "focalX": 50,
+            "focalY": 50,
+            "rotate": 0,
+            "flipX": false,
+            "flipY": false,
+            "blur": 0,
+            "tint": "none",
+            "tintOpacity": 0
+          }
+        }
+      ]
+    },
+    {
+      "id": "sec_od_debug",
+      "background": { "type": "transparent" },
+      "padding": "md",
+      "minHeight": "auto",
+      "align": "top",
+      "blocks": [
+        {
+          "id": "blk_od_debug_kicker",
+          "layout": { "col": 2, "colSpan": 5, "row": 1, "rowSpan": 3 },
+          "type": "text",
+          "props": {
+            "content": "Debug tools",
+            "variant": "kicker",
+            "align": "left",
+            "color": "muted",
+            "transform": "none"
+          }
+        },
+        {
+          "id": "blk_od_debug_h3",
+          "layout": { "col": 2, "colSpan": 5, "row": 5, "rowSpan": 8 },
+          "type": "text",
+          "props": {
+            "content": "An in-game console.",
+            "variant": "h3",
+            "align": "left",
+            "color": "foreground",
+            "transform": "none"
+          }
+        },
+        {
+          "id": "blk_od_debug_body",
+          "layout": { "col": 2, "colSpan": 5, "row": 14, "rowSpan": 20 },
+          "type": "text",
+          "props": {
+            "content": "An in-game console for executing commands, inspecting variables, and editing state at runtime — built early because the cost of bad debugging compounds across a 3-year project.",
+            "variant": "body",
+            "align": "left",
+            "color": "foreground",
+            "transform": "none"
+          }
+        },
+        {
+          "id": "blk_od_debug_image",
+          "layout": { "col": 8, "colSpan": 5, "row": 1, "rowSpan": 34 },
+          "type": "image",
+          "props": {
+            "src": "/projects/ODConsole.png",
+            "alt": "Overdawn debug console",
+            "fit": "contain",
+            "radius": 0,
+            "filter": "none",
+            "focalX": 50,
+            "focalY": 50,
+            "rotate": 0,
+            "flipX": false,
+            "flipY": false,
+            "blur": 0,
+            "tint": "none",
+            "tintOpacity": 0
+          }
+        }
+      ]
+    },
+    {
+      "id": "sec_od_designtools",
+      "background": { "type": "transparent" },
+      "padding": "md",
+      "minHeight": "auto",
+      "align": "top",
+      "blocks": [
+        {
+          "id": "blk_od_designtools_kicker",
+          "layout": { "col": 2, "colSpan": 5, "row": 1, "rowSpan": 3 },
+          "type": "text",
+          "props": {
+            "content": "Designer tools",
+            "variant": "kicker",
+            "align": "left",
+            "color": "muted",
+            "transform": "none"
+          }
+        },
+        {
+          "id": "blk_od_designtools_h3",
+          "layout": { "col": 2, "colSpan": 5, "row": 5, "rowSpan": 8 },
+          "type": "text",
+          "props": {
+            "content": "Custom Unity editor tools.",
+            "variant": "h3",
+            "align": "left",
+            "color": "foreground",
+            "transform": "none"
+          }
+        },
+        {
+          "id": "blk_od_designtools_body",
+          "layout": { "col": 2, "colSpan": 5, "row": 14, "rowSpan": 28 },
+          "type": "text",
+          "props": {
+            "content": "Built on Odin Inspector. A custom Painter for terrain and prop placement on our 2.5D levels. A Scene Switcher and Scene Behavior pair so designers can manage transitions and per-scene logic without leaving the editor.",
+            "variant": "body",
+            "align": "left",
+            "color": "foreground",
+            "transform": "none"
+          }
+        },
+        {
+          "id": "blk_od_designtools_painter",
+          "layout": { "col": 8, "colSpan": 5, "row": 1, "rowSpan": 18 },
+          "type": "image",
+          "props": {
+            "src": "/projects/ODPainter.png",
+            "alt": "Custom Painter tool",
+            "fit": "contain",
+            "radius": 0,
+            "filter": "none",
+            "focalX": 50,
+            "focalY": 50,
+            "rotate": 0,
+            "flipX": false,
+            "flipY": false,
+            "blur": 0,
+            "tint": "none",
+            "tintOpacity": 0
+          }
+        },
+        {
+          "id": "blk_od_designtools_switcher",
+          "layout": { "col": 8, "colSpan": 5, "row": 21, "rowSpan": 18 },
+          "type": "image",
+          "props": {
+            "src": "/projects/ODSceneSwitcher.png",
+            "alt": "Scene switcher",
+            "fit": "contain",
+            "radius": 0,
+            "filter": "none",
+            "focalX": 50,
+            "focalY": 50,
+            "rotate": 0,
+            "flipX": false,
+            "flipY": false,
+            "blur": 0,
+            "tint": "none",
+            "tintOpacity": 0
+          }
+        },
+        {
+          "id": "blk_od_designtools_behavior",
+          "layout": { "col": 8, "colSpan": 5, "row": 41, "rowSpan": 18 },
+          "type": "image",
+          "props": {
+            "src": "/projects/ODSceneBehavior.png",
+            "alt": "Scene behavior tool",
+            "fit": "contain",
+            "radius": 0,
+            "filter": "none",
+            "focalX": 50,
+            "focalY": 50,
+            "rotate": 0,
+            "flipX": false,
+            "flipY": false,
+            "blur": 0,
+            "tint": "none",
+            "tintOpacity": 0
+          }
+        }
+      ]
+    },
+    {
+      "id": "sec_od_quest",
+      "background": { "type": "transparent" },
+      "padding": "md",
+      "minHeight": "auto",
+      "align": "top",
+      "blocks": [
+        {
+          "id": "blk_od_quest_kicker",
+          "layout": { "col": 2, "colSpan": 5, "row": 1, "rowSpan": 3 },
+          "type": "text",
+          "props": {
+            "content": "Quest system",
+            "variant": "kicker",
+            "align": "left",
+            "color": "muted",
+            "transform": "none"
+          }
+        },
+        {
+          "id": "blk_od_quest_h3",
+          "layout": { "col": 2, "colSpan": 5, "row": 5, "rowSpan": 8 },
+          "type": "text",
+          "props": {
+            "content": "Authoring the player's day.",
+            "variant": "h3",
+            "align": "left",
+            "color": "foreground",
+            "transform": "none"
+          }
+        },
+        {
+          "id": "blk_od_quest_body",
+          "layout": { "col": 2, "colSpan": 5, "row": 14, "rowSpan": 30 },
+          "type": "text",
+          "props": {
+            "content": "A quest system covering objectives, progress, and rewards across main quests and optional side objectives. Quests are ScriptableObjects so designers can author and iterate without code. Bound directly to the UI for clear, immediate feedback.",
+            "variant": "body",
+            "align": "left",
+            "color": "foreground",
+            "transform": "none"
+          }
+        },
+        {
+          "id": "blk_od_quest_preview",
+          "layout": { "col": 8, "colSpan": 5, "row": 1, "rowSpan": 22 },
+          "type": "image",
+          "props": {
+            "src": "/projects/ODQuestPreview.png",
+            "alt": "Quest preview UI",
+            "fit": "contain",
+            "radius": 0,
+            "filter": "none",
+            "focalX": 50,
+            "focalY": 50,
+            "rotate": 0,
+            "flipX": false,
+            "flipY": false,
+            "blur": 0,
+            "tint": "none",
+            "tintOpacity": 0
+          }
+        },
+        {
+          "id": "blk_od_quest_system",
+          "layout": { "col": 8, "colSpan": 5, "row": 25, "rowSpan": 22 },
+          "type": "image",
+          "props": {
+            "src": "/projects/ODQuestSystem.png",
+            "alt": "Quest system editor",
+            "fit": "contain",
+            "radius": 0,
+            "filter": "none",
+            "focalX": 50,
+            "focalY": 50,
+            "rotate": 0,
+            "flipX": false,
+            "flipY": false,
+            "blur": 0,
+            "tint": "none",
+            "tintOpacity": 0
+          }
+        }
+      ]
+    },
+    {
+      "id": "sec_od_nav",
+      "background": { "type": "transparent" },
+      "padding": "md",
+      "minHeight": "auto",
+      "align": "top",
+      "blocks": [
+        {
+          "id": "blk_od_nav_kicker",
+          "layout": { "col": 2, "colSpan": 5, "row": 1, "rowSpan": 3 },
+          "type": "text",
+          "props": {
+            "content": "Navigation",
+            "variant": "kicker",
+            "align": "left",
+            "color": "muted",
+            "transform": "none"
+          }
+        },
+        {
+          "id": "blk_od_nav_h3",
+          "layout": { "col": 2, "colSpan": 5, "row": 5, "rowSpan": 8 },
+          "type": "text",
+          "props": {
+            "content": "A seamless cross-scene NavMesh.",
+            "variant": "h3",
+            "align": "left",
+            "color": "foreground",
+            "transform": "none"
+          }
+        },
+        {
+          "id": "blk_od_nav_body",
+          "layout": { "col": 2, "colSpan": 5, "row": 14, "rowSpan": 40 },
+          "type": "text",
+          "props": {
+            "content": "Unity ships basic pathfinding through NavMesh, but Overdawn's async, multi-scene levels asked for more. Each scene is indexed with valid navigation points; a NavigationManager calculates paths across scenes via BFS so NPCs and enemies can move through the world regardless of scene boundaries.<br><br>The same layer powers the transportation system that subways and elevators ride on — they pivot on the player's currently active NavMesh, which determines which scene's behavior is active at any moment.",
+            "variant": "body",
+            "align": "left",
+            "color": "foreground",
+            "transform": "none"
+          }
+        },
+        {
+          "id": "blk_od_nav_gif",
+          "layout": { "col": 8, "colSpan": 5, "row": 1, "rowSpan": 22 },
+          "type": "image",
+          "props": {
+            "src": "/projects/ODNavigation.gif",
+            "alt": "Cross-scene navigation",
+            "fit": "contain",
+            "radius": 0,
+            "filter": "none",
+            "focalX": 50,
+            "focalY": 50,
+            "rotate": 0,
+            "flipX": false,
+            "flipY": false,
+            "blur": 0,
+            "tint": "none",
+            "tintOpacity": 0
+          }
+        },
+        {
+          "id": "blk_od_nav_elevator",
+          "layout": { "col": 8, "colSpan": 5, "row": 25, "rowSpan": 22 },
+          "type": "image",
+          "props": {
+            "src": "/projects/ODElevator.png",
+            "alt": "Seamless elevator",
+            "fit": "contain",
+            "radius": 0,
+            "filter": "none",
+            "focalX": 50,
+            "focalY": 50,
+            "rotate": 0,
+            "flipX": false,
+            "flipY": false,
+            "blur": 0,
+            "tint": "none",
+            "tintOpacity": 0
+          }
+        }
+      ]
+    },
+    {
+      "id": "sec_od_seq",
+      "background": { "type": "transparent" },
+      "padding": "md",
+      "minHeight": "auto",
+      "align": "top",
+      "blocks": [
+        {
+          "id": "blk_od_seq_kicker",
+          "layout": { "col": 2, "colSpan": 5, "row": 1, "rowSpan": 3 },
+          "type": "text",
+          "props": {
+            "content": "Sequence graph",
+            "variant": "kicker",
+            "align": "left",
+            "color": "muted",
+            "transform": "none"
+          }
+        },
+        {
+          "id": "blk_od_seq_h3",
+          "layout": { "col": 2, "colSpan": 5, "row": 5, "rowSpan": 8 },
+          "type": "text",
+          "props": {
+            "content": "Three iterations to a working narrative tool.",
+            "variant": "h3",
+            "align": "left",
+            "color": "foreground",
+            "transform": "none"
+          }
+        },
+        {
+          "id": "blk_od_seq_body",
+          "layout": { "col": 2, "colSpan": 5, "row": 14, "rowSpan": 44 },
+          "type": "text",
+          "props": {
+            "content": "The sequence system is event-driven for modularity. Dialog runs through Yarn Spinner. Authoring the surrounding sequences took three rewrites:<br><br><strong>v1.</strong> A simple GameObject-based system. Quickly unmanageable as sequences grew.<br><br><strong>v2.</strong> A graph built with XNode for visual scripting. Better, but Unity IMGUI made it slow and unfriendly.<br><br><strong>v3.</strong> Unity 6's Behavior Tree. Originally for character behaviors, but the model fit our actor-centric authoring far better. Designers gained real flexibility over individual actions.",
+            "variant": "body",
+            "align": "left",
+            "color": "foreground",
+            "transform": "none"
+          }
+        },
+        {
+          "id": "blk_od_seq_xnode",
+          "layout": { "col": 8, "colSpan": 5, "row": 1, "rowSpan": 22 },
+          "type": "image",
+          "props": {
+            "src": "/projects/ODXNODE.png",
+            "alt": "XNode graph (v2)",
+            "fit": "contain",
+            "radius": 0,
+            "filter": "none",
+            "focalX": 50,
+            "focalY": 50,
+            "rotate": 0,
+            "flipX": false,
+            "flipY": false,
+            "blur": 0,
+            "tint": "none",
+            "tintOpacity": 0
+          }
+        },
+        {
+          "id": "blk_od_seq_final",
+          "layout": { "col": 8, "colSpan": 5, "row": 25, "rowSpan": 22 },
+          "type": "image",
+          "props": {
+            "src": "/projects/ODFINALSGB.png",
+            "alt": "Behavior tree authoring (v3)",
+            "fit": "contain",
+            "radius": 0,
+            "filter": "none",
+            "focalX": 50,
+            "focalY": 50,
+            "rotate": 0,
+            "flipX": false,
+            "flipY": false,
+            "blur": 0,
+            "tint": "none",
+            "tintOpacity": 0
+          }
+        }
+      ]
+    },
+    {
+      "id": "sec_od_gp_title",
+      "background": { "type": "transparent" },
+      "padding": "lg",
+      "minHeight": "auto",
+      "align": "top",
+      "blocks": [
+        {
+          "id": "blk_od_gp_num",
+          "layout": { "col": 2, "colSpan": 3, "row": 1, "rowSpan": 3 },
+          "type": "text",
+          "props": {
+            "content": "§ 05",
+            "variant": "kicker",
+            "align": "left",
+            "color": "muted",
+            "transform": "none"
+          }
+        },
+        {
+          "id": "blk_od_gp_rule",
+          "layout": { "col": 5, "colSpan": 7, "row": 2, "rowSpan": 1 },
+          "type": "line",
+          "props": { "thickness": 1, "color": "border" }
+        },
+        {
+          "id": "blk_od_gp_h2",
+          "layout": { "col": 2, "colSpan": 10, "row": 6, "rowSpan": 18 },
+          "type": "text",
+          "props": {
+            "content": "Gameplay programming.",
+            "variant": "h2",
+            "align": "left",
+            "color": "foreground",
+            "transform": "none"
+          }
+        }
+      ]
+    },
+    {
+      "id": "sec_od_player",
+      "background": { "type": "transparent" },
+      "padding": "md",
+      "minHeight": "auto",
+      "align": "top",
+      "blocks": [
+        {
+          "id": "blk_od_player_kicker",
+          "layout": { "col": 2, "colSpan": 5, "row": 1, "rowSpan": 3 },
+          "type": "text",
+          "props": {
+            "content": "Player",
+            "variant": "kicker",
+            "align": "left",
+            "color": "muted",
+            "transform": "none"
+          }
+        },
+        {
+          "id": "blk_od_player_h3",
+          "layout": { "col": 2, "colSpan": 5, "row": 5, "rowSpan": 8 },
+          "type": "text",
+          "props": {
+            "content": "An expandable actor hierarchy.",
+            "variant": "h3",
+            "align": "left",
+            "color": "foreground",
+            "transform": "none"
+          }
+        },
+        {
+          "id": "blk_od_player_body",
+          "layout": { "col": 2, "colSpan": 5, "row": 14, "rowSpan": 32 },
+          "type": "text",
+          "props": {
+            "content": "Responsive movement, combat, and interaction. The actor class hierarchy is built to extend — new behaviors land as subclasses without touching the player core. A custom animation layer drives our 2.5D environments across multiple camera angles. Object structure is tuned for the dense interactions a bullet-time shooter demands.",
+            "variant": "body",
+            "align": "left",
+            "color": "foreground",
+            "transform": "none"
+          }
+        },
+        {
+          "id": "blk_od_player_image",
+          "layout": { "col": 8, "colSpan": 5, "row": 1, "rowSpan": 36 },
+          "type": "image",
+          "props": {
+            "src": "/projects/ODCharacterHierarchy.png",
+            "alt": "Character hierarchy",
+            "fit": "contain",
+            "radius": 0,
+            "filter": "none",
+            "focalX": 50,
+            "focalY": 50,
+            "rotate": 0,
+            "flipX": false,
+            "flipY": false,
+            "blur": 0,
+            "tint": "none",
+            "tintOpacity": 0
+          }
+        }
+      ]
+    },
+    {
+      "id": "sec_od_weapons",
+      "background": { "type": "transparent" },
+      "padding": "md",
+      "minHeight": "auto",
+      "align": "top",
+      "blocks": [
+        {
+          "id": "blk_od_weapons_kicker",
+          "layout": { "col": 2, "colSpan": 5, "row": 1, "rowSpan": 3 },
+          "type": "text",
+          "props": {
+            "content": "Weapons &amp; projectiles",
+            "variant": "kicker",
+            "align": "left",
+            "color": "muted",
+            "transform": "none"
+          }
+        },
+        {
+          "id": "blk_od_weapons_h3",
+          "layout": { "col": 2, "colSpan": 5, "row": 5, "rowSpan": 8 },
+          "type": "text",
+          "props": {
+            "content": "Pooled, behavior-driven projectiles.",
+            "variant": "h3",
+            "align": "left",
+            "color": "foreground",
+            "transform": "none"
+          }
+        },
+        {
+          "id": "blk_od_weapons_body",
+          "layout": { "col": 2, "colSpan": 5, "row": 14, "rowSpan": 36 },
+          "type": "text",
+          "props": {
+            "content": "A flexible weapon system that makes new weapons cheap to add. Projectiles share a pool to keep performance steady through the heaviest combat. Behaviors compose: homing, bouncing, AoE. Damage flows through an IDamageable interface, keeping the health system decoupled from any particular weapon.",
+            "variant": "body",
+            "align": "left",
+            "color": "foreground",
+            "transform": "none"
+          }
+        },
+        {
+          "id": "blk_od_weapons_weapon",
+          "layout": { "col": 8, "colSpan": 5, "row": 1, "rowSpan": 22 },
+          "type": "image",
+          "props": {
+            "src": "/projects/ODWeapon.png",
+            "alt": "Weapon system",
+            "fit": "contain",
+            "radius": 0,
+            "filter": "none",
+            "focalX": 50,
+            "focalY": 50,
+            "rotate": 0,
+            "flipX": false,
+            "flipY": false,
+            "blur": 0,
+            "tint": "none",
+            "tintOpacity": 0
+          }
+        },
+        {
+          "id": "blk_od_weapons_proj",
+          "layout": { "col": 8, "colSpan": 5, "row": 25, "rowSpan": 22 },
+          "type": "image",
+          "props": {
+            "src": "/projects/ODProjectile.png",
+            "alt": "Projectile system",
+            "fit": "contain",
+            "radius": 0,
+            "filter": "none",
+            "focalX": 50,
+            "focalY": 50,
+            "rotate": 0,
+            "flipX": false,
+            "flipY": false,
+            "blur": 0,
+            "tint": "none",
+            "tintOpacity": 0
+          }
+        }
+      ]
+    },
+    {
+      "id": "sec_od_enemies",
+      "background": { "type": "transparent" },
+      "padding": "md",
+      "minHeight": "auto",
+      "align": "top",
+      "blocks": [
+        {
+          "id": "blk_od_enemies_kicker",
+          "layout": { "col": 8, "colSpan": 5, "row": 1, "rowSpan": 3 },
+          "type": "text",
+          "props": {
+            "content": "Enemies",
+            "variant": "kicker",
+            "align": "left",
+            "color": "muted",
+            "transform": "none"
+          }
+        },
+        {
+          "id": "blk_od_enemies_h3",
+          "layout": { "col": 8, "colSpan": 5, "row": 5, "rowSpan": 8 },
+          "type": "text",
+          "props": {
+            "content": "FOV, cover, and a behavior tree.",
+            "variant": "h3",
+            "align": "left",
+            "color": "foreground",
+            "transform": "none"
+          }
+        },
+        {
+          "id": "blk_od_enemies_body",
+          "layout": { "col": 8, "colSpan": 5, "row": 14, "rowSpan": 28 },
+          "type": "text",
+          "props": {
+            "content": "Multiple enemy archetypes, each with distinct attacks and decision logic. The Behavior Tree drives moment-to-moment choices; an FOV system and take-cover behavior add depth so combat doesn't collapse into a shooting gallery.",
+            "variant": "body",
+            "align": "left",
+            "color": "foreground",
+            "transform": "none"
+          }
+        },
+        {
+          "id": "blk_od_enemies_image",
+          "layout": { "col": 2, "colSpan": 5, "row": 1, "rowSpan": 36 },
+          "type": "image",
+          "props": {
+            "src": "/projects/ODRev.png",
+            "alt": "Enemy behavior",
+            "fit": "contain",
+            "radius": 0,
+            "filter": "none",
+            "focalX": 50,
+            "focalY": 50,
+            "rotate": 0,
+            "flipX": false,
+            "flipY": false,
+            "blur": 0,
+            "tint": "none",
+            "tintOpacity": 0
+          }
+        }
+      ]
+    },
+    {
+      "id": "sec_od_ui",
+      "background": { "type": "transparent" },
+      "padding": "md",
+      "minHeight": "auto",
+      "align": "top",
+      "blocks": [
+        {
+          "id": "blk_od_ui_kicker",
+          "layout": { "col": 2, "colSpan": 5, "row": 1, "rowSpan": 3 },
+          "type": "text",
+          "props": {
+            "content": "UI",
+            "variant": "kicker",
+            "align": "left",
+            "color": "muted",
+            "transform": "none"
+          }
+        },
+        {
+          "id": "blk_od_ui_h3",
+          "layout": { "col": 2, "colSpan": 5, "row": 5, "rowSpan": 8 },
+          "type": "text",
+          "props": {
+            "content": "HUD, inventory, the rest.",
+            "variant": "h3",
+            "align": "left",
+            "color": "foreground",
+            "transform": "none"
+          }
+        },
+        {
+          "id": "blk_od_ui_body",
+          "layout": { "col": 2, "colSpan": 5, "row": 14, "rowSpan": 24 },
+          "type": "text",
+          "props": {
+            "content": "Health, ammo, inventory — and the surrounding chrome that ties the rest of the UI together. Built so the player always knows what's going on without ever having to stop to read.",
+            "variant": "body",
+            "align": "left",
+            "color": "foreground",
+            "transform": "none"
+          }
+        },
+        {
+          "id": "blk_od_ui_image",
+          "layout": { "col": 8, "colSpan": 5, "row": 1, "rowSpan": 36 },
+          "type": "image",
+          "props": {
+            "src": "/projects/ODInventory.png",
+            "alt": "Inventory UI",
+            "fit": "contain",
+            "radius": 0,
+            "filter": "none",
+            "focalX": 50,
+            "focalY": 50,
+            "rotate": 0,
+            "flipX": false,
+            "flipY": false,
+            "blur": 0,
+            "tint": "none",
+            "tintOpacity": 0
+          }
+        }
+      ]
+    },
+    {
+      "id": "sec_od_skill",
+      "background": { "type": "transparent" },
+      "padding": "md",
+      "minHeight": "auto",
+      "align": "top",
+      "blocks": [
+        {
+          "id": "blk_od_skill_kicker",
+          "layout": { "col": 8, "colSpan": 5, "row": 1, "rowSpan": 3 },
+          "type": "text",
+          "props": {
+            "content": "Skill tree",
+            "variant": "kicker",
+            "align": "left",
+            "color": "muted",
+            "transform": "none"
+          }
+        },
+        {
+          "id": "blk_od_skill_h3",
+          "layout": { "col": 8, "colSpan": 5, "row": 5, "rowSpan": 8 },
+          "type": "text",
+          "props": {
+            "content": "Acquire, upgrade, plan ahead.",
+            "variant": "h3",
+            "align": "left",
+            "color": "foreground",
+            "transform": "none"
+          }
+        },
+        {
+          "id": "blk_od_skill_body",
+          "layout": { "col": 8, "colSpan": 5, "row": 14, "rowSpan": 24 },
+          "type": "text",
+          "props": {
+            "content": "A skill system tied to a visual skill-tree UI — players can see what's coming, weigh trade-offs, and own their build before committing.",
+            "variant": "body",
+            "align": "left",
+            "color": "foreground",
+            "transform": "none"
+          }
+        },
+        {
+          "id": "blk_od_skill_image",
+          "layout": { "col": 2, "colSpan": 5, "row": 1, "rowSpan": 36 },
+          "type": "image",
+          "props": {
+            "src": "/projects/ODSkill.png",
+            "alt": "Skill tree",
+            "fit": "contain",
+            "radius": 0,
+            "filter": "none",
+            "focalX": 50,
+            "focalY": 50,
+            "rotate": 0,
+            "flipX": false,
+            "flipY": false,
+            "blur": 0,
+            "tint": "none",
+            "tintOpacity": 0
+          }
+        }
+      ]
+    },
+    {
+      "id": "sec_od_outro",
+      "background": { "type": "transparent" },
+      "padding": "lg",
+      "minHeight": "auto",
+      "align": "top",
+      "blocks": [
+        {
+          "id": "blk_od_outro_back",
+          "layout": { "col": 2, "colSpan": 3, "row": 1, "rowSpan": 5 },
+          "type": "button",
+          "props": {
+            "label": "← Back to index",
+            "href": "/",
+            "variant": "ghost",
+            "align": "left",
+            "newTab": false
+          }
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,685 @@
+{
+  "meta": {
+    "title": "Dawngeon — Youngje Park",
+    "description": "A pixel rogue-like for iOS. Solo developer."
+  },
+  "sections": [
+    {
+      "id": "sec_dg_hero",
+      "background": { "type": "transparent" },
+      "padding": "xl",
+      "minHeight": "screen",
+      "align": "center",
+      "blocks": [
+        {
+          "id": "blk_dg_hero_kicker",
+          "layout": { "col": 2, "colSpan": 8, "row": 1, "rowSpan": 3 },
+          "type": "text",
+          "props": {
+            "content": "§ Selected work — Solo developer, 2022",
+            "variant": "kicker",
+            "align": "left",
+            "color": "muted",
+            "transform": "none"
+          }
+        },
+        {
+          "id": "blk_dg_hero_title",
+          "layout": { "col": 2, "colSpan": 11, "row": 6, "rowSpan": 36 },
+          "type": "text",
+          "props": {
+            "content": "Dawngeon.",
+            "variant": "h1",
+            "align": "left",
+            "color": "foreground",
+            "transform": "none",
+            "lineHeight": 0.85,
+            "letterSpacing": -0.025
+          }
+        },
+        {
+          "id": "blk_dg_hero_tagline",
+          "layout": { "col": 2, "colSpan": 7, "row": 44, "rowSpan": 24 },
+          "type": "text",
+          "props": {
+            "content": "A pixel rogue-like RPG for the App Store. Mobile-first UX, juicy interaction feedback, designed to play wherever you are — even without WiFi.",
+            "variant": "body",
+            "align": "left",
+            "color": "foreground",
+            "transform": "none"
+          }
+        }
+      ]
+    },
+    {
+      "id": "sec_dg_logo",
+      "background": { "type": "transparent" },
+      "padding": "md",
+      "minHeight": "auto",
+      "align": "top",
+      "blocks": [
+        {
+          "id": "blk_dg_logo",
+          "layout": { "col": 2, "colSpan": 11, "row": 1, "rowSpan": 60 },
+          "type": "image",
+          "props": {
+            "src": "/projects/DawngeonLogo.png",
+            "alt": "Dawngeon logo",
+            "fit": "contain",
+            "radius": 0,
+            "filter": "none",
+            "focalX": 50,
+            "focalY": 50,
+            "rotate": 0,
+            "flipX": false,
+            "flipY": false,
+            "blur": 0,
+            "tint": "none",
+            "tintOpacity": 0
+          }
+        }
+      ]
+    },
+    {
+      "id": "sec_dg_vitals",
+      "background": { "type": "transparent" },
+      "padding": "lg",
+      "minHeight": "auto",
+      "align": "top",
+      "blocks": [
+        {
+          "id": "blk_dg_vitals_kicker",
+          "layout": { "col": 2, "colSpan": 4, "row": 1, "rowSpan": 3 },
+          "type": "text",
+          "props": {
+            "content": "Vital signs",
+            "variant": "kicker",
+            "align": "left",
+            "color": "muted",
+            "transform": "none"
+          }
+        },
+        {
+          "id": "blk_dg_vitals_rule",
+          "layout": { "col": 7, "colSpan": 5, "row": 2, "rowSpan": 1 },
+          "type": "line",
+          "props": { "thickness": 1, "color": "border" }
+        },
+        {
+          "id": "blk_dg_vitals_body",
+          "layout": { "col": 2, "colSpan": 10, "row": 6, "rowSpan": 28 },
+          "type": "text",
+          "props": {
+            "content": "<strong>Status</strong> — Released<br><strong>Type</strong> — Personal<br><strong>Duration</strong> — ~2 years<br><strong>Stack</strong> — Unity (C#), GitHub, Xcode<br><strong>Role</strong> — Solo developer; programmer, artist, designer, narrative, sound",
+            "variant": "body",
+            "align": "left",
+            "color": "foreground",
+            "transform": "none"
+          }
+        }
+      ]
+    },
+    {
+      "id": "sec_dg_trailer_title",
+      "background": { "type": "transparent" },
+      "padding": "lg",
+      "minHeight": "auto",
+      "align": "top",
+      "blocks": [
+        {
+          "id": "blk_dg_trailer_num",
+          "layout": { "col": 2, "colSpan": 3, "row": 1, "rowSpan": 3 },
+          "type": "text",
+          "props": {
+            "content": "§ 01",
+            "variant": "kicker",
+            "align": "left",
+            "color": "muted",
+            "transform": "none"
+          }
+        },
+        {
+          "id": "blk_dg_trailer_rule",
+          "layout": { "col": 5, "colSpan": 7, "row": 2, "rowSpan": 1 },
+          "type": "line",
+          "props": { "thickness": 1, "color": "border" }
+        },
+        {
+          "id": "blk_dg_trailer_h2",
+          "layout": { "col": 2, "colSpan": 10, "row": 6, "rowSpan": 14 },
+          "type": "text",
+          "props": {
+            "content": "Trailer.",
+            "variant": "h2",
+            "align": "left",
+            "color": "foreground",
+            "transform": "none"
+          }
+        }
+      ]
+    },
+    {
+      "id": "sec_dg_trailer",
+      "background": { "type": "transparent" },
+      "padding": "md",
+      "minHeight": "auto",
+      "align": "top",
+      "blocks": [
+        {
+          "id": "blk_dg_trailer_video",
+          "layout": { "col": 2, "colSpan": 7, "row": 1, "rowSpan": 50 },
+          "type": "video",
+          "props": {
+            "url": "https://www.youtube.com/watch?v=10N-DnhTI78",
+            "autoplay": false,
+            "muted": false,
+            "loop": false,
+            "controls": true,
+            "aspect": "16/9",
+            "radius": 0
+          }
+        },
+        {
+          "id": "blk_dg_trailer_blurb",
+          "layout": { "col": 9, "colSpan": 4, "row": 4, "rowSpan": 30 },
+          "type": "text",
+          "props": {
+            "content": "Dawngeon was a high-school passion project. I spearheaded end-to-end development in Unity and C#, prioritizing mobile-first UX and tactile feedback. My first time shipping to the App Store — first time learning Xcode, first time fielding real user feedback.",
+            "variant": "body",
+            "align": "left",
+            "color": "foreground",
+            "transform": "none"
+          }
+        },
+        {
+          "id": "blk_dg_btn_discord",
+          "layout": { "col": 9, "colSpan": 3, "row": 36, "rowSpan": 5 },
+          "type": "button",
+          "props": {
+            "label": "Discord",
+            "href": "https://discord.com/invite/AXUmWE8ntv",
+            "variant": "ghost",
+            "align": "left",
+            "newTab": true
+          }
+        },
+        {
+          "id": "blk_dg_btn_appstore",
+          "layout": { "col": 9, "colSpan": 3, "row": 42, "rowSpan": 5 },
+          "type": "button",
+          "props": {
+            "label": "App Store",
+            "href": "https://apps.apple.com/us/app/dawngeon/id1608444995",
+            "variant": "primary",
+            "align": "left",
+            "newTab": true
+          }
+        }
+      ]
+    },
+    {
+      "id": "sec_dg_ach_title",
+      "background": { "type": "transparent" },
+      "padding": "lg",
+      "minHeight": "auto",
+      "align": "top",
+      "blocks": [
+        {
+          "id": "blk_dg_ach_num",
+          "layout": { "col": 2, "colSpan": 3, "row": 1, "rowSpan": 3 },
+          "type": "text",
+          "props": {
+            "content": "§ 02",
+            "variant": "kicker",
+            "align": "left",
+            "color": "muted",
+            "transform": "none"
+          }
+        },
+        {
+          "id": "blk_dg_ach_rule",
+          "layout": { "col": 5, "colSpan": 7, "row": 2, "rowSpan": 1 },
+          "type": "line",
+          "props": { "thickness": 1, "color": "border" }
+        },
+        {
+          "id": "blk_dg_ach_h2",
+          "layout": { "col": 2, "colSpan": 10, "row": 6, "rowSpan": 14 },
+          "type": "text",
+          "props": {
+            "content": "Achievements.",
+            "variant": "h2",
+            "align": "left",
+            "color": "foreground",
+            "transform": "none"
+          }
+        }
+      ]
+    },
+    {
+      "id": "sec_dg_ach",
+      "background": { "type": "transparent" },
+      "padding": "md",
+      "minHeight": "auto",
+      "align": "top",
+      "blocks": [
+        {
+          "id": "blk_dg_ach_body",
+          "layout": { "col": 2, "colSpan": 5, "row": 1, "rowSpan": 28 },
+          "type": "text",
+          "props": {
+            "content": "— 21M App Store impressions.<br>— 140,000+ downloads worldwide.<br>— 4.6 / 5.0 rating.<br>— Charted #130 in the App Store Adventure category.",
+            "variant": "body",
+            "align": "left",
+            "color": "foreground",
+            "transform": "none"
+          }
+        },
+        {
+          "id": "blk_dg_ach_video",
+          "layout": { "col": 8, "colSpan": 5, "row": 1, "rowSpan": 36 },
+          "type": "video",
+          "props": {
+            "url": "https://www.youtube.com/watch?v=25WQUfCgPzE",
+            "autoplay": false,
+            "muted": false,
+            "loop": false,
+            "controls": true,
+            "aspect": "16/9",
+            "radius": 0
+          }
+        }
+      ]
+    },
+    {
+      "id": "sec_dg_systems_title",
+      "background": { "type": "transparent" },
+      "padding": "lg",
+      "minHeight": "auto",
+      "align": "top",
+      "blocks": [
+        {
+          "id": "blk_dg_systems_num",
+          "layout": { "col": 2, "colSpan": 3, "row": 1, "rowSpan": 3 },
+          "type": "text",
+          "props": {
+            "content": "§ 03",
+            "variant": "kicker",
+            "align": "left",
+            "color": "muted",
+            "transform": "none"
+          }
+        },
+        {
+          "id": "blk_dg_systems_rule",
+          "layout": { "col": 5, "colSpan": 7, "row": 2, "rowSpan": 1 },
+          "type": "line",
+          "props": { "thickness": 1, "color": "border" }
+        },
+        {
+          "id": "blk_dg_systems_h2",
+          "layout": { "col": 2, "colSpan": 10, "row": 6, "rowSpan": 18 },
+          "type": "text",
+          "props": {
+            "content": "What's inside.",
+            "variant": "h2",
+            "align": "left",
+            "color": "foreground",
+            "transform": "none"
+          }
+        }
+      ]
+    },
+    {
+      "id": "sec_dg_player",
+      "background": { "type": "transparent" },
+      "padding": "md",
+      "minHeight": "auto",
+      "align": "top",
+      "blocks": [
+        {
+          "id": "blk_dg_player_kicker",
+          "layout": { "col": 2, "colSpan": 4, "row": 1, "rowSpan": 3 },
+          "type": "text",
+          "props": {
+            "content": "Player control",
+            "variant": "kicker",
+            "align": "left",
+            "color": "muted",
+            "transform": "none"
+          }
+        },
+        {
+          "id": "blk_dg_player_body",
+          "layout": { "col": 2, "colSpan": 10, "row": 5, "rowSpan": 16 },
+          "type": "text",
+          "props": {
+            "content": "Touch-first controls — a responsive virtual joystick and action buttons tuned for the moment-to-moment feel of mobile combat.",
+            "variant": "body",
+            "align": "left",
+            "color": "foreground",
+            "transform": "none"
+          }
+        }
+      ]
+    },
+    {
+      "id": "sec_dg_weapons",
+      "background": { "type": "transparent" },
+      "padding": "md",
+      "minHeight": "auto",
+      "align": "top",
+      "blocks": [
+        {
+          "id": "blk_dg_weapons_kicker",
+          "layout": { "col": 2, "colSpan": 4, "row": 1, "rowSpan": 3 },
+          "type": "text",
+          "props": {
+            "content": "Weapons &amp; projectiles",
+            "variant": "kicker",
+            "align": "left",
+            "color": "muted",
+            "transform": "none"
+          }
+        },
+        {
+          "id": "blk_dg_weapons_body",
+          "layout": { "col": 2, "colSpan": 10, "row": 5, "rowSpan": 18 },
+          "type": "text",
+          "props": {
+            "content": "Weapons and projectile families that the skill tree extends. Each attribute is modulated by player stats and skills, so two builds with the same weapon can play very differently.",
+            "variant": "body",
+            "align": "left",
+            "color": "foreground",
+            "transform": "none"
+          }
+        }
+      ]
+    },
+    {
+      "id": "sec_dg_ai",
+      "background": { "type": "transparent" },
+      "padding": "md",
+      "minHeight": "auto",
+      "align": "top",
+      "blocks": [
+        {
+          "id": "blk_dg_ai_kicker",
+          "layout": { "col": 2, "colSpan": 4, "row": 1, "rowSpan": 3 },
+          "type": "text",
+          "props": {
+            "content": "Enemy AI",
+            "variant": "kicker",
+            "align": "left",
+            "color": "muted",
+            "transform": "none"
+          }
+        },
+        {
+          "id": "blk_dg_ai_body",
+          "layout": { "col": 2, "colSpan": 10, "row": 5, "rowSpan": 20 },
+          "type": "text",
+          "props": {
+            "content": "Pathfinding, decision-making, and combat tactics layered on a state machine — patrol, chase, attack. Tuning was the long pole; the framework was the easy part.",
+            "variant": "body",
+            "align": "left",
+            "color": "foreground",
+            "transform": "none"
+          }
+        }
+      ]
+    },
+    {
+      "id": "sec_dg_procgen",
+      "background": { "type": "transparent" },
+      "padding": "md",
+      "minHeight": "auto",
+      "align": "top",
+      "blocks": [
+        {
+          "id": "blk_dg_procgen_kicker",
+          "layout": { "col": 2, "colSpan": 4, "row": 1, "rowSpan": 3 },
+          "type": "text",
+          "props": {
+            "content": "Procedural generation",
+            "variant": "kicker",
+            "align": "left",
+            "color": "muted",
+            "transform": "none"
+          }
+        },
+        {
+          "id": "blk_dg_procgen_body",
+          "layout": { "col": 2, "colSpan": 10, "row": 5, "rowSpan": 20 },
+          "type": "text",
+          "props": {
+            "content": "A dungeon generator that composes modular rooms, enemy distributions, and item placements differently every run. Replayability is the genre's promise; ProcGen is how you keep it.",
+            "variant": "body",
+            "align": "left",
+            "color": "foreground",
+            "transform": "none"
+          }
+        }
+      ]
+    },
+    {
+      "id": "sec_dg_design",
+      "background": { "type": "transparent" },
+      "padding": "md",
+      "minHeight": "auto",
+      "align": "top",
+      "blocks": [
+        {
+          "id": "blk_dg_design_kicker",
+          "layout": { "col": 2, "colSpan": 4, "row": 1, "rowSpan": 3 },
+          "type": "text",
+          "props": {
+            "content": "Roguelike design",
+            "variant": "kicker",
+            "align": "left",
+            "color": "muted",
+            "transform": "none"
+          }
+        },
+        {
+          "id": "blk_dg_design_body",
+          "layout": { "col": 2, "colSpan": 10, "row": 5, "rowSpan": 20 },
+          "type": "text",
+          "props": {
+            "content": "Levels, encounters, item placements, and environmental hazards balanced so each run feels demanding but fair. The game has to be hard for the right reasons, not the cheap ones.",
+            "variant": "body",
+            "align": "left",
+            "color": "foreground",
+            "transform": "none"
+          }
+        }
+      ]
+    },
+    {
+      "id": "sec_dg_save",
+      "background": { "type": "transparent" },
+      "padding": "md",
+      "minHeight": "auto",
+      "align": "top",
+      "blocks": [
+        {
+          "id": "blk_dg_save_kicker",
+          "layout": { "col": 2, "colSpan": 4, "row": 1, "rowSpan": 3 },
+          "type": "text",
+          "props": {
+            "content": "Save system",
+            "variant": "kicker",
+            "align": "left",
+            "color": "muted",
+            "transform": "none"
+          }
+        },
+        {
+          "id": "blk_dg_save_body",
+          "layout": { "col": 2, "colSpan": 10, "row": 5, "rowSpan": 14 },
+          "type": "text",
+          "props": {
+            "content": "A save system that survives the realities of mobile — phone calls, battery deaths, the App Switcher. You can stop mid-run and pick up exactly where you left off.",
+            "variant": "body",
+            "align": "left",
+            "color": "foreground",
+            "transform": "none"
+          }
+        }
+      ]
+    },
+    {
+      "id": "sec_dg_narrative",
+      "background": { "type": "transparent" },
+      "padding": "md",
+      "minHeight": "auto",
+      "align": "top",
+      "blocks": [
+        {
+          "id": "blk_dg_narrative_kicker",
+          "layout": { "col": 2, "colSpan": 4, "row": 1, "rowSpan": 3 },
+          "type": "text",
+          "props": {
+            "content": "Narrative system",
+            "variant": "kicker",
+            "align": "left",
+            "color": "muted",
+            "transform": "none"
+          }
+        },
+        {
+          "id": "blk_dg_narrative_body",
+          "layout": { "col": 2, "colSpan": 10, "row": 5, "rowSpan": 14 },
+          "type": "text",
+          "props": {
+            "content": "A custom storytelling layer to deliver dialog, lore, and beats in the rhythm of the run.",
+            "variant": "body",
+            "align": "left",
+            "color": "foreground",
+            "transform": "none"
+          }
+        }
+      ]
+    },
+    {
+      "id": "sec_dg_inventory",
+      "background": { "type": "transparent" },
+      "padding": "md",
+      "minHeight": "auto",
+      "align": "top",
+      "blocks": [
+        {
+          "id": "blk_dg_inventory_kicker",
+          "layout": { "col": 2, "colSpan": 4, "row": 1, "rowSpan": 3 },
+          "type": "text",
+          "props": {
+            "content": "Inventory &amp; crafting",
+            "variant": "kicker",
+            "align": "left",
+            "color": "muted",
+            "transform": "none"
+          }
+        },
+        {
+          "id": "blk_dg_inventory_body",
+          "layout": { "col": 2, "colSpan": 10, "row": 5, "rowSpan": 22 },
+          "type": "text",
+          "props": {
+            "content": "An inventory layer for managing items, equipment, and resources — paired with crafting that turns gathered materials into upgraded gear. The economy is part of the loop.",
+            "variant": "body",
+            "align": "left",
+            "color": "foreground",
+            "transform": "none"
+          }
+        }
+      ]
+    },
+    {
+      "id": "sec_dg_cooking",
+      "background": { "type": "transparent" },
+      "padding": "md",
+      "minHeight": "auto",
+      "align": "top",
+      "blocks": [
+        {
+          "id": "blk_dg_cooking_kicker",
+          "layout": { "col": 2, "colSpan": 4, "row": 1, "rowSpan": 3 },
+          "type": "text",
+          "props": {
+            "content": "Cooking",
+            "variant": "kicker",
+            "align": "left",
+            "color": "muted",
+            "transform": "none"
+          }
+        },
+        {
+          "id": "blk_dg_cooking_body",
+          "layout": { "col": 2, "colSpan": 10, "row": 5, "rowSpan": 22 },
+          "type": "text",
+          "props": {
+            "content": "Players combine ingredients found in the dungeon into meals that hand out buffs. A dedicated UI for selecting recipes and managing pantry, designed so it feels like a tiny kitchen, not a menu screen.",
+            "variant": "body",
+            "align": "left",
+            "color": "foreground",
+            "transform": "none"
+          }
+        }
+      ]
+    },
+    {
+      "id": "sec_dg_ship",
+      "background": { "type": "transparent" },
+      "padding": "md",
+      "minHeight": "auto",
+      "align": "top",
+      "blocks": [
+        {
+          "id": "blk_dg_ship_kicker",
+          "layout": { "col": 2, "colSpan": 4, "row": 1, "rowSpan": 3 },
+          "type": "text",
+          "props": {
+            "content": "Publishing &amp; marketing",
+            "variant": "kicker",
+            "align": "left",
+            "color": "muted",
+            "transform": "none"
+          }
+        },
+        {
+          "id": "blk_dg_ship_body",
+          "layout": { "col": 2, "colSpan": 10, "row": 5, "rowSpan": 28 },
+          "type": "text",
+          "props": {
+            "content": "Zero prior experience, zero budget. Shipped to the App Store, crossed 140K downloads, and ran the game's social presence and community outreach myself — trailers, screenshots, the works. The lesson, mostly, was that distribution is part of design.",
+            "variant": "body",
+            "align": "left",
+            "color": "foreground",
+            "transform": "none"
+          }
+        }
+      ]
+    },
+    {
+      "id": "sec_dg_outro",
+      "background": { "type": "transparent" },
+      "padding": "lg",
+      "minHeight": "auto",
+      "align": "top",
+      "blocks": [
+        {
+          "id": "blk_dg_outro_back",
+          "layout": { "col": 2, "colSpan": 3, "row": 1, "rowSpan": 5 },
+          "type": "button",
+          "props": {
+            "label": "← Back to index",
+            "href": "/",
+            "variant": "ghost",
+            "align": "left",
+            "newTab": false
+          }
+        }
+      ]
+    }
+  ]
+}
