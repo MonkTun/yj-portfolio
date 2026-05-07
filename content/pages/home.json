@@ -335,6 +335,23 @@
             "tint": "none",
             "tintOpacity": 0
           }
+        },
+        {
+          "id": "blk_82403e82",
+          "layout": {
+            "col": 2,
+            "colSpan": 2,
+            "row": 29,
+            "rowSpan": 5
+          },
+          "type": "button",
+          "props": {
+            "label": "Click me",
+            "href": "https://www.holowand.world",
+            "variant": "primary",
+            "align": "left",
+            "newTab": true
+          }
         }
       ]
     },

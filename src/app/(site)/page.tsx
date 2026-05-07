@@ -1,33 +1,36 @@
 import type { Metadata } from "next";
-import { loadPage } from "@/lib/content";
+import { loadPage, loadSiteConfig } from "@/lib/content";
 import { PageRenderer } from "@/components/PageRenderer";
-
-const DEFAULT_PUBLIC_SLUG = "construction";
 
 type Props = {
   searchParams: Promise<{ preview?: string }>;
 };
 
-async function resolveSlug(searchParams: Props["searchParams"]): Promise<string> {
+async function resolveSlug(
+  searchParams: Props["searchParams"]
+): Promise<{ slug: string; isConstruction: boolean }> {
   const { preview } = await searchParams;
-  return typeof preview === "string" && preview.length > 0
-    ? preview
-    : DEFAULT_PUBLIC_SLUG;
+  const config = await loadSiteConfig();
+  if (typeof preview === "string" && preview.length > 0) {
+    return { slug: preview, isConstruction: false };
+  }
+  // Construction-mode toggle wins over the assigned home slug.
+  const slug = config.constructionMode
+    ? config.constructionSlug
+    : config.homeSlug;
+  return { slug, isConstruction: config.constructionMode };
 }
 
 export async function generateMetadata({
   searchParams,
 }: Props): Promise<Metadata> {
-  const slug = await resolveSlug(searchParams);
+  const { slug, isConstruction } = await resolveSlug(searchParams);
   try {
     const page = await loadPage(slug);
     return {
       title: page.meta.title,
       description: page.meta.description,
-      robots:
-        slug === DEFAULT_PUBLIC_SLUG
-          ? { index: false, follow: false }
-          : undefined,
+      robots: isConstruction ? { index: false, follow: false } : undefined,
     };
   } catch {
     return {
@@ -38,12 +41,19 @@ export async function generateMetadata({
 }
 
 export default async function Page({ searchParams }: Props) {
-  const slug = await resolveSlug(searchParams);
+  const { slug } = await resolveSlug(searchParams);
+  const config = await loadSiteConfig();
   let page;
   try {
     page = await loadPage(slug);
   } catch {
-    page = await loadPage(DEFAULT_PUBLIC_SLUG);
+    // Fall back to the construction page; if even that's missing, last
+    // resort is whatever's named "construction".
+    try {
+      page = await loadPage(config.constructionSlug);
+    } catch {
+      page = await loadPage("construction");
+    }
   }
   return <PageRenderer page={page} />;
 }

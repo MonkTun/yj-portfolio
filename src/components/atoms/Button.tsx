@@ -1,8 +1,11 @@
 import type { ButtonProps } from "@/lib/schema";
 import { cn } from "@/lib/utils";
 
-export function Button({ label, href, variant, align }: ButtonProps) {
-  const alignClass = {
+export function Button({ label, href, variant, align, newTab }: ButtonProps) {
+  // align now controls where the label sits *inside* the button, since
+  // the button itself fills its placed rect (so resizing the block does
+  // what the user expects).
+  const justifyClass = {
     left: "justify-start",
     center: "justify-center",
     right: "justify-end",
@@ -14,16 +17,17 @@ export function Button({ label, href, variant, align }: ButtonProps) {
       : "border border-border text-foreground hover:bg-foreground/5 hover:border-accent";
 
   return (
-    <div className={cn("flex items-center w-full h-full", alignClass)}>
-      <a
-        href={href}
-        className={cn(
-          "inline-flex items-center kicker px-5 py-3 rounded-sm transition-all",
-          variantClass
-        )}
-      >
-        {label}
-      </a>
-    </div>
+    <a
+      href={href}
+      target={newTab ? "_blank" : undefined}
+      rel={newTab ? "noopener noreferrer" : undefined}
+      className={cn(
+        "flex items-center w-full h-full kicker px-5 py-3 rounded-sm transition-all",
+        justifyClass,
+        variantClass
+      )}
+    >
+      {label}
+    </a>
   );
 }

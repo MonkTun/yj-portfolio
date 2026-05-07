@@ -1,8 +1,14 @@
 import { promises as fs } from "node:fs";
 import path from "node:path";
-import { pageSchema, type Page } from "./schema";
+import {
+  pageSchema,
+  siteConfigSchema,
+  type Page,
+  type SiteConfig,
+} from "./schema";
 
 const CONTENT_ROOT = path.join(process.cwd(), "content", "pages");
+const SITE_CONFIG_FILE = path.join(process.cwd(), "content", "site.json");
 
 function pageFile(slug: string) {
   // Reject path-traversal attempts. We only ever accept slugs with a
@@ -36,6 +42,35 @@ export async function savePage(slug: string, page: unknown): Promise<Page> {
   const file = pageFile(slug);
   await fs.mkdir(path.dirname(file), { recursive: true });
   await fs.writeFile(file, JSON.stringify(validated, null, 2) + "\n", "utf8");
+  return validated;
+}
+
+/**
+ * Load the site config (or fall back to schema defaults if the file
+ * doesn't exist yet — this lets the app boot in repos that haven't been
+ * migrated). Always validates so a hand-edited file with garbage gets
+ * rejected at the boundary instead of poisoning later renders.
+ */
+export async function loadSiteConfig(): Promise<SiteConfig> {
+  try {
+    const raw = await fs.readFile(SITE_CONFIG_FILE, "utf8");
+    return siteConfigSchema.parse(JSON.parse(raw));
+  } catch {
+    return siteConfigSchema.parse({});
+  }
+}
+
+/** Persist the site config. */
+export async function saveSiteConfig(
+  config: unknown
+): Promise<SiteConfig> {
+  const validated = siteConfigSchema.parse(config);
+  await fs.mkdir(path.dirname(SITE_CONFIG_FILE), { recursive: true });
+  await fs.writeFile(
+    SITE_CONFIG_FILE,
+    JSON.stringify(validated, null, 2) + "\n",
+    "utf8"
+  );
   return validated;
 }
 

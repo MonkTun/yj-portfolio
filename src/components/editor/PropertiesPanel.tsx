@@ -199,6 +199,7 @@ function BlockProps({
               href: string;
               variant: string;
               align: string;
+              newTab: boolean;
             }
           }
           availablePages={availablePages}
@@ -1825,7 +1826,13 @@ function ButtonBlockProps({
   currentSlug,
   onUpdate,
 }: {
-  props: { label: string; href: string; variant: string; align: string };
+  props: {
+    label: string;
+    href: string;
+    variant: string;
+    align: string;
+    newTab: boolean;
+  };
   availablePages?: string[];
   currentSlug?: string;
   onUpdate: (patch: Record<string, unknown>) => void;
@@ -1896,6 +1903,13 @@ function ButtonBlockProps({
           options={["left", "center", "right"]}
           value={props.align}
           onChange={(v) => onUpdate({ align: v })}
+        />
+      </Field>
+      <Field label="link behavior">
+        <ToggleBtn
+          label="Open in new tab"
+          active={props.newTab}
+          onToggle={() => onUpdate({ newTab: !props.newTab })}
         />
       </Field>
     </>

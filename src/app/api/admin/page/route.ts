@@ -3,7 +3,7 @@ import { revalidatePath } from "next/cache";
 import { z } from "zod";
 import { promises as fs } from "node:fs";
 import path from "node:path";
-import { savePage } from "@/lib/content";
+import { loadSiteConfig, savePage } from "@/lib/content";
 import type { Page } from "@/lib/schema";
 
 export const runtime = "nodejs";
@@ -89,11 +89,6 @@ const deleteBodySchema = z.object({
     }),
 });
 
-// These two are part of the routing — `construction` is what `/` renders by
-// default, `404` feeds the not-found route. Deleting either would break the
-// public site, so the API refuses regardless of UI guards.
-const PROTECTED_SLUGS = new Set(["construction", "404"]);
-
 export async function DELETE(req: Request) {
   const blocked = devOnly();
   if (blocked) return blocked;
@@ -108,10 +103,19 @@ export async function DELETE(req: Request) {
     );
   }
 
-  if (PROTECTED_SLUGS.has(body.slug)) {
+  // Whatever's currently assigned to a routing role can't be deleted —
+  // the public site would 500 on the next render. Site config is the
+  // source of truth, not a hardcoded list.
+  const siteConfig = await loadSiteConfig();
+  const protectedSlugs = new Set([
+    siteConfig.homeSlug,
+    siteConfig.constructionSlug,
+    siteConfig.notFoundSlug,
+  ]);
+  if (protectedSlugs.has(body.slug)) {
     return NextResponse.json(
       {
-        error: `"${body.slug}" is required by the public routing and can't be deleted from the UI.`,
+        error: `"${body.slug}" is currently assigned to a routing role (home / construction / 404). Reassign that role first.`,
       },
       { status: 400 }
     );

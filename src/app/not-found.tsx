@@ -1,10 +1,11 @@
 import type { Metadata } from "next";
-import { loadPage } from "@/lib/content";
+import { loadPage, loadSiteConfig } from "@/lib/content";
 import { PageRenderer } from "@/components/PageRenderer";
 
 export async function generateMetadata(): Promise<Metadata> {
   try {
-    const page = await loadPage("404");
+    const config = await loadSiteConfig();
+    const page = await loadPage(config.notFoundSlug);
     return {
       title: page.meta.title,
       description: page.meta.description,
@@ -15,6 +16,12 @@ export async function generateMetadata(): Promise<Metadata> {
 }
 
 export default async function NotFound() {
-  const page = await loadPage("404");
+  const config = await loadSiteConfig();
+  let page;
+  try {
+    page = await loadPage(config.notFoundSlug);
+  } catch {
+    page = await loadPage("404");
+  }
   return <PageRenderer page={page} />;
 }

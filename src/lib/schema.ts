@@ -109,6 +109,8 @@ export const buttonPropsSchema = z.object({
   href: z.string(),
   variant: z.enum(["primary", "ghost"]).default("primary"),
   align: z.enum(["left", "center", "right"]).default("left"),
+  /** Open the link in a new tab (target="_blank" + rel="noopener noreferrer"). */
+  newTab: z.boolean().default(false),
 });
 
 export const spacerPropsSchema = z.object({
@@ -256,6 +258,20 @@ export const pageSchema = z.object({
   }),
   sections: z.array(sectionSchema),
 });
+
+/* ----- Site config -----
+   Maps page slugs onto routing roles. Lives at content/site.json.
+   When constructionMode is true, "/" renders constructionSlug — otherwise
+   "/" renders homeSlug. notFoundSlug feeds the not-found route. ----- */
+
+export const siteConfigSchema = z.object({
+  homeSlug: z.string().min(1).default("home"),
+  constructionSlug: z.string().min(1).default("construction"),
+  notFoundSlug: z.string().min(1).default("404"),
+  constructionMode: z.boolean().default(true),
+});
+
+export type SiteConfig = z.infer<typeof siteConfigSchema>;
 
 /* ----- Inferred types ----- */
 
