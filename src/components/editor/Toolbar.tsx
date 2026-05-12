@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { cn } from "@/lib/utils";
+import type { Device } from "@/lib/responsive";
 
 type Status = "idle" | "saving" | "saved" | "error";
 
@@ -12,6 +13,12 @@ type Props = {
   errorMessage?: string;
   canUndo: boolean;
   canRedo: boolean;
+  device: Device;
+  onDeviceChange: (device: Device) => void;
+  /** Auto-derive a mobile layout from the desktop layout, restacking
+   *  side-by-side blocks into a vertical column. Wipes existing mobile
+   *  overrides — the toolbar prompts before calling. */
+  onAutoStack: () => void;
   /** id of the selected section or block — appended as the preview URL hash. */
   previewAnchor?: string | null;
   onUndo: () => void;
@@ -26,11 +33,20 @@ export function Toolbar({
   errorMessage,
   canUndo,
   canRedo,
+  device,
+  onDeviceChange,
+  onAutoStack,
   previewAnchor,
   onUndo,
   onRedo,
   onSave,
 }: Props) {
+  function handleAutoStack() {
+    const ok = window.confirm(
+      "Auto-stack the page for mobile?\n\nThis replaces every block's mobile layout with a top-to-bottom stack derived from the desktop layout. Existing mobile layout overrides will be overwritten.\n\n(Block-level style overrides — fontSize, hidden, etc. — are kept.)",
+    );
+    if (ok) onAutoStack();
+  }
   // Every editable page renders through the public root with a `?preview=`
   // override, so the editor preview link bypasses the construction-page
   // default no matter which slug is being edited.
@@ -100,6 +116,38 @@ export function Toolbar({
         </ToolButton>
       </div>
 
+      <div
+        role="group"
+        aria-label="Device"
+        className="flex items-center rounded-sm border border-border overflow-hidden"
+      >
+        <DeviceButton
+          active={device === "desktop"}
+          onClick={() => onDeviceChange("desktop")}
+          label="Desktop view"
+        >
+          {DesktopIcon}
+        </DeviceButton>
+        <DeviceButton
+          active={device === "mobile"}
+          onClick={() => onDeviceChange("mobile")}
+          label="Mobile view"
+        >
+          {MobileIcon}
+        </DeviceButton>
+      </div>
+
+      {device === "mobile" && (
+        <button
+          type="button"
+          onClick={handleAutoStack}
+          title="Replace mobile layout with a vertical stack derived from desktop"
+          className="kicker px-3 py-1.5 rounded-sm border border-border text-foreground/80 hover:bg-surface hover:text-accent transition-colors"
+        >
+          Auto-stack
+        </button>
+      )}
+
       <span className={cn("kicker", statusClass)}>{statusLabel}</span>
 
       <Link
@@ -157,3 +205,67 @@ function ToolButton({
     </button>
   );
 }
+
+function DeviceButton({
+  active,
+  onClick,
+  label,
+  children,
+}: {
+  active: boolean;
+  onClick: () => void;
+  label: string;
+  children: React.ReactNode;
+}) {
+  return (
+    <button
+      type="button"
+      onClick={onClick}
+      title={label}
+      aria-label={label}
+      aria-pressed={active}
+      className={cn(
+        "h-8 w-9 flex items-center justify-center transition-colors",
+        active
+          ? "bg-accent text-accent-foreground"
+          : "text-foreground/70 hover:bg-surface hover:text-accent"
+      )}
+    >
+      {children}
+    </button>
+  );
+}
+
+const DesktopIcon = (
+  <svg
+    width="14"
+    height="14"
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="1.75"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+    aria-hidden
+  >
+    <rect x="3" y="4" width="18" height="12" rx="1.5" />
+    <path d="M9 20h6M12 16v4" />
+  </svg>
+);
+
+const MobileIcon = (
+  <svg
+    width="14"
+    height="14"
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="1.75"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+    aria-hidden
+  >
+    <rect x="7" y="3" width="10" height="18" rx="1.75" />
+    <path d="M11 18h2" />
+  </svg>
+);

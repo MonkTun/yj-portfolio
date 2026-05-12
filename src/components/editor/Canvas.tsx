@@ -21,7 +21,9 @@ import type {
   Page,
   Section,
 } from "@/lib/schema";
+import type { Device } from "@/lib/responsive";
 import type { SectionTemplate } from "@/lib/section-templates";
+import { cn } from "@/lib/utils";
 
 import { SectionFrame } from "./SectionFrame";
 import { AddSectionInline } from "./SectionTemplatePicker";
@@ -30,6 +32,7 @@ import type { Selection } from "./Editor";
 type Props = {
   page: Page;
   selection: Selection;
+  device: Device;
   onSelect: (sel: Selection) => void;
   onAddSection: (template: SectionTemplate, atIndex?: number) => void;
   onUpdateSection: (sectionId: string, patch: Partial<Section>) => void;
@@ -41,7 +44,8 @@ type Props = {
   onUpdateBlockProps: (
     sectionId: string,
     blockId: string,
-    patch: Record<string, unknown>
+    patch: Record<string, unknown>,
+    target?: Device
   ) => void;
   onUpdateBlockLayout: (
     sectionId: string,
@@ -52,9 +56,12 @@ type Props = {
   onDeleteBlock: (sectionId: string, blockId: string) => void;
 };
 
+const MOBILE_CANVAS_WIDTH = 425;
+
 export function Canvas({
   page,
   selection,
+  device,
   onSelect,
   onAddSection,
   onUpdateSection,
@@ -84,9 +91,31 @@ export function Canvas({
 
   return (
     <div
-      className="flex-1 min-w-0 overflow-y-auto bg-background"
+      className={cn(
+        "flex-1 min-w-0 overflow-y-auto bg-background",
+        // Mobile mode dims the area outside the device frame so the user
+        // gets a visible "this is what a phone sees" cue.
+        device === "mobile" &&
+          "bg-[radial-gradient(ellipse_at_top,var(--surface)_0%,var(--background)_60%)]",
+      )}
       onClick={() => onSelect({ type: "page" })}
     >
+      {/* `key={device}` forces a clean remount of every DnDContext + RGL
+          inside when the user toggles between desktop/mobile, so RGL's
+          `useContainerWidth` re-measures and DnD-kit hands out fresh
+          announcer ids. Cheaper than threading the change through every
+          stateful child by hand. */}
+      <div
+        key={device}
+        className={cn(
+          "mx-auto",
+          device === "mobile" &&
+            "my-6 ring-1 ring-border rounded-md overflow-hidden bg-background shadow-2xl",
+        )}
+        style={
+          device === "mobile" ? { width: MOBILE_CANVAS_WIDTH } : undefined
+        }
+      >
       <DndContext
         sensors={sensors}
         collisionDetection={closestCenter}
@@ -119,6 +148,7 @@ export function Canvas({
                   section={section}
                   index={i}
                   total={page.sections.length}
+                  device={device}
                   selectedBlockId={selectedBlockId}
                   active={sectionActive}
                   onSelectSection={() =>
@@ -138,8 +168,8 @@ export function Canvas({
                   onDeleteSection={() => onDeleteSection(section.id)}
                   onMoveSection={(dir) => onMoveSection(section.id, dir)}
                   onAddBlock={(type) => onAddBlock(section.id, type)}
-                  onUpdateBlockProps={(blockId, patch) =>
-                    onUpdateBlockProps(section.id, blockId, patch)
+                  onUpdateBlockProps={(blockId, patch, target) =>
+                    onUpdateBlockProps(section.id, blockId, patch, target)
                   }
                   onUpdateBlockLayout={(blockId, layout) =>
                     onUpdateBlockLayout(section.id, blockId, layout)
@@ -167,6 +197,7 @@ export function Canvas({
           </p>
         </div>
       )}
+      </div>
     </div>
   );
 }

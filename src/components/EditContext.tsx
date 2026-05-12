@@ -2,6 +2,7 @@
 
 import { createContext, useContext } from "react";
 import type { Block } from "@/lib/schema";
+import type { Device } from "@/lib/responsive";
 
 /**
  * Provided by the editor canvas around every block. Atom components read
@@ -13,8 +14,18 @@ export type EditCtxValue = {
   blockId: string;
   block: Block;
   selected: boolean;
-  /** Patch the block's props (merged onto current props). */
+  /** Active device — `mobile` means edits scope to `block.mobile.*`. */
+  device: Device;
+  /** Patch the block's props (merged onto current props for the active
+   *  device). */
   updateProps: (patch: Record<string, unknown>) => void;
+  /**
+   * Patch a prop that should always live on desktop (`block.props`),
+   * even when the editor is in mobile mode. Used by inline content
+   * editing (Text atom's contentEditable) — copy lives on desktop, only
+   * style/layout overrides scope per-breakpoint.
+   */
+  updateDesktopProps: (patch: Record<string, unknown>) => void;
 };
 
 const Ctx = createContext<EditCtxValue | null>(null);

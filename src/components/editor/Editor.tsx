@@ -12,6 +12,14 @@ import type {
 } from "@/lib/schema";
 import { atomRegistry, defaultsForBlock } from "@/lib/atom-registry";
 import { nextFreeRow } from "@/lib/rgl";
+import {
+  autoStackPage,
+  autoStackSection,
+  diffMobileLayout,
+  pruneMobile,
+  pruneSectionMobile,
+  type Device,
+} from "@/lib/responsive";
 import type { SectionTemplate } from "@/lib/section-templates";
 
 import { Toolbar } from "./Toolbar";
@@ -50,6 +58,7 @@ export function Editor({ slug, initialPage, availablePages = [] }: Props) {
   const [past, setPast] = useState<Page[]>([]);
   const [future, setFuture] = useState<Page[]>([]);
   const [selection, setSelection] = useState<Selection>({ type: "page" });
+  const [device, setDevice] = useState<Device>("desktop");
   const [status, setStatus] = useState<Status>("idle");
   const [errorMessage, setErrorMessage] = useState<string>();
   // dnd-kit generates announcer IDs from a counter that ticks differently
@@ -86,6 +95,13 @@ export function Editor({ slug, initialPage, availablePages = [] }: Props) {
 
   /* ---------------- section ops ---------------- */
 
+  /**
+   * Section patch — desktop edits the canonical fields, mobile edits the
+   * section's `mobile` override bag (and prunes empty entries so saved
+   * JSON stays minimal). The `patch` keys must align with their target
+   * (e.g. `padding` lives at the top level on desktop, but inside `mobile`
+   * on mobile).
+   */
   const updateSection = useCallback(
     (sectionId: string, patch: Partial<Section>) => {
       const next = clone(page);
@@ -95,6 +111,36 @@ export function Editor({ slug, initialPage, availablePages = [] }: Props) {
       commit(next);
     },
     [page, commit]
+  );
+
+  /**
+   * Patch the mobile override bag on a section. Pass `undefined` for a key
+   * to clear that override (lets the desktop value show through).
+   */
+  const updateSectionMobile = useCallback(
+    (
+      sectionId: string,
+      patch: {
+        padding?: Section["padding"] | undefined;
+        minHeight?: Section["minHeight"] | undefined;
+        align?: Section["align"] | undefined;
+      },
+    ) => {
+      const next = clone(page);
+      const i = next.sections.findIndex((s) => s.id === sectionId);
+      if (i === -1) return;
+      const sec = next.sections[i];
+      const currentMobile = sec.mobile ?? {};
+      const mergedMobile = { ...currentMobile };
+      // Apply each key — `undefined` means clear-and-inherit.
+      for (const [k, v] of Object.entries(patch)) {
+        if (v === undefined) delete (mergedMobile as Record<string, unknown>)[k];
+        else (mergedMobile as Record<string, unknown>)[k] = v;
+      }
+      next.sections[i] = pruneSectionMobile({ ...sec, mobile: mergedMobile });
+      commit(next);
+    },
+    [page, commit],
   );
 
   const addSection = useCallback(
@@ -176,30 +222,130 @@ export function Editor({ slug, initialPage, availablePages = [] }: Props) {
   const findSection = (sectionId: string) =>
     page.sections.find((s) => s.id === sectionId);
 
+  /**
+   * Patch a block's props at the active device. Desktop writes to
+   * `block.props`; mobile writes a sparse override into `block.mobile.props`
+   * and prunes the bag so empty overrides don't litter the JSON. A
+   * `undefined` value means "remove this mobile override key".
+   */
   const updateBlockProps = useCallback(
-    (sectionId: string, blockId: string, patch: Record<string, unknown>) => {
+    (
+      sectionId: string,
+      blockId: string,
+      patch: Record<string, unknown>,
+      target: Device = device,
+    ) => {
       const next = clone(page);
       const sec = next.sections.find((s) => s.id === sectionId);
       if (!sec) return;
       const block = sec.blocks.find((b) => b.id === blockId);
       if (!block) return;
-      block.props = { ...block.props, ...patch } as Block["props"];
+      if (target === "desktop") {
+        block.props = { ...block.props, ...patch } as Block["props"];
+      } else {
+        const currentMobile = block.mobile ?? {};
+        const currentProps = currentMobile.props ?? {};
+        const mergedProps: Record<string, unknown> = { ...currentProps };
+        for (const [k, v] of Object.entries(patch)) {
+          if (v === undefined) delete mergedProps[k];
+          else mergedProps[k] = v;
+        }
+        const idx = sec.blocks.findIndex((b) => b.id === blockId);
+        sec.blocks[idx] = pruneMobile({
+          ...block,
+          mobile: { ...currentMobile, props: mergedProps },
+        } as Block);
+      }
       commit(next);
     },
-    [page, commit]
+    [page, commit, device]
+  );
+
+  const setBlockMobileHidden = useCallback(
+    (sectionId: string, blockId: string, hidden: boolean) => {
+      const next = clone(page);
+      const sec = next.sections.find((s) => s.id === sectionId);
+      if (!sec) return;
+      const block = sec.blocks.find((b) => b.id === blockId);
+      if (!block) return;
+      const idx = sec.blocks.findIndex((b) => b.id === blockId);
+      sec.blocks[idx] = pruneMobile({
+        ...block,
+        mobile: {
+          ...(block.mobile ?? {}),
+          hidden: hidden ? true : undefined,
+        },
+      } as Block);
+      commit(next);
+    },
+    [page, commit],
+  );
+
+  /**
+   * Replace every block's mobile layout with a vertical-stack derived
+   * from the desktop layout (top-to-bottom, then left-to-right reading
+   * order). Optionally scoped to a single section. The Toolbar prompts
+   * the user before calling because existing mobile layout overrides
+   * are wiped.
+   */
+  const autoStackForMobile = useCallback(
+    (sectionId?: string) => {
+      const next = clone(page);
+      if (sectionId) {
+        const i = next.sections.findIndex((s) => s.id === sectionId);
+        if (i === -1) return;
+        next.sections[i] = autoStackSection(next.sections[i]);
+      } else {
+        Object.assign(next, autoStackPage(next));
+      }
+      commit(next);
+    },
+    [page, commit],
+  );
+
+  const clearBlockMobileOverrides = useCallback(
+    (sectionId: string, blockId: string) => {
+      const next = clone(page);
+      const sec = next.sections.find((s) => s.id === sectionId);
+      if (!sec) return;
+      const idx = sec.blocks.findIndex((b) => b.id === blockId);
+      if (idx === -1) return;
+      const block = sec.blocks[idx];
+      sec.blocks[idx] = { ...block, mobile: undefined } as Block;
+      commit(next);
+    },
+    [page, commit],
   );
 
   const updateBlockLayout = useCallback(
-    (sectionId: string, blockId: string, layout: BlockLayout) => {
+    (
+      sectionId: string,
+      blockId: string,
+      layout: BlockLayout,
+      target: Device = device,
+    ) => {
       const next = clone(page);
       const sec = next.sections.find((s) => s.id === sectionId);
       if (!sec) return;
       const block = sec.blocks.find((b) => b.id === blockId);
       if (!block) return;
-      block.layout = layout;
+      if (target === "desktop") {
+        block.layout = layout;
+      } else {
+        // Persist only what differs from desktop. If everything matches,
+        // diff returns undefined and we drop the layout key entirely so
+        // the block falls back to desktop placement.
+        const patch = diffMobileLayout(block.layout, layout);
+        const currentMobile = block.mobile ?? {};
+        const idx = sec.blocks.findIndex((b) => b.id === blockId);
+        sec.blocks[idx] = pruneMobile({
+          ...block,
+          mobile: { ...currentMobile, layout: patch },
+        } as Block);
+      }
       commit(next);
     },
-    [page, commit]
+    [page, commit, device]
   );
 
   const addBlock = useCallback(
@@ -209,22 +355,31 @@ export function Editor({ slug, initialPage, availablePages = [] }: Props) {
       const entry = atomRegistry[type];
       const next = clone(page);
       const targetSec = next.sections.find((s) => s.id === sectionId)!;
+      // Always seed the desktop layout — a mobile-only block would be
+      // invisible on desktop, which is confusing. nextFreeRow uses the
+      // active-device merge so we don't collide with whatever the user
+      // is actually looking at on the canvas.
+      const layout: BlockLayout = {
+        col: 1,
+        colSpan: entry.defaultLayout.colSpan,
+        row: nextFreeRow(targetSec.blocks, device),
+        rowSpan: entry.defaultLayout.rowSpan,
+      };
       const newBlock: Block = {
         id: newId("blk"),
         type,
-        layout: {
-          col: 1,
-          colSpan: entry.defaultLayout.colSpan,
-          row: nextFreeRow(targetSec.blocks),
-          rowSpan: entry.defaultLayout.rowSpan,
-        },
+        layout,
+        // If the user is in mobile mode, also seed the same coordinates
+        // as a mobile override so the block lands where they expect *and*
+        // the desktop fallback isn't broken.
+        ...(device === "mobile" ? { mobile: { layout } } : {}),
         props: defaultsForBlock(type),
       } as Block;
       targetSec.blocks.push(newBlock);
       commit(next);
       setSelection({ type: "block", sectionId, blockId: newBlock.id });
     },
-    [page, commit, findSection]
+    [page, commit, findSection, device]
   );
 
   const duplicateBlock = useCallback(
@@ -281,7 +436,6 @@ export function Editor({ slug, initialPage, availablePages = [] }: Props) {
       if (fromIdx === -1) return;
 
       if (fromSectionId === toSectionId) {
-        // Same array — splice out, then splice in at the (shift-corrected) index.
         const [block] = fromSec.blocks.splice(fromIdx, 1);
         const adjusted =
           fromIdx < targetIndex ? targetIndex - 1 : targetIndex;
@@ -291,7 +445,7 @@ export function Editor({ slug, initialPage, availablePages = [] }: Props) {
         const [block] = fromSec.blocks.splice(fromIdx, 1);
         block.layout = {
           ...block.layout,
-          row: nextFreeRow(toSec.blocks),
+          row: nextFreeRow(toSec.blocks, device),
         };
         const insertAt = Math.max(
           0,
@@ -302,7 +456,7 @@ export function Editor({ slug, initialPage, availablePages = [] }: Props) {
       commit(next);
       setSelection({ type: "block", sectionId: toSectionId, blockId });
     },
-    [page, commit]
+    [page, commit, device]
   );
 
   /* ---------------- meta ---------------- */
@@ -417,6 +571,9 @@ export function Editor({ slug, initialPage, availablePages = [] }: Props) {
         errorMessage={errorMessage}
         canUndo={past.length > 0}
         canRedo={future.length > 0}
+        device={device}
+        onDeviceChange={setDevice}
+        onAutoStack={() => autoStackForMobile()}
         // Preview deep-links to the current selection: a block id wins over a
         // section id; nothing for page-level. The public renderer puts the
         // matching id on each section/block.
@@ -448,6 +605,7 @@ export function Editor({ slug, initialPage, availablePages = [] }: Props) {
         <Canvas
           page={page}
           selection={selection}
+          device={device}
           onSelect={setSelection}
           onAddSection={addSection}
           onUpdateSection={updateSection}
@@ -466,11 +624,15 @@ export function Editor({ slug, initialPage, availablePages = [] }: Props) {
           <PropertiesPanel
             page={page}
             selection={selection}
+            device={device}
             availablePages={availablePages}
             currentSlug={slug}
             onUpdateMeta={updateMeta}
             onUpdateSection={updateSection}
+            onUpdateSectionMobile={updateSectionMobile}
             onUpdateBlockProps={updateBlockProps}
+            onSetBlockMobileHidden={setBlockMobileHidden}
+            onClearBlockMobileOverrides={clearBlockMobileOverrides}
           />
         </aside>
       </div>

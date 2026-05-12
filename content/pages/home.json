@@ -21,6 +21,16 @@
             "row": 6,
             "rowSpan": 36
           },
+          "mobile": {
+            "layout": {
+              "col": 1,
+              "colSpan": 12,
+              "row": 1
+            },
+            "props": {
+              "fontSize": 125
+            }
+          },
           "type": "text",
           "props": {
             "content": "Youngje<br>Park.",
@@ -40,6 +50,14 @@
             "row": 43,
             "rowSpan": 24
           },
+          "mobile": {
+            "layout": {
+              "col": 1,
+              "colSpan": 12,
+              "row": 66,
+              "rowSpan": 16
+            }
+          },
           "type": "text",
           "props": {
             "content": "Designer &amp; engineer building games, tools, and the occasional thing in between. Currently making worlds in Unreal Engine and some stuff on the web.",
@@ -56,6 +74,13 @@
             "colSpan": 5,
             "row": 26,
             "rowSpan": 51
+          },
+          "mobile": {
+            "layout": {
+              "col": 1,
+              "colSpan": 12,
+              "row": 13
+            }
           },
           "type": "image",
           "props": {
@@ -93,6 +118,13 @@
             "row": 1,
             "rowSpan": 3
           },
+          "mobile": {
+            "layout": {
+              "col": 1,
+              "colSpan": 12,
+              "row": 60
+            }
+          },
           "type": "text",
           "props": {
             "content": "2025 — Multiplayer engineer",
@@ -109,6 +141,13 @@
             "colSpan": 6,
             "row": 5,
             "rowSpan": 8
+          },
+          "mobile": {
+            "layout": {
+              "col": 1,
+              "colSpan": 12,
+              "row": 63
+            }
           },
           "type": "text",
           "props": {
@@ -127,6 +166,13 @@
             "row": 14,
             "rowSpan": 14
           },
+          "mobile": {
+            "layout": {
+              "col": 1,
+              "colSpan": 12,
+              "row": 71
+            }
+          },
           "type": "text",
           "props": {
             "content": "A casual multiplayer freeze-tag shooter built on UE5, with a Next.js / MongoDB backend on AWS GameLift. Architected client-to-cloud end-to-end.",
@@ -143,6 +189,12 @@
             "colSpan": 4,
             "row": 1,
             "rowSpan": 59
+          },
+          "mobile": {
+            "layout": {
+              "col": 1,
+              "colSpan": 12
+            }
           },
           "type": "image",
           "props": {
@@ -170,6 +222,13 @@
             "colSpan": 3,
             "row": 34,
             "rowSpan": 5
+          },
+          "mobile": {
+            "layout": {
+              "col": 1,
+              "colSpan": 12,
+              "row": 85
+            }
           },
           "type": "button",
           "props": {
@@ -209,6 +268,13 @@
             "row": 1,
             "rowSpan": 3
           },
+          "mobile": {
+            "layout": {
+              "col": 1,
+              "colSpan": 12,
+              "row": 60
+            }
+          },
           "type": "text",
           "props": {
             "content": "Since 2022 — Director / Lead engineer",
@@ -225,6 +291,13 @@
             "colSpan": 6,
             "row": 5,
             "rowSpan": 8
+          },
+          "mobile": {
+            "layout": {
+              "col": 1,
+              "colSpan": 12,
+              "row": 63
+            }
           },
           "type": "text",
           "props": {
@@ -243,6 +316,13 @@
             "row": 14,
             "rowSpan": 14
           },
+          "mobile": {
+            "layout": {
+              "col": 1,
+              "colSpan": 12,
+              "row": 71
+            }
+          },
           "type": "text",
           "props": {
             "content": "A 2.5D bullet-time shooter built in Unity. Custom inventory, save, and quest systems written from first principles for a 30+ person team.",
@@ -259,6 +339,12 @@
             "colSpan": 4,
             "row": 1,
             "rowSpan": 59
+          },
+          "mobile": {
+            "layout": {
+              "col": 1,
+              "colSpan": 12
+            }
           },
           "type": "image",
           "props": {
@@ -287,6 +373,13 @@
             "row": 94,
             "rowSpan": 3
           },
+          "mobile": {
+            "layout": {
+              "col": 1,
+              "colSpan": 12,
+              "row": 169
+            }
+          },
           "type": "text",
           "props": {
             "content": "2022 — Solo developer",
@@ -303,6 +396,13 @@
             "colSpan": 6,
             "row": 98,
             "rowSpan": 8
+          },
+          "mobile": {
+            "layout": {
+              "col": 1,
+              "colSpan": 12,
+              "row": 172
+            }
           },
           "type": "text",
           "props": {
@@ -321,6 +421,13 @@
             "row": 107,
             "rowSpan": 14
           },
+          "mobile": {
+            "layout": {
+              "col": 1,
+              "colSpan": 12,
+              "row": 180
+            }
+          },
           "type": "text",
           "props": {
             "content": "A pixel rogue-like RPG for the App Store. 140K+ downloads, 4.6 stars, charted #130 in Adventure. My first ship.",
@@ -337,6 +444,13 @@
             "colSpan": 4,
             "row": 85,
             "rowSpan": 61
+          },
+          "mobile": {
+            "layout": {
+              "col": 1,
+              "colSpan": 12,
+              "row": 104
+            }
           },
           "type": "image",
           "props": {
@@ -365,6 +479,13 @@
             "row": 122,
             "rowSpan": 5
           },
+          "mobile": {
+            "layout": {
+              "col": 1,
+              "colSpan": 12,
+              "row": 194
+            }
+          },
           "type": "button",
           "props": {
             "label": "Read more →",
@@ -382,6 +503,13 @@
             "row": 34,
             "rowSpan": 5
           },
+          "mobile": {
+            "layout": {
+              "col": 1,
+              "colSpan": 12,
+              "row": 85
+            }
+          },
           "type": "button",
           "props": {
             "label": "Read more →",
@@ -398,6 +526,13 @@
             "colSpan": 1,
             "row": 50,
             "rowSpan": 9
+          },
+          "mobile": {
+            "layout": {
+              "col": 1,
+              "colSpan": 4,
+              "row": 93
+            }
           },
           "type": "image",
           "props": {
@@ -423,6 +558,13 @@
             "colSpan": 1,
             "row": 50,
             "rowSpan": 9
+          },
+          "mobile": {
+            "layout": {
+              "col": 4,
+              "colSpan": 4,
+              "row": 93
+            }
           },
           "type": "image",
           "props": {
@@ -460,6 +602,13 @@
             "row": 1,
             "rowSpan": 3
           },
+          "mobile": {
+            "layout": {
+              "col": 1,
+              "colSpan": 12,
+              "row": 62
+            }
+          },
           "type": "text",
           "props": {
             "content": "2024 — Engineer, USC AGP",
@@ -476,6 +625,13 @@
             "colSpan": 6,
             "row": 5,
             "rowSpan": 8
+          },
+          "mobile": {
+            "layout": {
+              "col": 1,
+              "colSpan": 12,
+              "row": 65
+            }
           },
           "type": "text",
           "props": {
@@ -494,6 +650,13 @@
             "row": 14,
             "rowSpan": 14
           },
+          "mobile": {
+            "layout": {
+              "col": 1,
+              "colSpan": 12,
+              "row": 73
+            }
+          },
           "type": "text",
           "props": {
             "content": "A whimsical 3D on-rails collection game, built with a 40+ person team. Camera, UI, designer tools, and player feel.",
@@ -510,6 +673,12 @@
             "colSpan": 4,
             "row": 1,
             "rowSpan": 61
+          },
+          "mobile": {
+            "layout": {
+              "col": 1,
+              "colSpan": 12
+            }
           },
           "type": "image",
           "props": {
@@ -537,6 +706,13 @@
             "colSpan": 3,
             "row": 31,
             "rowSpan": 5
+          },
+          "mobile": {
+            "layout": {
+              "col": 1,
+              "colSpan": 12,
+              "row": 87
+            }
           },
           "type": "button",
           "props": {
@@ -566,6 +742,12 @@
             "row": 1,
             "rowSpan": 3
           },
+          "mobile": {
+            "layout": {
+              "col": 1,
+              "colSpan": 12
+            }
+          },
           "type": "text",
           "props": {
             "content": "2024 — 7-day game jam",
@@ -582,6 +764,13 @@
             "colSpan": 6,
             "row": 5,
             "rowSpan": 8
+          },
+          "mobile": {
+            "layout": {
+              "col": 1,
+              "colSpan": 12,
+              "row": 42
+            }
           },
           "type": "text",
           "props": {
@@ -600,6 +789,13 @@
             "row": 14,
             "rowSpan": 14
           },
+          "mobile": {
+            "layout": {
+              "col": 1,
+              "colSpan": 12,
+              "row": 50
+            }
+          },
           "type": "text",
           "props": {
             "content": "Wake up in a hotel of horrors and find the way out. Built for Brackey's 2024 Game Jam.",
@@ -616,6 +812,13 @@
             "colSpan": 4,
             "row": 1,
             "rowSpan": 38
+          },
+          "mobile": {
+            "layout": {
+              "col": 1,
+              "colSpan": 12,
+              "row": 4
+            }
           },
           "type": "image",
           "props": {
@@ -643,6 +846,13 @@
             "colSpan": 3,
             "row": 30,
             "rowSpan": 5
+          },
+          "mobile": {
+            "layout": {
+              "col": 1,
+              "colSpan": 12,
+              "row": 64
+            }
           },
           "type": "button",
           "props": {
@@ -672,6 +882,12 @@
             "row": 1,
             "rowSpan": 24
           },
+          "mobile": {
+            "layout": {
+              "col": 1,
+              "colSpan": 12
+            }
+          },
           "type": "quote",
           "props": {
             "quote": "The work I love most is the work that knows what it is.",
@@ -698,6 +914,12 @@
             "row": 1,
             "rowSpan": 3
           },
+          "mobile": {
+            "layout": {
+              "col": 1,
+              "colSpan": 12
+            }
+          },
           "type": "text",
           "props": {
             "content": "Get in touch",
@@ -714,6 +936,13 @@
             "colSpan": 7,
             "row": 5,
             "rowSpan": 14
+          },
+          "mobile": {
+            "layout": {
+              "col": 1,
+              "colSpan": 12,
+              "row": 4
+            }
           },
           "type": "text",
           "props": {
@@ -732,6 +961,13 @@
             "colSpan": 10,
             "row": 22,
             "rowSpan": 3
+          },
+          "mobile": {
+            "layout": {
+              "col": 1,
+              "colSpan": 12,
+              "row": 18
+            }
           },
           "type": "text",
           "props": {

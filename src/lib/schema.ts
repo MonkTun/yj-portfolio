@@ -19,9 +19,34 @@ export const blockLayoutSchema = z.object({
   rowSpan: z.number().int().min(1).optional(),
 });
 
-export const mobileLayoutSchema = z
+/**
+ * Per-block mobile overrides. Sparse — anything omitted falls back to the
+ * desktop block. `props` is intentionally loose here (z.record); the merge
+ * helper in `lib/responsive.ts` filters keys against MOBILE_OVERRIDABLE_KEYS
+ * at render time, so an out-of-list key in saved JSON is silently dropped
+ * rather than rejected.
+ */
+export const mobileBlockOverrideSchema = z
   .object({
     hidden: z.boolean().optional(),
+    layout: z
+      .object({
+        col: z.number().int().min(1).max(12).optional(),
+        colSpan: z.number().int().min(1).max(12).optional(),
+        row: z.number().int().min(1).optional(),
+        rowSpan: z.number().int().min(1).optional(),
+      })
+      .optional(),
+    props: z.record(z.string(), z.unknown()).optional(),
+  })
+  .optional();
+
+/** Per-section mobile overrides. Same sparse-merge semantics. */
+export const sectionMobileOverrideSchema = z
+  .object({
+    padding: z.enum(["none", "sm", "md", "lg", "xl"]).optional(),
+    minHeight: z.enum(["auto", "half", "screen"]).optional(),
+    align: z.enum(["top", "center", "bottom"]).optional(),
   })
   .optional();
 
@@ -148,7 +173,7 @@ export const videoPropsSchema = z.object({
 const blockBase = {
   id: z.string(),
   layout: blockLayoutSchema,
-  mobile: mobileLayoutSchema,
+  mobile: mobileBlockOverrideSchema,
 };
 
 export const blockSchema = z.discriminatedUnion("type", [
@@ -252,6 +277,7 @@ export const sectionSchema = z.object({
   padding: sectionPaddingSchema.default("lg"),
   minHeight: sectionMinHeightSchema.default("auto"),
   align: sectionAlignSchema.default("top"),
+  mobile: sectionMobileOverrideSchema,
   blocks: z.array(blockSchema),
 });
 
@@ -360,6 +386,12 @@ export type Theme = z.infer<typeof themeSchema>;
 export type BlockLayout = z.infer<typeof blockLayoutSchema>;
 export type Block = z.infer<typeof blockSchema>;
 export type BlockType = Block["type"];
+export type MobileBlockOverride = NonNullable<
+  z.infer<typeof mobileBlockOverrideSchema>
+>;
+export type SectionMobileOverride = NonNullable<
+  z.infer<typeof sectionMobileOverrideSchema>
+>;
 
 export type TextProps = z.infer<typeof textPropsSchema>;
 export type ImageProps = z.infer<typeof imagePropsSchema>;

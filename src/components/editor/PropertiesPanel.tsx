@@ -20,6 +20,12 @@ import {
   imageTintBgClass,
   imageTintLabel,
 } from "@/components/atoms/imageStyles";
+import {
+  hasMobileOverrides,
+  mergeBlockForMobile,
+  type Device,
+} from "@/lib/responsive";
+import { isMobileOverridable } from "@/lib/mobile-overrides";
 import type { Selection } from "./Editor";
 
 const inputCls =
@@ -28,27 +34,46 @@ const inputCls =
 type Props = {
   page: Page;
   selection: Selection;
+  device: Device;
   /** All page slugs in the project — feeds the Button block's link picker. */
   availablePages?: string[];
   /** The slug currently being edited; excluded from the picker. */
   currentSlug?: string;
   onUpdateMeta: (meta: Page["meta"]) => void;
   onUpdateSection: (sectionId: string, patch: Partial<Section>) => void;
+  onUpdateSectionMobile: (
+    sectionId: string,
+    patch: {
+      padding?: Section["padding"] | undefined;
+      minHeight?: Section["minHeight"] | undefined;
+      align?: Section["align"] | undefined;
+    },
+  ) => void;
   onUpdateBlockProps: (
     sectionId: string,
     blockId: string,
-    patch: Record<string, unknown>
+    patch: Record<string, unknown>,
   ) => void;
+  onSetBlockMobileHidden: (
+    sectionId: string,
+    blockId: string,
+    hidden: boolean,
+  ) => void;
+  onClearBlockMobileOverrides: (sectionId: string, blockId: string) => void;
 };
 
 export function PropertiesPanel({
   page,
   selection,
+  device,
   availablePages = [],
   currentSlug,
   onUpdateMeta,
   onUpdateSection,
+  onUpdateSectionMobile,
   onUpdateBlockProps,
+  onSetBlockMobileHidden,
+  onClearBlockMobileOverrides,
 }: Props) {
   if (selection.type === "page") {
     return <PageMeta page={page} onUpdate={onUpdateMeta} />;
@@ -59,23 +84,96 @@ export function PropertiesPanel({
     return (
       <SectionProps
         section={section}
+        device={device}
         onUpdate={(patch) => onUpdateSection(section.id, patch)}
+        onUpdateMobile={(patch) =>
+          onUpdateSectionMobile(section.id, patch)
+        }
       />
     );
   }
-  // block
   const section = page.sections.find((s) => s.id === selection.sectionId);
   const block = section?.blocks.find((b) => b.id === selection.blockId);
   if (!section || !block) return <Hint>Block not found.</Hint>;
   return (
     <BlockProps
       block={block}
+      device={device}
       availablePages={availablePages}
       currentSlug={currentSlug}
       onUpdate={(patch) =>
         onUpdateBlockProps(section.id, block.id, patch)
       }
+      onSetMobileHidden={(hidden) =>
+        onSetBlockMobileHidden(section.id, block.id, hidden)
+      }
+      onClearMobileOverrides={() =>
+        onClearBlockMobileOverrides(section.id, block.id)
+      }
     />
+  );
+}
+
+/* ============================================================
+   Mobile field affordances — override indicator + reset
+   ============================================================ */
+
+type FieldState = {
+  device: Device;
+  disabled: boolean;
+  overridden: boolean;
+  desktopValue: unknown;
+};
+
+/**
+ * Visual wrapper for a panel field. Adds a mobile-override indicator
+ * (small dot when the value differs from desktop), a reset button when
+ * overridden, and a "(desktop only)" hint for non-overridable keys.
+ */
+function FieldShell({
+  label,
+  state,
+  onReset,
+  children,
+}: {
+  label: string;
+  state: FieldState;
+  /** Required when state.overridden is true. Clears the mobile override. */
+  onReset?: () => void;
+  children: React.ReactNode;
+}) {
+  return (
+    <label className={cn("block", state.disabled && "opacity-40")}>
+      <span className="kicker mb-1.5 flex items-center gap-1.5">
+        {state.overridden && (
+          <span
+            aria-hidden
+            className="h-1.5 w-1.5 rounded-full bg-accent shrink-0"
+          />
+        )}
+        <span>{label}</span>
+        {state.disabled && (
+          <span className="text-foreground/40 normal-case italic">
+            (desktop only)
+          </span>
+        )}
+        {state.overridden && onReset && (
+          <button
+            type="button"
+            onClick={(e) => {
+              e.preventDefault();
+              onReset();
+            }}
+            className="ml-auto kicker text-foreground/50 hover:text-accent transition-colors"
+          >
+            reset
+          </button>
+        )}
+      </span>
+      <fieldset disabled={state.disabled} className="contents">
+        {children}
+      </fieldset>
+    </label>
   );
 }
 
@@ -121,11 +219,93 @@ function PageMeta({
 
 function SectionProps({
   section,
+  device,
   onUpdate,
+  onUpdateMobile,
 }: {
   section: Section;
+  device: Device;
   onUpdate: (patch: Partial<Section>) => void;
+  onUpdateMobile: (patch: {
+    padding?: Section["padding"] | undefined;
+    minHeight?: Section["minHeight"] | undefined;
+    align?: Section["align"] | undefined;
+  }) => void;
 }) {
+  if (device === "mobile") {
+    const m = section.mobile;
+    const padding = m?.padding ?? section.padding;
+    const minHeight = m?.minHeight ?? section.minHeight;
+    const align = m?.align ?? section.align;
+    return (
+      <div className="p-5 space-y-5">
+        <SectionHead title="Section" subtitle={section.id}>
+          <DevicePill device="mobile" />
+        </SectionHead>
+
+        <SectionMobileBanner />
+
+        <FieldShell
+          label="padding"
+          state={{
+            device: "mobile",
+            disabled: false,
+            overridden: m?.padding !== undefined,
+            desktopValue: section.padding,
+          }}
+          onReset={() => onUpdateMobile({ padding: undefined })}
+        >
+          <SegmentBar
+            options={["none", "sm", "md", "lg", "xl"]}
+            value={padding}
+            onChange={(v) =>
+              onUpdateMobile({ padding: v as Section["padding"] })
+            }
+          />
+        </FieldShell>
+        <FieldShell
+          label="min height"
+          state={{
+            device: "mobile",
+            disabled: false,
+            overridden: m?.minHeight !== undefined,
+            desktopValue: section.minHeight,
+          }}
+          onReset={() => onUpdateMobile({ minHeight: undefined })}
+        >
+          <SegmentBar
+            options={["auto", "half", "screen"]}
+            value={minHeight}
+            onChange={(v) =>
+              onUpdateMobile({ minHeight: v as Section["minHeight"] })
+            }
+          />
+        </FieldShell>
+        <FieldShell
+          label="vertical align"
+          state={{
+            device: "mobile",
+            disabled: false,
+            overridden: m?.align !== undefined,
+            desktopValue: section.align,
+          }}
+          onReset={() => onUpdateMobile({ align: undefined })}
+        >
+          <SegmentBar
+            options={["top", "center", "bottom"]}
+            value={align}
+            onChange={(v) =>
+              onUpdateMobile({ align: v as Section["align"] })
+            }
+          />
+        </FieldShell>
+
+        <hr className="rule" />
+        <Hint>Background settings are shared with desktop.</Hint>
+      </div>
+    );
+  }
+
   return (
     <div className="p-5 space-y-5">
       <SectionHead title="Section" subtitle={section.id} />
@@ -163,18 +343,62 @@ function SectionProps({
   );
 }
 
+function DevicePill({ device }: { device: Device }) {
+  return (
+    <span
+      className={cn(
+        "kicker rounded-sm px-1.5 py-0.5 ml-2 text-[10px] tracking-wider",
+        device === "mobile"
+          ? "bg-accent text-accent-foreground"
+          : "bg-foreground/10 text-foreground",
+      )}
+    >
+      {device === "mobile" ? "M" : "D"}
+    </span>
+  );
+}
+
+function SectionMobileBanner() {
+  return (
+    <p className="text-xs text-foreground/50 italic font-sans border-l-2 border-accent/40 pl-3">
+      Editing mobile overrides. Unset fields inherit from desktop.
+    </p>
+  );
+}
+
 function BlockProps({
   block,
+  device,
   availablePages = [],
   currentSlug,
   onUpdate,
+  onSetMobileHidden,
+  onClearMobileOverrides,
 }: {
   block: Block;
+  device: Device;
   availablePages?: string[];
   currentSlug?: string;
+  /** onUpdate is already device-scoped at the Editor level — desktop calls
+   *  patch `block.props`, mobile calls patch `block.mobile.props`. */
   onUpdate: (patch: Record<string, unknown>) => void;
+  onSetMobileHidden: (hidden: boolean) => void;
+  onClearMobileOverrides: () => void;
 }) {
   const entry = atomRegistry[block.type];
+
+  if (device === "mobile") {
+    return (
+      <BlockMobileProps
+        block={block}
+        entry={entry}
+        onUpdate={onUpdate}
+        onSetHidden={onSetMobileHidden}
+        onClearAll={onClearMobileOverrides}
+      />
+    );
+  }
+
   return (
     <div className="p-5 space-y-5">
       <SectionHead title={entry.label} subtitle={block.type} />
@@ -281,6 +505,389 @@ function BlockProps({
       </Field>
     </div>
   );
+}
+
+/* ============================================================
+   Mobile block panel — only the overridable fields, each with an
+   override indicator + reset.
+   ============================================================ */
+
+function BlockMobileProps({
+  block,
+  entry,
+  onUpdate,
+  onSetHidden,
+  onClearAll,
+}: {
+  block: Block;
+  entry: { label: string };
+  onUpdate: (patch: Record<string, unknown>) => void;
+  onSetHidden: (hidden: boolean) => void;
+  onClearAll: () => void;
+}) {
+  const merged = mergeBlockForMobile(block);
+  const overridesAny = hasMobileOverrides(block);
+
+  return (
+    <div className="p-5 space-y-5">
+      <SectionHead title={entry.label} subtitle={block.type}>
+        <DevicePill device="mobile" />
+      </SectionHead>
+
+      <SectionMobileBanner />
+
+      <FieldShell
+        label="hidden on mobile"
+        state={{
+          device: "mobile",
+          disabled: false,
+          overridden: !!block.mobile?.hidden,
+          desktopValue: false,
+        }}
+        onReset={() => onSetHidden(false)}
+      >
+        <ToggleBtn
+          label={block.mobile?.hidden ? "Hidden" : "Visible"}
+          active={!!block.mobile?.hidden}
+          onToggle={() => onSetHidden(!block.mobile?.hidden)}
+        />
+      </FieldShell>
+
+      {block.type === "text" && (
+        <MobileTextProps block={block} merged={merged} onUpdate={onUpdate} />
+      )}
+      {block.type === "image" && (
+        <MobileImageProps block={block} merged={merged} onUpdate={onUpdate} />
+      )}
+      {block.type === "button" && (
+        <MobileButtonProps block={block} merged={merged} onUpdate={onUpdate} />
+      )}
+      {block.type === "video" && (
+        <MobileVideoProps block={block} merged={merged} onUpdate={onUpdate} />
+      )}
+      {block.type === "spacer" && (
+        <MobileSpacerProps block={block} merged={merged} onUpdate={onUpdate} />
+      )}
+      {(block.type === "line" || block.type === "quote") && (
+        <Hint>This block has no mobile-specific style overrides.</Hint>
+      )}
+
+      <hr className="rule" />
+      <Field label="layout (mobile)">
+        <p className="text-xs text-foreground/50 italic font-sans">
+          col {merged.layout.col}, span {merged.layout.colSpan} · row{" "}
+          {merged.layout.row ?? "auto"}, span {merged.layout.rowSpan ?? "auto"}
+          {block.mobile?.layout && (
+            <span className="ml-1 text-accent">·overridden</span>
+          )}
+        </p>
+        <p className="text-xs text-foreground/40 italic mt-1">
+          Drag the block on the canvas to set a mobile-specific layout.
+        </p>
+      </Field>
+
+      {overridesAny && (
+        <button
+          type="button"
+          onClick={onClearAll}
+          className="kicker w-full px-3 py-2 rounded-sm border border-border text-foreground/70 hover:bg-foreground/10 hover:text-accent transition-colors"
+        >
+          Clear all mobile overrides
+        </button>
+      )}
+    </div>
+  );
+}
+
+/* ---------- per-type mobile override pickers ---------- */
+
+function MobileTextProps({
+  block,
+  merged,
+  onUpdate,
+}: {
+  block: Block;
+  merged: Block;
+  onUpdate: (patch: Record<string, unknown>) => void;
+}) {
+  const props = merged.props as TextProps;
+  const ov = (block.mobile?.props ?? {}) as Partial<TextProps>;
+  return (
+    <>
+      <FieldShell
+        label="align"
+        state={mFieldState(block, "align")}
+        onReset={() => onUpdate({ align: undefined })}
+      >
+        <SegmentBar
+          options={["left", "center", "right"]}
+          value={props.align}
+          onChange={(v) => onUpdate({ align: v })}
+        />
+      </FieldShell>
+      <FieldShell
+        label="case"
+        state={mFieldState(block, "transform")}
+        onReset={() => onUpdate({ transform: undefined })}
+      >
+        <SegmentBar
+          options={["none", "upper", "lower"]}
+          labels={{ none: "Aa", upper: "AB", lower: "ab" }}
+          value={props.transform ?? "none"}
+          onChange={(v) => onUpdate({ transform: v })}
+        />
+      </FieldShell>
+      <FieldShell
+        label="font size (px)"
+        state={mFieldState(block, "fontSize")}
+        onReset={() => onUpdate({ fontSize: undefined })}
+      >
+        <input
+          type="number"
+          min={8}
+          max={512}
+          placeholder={String(
+            (block.props as TextProps).fontSize ?? "auto",
+          )}
+          className={inputCls}
+          value={ov.fontSize ?? ""}
+          onChange={(e) => {
+            const n = parseInt(e.target.value, 10);
+            onUpdate({ fontSize: Number.isFinite(n) ? n : undefined });
+          }}
+        />
+      </FieldShell>
+      <FieldShell
+        label="line height"
+        state={mFieldState(block, "lineHeight")}
+        onReset={() => onUpdate({ lineHeight: undefined })}
+      >
+        <input
+          type="number"
+          min={0.6}
+          max={3}
+          step={0.05}
+          placeholder={String(
+            (block.props as TextProps).lineHeight ?? "auto",
+          )}
+          className={inputCls}
+          value={ov.lineHeight ?? ""}
+          onChange={(e) => {
+            const n = parseFloat(e.target.value);
+            onUpdate({ lineHeight: Number.isFinite(n) ? n : undefined });
+          }}
+        />
+      </FieldShell>
+      <FieldShell
+        label="letter spacing (em)"
+        state={mFieldState(block, "letterSpacing")}
+        onReset={() => onUpdate({ letterSpacing: undefined })}
+      >
+        <input
+          type="number"
+          min={-0.2}
+          max={1}
+          step={0.005}
+          placeholder={String(
+            (block.props as TextProps).letterSpacing ?? "auto",
+          )}
+          className={inputCls}
+          value={ov.letterSpacing ?? ""}
+          onChange={(e) => {
+            const n = parseFloat(e.target.value);
+            onUpdate({ letterSpacing: Number.isFinite(n) ? n : undefined });
+          }}
+        />
+      </FieldShell>
+    </>
+  );
+}
+
+function MobileImageProps({
+  block,
+  merged,
+  onUpdate,
+}: {
+  block: Block;
+  merged: Block;
+  onUpdate: (patch: Record<string, unknown>) => void;
+}) {
+  const props = merged.props as ImageProps;
+  const ov = (block.mobile?.props ?? {}) as Partial<ImageProps>;
+  return (
+    <>
+      <FieldShell
+        label="fit"
+        state={mFieldState(block, "fit")}
+        onReset={() => onUpdate({ fit: undefined })}
+      >
+        <SegmentBar
+          options={["cover", "contain"]}
+          value={props.fit}
+          onChange={(v) => onUpdate({ fit: v })}
+        />
+      </FieldShell>
+      <FieldShell
+        label="aspect ratio (CSS)"
+        state={mFieldState(block, "aspect")}
+        onReset={() => onUpdate({ aspect: undefined })}
+      >
+        <input
+          className={cn(inputCls, "font-sans text-xs")}
+          placeholder={(block.props as ImageProps).aspect ?? "4/5"}
+          value={ov.aspect ?? ""}
+          onChange={(e) =>
+            onUpdate({ aspect: e.target.value || undefined })
+          }
+        />
+      </FieldShell>
+      <FieldShell
+        label={`corner radius — ${props.radius}px`}
+        state={mFieldState(block, "radius")}
+        onReset={() => onUpdate({ radius: undefined })}
+      >
+        <input
+          type="range"
+          min={0}
+          max={120}
+          step={1}
+          value={props.radius}
+          onChange={(e) =>
+            onUpdate({ radius: parseInt(e.target.value, 10) || 0 })
+          }
+          className="w-full accent-accent"
+        />
+      </FieldShell>
+    </>
+  );
+}
+
+function MobileButtonProps({
+  block,
+  merged,
+  onUpdate,
+}: {
+  block: Block;
+  merged: Block;
+  onUpdate: (patch: Record<string, unknown>) => void;
+}) {
+  const props = merged.props as {
+    align: string;
+    variant: string;
+  };
+  return (
+    <>
+      <FieldShell
+        label="align"
+        state={mFieldState(block, "align")}
+        onReset={() => onUpdate({ align: undefined })}
+      >
+        <SegmentBar
+          options={["left", "center", "right"]}
+          value={props.align}
+          onChange={(v) => onUpdate({ align: v })}
+        />
+      </FieldShell>
+      <FieldShell
+        label="variant"
+        state={mFieldState(block, "variant")}
+        onReset={() => onUpdate({ variant: undefined })}
+      >
+        <SegmentBar
+          options={["primary", "ghost"]}
+          value={props.variant}
+          onChange={(v) => onUpdate({ variant: v })}
+        />
+      </FieldShell>
+    </>
+  );
+}
+
+function MobileVideoProps({
+  block,
+  merged,
+  onUpdate,
+}: {
+  block: Block;
+  merged: Block;
+  onUpdate: (patch: Record<string, unknown>) => void;
+}) {
+  const props = merged.props as VideoProps;
+  const ov = (block.mobile?.props ?? {}) as Partial<VideoProps>;
+  return (
+    <>
+      <FieldShell
+        label="aspect ratio (CSS)"
+        state={mFieldState(block, "aspect")}
+        onReset={() => onUpdate({ aspect: undefined })}
+      >
+        <input
+          className={cn(inputCls, "font-sans text-xs")}
+          placeholder={(block.props as VideoProps).aspect ?? "16/9"}
+          value={ov.aspect ?? ""}
+          onChange={(e) =>
+            onUpdate({ aspect: e.target.value || "16/9" })
+          }
+        />
+      </FieldShell>
+      <FieldShell
+        label={`corner radius — ${props.radius}px`}
+        state={mFieldState(block, "radius")}
+        onReset={() => onUpdate({ radius: undefined })}
+      >
+        <input
+          type="range"
+          min={0}
+          max={120}
+          step={1}
+          value={props.radius}
+          onChange={(e) =>
+            onUpdate({ radius: parseInt(e.target.value, 10) || 0 })
+          }
+          className="w-full accent-accent"
+        />
+      </FieldShell>
+    </>
+  );
+}
+
+function MobileSpacerProps({
+  block,
+  merged,
+  onUpdate,
+}: {
+  block: Block;
+  merged: Block;
+  onUpdate: (patch: Record<string, unknown>) => void;
+}) {
+  const props = merged.props as { height: number };
+  return (
+    <FieldShell
+      label="height (px)"
+      state={mFieldState(block, "height")}
+      onReset={() => onUpdate({ height: undefined })}
+    >
+      <input
+        type="number"
+        className={inputCls}
+        value={props.height}
+        onChange={(e) =>
+          onUpdate({ height: parseInt(e.target.value, 10) || 0 })
+        }
+      />
+    </FieldShell>
+  );
+}
+
+/** Convenience wrapper around useMobileFieldState for the per-type pickers. */
+function mFieldState(block: Block, key: string) {
+  const mobileProps = (block.mobile?.props ?? {}) as Record<string, unknown>;
+  return {
+    device: "mobile" as const,
+    disabled: !isMobileOverridable(block.type, key),
+    overridden: key in mobileProps && mobileProps[key] !== undefined,
+    desktopValue: (block.props as Record<string, unknown>)[key],
+  };
 }
 
 function TextBlockProps({
@@ -1931,14 +2538,19 @@ function ButtonBlockProps({
 function SectionHead({
   title,
   subtitle,
+  children,
 }: {
   title: string;
   subtitle?: string;
+  children?: React.ReactNode;
 }) {
   return (
     <header>
       {subtitle && <p className="kicker">{subtitle}</p>}
-      <h2 className="font-display font-bold text-2xl mt-1">{title}</h2>
+      <h2 className="font-display font-bold text-2xl mt-1 flex items-center">
+        {title}
+        {children}
+      </h2>
     </header>
   );
 }

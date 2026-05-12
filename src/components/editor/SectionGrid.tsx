@@ -12,6 +12,7 @@ import { noOverlapCompactor } from "react-grid-layout/core";
 import type { Block, BlockLayout, Section } from "@/lib/schema";
 import { atomRegistry } from "@/lib/atom-registry";
 import { blockToLayoutItem, layoutItemToBlockLayout } from "@/lib/rgl";
+import { mergeBlockForMobile, type Device } from "@/lib/responsive";
 import { cn } from "@/lib/utils";
 import { EditProvider } from "@/components/EditContext";
 
@@ -21,11 +22,18 @@ const ROW_HEIGHT_PX = 8;
 
 type Props = {
   section: Section;
+  device: Device;
   selectedBlockId: string | null;
-  /** True when this section (or one of its blocks) is the editor focus. */
-  active: boolean;
   onSelectBlock: (blockId: string) => void;
-  onUpdateBlockProps: (blockId: string, patch: Record<string, unknown>) => void;
+  /** Patch a block's props at the active device (mobile or desktop).
+   *  Pass `target: "desktop"` to force a desktop write regardless of the
+   *  active device — used for non-overridable copy edits (e.g. inline
+   *  contentEditable in the Text atom). */
+  onUpdateBlockProps: (
+    blockId: string,
+    patch: Record<string, unknown>,
+    target?: Device,
+  ) => void;
   onUpdateBlockLayout: (blockId: string, layout: BlockLayout) => void;
   onDuplicateBlock: (blockId: string) => void;
   onDeleteBlock: (blockId: string) => void;
@@ -33,8 +41,8 @@ type Props = {
 
 export function SectionGrid({
   section,
+  device,
   selectedBlockId,
-  active,
   onSelectBlock,
   onUpdateBlockProps,
   onUpdateBlockLayout,
@@ -47,10 +55,10 @@ export function SectionGrid({
   const layout = useMemo(
     () =>
       section.blocks.map((b) => ({
-        ...blockToLayoutItem(b),
+        ...blockToLayoutItem(b, device),
         isResizable: b.id === selectedBlockId,
       })),
-    [section.blocks, selectedBlockId]
+    [section.blocks, selectedBlockId, device]
   );
 
   // useContainerWidth replaces the v1 `WidthProvider` HOC. It measures the
@@ -64,7 +72,10 @@ export function SectionGrid({
     for (const item of newLayout as readonly LayoutItem[]) {
       const block = section.blocks.find((b) => b.id === item.i);
       if (!block) continue;
-      const existing = blockToLayoutItem(block);
+      // Diff against the same merged baseline RGL was rendering against,
+      // so a no-op render in mobile mode (where mobile.layout is empty)
+      // doesn't fire a write.
+      const existing = blockToLayoutItem(block, device);
       if (
         existing.x !== item.x ||
         existing.y !== item.y ||
@@ -122,10 +133,13 @@ export function SectionGrid({
             >
               <CanvasBlock
                 block={block}
+                device={device}
                 selected={block.id === selectedBlockId}
-                sectionActive={active}
                 onSelect={() => onSelectBlock(block.id)}
                 onUpdateProps={(patch) => onUpdateBlockProps(block.id, patch)}
+                onUpdateDesktopProps={(patch) =>
+                  onUpdateBlockProps(block.id, patch, "desktop")
+                }
                 onDuplicate={() => onDuplicateBlock(block.id)}
                 onDelete={() => onDeleteBlock(block.id)}
               />
@@ -141,36 +155,53 @@ export function SectionGrid({
 
 type CanvasBlockProps = {
   block: Block;
+  device: Device;
   selected: boolean;
-  sectionActive: boolean;
   onSelect: () => void;
+  /** Patch scoped to the active device (writes to `block.mobile.props` in
+   *  mobile mode, `block.props` on desktop). */
   onUpdateProps: (patch: Record<string, unknown>) => void;
+  /** Patch always written to `block.props` regardless of the active device.
+   *  Used for non-overridable copy (e.g. Text contentEditable). */
+  onUpdateDesktopProps: (patch: Record<string, unknown>) => void;
   onDuplicate: () => void;
   onDelete: () => void;
 };
 
 function CanvasBlock({
   block,
+  device,
   selected,
-  sectionActive,
   onSelect,
   onUpdateProps,
+  onUpdateDesktopProps,
   onDuplicate,
   onDelete,
 }: CanvasBlockProps) {
-  const entry = atomRegistry[block.type];
+  // In mobile mode the canvas previews the merged block (desktop ∪
+  // mobile overrides). Atom components receive merged props so the user
+  // sees what the live page will look like.
+  const visualBlock = device === "mobile" ? mergeBlockForMobile(block) : block;
+  const entry = atomRegistry[visualBlock.type];
   const Component = entry.component;
 
-  // EditContext bound to this block. Atom components read this to know
-  // they're in editor mode (interactive) and to push prop updates back.
   const ctxValue = useMemo(
     () => ({
       blockId: block.id,
-      block,
+      block: visualBlock,
       selected,
+      device,
       updateProps: onUpdateProps,
+      updateDesktopProps: onUpdateDesktopProps,
     }),
-    [block, selected, onUpdateProps]
+    [
+      block.id,
+      visualBlock,
+      selected,
+      device,
+      onUpdateProps,
+      onUpdateDesktopProps,
+    ],
   );
 
   return (
@@ -188,13 +219,10 @@ function CanvasBlock({
     >
       <div className="h-full w-full pointer-events-none">
         <EditProvider value={ctxValue}>
-          <Component {...(block.props as object)} />
+          <Component {...(visualBlock.props as object)} />
         </EditProvider>
       </div>
       <BlockToolbar
-        // Toolbar appears only when this specific block is selected — not
-        // when its parent section is selected. Hover discovery is handled
-        // by the outline below.
         visible={selected}
         onDuplicate={onDuplicate}
         onDelete={onDelete}

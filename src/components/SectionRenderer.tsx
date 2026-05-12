@@ -1,6 +1,11 @@
-import type { Section, Block } from "@/lib/schema";
+import type { Section, Block, BlockLayout } from "@/lib/schema";
 import { atomRegistry } from "@/lib/atom-registry";
 import { cn } from "@/lib/utils";
+import {
+  hasMobileOverrides,
+  hasSectionMobileOverrides,
+  mergeBlockForMobile,
+} from "@/lib/responsive";
 import {
   imageFilterAndBlurCss,
   imageTintBgClass,
@@ -10,25 +15,124 @@ import {
 import { SectionReactBitsBackground } from "@/components/SectionReactBitsBackground";
 import { SectionVideoBackground } from "@/components/SectionVideoBackground";
 
-export const SECTION_PADDING_CLASS = {
+/**
+ * Section padding / minHeight / align — split into mobile (small) and
+ * desktop (md+) maps so per-section overrides can be composed without
+ * fighting Tailwind specificity.
+ *
+ * Public site: emit both. The unprefixed mobile class wins below md;
+ * the `md:`-prefixed desktop class wins above. If `section.mobile.X` is
+ * set, the mobile half reads the override; the desktop half always reads
+ * the base value. Tailwind JIT requires literal class names, so we keep
+ * one full prefixed copy of each map alongside the bare one.
+ *
+ * Editor canvas: composes either map directly (no `md:`) so the canvas
+ * accurately previews whichever device is active, regardless of the
+ * actual browser viewport width.
+ */
+const PADDING_MOBILE = {
   none: "py-0",
-  sm: "py-8 md:py-12",
-  md: "py-16 md:py-20",
-  lg: "py-24 md:py-32",
-  xl: "py-32 md:py-48",
+  sm: "py-8",
+  md: "py-16",
+  lg: "py-24",
+  xl: "py-32",
 } as const;
 
-export const SECTION_MIN_HEIGHT_CLASS = {
-  auto: "",
+const PADDING_DESKTOP_RAW = {
+  none: "py-0",
+  sm: "py-12",
+  md: "py-20",
+  lg: "py-32",
+  xl: "py-48",
+} as const;
+
+const PADDING_DESKTOP_MD = {
+  none: "md:py-0",
+  sm: "md:py-12",
+  md: "md:py-20",
+  lg: "md:py-32",
+  xl: "md:py-48",
+} as const;
+
+const MIN_HEIGHT_MOBILE = {
+  auto: "min-h-0",
   half: "min-h-[50vh]",
   screen: "min-h-screen",
 } as const;
 
-export const SECTION_ALIGN_CLASS = {
+const MIN_HEIGHT_DESKTOP_RAW = {
+  auto: "min-h-0",
+  half: "min-h-[50vh]",
+  screen: "min-h-screen",
+} as const;
+
+const MIN_HEIGHT_DESKTOP_MD = {
+  auto: "md:min-h-0",
+  half: "md:min-h-[50vh]",
+  screen: "md:min-h-screen",
+} as const;
+
+const ALIGN_MOBILE = {
   top: "items-start",
   center: "items-center",
   bottom: "items-end",
 } as const;
+
+const ALIGN_DESKTOP_RAW = {
+  top: "items-start",
+  center: "items-center",
+  bottom: "items-end",
+} as const;
+
+const ALIGN_DESKTOP_MD = {
+  top: "md:items-start",
+  center: "md:items-center",
+  bottom: "md:items-end",
+} as const;
+
+/**
+ * Public-site classes for a section. Emits both the mobile and the
+ * `md:`-prefixed desktop variants so the responsive override happens
+ * via Tailwind's media query, with no JS.
+ */
+export function sectionResponsiveClasses(section: Section): string {
+  const m = section.mobile;
+  const mobilePadding = m?.padding ?? section.padding;
+  const mobileMinH = m?.minHeight ?? section.minHeight;
+  const mobileAlign = m?.align ?? section.align;
+  return cn(
+    PADDING_MOBILE[mobilePadding],
+    PADDING_DESKTOP_MD[section.padding],
+    MIN_HEIGHT_MOBILE[mobileMinH],
+    MIN_HEIGHT_DESKTOP_MD[section.minHeight],
+    ALIGN_MOBILE[mobileAlign],
+    ALIGN_DESKTOP_MD[section.align],
+  );
+}
+
+/**
+ * Editor-canvas classes for a section. The editor uses JS state (`device`)
+ * to drive the preview, so it needs unprefixed classes that fire regardless
+ * of the surrounding browser viewport width.
+ */
+export function sectionEditorClasses(
+  section: Section,
+  device: "desktop" | "mobile",
+): string {
+  if (device === "mobile") {
+    const m = section.mobile;
+    return cn(
+      PADDING_MOBILE[m?.padding ?? section.padding],
+      MIN_HEIGHT_MOBILE[m?.minHeight ?? section.minHeight],
+      ALIGN_MOBILE[m?.align ?? section.align],
+    );
+  }
+  return cn(
+    PADDING_DESKTOP_RAW[section.padding],
+    MIN_HEIGHT_DESKTOP_RAW[section.minHeight],
+    ALIGN_DESKTOP_RAW[section.align],
+  );
+}
 
 const ROW_HEIGHT_PX = 8;
 
@@ -96,11 +200,12 @@ export function SectionRenderer({ section, renderBlock }: Props) {
       style={style}
       className={cn(
         "relative w-full flex overflow-hidden",
-        SECTION_PADDING_CLASS[section.padding],
-        SECTION_MIN_HEIGHT_CLASS[section.minHeight],
-        SECTION_ALIGN_CLASS[section.align],
-        className
+        sectionResponsiveClasses(section),
+        className,
       )}
+      data-has-mobile-overrides={
+        hasSectionMobileOverrides(section) ? "true" : undefined
+      }
     >
       <SectionImageBackground bg={section.background} />
       <SectionVideoBackground bg={section.background} />
@@ -115,9 +220,13 @@ export function SectionRenderer({ section, renderBlock }: Props) {
       >
         {section.blocks.map((block) =>
           renderBlock ? (
+            // Editor path — the caller (SectionFrame / SectionGrid) handles
+            // device-specific rendering itself, so dual-render isn't needed
+            // here. We still apply mobileHiddenClass for live preview of
+            // the `mobile.hidden` toggle in the canvas's mobile mode.
             <div
               key={block.id}
-              style={blockGridStyle(block)}
+              style={blockGridStyle(block.layout)}
               className={mobileHiddenClass(block)}
             >
               {renderBlock(block)}
@@ -132,20 +241,53 @@ export function SectionRenderer({ section, renderBlock }: Props) {
 }
 
 function PublicBlock({ block }: { block: Block }) {
+  // Common case — no per-breakpoint overrides. Render once with the
+  // canonical id and the existing `mobile.hidden` class. Equivalent to
+  // the pre-mobile-editor behavior, so existing pages stay byte-identical
+  // in the rendered DOM.
+  if (!hasMobileOverrides(block)) {
+    return <SingleBlock block={block} carryId />;
+  }
+
+  // Override path — render the desktop and mobile variants as siblings,
+  // each visible at its own breakpoint. Only the desktop variant carries
+  // the canonical `id` so anchor deep-links resolve unambiguously.
+  // Soft-limitation: a `#blockId` jump opened on a real phone viewport
+  // lands on a `display:none` element, so the scroll target is imprecise
+  // — acceptable because the editor's deep-link feature is a desktop
+  // authoring affordance.
+  const merged = mergeBlockForMobile(block);
+  return (
+    <>
+      <SingleBlock block={block} carryId extraClass="max-md:hidden" />
+      <SingleBlock block={merged} carryId={false} extraClass="md:hidden" />
+    </>
+  );
+}
+
+function SingleBlock({
+  block,
+  carryId,
+  extraClass,
+}: {
+  block: Block;
+  carryId: boolean;
+  extraClass?: string;
+}) {
   const Atom = atomRegistry[block.type].component;
   return (
     <div
-      id={block.id}
-      style={blockGridStyle(block)}
-      className={mobileHiddenClass(block)}
+      id={carryId ? block.id : undefined}
+      style={blockGridStyle(block.layout)}
+      className={cn(mobileHiddenClass(block), extraClass)}
     >
       <Atom {...(block.props as object)} />
     </div>
   );
 }
 
-export function blockGridStyle(block: Block): React.CSSProperties {
-  const { col, colSpan, row, rowSpan } = block.layout;
+export function blockGridStyle(layout: BlockLayout): React.CSSProperties {
+  const { col, colSpan, row, rowSpan } = layout;
   return {
     gridColumn: `${col} / span ${colSpan}`,
     gridRow:

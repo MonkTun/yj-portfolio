@@ -116,7 +116,9 @@ function EditableText({ Tag, className, style, content }: EditableTextProps) {
     if (!el) return;
     const cleaned = sanitizeRichText(el.innerHTML);
     if (cleaned !== content) {
-      ctx.updateProps({ content: cleaned });
+      // Content always writes to desktop, even in mobile mode — copy is a
+      // page-level property, not a per-breakpoint override.
+      ctx.updateDesktopProps({ content: cleaned });
     }
   }
 

@@ -5,20 +5,18 @@ import { CSS } from "@dnd-kit/utilities";
 import type { CSSProperties } from "react";
 
 import type {
-  Block,
   BlockLayout,
   BlockType,
   Section,
 } from "@/lib/schema";
 import {
-  SECTION_ALIGN_CLASS,
-  SECTION_MIN_HEIGHT_CLASS,
-  SECTION_PADDING_CLASS,
   SectionImageBackground,
   sectionBackgroundStyle,
+  sectionEditorClasses,
 } from "@/components/SectionRenderer";
 import { SectionReactBitsBackground } from "@/components/SectionReactBitsBackground";
 import { SectionVideoBackground } from "@/components/SectionVideoBackground";
+import { mergeSectionForMobile, type Device } from "@/lib/responsive";
 import { cn } from "@/lib/utils";
 
 import { SectionGrid } from "./SectionGrid";
@@ -29,6 +27,7 @@ type Props = {
   section: Section;
   index: number;
   total: number;
+  device: Device;
   selectedBlockId: string | null;
   active: boolean;
   onSelectSection: () => void;
@@ -38,7 +37,11 @@ type Props = {
   onDeleteSection: () => void;
   onMoveSection: (direction: -1 | 1) => void;
   onAddBlock: (type: BlockType) => void;
-  onUpdateBlockProps: (blockId: string, patch: Record<string, unknown>) => void;
+  onUpdateBlockProps: (
+    blockId: string,
+    patch: Record<string, unknown>,
+    target?: Device,
+  ) => void;
   onUpdateBlockLayout: (blockId: string, layout: BlockLayout) => void;
   onDuplicateBlock: (blockId: string) => void;
   onDeleteBlock: (blockId: string) => void;
@@ -48,6 +51,7 @@ export function SectionFrame({
   section,
   index,
   total,
+  device,
   selectedBlockId,
   active,
   onSelectSection,
@@ -77,6 +81,11 @@ export function SectionFrame({
     innerStyle: bgInnerStyle,
   } = sectionBackgroundStyle(section.background);
 
+  // Mobile mode renders the merged section so padding/minHeight/align
+  // overrides preview accurately on the canvas.
+  const visualSection =
+    device === "mobile" ? mergeSectionForMobile(section) : section;
+
   return (
     <div
       ref={setNodeRef}
@@ -91,11 +100,8 @@ export function SectionFrame({
         style={bgStyle}
         className={cn(
           "relative w-full flex overflow-hidden",
-          SECTION_PADDING_CLASS[section.padding],
-          SECTION_MIN_HEIGHT_CLASS[section.minHeight],
-          SECTION_ALIGN_CLASS[section.align],
+          sectionEditorClasses(visualSection, device),
           bgClass,
-          // outline behaviour matches blocks: thin on hover, accent on select
           active
             ? "outline-2 outline-accent"
             : "outline-1 outline-transparent group-hover/section:outline-foreground/15"
@@ -106,7 +112,12 @@ export function SectionFrame({
         <SectionReactBitsBackground bg={section.background} />
 
         <div
-          className="relative w-full max-w-7xl mx-auto px-6 md:px-10"
+          className={cn(
+            "relative w-full max-w-7xl mx-auto",
+            // The 425px mobile canvas is too narrow for `md:px-10`; drop to
+            // a phone-tight gutter so blocks have realistic horizontal room.
+            device === "mobile" ? "px-4" : "px-6 md:px-10",
+          )}
           style={bgInnerStyle}
         >
           {/* 12-col grid guide — appears whenever this section is the focus
@@ -115,7 +126,10 @@ export function SectionFrame({
           {active && (
             <div
               aria-hidden
-              className="absolute inset-0 px-6 md:px-10 pointer-events-none z-0"
+              className={cn(
+                "absolute inset-0 pointer-events-none z-0",
+                device === "mobile" ? "px-4" : "px-6 md:px-10",
+              )}
             >
               <div className="relative h-full w-full grid grid-cols-12 gap-x-4">
                 {Array.from({ length: 12 }).map((_, i) => (
@@ -131,10 +145,12 @@ export function SectionFrame({
           <div className="relative z-10">
             <SectionGrid
               section={section}
+              device={device}
               selectedBlockId={selectedBlockId}
-              active={active}
               onSelectBlock={onSelectBlock}
-              onUpdateBlockProps={onUpdateBlockProps}
+              onUpdateBlockProps={(blockId, patch, target) =>
+                onUpdateBlockProps(blockId, patch, target)
+              }
               onUpdateBlockLayout={onUpdateBlockLayout}
               onDuplicateBlock={onDuplicateBlock}
               onDeleteBlock={onDeleteBlock}
