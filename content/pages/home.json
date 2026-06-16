@@ -7,9 +7,16 @@
     {
       "id": "sec_hero",
       "background": {
-        "type": "transparent"
+        "type": "video",
+        "url": "https://youtu.be/3QuGe29jRBc?si=qYFgPPSaIIrxoKfr",
+        "overlay": 40,
+        "muted": true,
+        "loop": true,
+        "playbackRate": 0.75,
+        "tint": "background",
+        "tintOpacity": 40
       },
-      "padding": "xl",
+      "padding": "none",
       "minHeight": "screen",
       "align": "center",
       "blocks": [
@@ -45,16 +52,16 @@
         {
           "id": "blk_hero_tagline",
           "layout": {
-            "col": 8,
+            "col": 2,
             "colSpan": 5,
-            "row": 43,
+            "row": 38,
             "rowSpan": 24
           },
           "mobile": {
             "layout": {
               "col": 1,
               "colSpan": 12,
-              "row": 66,
+              "row": 59,
               "rowSpan": 16
             }
           },
@@ -66,177 +73,191 @@
             "color": "foreground",
             "transform": "none"
           }
-        },
-        {
-          "id": "blk_47de8074",
-          "layout": {
-            "col": 2,
-            "colSpan": 5,
-            "row": 26,
-            "rowSpan": 51
-          },
-          "mobile": {
-            "layout": {
-              "col": 1,
-              "colSpan": 12,
-              "row": 13
-            }
-          },
-          "type": "image",
-          "props": {
-            "src": "/uploads/img-3101-mounkf1r-no-bg-mouo26o3.png",
-            "alt": "",
-            "fit": "cover",
-            "radius": 112,
-            "filter": "noir",
-            "focalX": 50,
-            "focalY": 50,
-            "rotate": 0,
-            "flipX": true,
-            "flipY": false,
-            "blur": 0,
-            "tint": "none",
-            "tintOpacity": 0
-          }
         }
       ]
     },
     {
-      "id": "sec_proj_thang",
+      "id": "sec_cce5055c",
       "background": {
-        "type": "reverse"
+        "type": "transparent"
       },
-      "padding": "md",
+      "padding": "sm",
       "minHeight": "auto",
       "align": "top",
       "blocks": [
         {
-          "id": "blk_thang_meta",
+          "id": "blk_fa6381af",
           "layout": {
-            "col": 2,
-            "colSpan": 6,
-            "row": 1,
-            "rowSpan": 3
+            "col": 1,
+            "colSpan": 12,
+            "row": 3,
+            "rowSpan": 25,
+            "bleed": "both"
           },
           "mobile": {
             "layout": {
-              "col": 1,
-              "colSpan": 12,
-              "row": 60
+              "row": 1,
+              "rowSpan": 20
             }
           },
-          "type": "text",
+          "type": "projectCarousel",
           "props": {
-            "content": "2025 — Multiplayer engineer",
-            "variant": "kicker",
-            "align": "left",
-            "color": "muted",
-            "transform": "none"
-          }
-        },
-        {
-          "id": "blk_thang_title",
-          "layout": {
-            "col": 2,
-            "colSpan": 6,
-            "row": 5,
-            "rowSpan": 8
-          },
-          "mobile": {
-            "layout": {
-              "col": 1,
-              "colSpan": 12,
-              "row": 63
-            }
-          },
-          "type": "text",
-          "props": {
-            "content": "Thang.",
-            "variant": "h3",
-            "align": "left",
-            "color": "foreground",
-            "transform": "none"
-          }
-        },
-        {
-          "id": "blk_thang_summary",
-          "layout": {
-            "col": 2,
-            "colSpan": 5,
-            "row": 14,
-            "rowSpan": 14
-          },
-          "mobile": {
-            "layout": {
-              "col": 1,
-              "colSpan": 12,
-              "row": 71
-            }
-          },
-          "type": "text",
-          "props": {
-            "content": "A casual multiplayer freeze-tag shooter built on UE5, with a Next.js / MongoDB backend on AWS GameLift. Architected client-to-cloud end-to-end.",
-            "variant": "body",
-            "align": "left",
-            "color": "foreground",
-            "transform": "none"
-          }
-        },
-        {
-          "id": "blk_thang_image",
-          "layout": {
-            "col": 8,
-            "colSpan": 4,
-            "row": 1,
-            "rowSpan": 59
-          },
-          "mobile": {
-            "layout": {
-              "col": 1,
-              "colSpan": 12
-            }
-          },
-          "type": "image",
-          "props": {
-            "src": "/projects/thangPoster.png",
-            "alt": "Thang",
-            "fit": "cover",
-            "href": "/work/thang",
-            "aspect": "4/5",
-            "radius": 50,
-            "filter": "none",
-            "focalX": 50,
-            "focalY": 50,
-            "rotate": 0,
-            "flipX": false,
-            "flipY": false,
-            "blur": 0,
-            "tint": "none",
-            "tintOpacity": 0
-          }
-        },
-        {
-          "id": "blk_thang_btn",
-          "layout": {
-            "col": 2,
-            "colSpan": 3,
-            "row": 34,
-            "rowSpan": 5
-          },
-          "mobile": {
-            "layout": {
-              "col": 1,
-              "colSpan": 12,
-              "row": 85
-            }
-          },
-          "type": "button",
-          "props": {
-            "label": "Read more →",
-            "href": "/work/thang",
-            "variant": "ghost",
-            "align": "left",
-            "newTab": false
+            "items": [
+              {
+                "src": "/uploads/br-posterwithpaperandtatter-mqg50uv2.webp",
+                "alt": "",
+                "title": "Project one",
+                "meta": "2024 — Role",
+                "description": "A short line about the work.",
+                "starred": false,
+                "filter": "none",
+                "focalX": 51,
+                "focalY": 1,
+                "rotate": 0,
+                "flipX": false,
+                "flipY": false,
+                "blur": 0,
+                "zoom": 1.15,
+                "tint": "none",
+                "tintOpacity": 0
+              },
+              {
+                "src": "/uploads/melonicon-mqg68s1r.webp",
+                "alt": "",
+                "title": "Project two",
+                "meta": "2023 — Role",
+                "description": "A short line about the work.",
+                "starred": false,
+                "filter": "none",
+                "focalX": 50,
+                "focalY": 50,
+                "rotate": 0,
+                "flipX": false,
+                "flipY": false,
+                "blur": 0,
+                "zoom": 1,
+                "tint": "none",
+                "tintOpacity": 0
+              },
+              {
+                "src": "/uploads/dawngeonlogo-mqg6b451.webp",
+                "alt": "",
+                "title": "New project",
+                "meta": "",
+                "description": "",
+                "starred": true,
+                "filter": "none",
+                "focalX": 50,
+                "focalY": 50,
+                "rotate": 0,
+                "flipX": false,
+                "flipY": false,
+                "blur": 0,
+                "zoom": 1,
+                "tint": "none",
+                "tintOpacity": 0
+              },
+              {
+                "src": "/uploads/overdawn-mqg6cusv.jpg",
+                "alt": "",
+                "title": "New project",
+                "meta": "",
+                "description": "",
+                "starred": true,
+                "filter": "none",
+                "focalX": 50,
+                "focalY": 50,
+                "rotate": 0,
+                "flipX": false,
+                "flipY": false,
+                "blur": 0,
+                "zoom": 1,
+                "tint": "none",
+                "tintOpacity": 0
+              },
+              {
+                "src": "/uploads/untitled-design-mqg70dct.png",
+                "alt": "",
+                "title": "New project",
+                "meta": "",
+                "description": "",
+                "starred": false,
+                "filter": "none",
+                "focalX": 54,
+                "focalY": 1,
+                "rotate": 0,
+                "flipX": false,
+                "flipY": false,
+                "blur": 0,
+                "zoom": 1,
+                "tint": "none",
+                "tintOpacity": 0
+              },
+              {
+                "src": "/projects/headlessHotelTitle.png",
+                "alt": "",
+                "title": "New project",
+                "meta": "",
+                "description": "",
+                "starred": false,
+                "filter": "none",
+                "focalX": 50,
+                "focalY": 50,
+                "rotate": 0,
+                "flipX": false,
+                "flipY": false,
+                "blur": 0,
+                "zoom": 1,
+                "tint": "none",
+                "tintOpacity": 0
+              },
+              {
+                "src": "/uploads/holowandbanner-mqg6te98.webp",
+                "alt": "",
+                "title": "New project",
+                "meta": "",
+                "description": "",
+                "starred": false,
+                "filter": "none",
+                "focalX": 37,
+                "focalY": 53,
+                "rotate": 0,
+                "flipX": false,
+                "flipY": false,
+                "blur": 0,
+                "zoom": 1,
+                "tint": "none",
+                "tintOpacity": 0
+              },
+              {
+                "src": "/uploads/potionproblems-mqg78g3u.jpg",
+                "alt": "",
+                "title": "New project",
+                "meta": "",
+                "description": "",
+                "starred": false,
+                "filter": "none",
+                "focalX": 50,
+                "focalY": 50,
+                "rotate": 0,
+                "flipX": false,
+                "flipY": false,
+                "blur": 0,
+                "zoom": 1,
+                "tint": "none",
+                "tintOpacity": 0
+              }
+            ],
+            "variant": "marquee",
+            "cardWidth": 160,
+            "gap": 24,
+            "aspect": "1/1",
+            "radius": 44,
+            "edgeFade": true,
+            "showArrows": true,
+            "newTab": false,
+            "autoScrollSpeed": 55,
+            "pauseOnHover": false
           }
         }
       ]
@@ -361,6 +382,7 @@
             "flipX": false,
             "flipY": false,
             "blur": 0,
+            "zoom": 1,
             "tint": "none",
             "tintOpacity": 0
           }
@@ -467,6 +489,7 @@
             "flipX": false,
             "flipY": false,
             "blur": 0,
+            "zoom": 1,
             "tint": "none",
             "tintOpacity": 0
           }
@@ -547,6 +570,7 @@
             "flipX": false,
             "flipY": false,
             "blur": 0,
+            "zoom": 1,
             "tint": "none",
             "tintOpacity": 0
           }
@@ -579,6 +603,7 @@
             "flipX": false,
             "flipY": false,
             "blur": 0,
+            "zoom": 1,
             "tint": "none",
             "tintOpacity": 0
           }
@@ -586,7 +611,7 @@
       ]
     },
     {
-      "id": "sec_proj_mmm",
+      "id": "sec_proj_thang",
       "background": {
         "type": "reverse"
       },
@@ -595,147 +620,7 @@
       "align": "top",
       "blocks": [
         {
-          "id": "blk_mmm_meta",
-          "layout": {
-            "col": 7,
-            "colSpan": 6,
-            "row": 1,
-            "rowSpan": 3
-          },
-          "mobile": {
-            "layout": {
-              "col": 1,
-              "colSpan": 12,
-              "row": 62
-            }
-          },
-          "type": "text",
-          "props": {
-            "content": "2024 — Engineer, USC AGP",
-            "variant": "kicker",
-            "align": "left",
-            "color": "muted",
-            "transform": "none"
-          }
-        },
-        {
-          "id": "blk_mmm_title",
-          "layout": {
-            "col": 7,
-            "colSpan": 6,
-            "row": 5,
-            "rowSpan": 8
-          },
-          "mobile": {
-            "layout": {
-              "col": 1,
-              "colSpan": 12,
-              "row": 65
-            }
-          },
-          "type": "text",
-          "props": {
-            "content": "Move Move Melon.",
-            "variant": "h3",
-            "align": "left",
-            "color": "foreground",
-            "transform": "none"
-          }
-        },
-        {
-          "id": "blk_mmm_summary",
-          "layout": {
-            "col": 7,
-            "colSpan": 5,
-            "row": 14,
-            "rowSpan": 14
-          },
-          "mobile": {
-            "layout": {
-              "col": 1,
-              "colSpan": 12,
-              "row": 73
-            }
-          },
-          "type": "text",
-          "props": {
-            "content": "A whimsical 3D on-rails collection game, built with a 40+ person team. Camera, UI, designer tools, and player feel.",
-            "variant": "body",
-            "align": "left",
-            "color": "foreground",
-            "transform": "none"
-          }
-        },
-        {
-          "id": "blk_mmm_image",
-          "layout": {
-            "col": 2,
-            "colSpan": 4,
-            "row": 1,
-            "rowSpan": 61
-          },
-          "mobile": {
-            "layout": {
-              "col": 1,
-              "colSpan": 12
-            }
-          },
-          "type": "image",
-          "props": {
-            "src": "/projects/mmmTitle.png",
-            "alt": "Move Move Melon",
-            "fit": "cover",
-            "href": "/work/move-move-melon",
-            "aspect": "4/5",
-            "radius": 50,
-            "filter": "none",
-            "focalX": 50,
-            "focalY": 50,
-            "rotate": 0,
-            "flipX": false,
-            "flipY": false,
-            "blur": 0,
-            "tint": "none",
-            "tintOpacity": 0
-          }
-        },
-        {
-          "id": "blk_mmm_btn",
-          "layout": {
-            "col": 7,
-            "colSpan": 3,
-            "row": 31,
-            "rowSpan": 5
-          },
-          "mobile": {
-            "layout": {
-              "col": 1,
-              "colSpan": 12,
-              "row": 87
-            }
-          },
-          "type": "button",
-          "props": {
-            "label": "Read more →",
-            "href": "/work/move-move-melon",
-            "variant": "ghost",
-            "align": "left",
-            "newTab": false
-          }
-        }
-      ]
-    },
-    {
-      "id": "sec_proj_hh",
-      "background": {
-        "type": "transparent"
-      },
-      "padding": "md",
-      "minHeight": "auto",
-      "align": "top",
-      "blocks": [
-        {
-          "id": "blk_hh_meta",
+          "id": "blk_thang_meta",
           "layout": {
             "col": 2,
             "colSpan": 6,
@@ -745,12 +630,13 @@
           "mobile": {
             "layout": {
               "col": 1,
-              "colSpan": 12
+              "colSpan": 12,
+              "row": 60
             }
           },
           "type": "text",
           "props": {
-            "content": "2024 — 7-day game jam",
+            "content": "2025 — Multiplayer engineer",
             "variant": "kicker",
             "align": "left",
             "color": "muted",
@@ -758,7 +644,7 @@
           }
         },
         {
-          "id": "blk_hh_title",
+          "id": "blk_thang_title",
           "layout": {
             "col": 2,
             "colSpan": 6,
@@ -769,12 +655,12 @@
             "layout": {
               "col": 1,
               "colSpan": 12,
-              "row": 42
+              "row": 63
             }
           },
           "type": "text",
           "props": {
-            "content": "Headless Hotel.",
+            "content": "Thang.",
             "variant": "h3",
             "align": "left",
             "color": "foreground",
@@ -782,7 +668,7 @@
           }
         },
         {
-          "id": "blk_hh_summary",
+          "id": "blk_thang_summary",
           "layout": {
             "col": 2,
             "colSpan": 5,
@@ -793,12 +679,12 @@
             "layout": {
               "col": 1,
               "colSpan": 12,
-              "row": 50
+              "row": 71
             }
           },
           "type": "text",
           "props": {
-            "content": "Wake up in a hotel of horrors and find the way out. Built for Brackey's 2024 Game Jam.",
+            "content": "A casual multiplayer freeze-tag shooter built on UE5, with a Next.js / MongoDB backend on AWS GameLift. Architected client-to-cloud end-to-end.",
             "variant": "body",
             "align": "left",
             "color": "foreground",
@@ -806,26 +692,25 @@
           }
         },
         {
-          "id": "blk_hh_image",
+          "id": "blk_thang_image",
           "layout": {
             "col": 8,
             "colSpan": 4,
             "row": 1,
-            "rowSpan": 38
+            "rowSpan": 59
           },
           "mobile": {
             "layout": {
               "col": 1,
-              "colSpan": 12,
-              "row": 4
+              "colSpan": 12
             }
           },
           "type": "image",
           "props": {
-            "src": "/projects/headlessHotelTitle.png",
-            "alt": "Headless Hotel",
+            "src": "/projects/thangPoster.png",
+            "alt": "Thang",
             "fit": "cover",
-            "href": "/work/headless-hotel",
+            "href": "/work/thang",
             "aspect": "4/5",
             "radius": 50,
             "filter": "none",
@@ -835,63 +720,33 @@
             "flipX": false,
             "flipY": false,
             "blur": 0,
+            "zoom": 1,
             "tint": "none",
             "tintOpacity": 0
           }
         },
         {
-          "id": "blk_hh_btn",
+          "id": "blk_thang_btn",
           "layout": {
             "col": 2,
             "colSpan": 3,
-            "row": 30,
+            "row": 34,
             "rowSpan": 5
           },
           "mobile": {
             "layout": {
               "col": 1,
               "colSpan": 12,
-              "row": 64
+              "row": 85
             }
           },
           "type": "button",
           "props": {
             "label": "Read more →",
-            "href": "/work/headless-hotel",
+            "href": "/work/thang",
             "variant": "ghost",
             "align": "left",
             "newTab": false
-          }
-        }
-      ]
-    },
-    {
-      "id": "sec_quote",
-      "background": {
-        "type": "transparent"
-      },
-      "padding": "xl",
-      "minHeight": "auto",
-      "align": "center",
-      "blocks": [
-        {
-          "id": "blk_quote",
-          "layout": {
-            "col": 3,
-            "colSpan": 8,
-            "row": 1,
-            "rowSpan": 24
-          },
-          "mobile": {
-            "layout": {
-              "col": 1,
-              "colSpan": 12
-            }
-          },
-          "type": "quote",
-          "props": {
-            "quote": "The work I love most is the work that knows what it is.",
-            "attribution": "Note to self, 2024"
           }
         }
       ]
@@ -941,7 +796,8 @@
             "layout": {
               "col": 1,
               "colSpan": 12,
-              "row": 4
+              "row": 4,
+              "rowSpan": 16
             }
           },
           "type": "text",
@@ -966,7 +822,7 @@
             "layout": {
               "col": 1,
               "colSpan": 12,
-              "row": 18
+              "row": 23
             }
           },
           "type": "text",

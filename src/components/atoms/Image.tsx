@@ -25,6 +25,7 @@ export function Image(props: ImageProps) {
     flipX,
     flipY,
     blur,
+    zoom,
     tint,
     tintOpacity,
   } = props;
@@ -37,7 +38,8 @@ export function Image(props: ImageProps) {
   const imgStyle: React.CSSProperties = {
     objectPosition: `${focalX}% ${focalY}%`,
     filter: imageFilterAndBlurCss(filter, blur),
-    transform: imageTransformCss({ rotate, flipX, flipY }),
+    transform: imageTransformCss({ rotate, flipX, flipY, zoom }),
+    transformOrigin: `${focalX}% ${focalY}%`,
   };
 
   const tintClass = imageTintBgClass[tint];
@@ -83,6 +85,7 @@ export function Image(props: ImageProps) {
                   rotate,
                   flipX,
                   flipY,
+                  zoom,
                 }),
               }}
             />

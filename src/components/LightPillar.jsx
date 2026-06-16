@@ -1,5 +1,6 @@
 import { useRef, useEffect, useState } from 'react';
 import * as THREE from 'three';
+import { detectGpuTier } from '@/lib/gpu';
 import './LightPillar.css';
 
 const LightPillar = ({
@@ -50,11 +51,15 @@ const LightPillar = ({
     cameraRef.current = camera;
 
     const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
-    const isLowEndDevice = isMobile || (navigator.hardwareConcurrency && navigator.hardwareConcurrency <= 4);
 
-    let effectiveQuality = quality;
-    if (isLowEndDevice && quality === 'high') effectiveQuality = 'medium';
-    if (isMobile && quality !== 'low') effectiveQuality = 'low';
+    // Clamp the requested quality to what the GPU can actually drive. CPU core
+    // count (the old heuristic) says nothing about the GPU — a Windows laptop
+    // with 8 cores and a weak Intel iGPU was getting the heaviest path and
+    // grinding. detectGpuTier reads the real renderer instead (see gpu.ts).
+    const tierCeiling = { high: 'high', medium: 'medium', low: 'low' }[detectGpuTier()];
+    const rank = { low: 0, medium: 1, high: 2 };
+    let effectiveQuality = rank[quality] <= rank[tierCeiling] ? quality : tierCeiling;
+    if (isMobile) effectiveQuality = 'low';
 
     const qualitySettings = {
       low: { iterations: 24, waveIterations: 1, pixelRatio: 0.5, precision: 'mediump', stepMultiplier: 1.5 },

@@ -1,5 +1,6 @@
 import type { ComponentType } from "react";
 import type { Block, BlockType } from "@/lib/schema";
+import { CAROUSEL_ITEM_EFFECT_DEFAULTS } from "@/lib/schema";
 
 import { Text } from "@/components/atoms/Text";
 import { Image } from "@/components/atoms/Image";
@@ -8,6 +9,7 @@ import { Spacer } from "@/components/atoms/Spacer";
 import { Line } from "@/components/atoms/Line";
 import { Quote } from "@/components/atoms/Quote";
 import { Video } from "@/components/atoms/Video";
+import { ProjectCarousel } from "@/components/atoms/ProjectCarousel";
 
 type AtomEntry<P = unknown> = {
   type: BlockType;
@@ -57,6 +59,7 @@ export const atomRegistry: Record<BlockType, AtomEntry<any>> = {
       flipX: false,
       flipY: false,
       blur: 0,
+      zoom: 1,
       tint: "none",
       tintOpacity: 0,
     },
@@ -112,6 +115,44 @@ export const atomRegistry: Record<BlockType, AtomEntry<any>> = {
       radius: 0,
     },
     defaultLayout: { colSpan: 8, rowSpan: 36 },
+  },
+  projectCarousel: {
+    type: "projectCarousel",
+    label: "Project Carousel",
+    component: ProjectCarousel,
+    defaultProps: {
+      items: [
+        {
+          src: "",
+          alt: "",
+          title: "Project one",
+          meta: "2024 — Role",
+          description: "A short line about the work.",
+          starred: false,
+          ...CAROUSEL_ITEM_EFFECT_DEFAULTS,
+        },
+        {
+          src: "",
+          alt: "",
+          title: "Project two",
+          meta: "2023 — Role",
+          description: "A short line about the work.",
+          starred: false,
+          ...CAROUSEL_ITEM_EFFECT_DEFAULTS,
+        },
+      ],
+      variant: "cards",
+      cardWidth: 320,
+      gap: 24,
+      aspect: "4/5",
+      radius: 8,
+      edgeFade: true,
+      showArrows: true,
+      newTab: false,
+      autoScrollSpeed: 40,
+      pauseOnHover: true,
+    },
+    defaultLayout: { colSpan: 12, rowSpan: 64 },
   },
 };
 

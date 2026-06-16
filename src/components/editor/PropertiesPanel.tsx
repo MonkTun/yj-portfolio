@@ -1,6 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useState } from "react";
+import { createPortal } from "react-dom";
 
 import type {
   Page,
@@ -10,8 +11,12 @@ import type {
   TextProps,
   ImageProps,
   VideoProps,
+  ProjectCarouselProps,
+  CarouselItem,
 } from "@/lib/schema";
+import { CAROUSEL_ITEM_EFFECT_DEFAULTS } from "@/lib/schema";
 import { getYouTubeId } from "@/lib/youtube";
+import { downscaleImage } from "@/lib/downscale-image";
 import { atomRegistry } from "@/lib/atom-registry";
 import { cn } from "@/lib/utils";
 import {
@@ -54,6 +59,11 @@ type Props = {
     blockId: string,
     patch: Record<string, unknown>,
   ) => void;
+  onSetBlockBleed: (
+    sectionId: string,
+    blockId: string,
+    bleed: Block["layout"]["bleed"],
+  ) => void;
   onSetBlockMobileHidden: (
     sectionId: string,
     blockId: string,
@@ -72,6 +82,7 @@ export function PropertiesPanel({
   onUpdateSection,
   onUpdateSectionMobile,
   onUpdateBlockProps,
+  onSetBlockBleed,
   onSetBlockMobileHidden,
   onClearBlockMobileOverrides,
 }: Props) {
@@ -104,6 +115,7 @@ export function PropertiesPanel({
       onUpdate={(patch) =>
         onUpdateBlockProps(section.id, block.id, patch)
       }
+      onSetBleed={(bleed) => onSetBlockBleed(section.id, block.id, bleed)}
       onSetMobileHidden={(hidden) =>
         onSetBlockMobileHidden(section.id, block.id, hidden)
       }
@@ -372,6 +384,7 @@ function BlockProps({
   availablePages = [],
   currentSlug,
   onUpdate,
+  onSetBleed,
   onSetMobileHidden,
   onClearMobileOverrides,
 }: {
@@ -382,6 +395,7 @@ function BlockProps({
   /** onUpdate is already device-scoped at the Editor level — desktop calls
    *  patch `block.props`, mobile calls patch `block.mobile.props`. */
   onUpdate: (patch: Record<string, unknown>) => void;
+  onSetBleed: (bleed: Block["layout"]["bleed"]) => void;
   onSetMobileHidden: (hidden: boolean) => void;
   onClearMobileOverrides: () => void;
 }) {
@@ -471,6 +485,12 @@ function BlockProps({
           onUpdate={onUpdate}
         />
       )}
+      {block.type === "projectCarousel" && (
+        <ProjectCarouselBlockProps
+          props={block.props as ProjectCarouselProps}
+          onUpdate={onUpdate}
+        />
+      )}
       {block.type === "quote" && (
         <>
           <Field label="quote">
@@ -492,6 +512,20 @@ function BlockProps({
           </Field>
         </>
       )}
+
+      <hr className="rule" />
+      <Field label="stretch / bleed">
+        <SegmentBar
+          options={["none", "left", "right", "both"]}
+          value={block.layout.bleed ?? "none"}
+          onChange={(v) => onSetBleed(v as Block["layout"]["bleed"])}
+        />
+        <p className="text-xs text-foreground/40 italic mt-1">
+          Stretches the block past the safe area to the section edge to
+          accentuate it. Best on a block sitting at that grid edge (left → col
+          1, right → ends at col 12).
+        </p>
+      </Field>
 
       <hr className="rule" />
       <Field label="layout">
@@ -568,7 +602,9 @@ function BlockMobileProps({
       {block.type === "spacer" && (
         <MobileSpacerProps block={block} merged={merged} onUpdate={onUpdate} />
       )}
-      {(block.type === "line" || block.type === "quote") && (
+      {(block.type === "line" ||
+        block.type === "quote" ||
+        block.type === "projectCarousel") && (
         <Hint>This block has no mobile-specific style overrides.</Hint>
       )}
 
@@ -1072,31 +1108,26 @@ function ImageBlockProps({
   props: ImageProps;
   onUpdate: (patch: Record<string, unknown>) => void;
 }) {
-  // Bumped after a successful upload so the library re-fetches and the
-  // newly-uploaded image shows up at the top of the grid.
-  const [libraryVersion, setLibraryVersion] = useState(0);
-  const refreshLibrary = useCallback(
-    () => setLibraryVersion((v) => v + 1),
-    []
-  );
-
   return (
     <>
-      <Field label="upload">
-        <ImageUploader
-          src={props.src}
-          onUploaded={(src) => {
-            onUpdate({ src });
-            refreshLibrary();
+      <Field label="image">
+        <ImageDialog
+          value={props.src}
+          onChange={(src) => onUpdate({ src })}
+          effects={{
+            filter: props.filter,
+            focalX: props.focalX,
+            focalY: props.focalY,
+            rotate: props.rotate,
+            flipX: props.flipX,
+            flipY: props.flipY,
+            blur: props.blur,
+            zoom: props.zoom,
+            tint: props.tint,
+            tintOpacity: props.tintOpacity,
           }}
-        />
-      </Field>
-
-      <Field label="library">
-        <ImageLibrary
-          version={libraryVersion}
-          currentSrc={props.src}
-          onPick={(src) => onUpdate({ src })}
+          onEffectsChange={onUpdate}
+          effectsContext={{ fit: props.fit, aspect: props.aspect }}
         />
       </Field>
 
@@ -1143,32 +1174,6 @@ function ImageBlockProps({
         />
       </Field>
 
-      <ImageEffects
-        src={props.src}
-        aspect={props.aspect}
-        fit={props.fit}
-        filter={props.filter}
-        focalX={props.focalX}
-        focalY={props.focalY}
-        rotate={props.rotate}
-        flipX={props.flipX}
-        flipY={props.flipY}
-        blur={props.blur}
-        tint={props.tint}
-        tintOpacity={props.tintOpacity}
-        onChange={onUpdate}
-      />
-
-      <Field label="background">
-        <RemoveBgButton
-          src={props.src}
-          onResult={(src) => {
-            onUpdate({ src });
-            refreshLibrary();
-          }}
-        />
-      </Field>
-
       <hr className="rule" />
 
       <Field label="link href (optional)">
@@ -1178,16 +1183,336 @@ function ImageBlockProps({
           onChange={(e) => onUpdate({ href: e.target.value || undefined })}
         />
       </Field>
+    </>
+  );
+}
 
-      <Field label="src (manual path)">
+/* ---------------- project carousel ---------------- */
+
+function ProjectCarouselBlockProps({
+  props,
+  onUpdate,
+}: {
+  props: ProjectCarouselProps;
+  onUpdate: (patch: Record<string, unknown>) => void;
+}) {
+  const items = props.items;
+  const isMarquee = props.variant === "marquee";
+
+  const setItem = (i: number, patch: Partial<CarouselItem>) => {
+    onUpdate({
+      items: items.map((it, idx) => (idx === i ? { ...it, ...patch } : it)),
+    });
+  };
+  const addItem = () => {
+    onUpdate({
+      items: [
+        ...items,
+        {
+          src: "",
+          alt: "",
+          title: "New project",
+          meta: "",
+          description: "",
+          starred: false,
+          ...CAROUSEL_ITEM_EFFECT_DEFAULTS,
+        },
+      ],
+    });
+  };
+  const removeItem = (i: number) => {
+    onUpdate({ items: items.filter((_, idx) => idx !== i) });
+  };
+  const move = (i: number, dir: -1 | 1) => {
+    const j = i + dir;
+    if (j < 0 || j >= items.length) return;
+    const next = items.slice();
+    [next[i], next[j]] = [next[j], next[i]];
+    onUpdate({ items: next });
+  };
+
+  return (
+    <>
+      <Field label="variant">
+        <SegmentBar
+          options={["cards", "marquee"]}
+          value={props.variant}
+          labels={{ cards: "Cards", marquee: "Marquee" }}
+          onChange={(v) => onUpdate({ variant: v })}
+        />
+        <p className="text-xs text-foreground/40 italic mt-1.5">
+          {isMarquee
+            ? "Image-only band that drifts on its own and can be grabbed / flung."
+            : "Snap-scrolled cards with title, meta and description."}
+        </p>
+      </Field>
+
+      <Field label={`card width — ${props.cardWidth}px`}>
         <input
-          className={cn(inputCls, "font-sans text-xs")}
-          placeholder="/uploads/foo.jpg"
-          value={props.src}
-          onChange={(e) => onUpdate({ src: e.target.value })}
+          type="range"
+          min={160}
+          max={640}
+          step={8}
+          value={props.cardWidth}
+          onChange={(e) =>
+            onUpdate({ cardWidth: parseInt(e.target.value, 10) || 320 })
+          }
+          className="w-full accent-accent"
         />
       </Field>
+
+      <Field label={`gap — ${props.gap}px`}>
+        <input
+          type="range"
+          min={0}
+          max={96}
+          step={2}
+          value={props.gap}
+          onChange={(e) =>
+            onUpdate({ gap: parseInt(e.target.value, 10) || 0 })
+          }
+          className="w-full accent-accent"
+        />
+      </Field>
+
+      <Field label="image ratio">
+        <SegmentBar
+          options={["1/1", "4/5", "3/4", "2/3", "16/9", "3/2"]}
+          labels={{
+            "1/1": "Square",
+            "4/5": "4:5",
+            "3/4": "3:4",
+            "2/3": "2:3",
+            "16/9": "16:9",
+            "3/2": "3:2",
+          }}
+          value={props.aspect}
+          onChange={(v) => onUpdate({ aspect: v })}
+        />
+        <input
+          className={cn(inputCls, "font-sans text-xs mt-2")}
+          placeholder="custom, e.g. 5/7"
+          value={props.aspect}
+          onChange={(e) => onUpdate({ aspect: e.target.value || "4/5" })}
+        />
+      </Field>
+
+      <Field label={`corner radius — ${props.radius}px`}>
+        <input
+          type="range"
+          min={0}
+          max={120}
+          step={1}
+          value={props.radius}
+          onChange={(e) =>
+            onUpdate({ radius: parseInt(e.target.value, 10) || 0 })
+          }
+          className="w-full accent-accent"
+        />
+      </Field>
+
+      {isMarquee && (
+        <Field label={`auto-scroll — ${props.autoScrollSpeed}px/s`}>
+          <input
+            type="range"
+            min={0}
+            max={200}
+            step={5}
+            value={props.autoScrollSpeed}
+            onChange={(e) =>
+              onUpdate({ autoScrollSpeed: parseInt(e.target.value, 10) || 0 })
+            }
+            className="w-full accent-accent"
+          />
+          <p className="text-xs text-foreground/40 italic mt-1">
+            0 = no drift (still grabbable). Paused for reduced-motion visitors.
+          </p>
+        </Field>
+      )}
+
+      <div className="flex gap-2">
+        {isMarquee ? (
+          <Field label="pause on hover">
+            <ToggleBtn
+              label={props.pauseOnHover ? "Yes" : "No"}
+              active={props.pauseOnHover}
+              onToggle={() => onUpdate({ pauseOnHover: !props.pauseOnHover })}
+            />
+          </Field>
+        ) : (
+          <Field label="arrows">
+            <ToggleBtn
+              label={props.showArrows ? "Shown" : "Hidden"}
+              active={props.showArrows}
+              onToggle={() => onUpdate({ showArrows: !props.showArrows })}
+            />
+          </Field>
+        )}
+        <Field label="links">
+          <ToggleBtn
+            label={props.newTab ? "New tab" : "Same tab"}
+            active={props.newTab}
+            onToggle={() => onUpdate({ newTab: !props.newTab })}
+          />
+        </Field>
+      </div>
+
+      <Field label="edge fade">
+        <ToggleBtn
+          label={props.edgeFade ? "On" : "Off"}
+          active={props.edgeFade}
+          onToggle={() => onUpdate({ edgeFade: !props.edgeFade })}
+        />
+        <p className="text-xs text-foreground/40 italic mt-1">
+          Softly fades the left/right edges so cards ease in and out.
+        </p>
+      </Field>
+
+      <hr className="rule" />
+
+      <div className="flex items-center justify-between">
+        <span className="kicker">projects · {items.length}</span>
+        <button
+          type="button"
+          onClick={addItem}
+          className="kicker px-2 py-1.5 rounded-sm bg-accent text-accent-foreground hover:opacity-90 transition-opacity"
+        >
+          + Add project
+        </button>
+      </div>
+
+      <div className="space-y-4">
+        {items.map((item, i) => (
+          <div
+            key={i}
+            className="rounded-sm border border-border bg-background/40 p-3 space-y-3"
+          >
+            <div className="flex items-center justify-between">
+              <span className="kicker text-foreground/50">#{i + 1}</span>
+              <div className="flex gap-1">
+                <CarouselItemBtn
+                  label={item.starred ? "Unstar" : "Star (feature)"}
+                  active={!!item.starred}
+                  onClick={() => setItem(i, { starred: !item.starred })}
+                >
+                  ★
+                </CarouselItemBtn>
+                <CarouselItemBtn
+                  label="Move up"
+                  disabled={i === 0}
+                  onClick={() => move(i, -1)}
+                >
+                  ↑
+                </CarouselItemBtn>
+                <CarouselItemBtn
+                  label="Move down"
+                  disabled={i === items.length - 1}
+                  onClick={() => move(i, 1)}
+                >
+                  ↓
+                </CarouselItemBtn>
+                <CarouselItemBtn label="Remove" onClick={() => removeItem(i)}>
+                  ✕
+                </CarouselItemBtn>
+              </div>
+            </div>
+
+            <ImageDialog
+              value={item.src}
+              label="project image"
+              onChange={(src) => setItem(i, { src })}
+              effects={{
+                filter: item.filter,
+                focalX: item.focalX,
+                focalY: item.focalY,
+                rotate: item.rotate,
+                flipX: item.flipX,
+                flipY: item.flipY,
+                blur: item.blur,
+                zoom: item.zoom,
+                tint: item.tint,
+                tintOpacity: item.tintOpacity,
+              }}
+              onEffectsChange={(patch) =>
+                setItem(i, patch as Partial<CarouselItem>)
+              }
+              effectsContext={{ fit: "cover", aspect: props.aspect }}
+            />
+            {!isMarquee && (
+              <>
+                <input
+                  className={inputCls}
+                  placeholder="title"
+                  value={item.title}
+                  onChange={(e) => setItem(i, { title: e.target.value })}
+                />
+                <input
+                  className={inputCls}
+                  placeholder="meta — e.g. 2024 — Role"
+                  value={item.meta}
+                  onChange={(e) => setItem(i, { meta: e.target.value })}
+                />
+                <textarea
+                  rows={2}
+                  className={inputCls}
+                  placeholder="description"
+                  value={item.description}
+                  onChange={(e) => setItem(i, { description: e.target.value })}
+                />
+              </>
+            )}
+            <input
+              className={cn(inputCls, "font-sans text-xs")}
+              placeholder="link href (optional)"
+              value={item.href ?? ""}
+              onChange={(e) =>
+                setItem(i, { href: e.target.value || undefined })
+              }
+            />
+            <input
+              className={inputCls}
+              placeholder="alt text"
+              value={item.alt}
+              onChange={(e) => setItem(i, { alt: e.target.value })}
+            />
+          </div>
+        ))}
+        {items.length === 0 && <Hint>No projects yet. Add one above.</Hint>}
+      </div>
     </>
+  );
+}
+
+function CarouselItemBtn({
+  label,
+  onClick,
+  disabled,
+  active,
+  children,
+}: {
+  label: string;
+  onClick: () => void;
+  disabled?: boolean;
+  active?: boolean;
+  children: React.ReactNode;
+}) {
+  return (
+    <button
+      type="button"
+      aria-label={label}
+      title={label}
+      aria-pressed={active}
+      onClick={onClick}
+      disabled={disabled}
+      className={cn(
+        "grid h-6 w-6 place-items-center rounded-sm border transition-colors disabled:opacity-30 disabled:pointer-events-none",
+        active
+          ? "border-accent bg-accent text-accent-foreground"
+          : "border-border text-foreground/70 hover:bg-foreground/10 hover:text-accent"
+      )}
+    >
+      {children}
+    </button>
   );
 }
 
@@ -1412,6 +1737,7 @@ function ImageEffects({
   flipX,
   flipY,
   blur,
+  zoom,
   tint,
   tintOpacity,
   onChange,
@@ -1426,6 +1752,7 @@ function ImageEffects({
   flipX: boolean;
   flipY: boolean;
   blur: number;
+  zoom: number;
   tint: ImageProps["tint"];
   tintOpacity: number;
   onChange: (patch: Record<string, unknown>) => void;
@@ -1520,6 +1847,23 @@ function ImageEffects({
           opacity={tintOpacity}
           onChange={(patch) => onChange(patch)}
         />
+      </Field>
+
+      <Field label={`zoom — ${zoom.toFixed(2)}×`}>
+        <input
+          type="range"
+          min={1}
+          max={3}
+          step={0.05}
+          value={zoom}
+          onChange={(e) =>
+            onChange({ zoom: parseFloat(e.target.value) || 1 })
+          }
+          className="w-full accent-accent"
+        />
+        <p className="text-xs text-foreground/40 italic">
+          Scales the image in toward the focal point below.
+        </p>
       </Field>
 
       <Field label="focal point (drag to recenter the crop)">
@@ -1657,11 +2001,6 @@ function SectionBackgroundEditor({
   bg: SectionBackground;
   onChange: (next: SectionBackground) => void;
 }) {
-  const [libraryVersion, setLibraryVersion] = useState(0);
-  const refreshLibrary = useCallback(
-    () => setLibraryVersion((v) => v + 1),
-    []
-  );
   const currentId = bgIdOf(bg);
 
   function setType(id: string) {
@@ -1687,6 +2026,7 @@ function SectionBackgroundEditor({
         flipX: false,
         flipY: false,
         blur: 0,
+        zoom: 1,
         tint: "none",
         tintOpacity: 0,
       });
@@ -1744,39 +2084,29 @@ function SectionBackgroundEditor({
 
       {bg.type === "image" && (
         <>
-          <Field label="upload">
-            <ImageUploader
-              src={bg.src}
-              onUploaded={(src) => {
-                onChange({ ...bg, src });
-                refreshLibrary();
+          <Field label="image">
+            <ImageDialog
+              value={bg.src}
+              onChange={(src) => onChange({ ...bg, src })}
+              effects={{
+                filter: bg.filter,
+                focalX: bg.focalX,
+                focalY: bg.focalY,
+                rotate: bg.rotate,
+                flipX: bg.flipX,
+                flipY: bg.flipY,
+                blur: bg.blur,
+                zoom: bg.zoom,
+                tint: bg.tint,
+                tintOpacity: bg.tintOpacity,
               }}
+              onEffectsChange={(patch) =>
+                onChange({ ...bg, ...patch } as SectionBackground)
+              }
+              // No aspect lock — the section's own dimensions drive the frame.
+              effectsContext={{ fit: "cover" }}
             />
           </Field>
-
-          <Field label="library">
-            <ImageLibrary
-              version={libraryVersion}
-              currentSrc={bg.src}
-              onPick={(src) => onChange({ ...bg, src })}
-            />
-          </Field>
-
-          <ImageEffects
-            src={bg.src}
-            // No aspect lock — the section's own dimensions drive the frame.
-            fit="cover"
-            filter={bg.filter}
-            focalX={bg.focalX}
-            focalY={bg.focalY}
-            rotate={bg.rotate}
-            flipX={bg.flipX}
-            flipY={bg.flipY}
-            blur={bg.blur}
-            tint={bg.tint}
-            tintOpacity={bg.tintOpacity}
-            onChange={(patch) => onChange({ ...bg, ...patch } as SectionBackground)}
-          />
 
           <Field label={`overlay — ${bg.overlay}%`}>
             <input
@@ -1796,16 +2126,6 @@ function SectionBackgroundEditor({
             <p className="text-xs text-foreground/40 italic">
               Darkens the image so foreground text stays readable.
             </p>
-          </Field>
-
-          <Field label="remove background">
-            <RemoveBgButton
-              src={bg.src}
-              onResult={(src) => {
-                onChange({ ...bg, src });
-                refreshLibrary();
-              }}
-            />
           </Field>
         </>
       )}
@@ -2202,6 +2522,270 @@ function RemoveBgButton({
  * which copies the file into public/uploads/ and returns its URL. Dev-only
  * (the API route 404s in production).
  */
+/* ---------------- shared image dialog ----------------
+   One popup used by the Image block, section background, and carousel items.
+   Bundles upload + library pick + manual path + background-removal + preview
+   so every place that chooses an image gets the same affordances (including
+   selecting from the library) without duplicating the controls. */
+
+function Modal({
+  title,
+  onClose,
+  children,
+}: {
+  title: string;
+  onClose: () => void;
+  children: React.ReactNode;
+}) {
+  useEffect(() => {
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") onClose();
+    };
+    document.addEventListener("keydown", onKey);
+    const prevOverflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    return () => {
+      document.removeEventListener("keydown", onKey);
+      document.body.style.overflow = prevOverflow;
+    };
+  }, [onClose]);
+
+  return createPortal(
+    <div
+      className="fixed inset-0 z-[100] flex items-center justify-center p-4"
+      role="dialog"
+      aria-modal="true"
+      aria-label={title}
+    >
+      <div
+        className="absolute inset-0 bg-background/70 backdrop-blur-sm"
+        onClick={onClose}
+      />
+      <div className="glass-panel relative z-10 w-full max-w-lg max-h-[85vh] overflow-y-auto rounded-md border border-border p-5 shadow-2xl">
+        <div className="mb-4 flex items-center justify-between">
+          <h2 className="font-display text-lg text-foreground">{title}</h2>
+          <button
+            type="button"
+            aria-label="Close"
+            onClick={onClose}
+            className="grid h-7 w-7 place-items-center rounded-sm border border-border text-foreground/60 hover:bg-foreground/10 hover:text-accent transition-colors"
+          >
+            ✕
+          </button>
+        </div>
+        {children}
+      </div>
+    </div>,
+    document.body
+  );
+}
+
+/** The per-image effect set the dialog's "Adjust" tab edits. Common to the
+ *  Image block, section backgrounds, and carousel items. */
+type ImageEffectValues = {
+  filter: ImageProps["filter"];
+  focalX: number;
+  focalY: number;
+  rotate: number;
+  flipX: boolean;
+  flipY: boolean;
+  blur: number;
+  zoom: number;
+  tint: ImageProps["tint"];
+  tintOpacity: number;
+};
+
+/**
+ * Trigger + popup for choosing AND adjusting an image. `value` is the current
+ * src; `onChange` fires live as the user uploads / picks / edits the path. When
+ * `effects` + `onEffectsChange` are supplied the popup grows a tab bar so the
+ * same dialog edits filter / tint / focal point / rotate / flip / blur too —
+ * one reused editor across the Image block, section backgrounds and carousel
+ * items. Background removal can be hidden for contexts where it doesn't apply.
+ */
+function ImageDialog({
+  value,
+  onChange,
+  label = "image",
+  enableRemoveBg = true,
+  effects,
+  onEffectsChange,
+  effectsContext,
+}: {
+  value: string;
+  onChange: (src: string) => void;
+  label?: string;
+  enableRemoveBg?: boolean;
+  effects?: ImageEffectValues;
+  onEffectsChange?: (patch: Record<string, unknown>) => void;
+  effectsContext?: { fit: ImageProps["fit"]; aspect?: string };
+}) {
+  const [open, setOpen] = useState(false);
+  const [tab, setTab] = useState<"source" | "adjust">("source");
+  const [libraryVersion, setLibraryVersion] = useState(0);
+  const refreshLibrary = useCallback(
+    () => setLibraryVersion((v) => v + 1),
+    []
+  );
+
+  const hasEffects = !!effects && !!onEffectsChange;
+
+  return (
+    <>
+      <button
+        type="button"
+        onClick={() => setOpen(true)}
+        className="group flex w-full items-center gap-3 rounded-sm border border-border bg-background/40 p-2 text-left transition-colors hover:border-foreground/40"
+      >
+        <span className="relative h-12 w-12 shrink-0 overflow-hidden rounded-sm border border-border bg-surface">
+          {value ? (
+            // eslint-disable-next-line @next/next/no-img-element
+            <img
+              src={value}
+              alt=""
+              className="absolute inset-0 h-full w-full object-cover"
+            />
+          ) : (
+            <span className="grid h-full w-full place-items-center text-lg text-foreground/30">
+              +
+            </span>
+          )}
+        </span>
+        <span className="min-w-0 flex-1">
+          <span className="block truncate text-sm text-foreground">
+            {value ? value.split("/").pop() : `Choose ${label}`}
+          </span>
+          <span className="kicker text-foreground/40 group-hover:text-accent">
+            {value ? "click to change" : "upload or pick from library"}
+          </span>
+        </span>
+      </button>
+
+      {open && (
+        <Modal title={`Edit ${label}`} onClose={() => setOpen(false)}>
+          <div className="space-y-5">
+            {hasEffects && (
+              <div className="flex gap-1 rounded-sm border border-border bg-background/40 p-1">
+                {(["source", "adjust"] as const).map((t) => (
+                  <button
+                    key={t}
+                    type="button"
+                    onClick={() => setTab(t)}
+                    className={cn(
+                      "kicker flex-1 rounded-sm px-3 py-2 transition-colors",
+                      tab === t
+                        ? "bg-accent text-accent-foreground"
+                        : "text-foreground/70 hover:bg-foreground/10 hover:text-accent"
+                    )}
+                  >
+                    {t === "source" ? "Source" : "Adjust"}
+                  </button>
+                ))}
+              </div>
+            )}
+
+            {(!hasEffects || tab === "source") && (
+              <>
+                <div className="relative aspect-video w-full overflow-hidden rounded-sm border border-border bg-surface">
+                  {value ? (
+                    // eslint-disable-next-line @next/next/no-img-element
+                    <img
+                      src={value}
+                      alt=""
+                      className="absolute inset-0 h-full w-full object-contain"
+                    />
+                  ) : (
+                    <div className="absolute inset-0 grid place-items-center kicker italic text-foreground/30">
+                      No image selected
+                    </div>
+                  )}
+                </div>
+
+                <Field label="upload">
+                  <ImageUploader
+                    src={value}
+                    onUploaded={(src) => {
+                      onChange(src);
+                      refreshLibrary();
+                    }}
+                  />
+                </Field>
+
+                <Field label="library">
+                  <ImageLibrary
+                    version={libraryVersion}
+                    currentSrc={value}
+                    onPick={(src) => onChange(src)}
+                  />
+                </Field>
+
+                {enableRemoveBg && value && (
+                  <Field label="remove background">
+                    <RemoveBgButton
+                      src={value}
+                      onResult={(src) => {
+                        onChange(src);
+                        refreshLibrary();
+                      }}
+                    />
+                  </Field>
+                )}
+
+                <Field label="src (manual path)">
+                  <input
+                    className={cn(inputCls, "font-sans text-xs")}
+                    placeholder="/uploads/foo.webp"
+                    value={value}
+                    onChange={(e) => onChange(e.target.value)}
+                  />
+                </Field>
+              </>
+            )}
+
+            {hasEffects && tab === "adjust" && (
+              <ImageEffects
+                src={value}
+                fit={effectsContext?.fit ?? "cover"}
+                aspect={effectsContext?.aspect}
+                filter={effects.filter}
+                focalX={effects.focalX}
+                focalY={effects.focalY}
+                rotate={effects.rotate}
+                flipX={effects.flipX}
+                flipY={effects.flipY}
+                blur={effects.blur}
+                zoom={effects.zoom}
+                tint={effects.tint}
+                tintOpacity={effects.tintOpacity}
+                onChange={onEffectsChange}
+              />
+            )}
+
+            <div className="flex justify-end gap-2 pt-1">
+              {value && (
+                <button
+                  type="button"
+                  onClick={() => onChange("")}
+                  className="kicker rounded-sm border border-border px-3 py-2 text-foreground/70 transition-colors hover:bg-foreground/10 hover:text-accent"
+                >
+                  Clear
+                </button>
+              )}
+              <button
+                type="button"
+                onClick={() => setOpen(false)}
+                className="kicker rounded-sm bg-accent px-3 py-2 text-accent-foreground transition-opacity hover:opacity-90"
+              >
+                Done
+              </button>
+            </div>
+          </div>
+        </Modal>
+      )}
+    </>
+  );
+}
+
 function ImageUploader({
   src,
   onUploaded,
@@ -2213,10 +2797,13 @@ function ImageUploader({
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  async function uploadFile(file: File) {
+  async function uploadFile(rawFile: File) {
     setBusy(true);
     setError(null);
     try {
+      // Downscale / re-encode oversized images in the browser before upload so
+      // huge source files don't hit the body cap or end up on the live page.
+      const file = await downscaleImage(rawFile);
       const fd = new FormData();
       fd.append("file", file);
       const res = await fetch("/api/admin/upload", {

@@ -11,6 +11,7 @@ import { noOverlapCompactor } from "react-grid-layout/core";
 
 import type { Block, BlockLayout, Section } from "@/lib/schema";
 import { atomRegistry } from "@/lib/atom-registry";
+import { blockBleedStyle } from "@/components/SectionRenderer";
 import { blockToLayoutItem, layoutItemToBlockLayout } from "@/lib/rgl";
 import { mergeBlockForMobile, type Device } from "@/lib/responsive";
 import { cn } from "@/lib/utils";
@@ -217,7 +218,10 @@ function CanvasBlock({
           : "outline-1 outline-transparent group-hover/block:outline-foreground/20"
       )}
     >
-      <div className="h-full w-full pointer-events-none">
+      <div
+        className="h-full w-full pointer-events-none"
+        style={blockBleedStyle(visualBlock.layout.bleed)}
+      >
         <EditProvider value={ctxValue}>
           <Component {...(visualBlock.props as object)} />
         </EditProvider>

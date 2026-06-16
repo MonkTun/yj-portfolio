@@ -278,7 +278,10 @@ function SingleBlock({
   return (
     <div
       id={carryId ? block.id : undefined}
-      style={blockGridStyle(block.layout)}
+      style={{
+        ...blockGridStyle(block.layout),
+        ...blockBleedStyle(block.layout.bleed),
+      }}
       className={cn(mobileHiddenClass(block), extraClass)}
     >
       <Atom {...(block.props as object)} />
@@ -296,6 +299,30 @@ export function blockGridStyle(layout: BlockLayout): React.CSSProperties {
         : rowSpan !== undefined
           ? `auto / span ${rowSpan}`
           : undefined,
+  };
+}
+
+/**
+ * Extra width / negative margin that stretches a block past the safe area to
+ * the section edge. `--bleed-inset` (globals.css) is the content-edge → section-
+ * edge distance, so a block at the matching grid edge reaches edge-to-edge.
+ * Applied via inline style (alongside the grid style) so it composes with any
+ * layout system — the public CSS grid item and the editor's RGL content wrapper.
+ */
+export function blockBleedStyle(
+  bleed: BlockLayout["bleed"],
+): React.CSSProperties {
+  if (!bleed || bleed === "none") return {};
+  const i = "var(--bleed-inset)";
+  if (bleed === "left") {
+    return { width: `calc(100% + ${i})`, marginLeft: `calc(-1 * ${i})` };
+  }
+  if (bleed === "right") {
+    return { width: `calc(100% + ${i})` };
+  }
+  return {
+    width: `calc(100% + 2 * ${i})`,
+    marginLeft: `calc(-1 * ${i})`,
   };
 }
 
@@ -328,7 +355,9 @@ export function SectionImageBackground({ bg }: { bg: Section["background"] }) {
             rotate: bg.rotate,
             flipX: bg.flipX,
             flipY: bg.flipY,
+            zoom: bg.zoom,
           }),
+          transformOrigin: `${bg.focalX}% ${bg.focalY}%`,
         }}
       />
       {bg.overlay > 0 && (
@@ -352,6 +381,7 @@ export function SectionImageBackground({ bg }: { bg: Section["background"] }) {
               rotate: bg.rotate,
               flipX: bg.flipX,
               flipY: bg.flipY,
+              zoom: bg.zoom,
             }),
           }}
         />

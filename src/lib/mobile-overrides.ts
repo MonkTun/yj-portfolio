@@ -25,6 +25,7 @@ export const MOBILE_OVERRIDABLE_KEYS: Record<BlockType, readonly string[]> = {
   line: [],
   quote: [],
   video: ["aspect", "radius"],
+  projectCarousel: [],
 };
 
 export function isMobileOverridable(type: BlockType, key: string): boolean {

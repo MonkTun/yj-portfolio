@@ -17,6 +17,13 @@ export const blockLayoutSchema = z.object({
   colSpan: z.number().int().min(1).max(12),
   row: z.number().int().min(1).optional(),
   rowSpan: z.number().int().min(1).optional(),
+  /**
+   * Stretch the block past the section's safe area (the centered max-width +
+   * padding content box) toward the section/viewport edge — for accentuating
+   * an element with a full-bleed. Intended for blocks sitting at the matching
+   * grid edge (left → col 1, right → ends at col 12). Omitted = "none".
+   */
+  bleed: z.enum(["none", "left", "right", "both"]).optional(),
 });
 
 /**
@@ -123,6 +130,9 @@ export const imagePropsSchema = z.object({
   flipY: z.boolean().default(false),
   /** Gaussian blur in px. */
   blur: z.number().int().min(0).max(50).default(0),
+  /** Zoom factor — scales the image up within its frame, toward the focal
+   *  point. 1 = fit, 3 = 3× in. */
+  zoom: z.number().min(1).max(3).default(1),
   /** Color overlay token; rendered as an absolute div on top of the image. */
   tint: imageTintSchema.default("none"),
   /** 0–100; opacity of the tint overlay. */
@@ -168,6 +178,90 @@ export const videoPropsSchema = z.object({
   radius: z.number().int().min(0).max(200).default(0),
 });
 
+/** One project card inside a Project Carousel. */
+export const carouselItemSchema = z.object({
+  /** Card image path (upload or manual). Empty renders a placeholder tile. */
+  src: z.string().default(""),
+  alt: z.string().default(""),
+  /** Display title (rendered in --font-display). */
+  title: z.string().default(""),
+  /** Mono kicker above the title, e.g. "2024 — Game design". */
+  meta: z.string().default(""),
+  /** Short summary line under the title. */
+  description: z.string().default(""),
+  /** Optional link — wraps the whole card. */
+  href: z.string().optional(),
+  /** Featured item — shows a star badge on the card. */
+  starred: z.boolean().default(false),
+  /* Per-image effects, edited via the shared image dialog (same controls as
+     the Image block and section backgrounds). */
+  filter: imageFilterSchema.default("none"),
+  focalX: z.number().min(0).max(100).default(50),
+  focalY: z.number().min(0).max(100).default(50),
+  rotate: z.number().min(-360).max(360).default(0),
+  flipX: z.boolean().default(false),
+  flipY: z.boolean().default(false),
+  blur: z.number().int().min(0).max(50).default(0),
+  zoom: z.number().min(1).max(3).default(1),
+  tint: imageTintSchema.default("none"),
+  tintOpacity: z.number().int().min(0).max(100).default(0),
+});
+
+/** Per-image effect defaults for a freshly added carousel item. Shared by the
+ *  registry's starter items and the editor's "add project" action so a new item
+ *  always carries the full (no-op) effect set the shared image dialog edits. */
+export const CAROUSEL_ITEM_EFFECT_DEFAULTS = {
+  filter: "none" as const,
+  focalX: 50,
+  focalY: 50,
+  rotate: 0,
+  flipX: false,
+  flipY: false,
+  blur: 0,
+  zoom: 1,
+  tint: "none" as const,
+  tintOpacity: 0,
+};
+
+/**
+ * Horizontal, scroll-snapped strip of project cards. Built for the home page
+ * to hold the work that isn't a hero highlight — drag / arrow through it.
+ * One image + meta/title/description per card; carousel-level knobs control
+ * sizing and the shared image treatment.
+ */
+export const projectCarouselPropsSchema = z.object({
+  items: z.array(carouselItemSchema).default([]),
+  /**
+   * Layout variant:
+   *  - "cards"   — snap-scrolled cards with meta/title/description.
+   *  - "marquee" — image-only band that drifts on its own at a constant
+   *    velocity and can also be grabbed / flung; loops seamlessly.
+   */
+  variant: z.enum(["cards", "marquee"]).default("cards"),
+  /** Card width in px. The strip scrolls horizontally past this width. */
+  cardWidth: z.number().int().min(160).max(640).default(320),
+  /** Gap between cards in px. */
+  gap: z.number().int().min(0).max(96).default(24),
+  /** Image aspect ratio per card (CSS aspect-ratio, e.g. "4/5"). */
+  aspect: z.string().default("4/5"),
+  /** Corner radius in px on each card image. 0 = sharp. */
+  radius: z.number().int().min(0).max(200).default(8),
+  /** Fade the left/right edges of the strip so cards soften in/out instead of
+   *  hard-cutting at the frame. */
+  edgeFade: z.boolean().default(true),
+  /** Show the prev/next arrow controls. "cards" only. */
+  showArrows: z.boolean().default(true),
+  /** Open card links in a new tab. */
+  newTab: z.boolean().default(false),
+  /**
+   * "marquee" only — auto-drift speed in px/second. 0 disables the drift
+   * (still grabbable). Collapsed to 0 under prefers-reduced-motion.
+   */
+  autoScrollSpeed: z.number().min(0).max(300).default(40),
+  /** "marquee" only — pause the drift while the pointer is over the strip. */
+  pauseOnHover: z.boolean().default(true),
+});
+
 /* ----- Discriminated union of block types ----- */
 
 const blockBase = {
@@ -184,6 +278,11 @@ export const blockSchema = z.discriminatedUnion("type", [
   z.object({ ...blockBase, type: z.literal("line"), props: linePropsSchema }),
   z.object({ ...blockBase, type: z.literal("quote"), props: quotePropsSchema }),
   z.object({ ...blockBase, type: z.literal("video"), props: videoPropsSchema }),
+  z.object({
+    ...blockBase,
+    type: z.literal("projectCarousel"),
+    props: projectCarouselPropsSchema,
+  }),
 ]);
 
 /* ----- Section ----- */
@@ -213,6 +312,7 @@ export const sectionBackgroundSchema = z.discriminatedUnion("type", [
     flipX: z.boolean().default(false),
     flipY: z.boolean().default(false),
     blur: z.number().int().min(0).max(50).default(0),
+    zoom: z.number().min(1).max(3).default(1),
     tint: imageTintSchema.default("none"),
     tintOpacity: z.number().int().min(0).max(100).default(0),
   }),
@@ -400,6 +500,8 @@ export type SpacerProps = z.infer<typeof spacerPropsSchema>;
 export type LineProps = z.infer<typeof linePropsSchema>;
 export type QuoteProps = z.infer<typeof quotePropsSchema>;
 export type VideoProps = z.infer<typeof videoPropsSchema>;
+export type CarouselItem = z.infer<typeof carouselItemSchema>;
+export type ProjectCarouselProps = z.infer<typeof projectCarouselPropsSchema>;
 
 export type Section = z.infer<typeof sectionSchema>;
 export type SectionBackground = z.infer<typeof sectionBackgroundSchema>;

@@ -330,7 +330,9 @@ export function Editor({ slug, initialPage, availablePages = [] }: Props) {
       const block = sec.blocks.find((b) => b.id === blockId);
       if (!block) return;
       if (target === "desktop") {
-        block.layout = layout;
+        // Drags rebuild the layout from grid coords and don't carry `bleed`,
+        // so preserve the existing bleed setting unless the caller set one.
+        block.layout = { ...layout, bleed: layout.bleed ?? block.layout.bleed };
       } else {
         // Persist only what differs from desktop. If everything matches,
         // diff returns undefined and we drop the layout key entirely so
@@ -346,6 +348,22 @@ export function Editor({ slug, initialPage, availablePages = [] }: Props) {
       commit(next);
     },
     [page, commit, device]
+  );
+
+  const setBlockBleed = useCallback(
+    (sectionId: string, blockId: string, bleed: BlockLayout["bleed"]) => {
+      const next = clone(page);
+      const sec = next.sections.find((s) => s.id === sectionId);
+      if (!sec) return;
+      const block = sec.blocks.find((b) => b.id === blockId);
+      if (!block) return;
+      block.layout = {
+        ...block.layout,
+        bleed: bleed && bleed !== "none" ? bleed : undefined,
+      };
+      commit(next);
+    },
+    [page, commit]
   );
 
   const addBlock = useCallback(
@@ -631,6 +649,7 @@ export function Editor({ slug, initialPage, availablePages = [] }: Props) {
             onUpdateSection={updateSection}
             onUpdateSectionMobile={updateSectionMobile}
             onUpdateBlockProps={updateBlockProps}
+            onSetBlockBleed={setBlockBleed}
             onSetBlockMobileHidden={setBlockMobileHidden}
             onClearBlockMobileOverrides={clearBlockMobileOverrides}
           />

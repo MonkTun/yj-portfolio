@@ -26,20 +26,25 @@ export const imageFilterLabel: Record<ImageProps["filter"], string> = {
   cool: "Cool",
 };
 
-/** Compose rotate + flips into a single CSS transform string, or undefined. */
+/** Compose rotate + flips + zoom into a single CSS transform string, or
+ *  undefined. `zoom` (default 1) scales the image up within its frame; pair it
+ *  with a focal-point transform-origin so it zooms toward the chosen point. */
 export function imageTransformCss({
   rotate,
   flipX,
   flipY,
+  zoom = 1,
 }: {
   rotate: number;
   flipX: boolean;
   flipY: boolean;
+  zoom?: number;
 }): string | undefined {
   const parts = [
     rotate ? `rotate(${rotate}deg)` : null,
     flipX ? "scaleX(-1)" : null,
     flipY ? "scaleY(-1)" : null,
+    zoom && zoom !== 1 ? `scale(${zoom})` : null,
   ].filter(Boolean);
   return parts.length > 0 ? parts.join(" ") : undefined;
 }
@@ -86,6 +91,7 @@ export function imageTintMaskStyle({
   rotate,
   flipX,
   flipY,
+  zoom = 1,
 }: {
   src: string;
   fit: ImageProps["fit"];
@@ -94,6 +100,7 @@ export function imageTintMaskStyle({
   rotate: number;
   flipX: boolean;
   flipY: boolean;
+  zoom?: number;
 }): React.CSSProperties {
   // Single-quote the URL so most safe filename characters survive; we
   // generate slugified filenames in /api/admin/upload, so quotes are not
@@ -112,6 +119,7 @@ export function imageTintMaskStyle({
     WebkitMaskPosition: position,
     maskRepeat: "no-repeat",
     WebkitMaskRepeat: "no-repeat",
-    transform: imageTransformCss({ rotate, flipX, flipY }),
+    transform: imageTransformCss({ rotate, flipX, flipY, zoom }),
+    transformOrigin: position,
   };
 }

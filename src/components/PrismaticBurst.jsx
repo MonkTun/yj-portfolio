@@ -1,5 +1,6 @@
 import { useEffect, useRef } from 'react';
 import { Renderer, Program, Mesh, Triangle, Texture } from 'ogl';
+import { dprForTier } from '@/lib/gpu';
 import './PrismaticBurst.css';
 
 const vertexShader = `#version 300 es
@@ -235,7 +236,9 @@ const PrismaticBurst = ({
     const container = containerRef.current;
     if (!container) return;
 
-    const dpr = Math.min(window.devicePixelRatio || 1, 2);
+    // Capped by GPU tier: this is a 44-step raymarch per pixel, so fewer pixels
+    // is the biggest single win on weak (Windows/ANGLE) GPUs.
+    const dpr = dprForTier();
     const renderer = new Renderer({
       dpr,
       alpha: false,

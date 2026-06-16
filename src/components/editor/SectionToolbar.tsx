@@ -300,6 +300,7 @@ function BackgroundPicker({
                 flipX: false,
                 flipY: false,
                 blur: 0,
+                zoom: 1,
                 tint: "none",
                 tintOpacity: 0,
               });

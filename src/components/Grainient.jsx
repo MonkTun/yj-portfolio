@@ -1,5 +1,6 @@
 import { useEffect, useRef } from 'react';
 import { Renderer, Program, Mesh, Triangle } from 'ogl';
+import { dprForTier } from '@/lib/gpu';
 import './Grainient.css';
 
 const hexToRgb = hex => {
@@ -133,7 +134,7 @@ const Grainient = ({
       webgl: 2,
       alpha: true,
       antialias: false,
-      dpr: Math.min(window.devicePixelRatio || 1, 2)
+      dpr: dprForTier()
     });
 
     const gl = renderer.gl;
