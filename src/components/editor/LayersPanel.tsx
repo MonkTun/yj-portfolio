@@ -26,6 +26,9 @@ type Props = {
   page: Page;
   selection: Selection;
   onSelect: (sel: Selection) => void;
+  /** Select a block, optionally extending the multi-selection (Shift / ⌘ /
+   *  Ctrl-click → `additive: true`). */
+  onSelectBlock: (sectionId: string, blockId: string, additive: boolean) => void;
   onReorderSections: (orderedIds: string[]) => void;
   onMoveBlock: (
     fromSectionId: string,
@@ -50,6 +53,7 @@ export function LayersPanel({
   page,
   selection,
   onSelect,
+  onSelectBlock,
   onReorderSections,
   onMoveBlock,
   onDeleteSection,
@@ -164,6 +168,7 @@ export function LayersPanel({
                   index={i}
                   selection={selection}
                   onSelect={onSelect}
+                  onSelectBlock={onSelectBlock}
                   onDeleteSection={onDeleteSection}
                   onDeleteBlock={onDeleteBlock}
                 />
@@ -181,6 +186,7 @@ function SectionRow({
   index,
   selection,
   onSelect,
+  onSelectBlock,
   onDeleteSection,
   onDeleteBlock,
 }: {
@@ -188,6 +194,7 @@ function SectionRow({
   index: number;
   selection: Selection;
   onSelect: (sel: Selection) => void;
+  onSelectBlock: (sectionId: string, blockId: string, additive: boolean) => void;
   onDeleteSection: (sectionId: string) => void;
   onDeleteBlock: (sectionId: string, blockId: string) => void;
 }) {
@@ -263,7 +270,7 @@ function SectionRow({
               section={section}
               block={block}
               selection={selection}
-              onSelect={onSelect}
+              onSelectBlock={onSelectBlock}
               onDelete={() => onDeleteBlock(section.id, block.id)}
             />
           ))}
@@ -282,13 +289,13 @@ function BlockRow({
   section,
   block,
   selection,
-  onSelect,
+  onSelectBlock,
   onDelete,
 }: {
   section: Section;
   block: Block;
   selection: Selection;
-  onSelect: (sel: Selection) => void;
+  onSelectBlock: (sectionId: string, blockId: string, additive: boolean) => void;
   onDelete: () => void;
 }) {
   const { attributes, listeners, setNodeRef, transform, transition, isDragging } =
@@ -300,7 +307,7 @@ function BlockRow({
   const blockSelected =
     selection.type === "block" &&
     selection.sectionId === section.id &&
-    selection.blockId === block.id;
+    selection.blockIds.includes(block.id);
   const entry = atomRegistry[block.type];
 
   return (
@@ -329,12 +336,12 @@ function BlockRow({
       </button>
       <button
         type="button"
-        onClick={() =>
-          onSelect({
-            type: "block",
-            sectionId: section.id,
-            blockId: block.id,
-          })
+        onClick={(e) =>
+          onSelectBlock(
+            section.id,
+            block.id,
+            e.shiftKey || e.metaKey || e.ctrlKey,
+          )
         }
         className="flex-1 text-left py-1.5 pr-2 truncate"
       >

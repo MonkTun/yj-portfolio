@@ -24,8 +24,11 @@ const ROW_HEIGHT_PX = 8;
 type Props = {
   section: Section;
   device: Device;
-  selectedBlockId: string | null;
-  onSelectBlock: (blockId: string) => void;
+  /** Every selected block in this section (all get the accent outline). */
+  selectedBlockIds: string[];
+  /** The anchor block — the only one that mounts resize grips + toolbar. */
+  primaryBlockId: string | null;
+  onSelectBlock: (blockId: string, additive: boolean) => void;
   /** Patch a block's props at the active device (mobile or desktop).
    *  Pass `target: "desktop"` to force a desktop write regardless of the
    *  active device — used for non-overridable copy edits (e.g. inline
@@ -43,23 +46,24 @@ type Props = {
 export function SectionGrid({
   section,
   device,
-  selectedBlockId,
+  selectedBlockIds,
+  primaryBlockId,
   onSelectBlock,
   onUpdateBlockProps,
   onUpdateBlockLayout,
   onDuplicateBlock,
   onDeleteBlock,
 }: Props) {
-  // Only the selected block is resizable — that way the 8 resize grips
+  // Only the anchor block is resizable — that way the 8 resize grips
   // mount only on the focused block, not on every block in the section.
   // Drag stays available on every block via its toolbar move icon.
   const layout = useMemo(
     () =>
       section.blocks.map((b) => ({
         ...blockToLayoutItem(b, device),
-        isResizable: b.id === selectedBlockId,
+        isResizable: b.id === primaryBlockId,
       })),
-    [section.blocks, selectedBlockId, device]
+    [section.blocks, primaryBlockId, device]
   );
 
   // useContainerWidth replaces the v1 `WidthProvider` HOC. It measures the
@@ -124,19 +128,25 @@ export function SectionGrid({
           onDragStop={(l) => commitLayout(l)}
           onResizeStop={(l) => commitLayout(l)}
         >
-          {section.blocks.map((block) => (
+          {section.blocks.map((block) => {
+            const selected = selectedBlockIds.includes(block.id);
+            const primary = block.id === primaryBlockId;
+            return (
             <div
               key={block.id}
               className={cn(
                 "group/block",
-                block.id === selectedBlockId && "is-selected"
+                // Every selected block floats above overlapping siblings so
+                // its outline isn't clipped — not just the anchor.
+                selected && "is-selected"
               )}
             >
               <CanvasBlock
                 block={block}
                 device={device}
-                selected={block.id === selectedBlockId}
-                onSelect={() => onSelectBlock(block.id)}
+                selected={selected}
+                primary={primary}
+                onSelect={(additive) => onSelectBlock(block.id, additive)}
                 onUpdateProps={(patch) => onUpdateBlockProps(block.id, patch)}
                 onUpdateDesktopProps={(patch) =>
                   onUpdateBlockProps(block.id, patch, "desktop")
@@ -145,7 +155,8 @@ export function SectionGrid({
                 onDelete={() => onDeleteBlock(block.id)}
               />
             </div>
-          ))}
+            );
+          })}
         </GridLayout>
       )}
     </div>
@@ -157,8 +168,12 @@ export function SectionGrid({
 type CanvasBlockProps = {
   block: Block;
   device: Device;
+  /** Part of the current selection (drives the accent outline). */
   selected: boolean;
-  onSelect: () => void;
+  /** The anchor block — mounts the toolbar and feeds the properties panel /
+   *  inline-edit context. */
+  primary: boolean;
+  onSelect: (additive: boolean) => void;
   /** Patch scoped to the active device (writes to `block.mobile.props` in
    *  mobile mode, `block.props` on desktop). */
   onUpdateProps: (patch: Record<string, unknown>) => void;
@@ -173,6 +188,7 @@ function CanvasBlock({
   block,
   device,
   selected,
+  primary,
   onSelect,
   onUpdateProps,
   onUpdateDesktopProps,
@@ -190,7 +206,9 @@ function CanvasBlock({
     () => ({
       blockId: block.id,
       block: visualBlock,
-      selected,
+      // Inline editing (e.g. Text contentEditable) is reserved for the
+      // anchor — when several blocks are selected only one should be live.
+      selected: primary,
       device,
       updateProps: onUpdateProps,
       updateDesktopProps: onUpdateDesktopProps,
@@ -198,7 +216,7 @@ function CanvasBlock({
     [
       block.id,
       visualBlock,
-      selected,
+      primary,
       device,
       onUpdateProps,
       onUpdateDesktopProps,
@@ -209,7 +227,7 @@ function CanvasBlock({
     <div
       onClick={(e) => {
         e.stopPropagation();
-        onSelect();
+        onSelect(e.shiftKey || e.metaKey || e.ctrlKey);
       }}
       className={cn(
         "relative h-full w-full transition-colors rounded-sm",
@@ -227,7 +245,7 @@ function CanvasBlock({
         </EditProvider>
       </div>
       <BlockToolbar
-        visible={selected}
+        visible={primary}
         onDuplicate={onDuplicate}
         onDelete={onDelete}
       />

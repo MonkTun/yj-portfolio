@@ -97,7 +97,11 @@ export function SectionVideoBackground({
     controls: false,
     start: bg.start,
     enableJsApi: true,
-    origin: typeof window !== "undefined" ? window.location.origin : undefined,
+    // `origin` is intentionally omitted: it can only be read on the client
+    // (`window.location.origin`), so folding it into the URL during render
+    // makes the iframe `src` diverge between SSR and hydration — a hydration
+    // mismatch. The IFrame API still accepts our postMessage commands without
+    // it (we post to targetOrigin "*"), so playback-rate control is unaffected.
   });
   if (!embed) return null;
   const tintClass = imageTintBgClass[bg.tint];

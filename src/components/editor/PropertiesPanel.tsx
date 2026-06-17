@@ -70,6 +70,10 @@ type Props = {
     hidden: boolean,
   ) => void;
   onClearBlockMobileOverrides: (sectionId: string, blockId: string) => void;
+  /** Duplicate several blocks at once (multi-select). */
+  onDuplicateBlocks: (sectionId: string, blockIds: string[]) => void;
+  /** Delete several blocks at once (multi-select). */
+  onDeleteBlocks: (sectionId: string, blockIds: string[]) => void;
 };
 
 export function PropertiesPanel({
@@ -85,6 +89,8 @@ export function PropertiesPanel({
   onSetBlockBleed,
   onSetBlockMobileHidden,
   onClearBlockMobileOverrides,
+  onDuplicateBlocks,
+  onDeleteBlocks,
 }: Props) {
   if (selection.type === "page") {
     return <PageMeta page={page} onUpdate={onUpdateMeta} />;
@@ -106,6 +112,16 @@ export function PropertiesPanel({
   const section = page.sections.find((s) => s.id === selection.sectionId);
   const block = section?.blocks.find((b) => b.id === selection.blockId);
   if (!section || !block) return <Hint>Block not found.</Hint>;
+  if (selection.blockIds.length > 1) {
+    return (
+      <MultiBlockProps
+        section={section}
+        blockIds={selection.blockIds}
+        onDuplicate={() => onDuplicateBlocks(section.id, selection.blockIds)}
+        onDelete={() => onDeleteBlocks(section.id, selection.blockIds)}
+      />
+    );
+  }
   return (
     <BlockProps
       block={block}
@@ -123,6 +139,76 @@ export function PropertiesPanel({
         onClearBlockMobileOverrides(section.id, block.id)
       }
     />
+  );
+}
+
+/* ============================================================
+   Multi-select — summary + bulk actions
+   ============================================================ */
+
+function MultiBlockProps({
+  section,
+  blockIds,
+  onDuplicate,
+  onDelete,
+}: {
+  section: Section;
+  blockIds: string[];
+  onDuplicate: () => void;
+  onDelete: () => void;
+}) {
+  // Count each block type in the selection for a quick readout.
+  const counts = new Map<string, number>();
+  for (const id of blockIds) {
+    const b = section.blocks.find((bl) => bl.id === id);
+    if (!b) continue;
+    const label = atomRegistry[b.type].label;
+    counts.set(label, (counts.get(label) ?? 0) + 1);
+  }
+
+  return (
+    <div className="p-5 space-y-5">
+      <SectionHead
+        title={`${blockIds.length} blocks`}
+        subtitle="multi-select"
+      />
+
+      <div className="space-y-1">
+        {[...counts.entries()].map(([label, n]) => (
+          <div
+            key={label}
+            className="flex items-center justify-between text-sm text-foreground/80"
+          >
+            <span>{label}</span>
+            <span className="kicker text-foreground/50">×{n}</span>
+          </div>
+        ))}
+      </div>
+
+      <hr className="rule" />
+
+      <div className="space-y-2">
+        <button
+          type="button"
+          onClick={onDuplicate}
+          className="kicker w-full px-3 py-2 rounded-sm border border-border text-foreground/80 hover:bg-foreground/10 hover:text-accent transition-colors"
+        >
+          Duplicate ({blockIds.length})
+        </button>
+        <button
+          type="button"
+          onClick={onDelete}
+          className="kicker w-full px-3 py-2 rounded-sm border border-border text-foreground/80 hover:bg-foreground/10 hover:text-accent transition-colors"
+        >
+          Delete ({blockIds.length})
+        </button>
+      </div>
+
+      <Hint>
+        Shift / ⌘-click blocks to add or remove them. ⌘C / ⌘X / ⌘V copies,
+        cuts and pastes the selection — even into another page.
+      </Hint>
+    </div>
   );
 }
 

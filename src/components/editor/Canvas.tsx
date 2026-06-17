@@ -34,6 +34,9 @@ type Props = {
   selection: Selection;
   device: Device;
   onSelect: (sel: Selection) => void;
+  /** Select a block, optionally extending the multi-selection (Shift / ⌘ /
+   *  Ctrl-click → `additive: true`). */
+  onSelectBlock: (sectionId: string, blockId: string, additive: boolean) => void;
   onAddSection: (template: SectionTemplate, atIndex?: number) => void;
   onUpdateSection: (sectionId: string, patch: Partial<Section>) => void;
   onDuplicateSection: (sectionId: string) => void;
@@ -63,6 +66,7 @@ export function Canvas({
   selection,
   device,
   onSelect,
+  onSelectBlock,
   onAddSection,
   onUpdateSection,
   onDuplicateSection,
@@ -136,11 +140,11 @@ export function Canvas({
                 selection.sectionId === section.id) ||
               (selection.type === "block" &&
                 selection.sectionId === section.id);
-            const selectedBlockId =
+            const inThisSection =
               selection.type === "block" &&
-              selection.sectionId === section.id
-                ? selection.blockId
-                : null;
+              selection.sectionId === section.id;
+            const selectedBlockIds = inThisSection ? selection.blockIds : [];
+            const primaryBlockId = inThisSection ? selection.blockId : null;
 
             return (
               <Fragment key={section.id}>
@@ -149,17 +153,14 @@ export function Canvas({
                   index={i}
                   total={page.sections.length}
                   device={device}
-                  selectedBlockId={selectedBlockId}
+                  selectedBlockIds={selectedBlockIds}
+                  primaryBlockId={primaryBlockId}
                   active={sectionActive}
                   onSelectSection={() =>
                     onSelect({ type: "section", sectionId: section.id })
                   }
-                  onSelectBlock={(blockId) =>
-                    onSelect({
-                      type: "block",
-                      sectionId: section.id,
-                      blockId,
-                    })
+                  onSelectBlock={(blockId, additive) =>
+                    onSelectBlock(section.id, blockId, additive)
                   }
                   onUpdateSection={(patch) =>
                     onUpdateSection(section.id, patch)

@@ -1,0 +1,29 @@
+{
+  "meta": {
+    "title": "Neighborhoods"
+  },
+  "sections": [
+    {
+      "id": "sec_4359caae",
+      "background": {
+        "type": "image",
+        "src": "/uploads/neighborhoodsbanner-mqha9muh.webp",
+        "overlay": 0,
+        "filter": "none",
+        "focalX": 50,
+        "focalY": 50,
+        "rotate": 0,
+        "flipX": false,
+        "flipY": false,
+        "blur": 0,
+        "zoom": 1,
+        "tint": "none",
+        "tintOpacity": 0
+      },
+      "padding": "xl",
+      "minHeight": "auto",
+      "align": "top",
+      "blocks": []
+    }
+  ]
+}

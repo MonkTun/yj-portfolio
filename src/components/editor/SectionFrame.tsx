@@ -28,10 +28,13 @@ type Props = {
   index: number;
   total: number;
   device: Device;
-  selectedBlockId: string | null;
+  /** Every selected block in this section. */
+  selectedBlockIds: string[];
+  /** The anchor block (resize handles + toolbar mount here). */
+  primaryBlockId: string | null;
   active: boolean;
   onSelectSection: () => void;
-  onSelectBlock: (blockId: string) => void;
+  onSelectBlock: (blockId: string, additive: boolean) => void;
   onUpdateSection: (patch: Partial<Section>) => void;
   onDuplicateSection: () => void;
   onDeleteSection: () => void;
@@ -52,7 +55,8 @@ export function SectionFrame({
   index,
   total,
   device,
-  selectedBlockId,
+  selectedBlockIds,
+  primaryBlockId,
   active,
   onSelectSection,
   onSelectBlock,
@@ -146,7 +150,8 @@ export function SectionFrame({
             <SectionGrid
               section={section}
               device={device}
-              selectedBlockId={selectedBlockId}
+              selectedBlockIds={selectedBlockIds}
+              primaryBlockId={primaryBlockId}
               onSelectBlock={onSelectBlock}
               onUpdateBlockProps={(blockId, patch, target) =>
                 onUpdateBlockProps(blockId, patch, target)

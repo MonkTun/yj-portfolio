@@ -21,6 +21,7 @@ import {
   type Device,
 } from "@/lib/responsive";
 import type { SectionTemplate } from "@/lib/section-templates";
+import { readClipboard, writeClipboard } from "@/lib/editor-clipboard";
 
 import { Toolbar } from "./Toolbar";
 import { Canvas } from "./Canvas";
@@ -33,7 +34,16 @@ type Status = "idle" | "saving" | "saved" | "error";
 export type Selection =
   | { type: "page" }
   | { type: "section"; sectionId: string }
-  | { type: "block"; sectionId: string; blockId: string };
+  | {
+      type: "block";
+      sectionId: string;
+      /** The anchor block — the one the properties panel edits. Always a
+       *  member of `blockIds`. */
+      blockId: string;
+      /** Every selected block in this section, including `blockId`. Multi-
+       *  select is scoped to a single section (the grid is per-section). */
+      blockIds: string[];
+    };
 
 function newId(prefix: string) {
   return `${prefix}_${crypto.randomUUID().slice(0, 8)}`;
@@ -41,6 +51,29 @@ function newId(prefix: string) {
 
 function clone<T>(v: T): T {
   return JSON.parse(JSON.stringify(v));
+}
+
+/** Build a single-block selection. */
+function blockSel(sectionId: string, blockId: string): Selection {
+  return { type: "block", sectionId, blockId, blockIds: [blockId] };
+}
+
+/**
+ * Clone blocks with fresh ids, re-rowed to start at `baseRow` while keeping
+ * their relative vertical offsets (so a multi-block paste/duplicate lands as
+ * a coherent cluster, not a stack). Used by duplicate-many and paste.
+ */
+function cloneBlocksRebased(blocks: Block[], baseRow: number): Block[] {
+  const minRow = Math.min(...blocks.map((b) => b.layout.row ?? 1));
+  return blocks.map((b) => {
+    const next = clone(b);
+    next.id = newId("blk");
+    next.layout = {
+      ...next.layout,
+      row: baseRow + ((next.layout.row ?? 1) - minRow),
+    };
+    return next;
+  });
 }
 
 type Props = {
@@ -395,9 +428,41 @@ export function Editor({ slug, initialPage, availablePages = [] }: Props) {
       } as Block;
       targetSec.blocks.push(newBlock);
       commit(next);
-      setSelection({ type: "block", sectionId, blockId: newBlock.id });
+      setSelection(blockSel(sectionId, newBlock.id));
     },
     [page, commit, findSection, device]
+  );
+
+  /**
+   * Select a block. With `additive` (Shift / ⌘ / Ctrl-click) toggle it in
+   * the current section's multi-selection; otherwise replace the selection.
+   * Additive only extends a selection already rooted in the SAME section —
+   * clicking into another section starts fresh there.
+   */
+  const selectBlock = useCallback(
+    (sectionId: string, blockId: string, additive: boolean) => {
+      setSelection((prev) => {
+        if (!additive || prev.type !== "block" || prev.sectionId !== sectionId) {
+          return blockSel(sectionId, blockId);
+        }
+        const set = new Set(prev.blockIds);
+        if (set.has(blockId)) {
+          set.delete(blockId);
+          const remaining = [...set];
+          // Removing the last block falls back to selecting the section.
+          if (remaining.length === 0) return { type: "section", sectionId };
+          // If we dropped the anchor, hand the role to whatever's left.
+          const blockIdNext =
+            prev.blockId === blockId
+              ? remaining[remaining.length - 1]
+              : prev.blockId;
+          return { type: "block", sectionId, blockId: blockIdNext, blockIds: remaining };
+        }
+        // Newly added block becomes the anchor.
+        return { type: "block", sectionId, blockId, blockIds: [...set, blockId] };
+      });
+    },
+    [],
   );
 
   const duplicateBlock = useCallback(
@@ -417,7 +482,29 @@ export function Editor({ slug, initialPage, availablePages = [] }: Props) {
       };
       sec.blocks.splice(i + 1, 0, dup);
       commit(next);
-      setSelection({ type: "block", sectionId, blockId: dup.id });
+      setSelection(blockSel(sectionId, dup.id));
+    },
+    [page, commit]
+  );
+
+  /** Duplicate several blocks at once as one history step. The copies are
+   *  appended below the section's content and become the new selection. */
+  const duplicateBlocks = useCallback(
+    (sectionId: string, blockIds: string[]) => {
+      const next = clone(page);
+      const sec = next.sections.find((s) => s.id === sectionId);
+      if (!sec) return;
+      const originals = sec.blocks.filter((b) => blockIds.includes(b.id));
+      if (originals.length === 0) return;
+      const dupes = cloneBlocksRebased(originals, nextFreeRow(sec.blocks));
+      sec.blocks.push(...dupes);
+      commit(next);
+      setSelection({
+        type: "block",
+        sectionId,
+        blockId: dupes[dupes.length - 1].id,
+        blockIds: dupes.map((d) => d.id),
+      });
     },
     [page, commit]
   );
@@ -428,6 +515,20 @@ export function Editor({ slug, initialPage, availablePages = [] }: Props) {
       const sec = next.sections.find((s) => s.id === sectionId);
       if (!sec) return;
       sec.blocks = sec.blocks.filter((b) => b.id !== blockId);
+      commit(next);
+      setSelection({ type: "section", sectionId });
+    },
+    [page, commit]
+  );
+
+  /** Delete several blocks at once as one history step. */
+  const deleteBlocks = useCallback(
+    (sectionId: string, blockIds: string[]) => {
+      const ids = new Set(blockIds);
+      const next = clone(page);
+      const sec = next.sections.find((s) => s.id === sectionId);
+      if (!sec) return;
+      sec.blocks = sec.blocks.filter((b) => !ids.has(b.id));
       commit(next);
       setSelection({ type: "section", sectionId });
     },
@@ -472,7 +573,7 @@ export function Editor({ slug, initialPage, availablePages = [] }: Props) {
         toSec.blocks.splice(insertAt, 0, block);
       }
       commit(next);
-      setSelection({ type: "block", sectionId: toSectionId, blockId });
+      setSelection(blockSel(toSectionId, blockId));
     },
     [page, commit, device]
   );
@@ -483,6 +584,82 @@ export function Editor({ slug, initialPage, availablePages = [] }: Props) {
     (meta: Page["meta"]) => commit({ ...page, meta }),
     [page, commit]
   );
+
+  /* ---------------- clipboard ---------------- */
+
+  /** Copy the current selection (block(s) or section) to the cross-page
+   *  clipboard. Page-level selections have nothing to copy. */
+  const copySelection = useCallback(() => {
+    if (selection.type === "block") {
+      const sec = page.sections.find((s) => s.id === selection.sectionId);
+      if (!sec) return;
+      // Preserve section order rather than click order so a paste reads
+      // top-to-bottom the way the blocks were arranged.
+      const ids = new Set(selection.blockIds);
+      const blocks = sec.blocks.filter((b) => ids.has(b.id)).map(clone);
+      if (blocks.length === 0) return;
+      writeClipboard({ kind: "blocks", blocks });
+    } else if (selection.type === "section") {
+      const sec = page.sections.find((s) => s.id === selection.sectionId);
+      if (!sec) return;
+      writeClipboard({ kind: "section", section: clone(sec) });
+    }
+  }, [selection, page]);
+
+  const cutSelection = useCallback(() => {
+    copySelection();
+    if (selection.type === "block") {
+      deleteBlocks(selection.sectionId, selection.blockIds);
+    } else if (selection.type === "section") {
+      deleteSection(selection.sectionId);
+    }
+  }, [copySelection, selection, deleteBlocks, deleteSection]);
+
+  /**
+   * Paste the clipboard. Blocks land in the currently-targeted section (or
+   * the last section if nothing block/section-level is selected); a section
+   * is inserted right after the current one. Everything gets fresh ids.
+   */
+  const pasteClipboard = useCallback(() => {
+    const data = readClipboard();
+    if (!data) return;
+
+    if (data.kind === "blocks") {
+      const targetId =
+        selection.type === "block" || selection.type === "section"
+          ? selection.sectionId
+          : page.sections[page.sections.length - 1]?.id;
+      if (!targetId) return;
+      const next = clone(page);
+      const sec = next.sections.find((s) => s.id === targetId);
+      if (!sec) return;
+      const pasted = cloneBlocksRebased(data.blocks, nextFreeRow(sec.blocks));
+      sec.blocks.push(...pasted);
+      commit(next);
+      setSelection({
+        type: "block",
+        sectionId: targetId,
+        blockId: pasted[pasted.length - 1].id,
+        blockIds: pasted.map((b) => b.id),
+      });
+      return;
+    }
+
+    const next = clone(page);
+    const dup: Section = {
+      ...clone(data.section),
+      id: newId("sec"),
+      blocks: data.section.blocks.map((b) => ({ ...clone(b), id: newId("blk") })),
+    };
+    let idx = next.sections.length;
+    if (selection.type === "section" || selection.type === "block") {
+      const i = next.sections.findIndex((s) => s.id === selection.sectionId);
+      if (i !== -1) idx = i + 1;
+    }
+    next.sections.splice(idx, 0, dup);
+    commit(next);
+    setSelection({ type: "section", sectionId: dup.id });
+  }, [selection, page, commit]);
 
   /* ---------------- history ---------------- */
 
@@ -538,27 +715,73 @@ export function Editor({ slug, initialPage, availablePages = [] }: Props) {
 
   useEffect(() => {
     function handler(e: KeyboardEvent) {
-      const meta = e.metaKey || e.ctrlKey;
-      if (!meta) return;
       const target = e.target as HTMLElement | null;
-      if (target?.isContentEditable) return; // let browser handle inside edit
-      if (e.key.toLowerCase() === "s") {
+      // Don't hijack keys while the user is typing in a field or editing
+      // inline text — the browser's native copy/paste/delete belong there.
+      const editing =
+        !!target &&
+        (target.isContentEditable ||
+          target.tagName === "INPUT" ||
+          target.tagName === "TEXTAREA" ||
+          target.tagName === "SELECT");
+
+      const meta = e.metaKey || e.ctrlKey;
+
+      // Delete / Backspace removes the current selection.
+      if (!meta && (e.key === "Delete" || e.key === "Backspace")) {
+        if (editing) return;
+        if (selection.type === "block") {
+          e.preventDefault();
+          deleteBlocks(selection.sectionId, selection.blockIds);
+        } else if (selection.type === "section") {
+          e.preventDefault();
+          deleteSection(selection.sectionId);
+        }
+        return;
+      }
+
+      if (!meta || editing) return;
+
+      const key = e.key.toLowerCase();
+      if (key === "s") {
         e.preventDefault();
         if (dirty && status !== "saving") void save();
-      } else if (e.key.toLowerCase() === "z" && !e.shiftKey) {
+      } else if (key === "z" && !e.shiftKey) {
         e.preventDefault();
         undo();
-      } else if (
-        (e.key.toLowerCase() === "z" && e.shiftKey) ||
-        e.key.toLowerCase() === "y"
-      ) {
+      } else if ((key === "z" && e.shiftKey) || key === "y") {
         e.preventDefault();
         redo();
+      } else if (key === "c") {
+        if (selection.type === "block" || selection.type === "section") {
+          e.preventDefault();
+          copySelection();
+        }
+      } else if (key === "x") {
+        if (selection.type === "block" || selection.type === "section") {
+          e.preventDefault();
+          cutSelection();
+        }
+      } else if (key === "v") {
+        e.preventDefault();
+        pasteClipboard();
       }
     }
     window.addEventListener("keydown", handler);
     return () => window.removeEventListener("keydown", handler);
-  }, [dirty, save, undo, redo, status]);
+  }, [
+    dirty,
+    save,
+    undo,
+    redo,
+    status,
+    selection,
+    deleteBlocks,
+    deleteSection,
+    copySelection,
+    cutSelection,
+    pasteClipboard,
+  ]);
 
   useEffect(() => {
     function handler(e: BeforeUnloadEvent) {
@@ -613,6 +836,7 @@ export function Editor({ slug, initialPage, availablePages = [] }: Props) {
             page={page}
             selection={selection}
             onSelect={setSelection}
+            onSelectBlock={selectBlock}
             onReorderSections={reorderSections}
             onMoveBlock={moveBlock}
             onDeleteSection={deleteSection}
@@ -625,6 +849,7 @@ export function Editor({ slug, initialPage, availablePages = [] }: Props) {
           selection={selection}
           device={device}
           onSelect={setSelection}
+          onSelectBlock={selectBlock}
           onAddSection={addSection}
           onUpdateSection={updateSection}
           onDuplicateSection={duplicateSection}
@@ -652,6 +877,8 @@ export function Editor({ slug, initialPage, availablePages = [] }: Props) {
             onSetBlockBleed={setBlockBleed}
             onSetBlockMobileHidden={setBlockMobileHidden}
             onClearBlockMobileOverrides={clearBlockMobileOverrides}
+            onDuplicateBlocks={duplicateBlocks}
+            onDeleteBlocks={deleteBlocks}
           />
         </aside>
       </div>
