@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import NextImage from "next/image";
 
 import type { CarouselItem, ProjectCarouselProps } from "@/lib/schema";
 import { cn } from "@/lib/utils";
@@ -10,6 +11,7 @@ import {
   imageTintBgClass,
   imageTintMaskStyle,
   imageTransformCss,
+  isOptimizableImageSrc,
 } from "./imageStyles";
 
 /**
@@ -145,13 +147,27 @@ function CarouselImage({
   item,
   aspect,
   radius,
+  cardWidth,
 }: {
   item: CarouselItem;
   aspect: string;
   radius: number;
+  cardWidth: number;
 }) {
   const tintClass = imageTintBgClass[item.tint];
   const showTint = tintClass !== null && item.tintOpacity > 0;
+
+  const imgStyle: React.CSSProperties = {
+    objectPosition: `${item.focalX}% ${item.focalY}%`,
+    filter: imageFilterAndBlurCss(item.filter, item.blur),
+    transform: imageTransformCss({
+      rotate: item.rotate,
+      flipX: item.flipX,
+      flipY: item.flipY,
+      zoom: item.zoom,
+    }),
+    transformOrigin: `${item.focalX}% ${item.focalY}%`,
+  };
 
   return (
     <div
@@ -163,24 +179,30 @@ function CarouselImage({
     >
       {item.src ? (
         <div className="absolute inset-0 transition-transform duration-[var(--duration-fast)] ease-[var(--ease)] motion-safe:group-hover:scale-[1.04]">
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img
-            src={item.src}
-            alt={item.alt}
-            draggable={false}
-            style={{
-              objectPosition: `${item.focalX}% ${item.focalY}%`,
-              filter: imageFilterAndBlurCss(item.filter, item.blur),
-              transform: imageTransformCss({
-                rotate: item.rotate,
-                flipX: item.flipX,
-                flipY: item.flipY,
-                zoom: item.zoom,
-              }),
-              transformOrigin: `${item.focalX}% ${item.focalY}%`,
-            }}
-            className="absolute inset-0 h-full w-full object-cover"
-          />
+          {isOptimizableImageSrc(item.src) ? (
+            // Tiles render at exactly cardWidth px, so the optimizer can
+            // serve a variant that size instead of the full original.
+            <NextImage
+              src={item.src}
+              alt={item.alt}
+              fill
+              sizes={`${cardWidth}px`}
+              draggable={false}
+              style={imgStyle}
+              className="object-cover"
+            />
+          ) : (
+            // eslint-disable-next-line @next/next/no-img-element
+            <img
+              src={item.src}
+              alt={item.alt}
+              draggable={false}
+              loading="lazy"
+              decoding="async"
+              style={imgStyle}
+              className="absolute inset-0 h-full w-full object-cover"
+            />
+          )}
           {showTint && (
             <div
               aria-hidden
@@ -236,7 +258,12 @@ function Card({
 }) {
   const inner = (
     <>
-      <CarouselImage item={item} aspect={aspect} radius={radius} />
+      <CarouselImage
+        item={item}
+        aspect={aspect}
+        radius={radius}
+        cardWidth={cardWidth}
+      />
 
       {item.meta && <p className="kicker mt-3">{item.meta}</p>}
       {item.title && (
@@ -337,7 +364,29 @@ function MarqueeCarousel({
       typeof window !== "undefined" &&
       window.matchMedia?.("(prefers-reduced-motion: reduce)").matches;
 
+    // Idle the loop while the strip is scrolled out of view — each tick
+    // forces a synchronous scrollLeft read/write on a large overflow
+    // container, and the marquee drifts for the page's whole lifetime
+    // otherwise. Drag/fling state carries across because it lives in refs.
+    let inView = true;
+    let io: IntersectionObserver | null = null;
+    if ("IntersectionObserver" in window) {
+      io = new IntersectionObserver(
+        (entries) => {
+          if (entries[0]) inView = entries[0].isIntersecting;
+        },
+        { threshold: 0.01 }
+      );
+      io.observe(el);
+    }
+
     const step = (now: number) => {
+      rafRef.current = requestAnimationFrame(step);
+      if (!inView || document.hidden) {
+        // Reset the clock so re-entry doesn't apply one giant dt jump.
+        lastTs.current = now;
+        return;
+      }
       const dt = lastTs.current ? Math.min(0.05, (now - lastTs.current) / 1000) : 0;
       lastTs.current = now;
 
@@ -356,11 +405,12 @@ function MarqueeCarousel({
         if (el.scrollLeft >= period) el.scrollLeft -= period;
         else if (el.scrollLeft < 0) el.scrollLeft += period;
       }
-
-      rafRef.current = requestAnimationFrame(step);
     };
     rafRef.current = requestAnimationFrame(step);
-    return () => cancelAnimationFrame(rafRef.current);
+    return () => {
+      cancelAnimationFrame(rafRef.current);
+      io?.disconnect();
+    };
   }, [autoScrollSpeed, period]);
 
   const onPointerDown = (e: React.PointerEvent) => {
@@ -461,7 +511,14 @@ function MarqueeTile({
   radius: number;
   newTab: boolean;
 }) {
-  const tile = <CarouselImage item={item} aspect={aspect} radius={radius} />;
+  const tile = (
+    <CarouselImage
+      item={item}
+      aspect={aspect}
+      radius={radius}
+      cardWidth={cardWidth}
+    />
+  );
 
   // Width + trailing margin make each tile occupy exactly cardWidth+gap, so the
   // marquee period (items.length × (cardWidth+gap)) lines up perfectly. The

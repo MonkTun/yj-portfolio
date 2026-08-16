@@ -7,6 +7,98 @@
 @custom-variant dark (&:is(.dark *));
 
 /* ============================================================
+   Pixel display faces — registered by hand instead of next/font
+   so they can be split into latin/hangul woff2 slices with
+   unicode-range: a visitor fetches ~8KB of latin glyphs instead
+   of the 4.6MB source TTF, and the hangul slice only downloads
+   if Korean text actually renders. Subsets generated from the
+   source TTFs in src/fonts (kept there as originals).
+   ============================================================ */
+
+@font-face {
+  font-family: "Galmuri9";
+  src: url("/fonts/galmuri9-latin.woff2") format("woff2");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+  unicode-range: U+0000-00FF, U+2000-206F, U+20A0-20CF, U+2190-21FF, U+2200-22FF;
+}
+@font-face {
+  font-family: "Galmuri9";
+  src: url("/fonts/galmuri9-hangul.woff2") format("woff2");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+  unicode-range: U+1100-11FF, U+3130-318F, U+A960-A97F, U+AC00-D7A3, U+D7B0-D7FF, U+FFA0-FFDC;
+}
+
+@font-face {
+  font-family: "PF Stardust";
+  src: url("/fonts/pfstardust-regular-latin.woff2") format("woff2");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+  unicode-range: U+0000-00FF, U+2000-206F, U+20A0-20CF, U+2190-21FF, U+2200-22FF;
+}
+@font-face {
+  font-family: "PF Stardust";
+  src: url("/fonts/pfstardust-regular-hangul.woff2") format("woff2");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+  unicode-range: U+1100-11FF, U+3130-318F, U+A960-A97F, U+AC00-D7A3, U+D7B0-D7FF, U+FFA0-FFDC;
+}
+@font-face {
+  font-family: "PF Stardust";
+  src: url("/fonts/pfstardust-bold-latin.woff2") format("woff2");
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+  unicode-range: U+0000-00FF, U+2000-206F, U+20A0-20CF, U+2190-21FF, U+2200-22FF;
+}
+@font-face {
+  font-family: "PF Stardust";
+  src: url("/fonts/pfstardust-bold-hangul.woff2") format("woff2");
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+  unicode-range: U+1100-11FF, U+3130-318F, U+A960-A97F, U+AC00-D7A3, U+D7B0-D7FF, U+FFA0-FFDC;
+}
+
+@font-face {
+  font-family: "PF Stardust S";
+  src: url("/fonts/pfstardust-s-regular-latin.woff2") format("woff2");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+  unicode-range: U+0000-00FF, U+2000-206F, U+20A0-20CF, U+2190-21FF, U+2200-22FF;
+}
+@font-face {
+  font-family: "PF Stardust S";
+  src: url("/fonts/pfstardust-s-regular-hangul.woff2") format("woff2");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+  unicode-range: U+1100-11FF, U+3130-318F, U+A960-A97F, U+AC00-D7A3, U+D7B0-D7FF, U+FFA0-FFDC;
+}
+@font-face {
+  font-family: "PF Stardust S";
+  src: url("/fonts/pfstardust-s-bold-latin.woff2") format("woff2");
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+  unicode-range: U+0000-00FF, U+2000-206F, U+20A0-20CF, U+2190-21FF, U+2200-22FF;
+}
+@font-face {
+  font-family: "PF Stardust S";
+  src: url("/fonts/pfstardust-s-bold-hangul.woff2") format("woff2");
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+  unicode-range: U+1100-11FF, U+3130-318F, U+A960-A97F, U+AC00-D7A3, U+D7B0-D7FF, U+FFA0-FFDC;
+}
+
+/* ============================================================
    Design tokens — organic but dark editorial.
    See CLAUDE.md "Current direction" for rationale.
    Read these via Tailwind utilities; never hard-code values
@@ -14,6 +106,13 @@
    ============================================================ */
 
 :root {
+  /* Pixel-face variables — bound here instead of by next/font (see the
+     @font-face slices above). paletteToFontVars() appends the generic
+     fallback, so these hold just the family name. */
+  --font-galmuri9: "Galmuri9";
+  --font-pf-stardust: "PF Stardust";
+  --font-pf-stardust-s: "PF Stardust S";
+
   /* ---------- core palette: organic but dark editorial ----------
      Authoritative source — see CLAUDE.md "Current direction".
      Don't blend in extra accents; hierarchy comes from type, not color. */

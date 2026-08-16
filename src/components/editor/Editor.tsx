@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 
 import type {
@@ -105,10 +105,12 @@ export function Editor({ slug, initialPage, availablePages = [] }: Props) {
     setMounted(true);
   }, []);
 
-  const dirty = useMemo(
-    () => JSON.stringify(page) !== JSON.stringify(savedPage),
-    [page, savedPage]
-  );
+  // Identity check, not serialization: every commit produces a fresh page
+  // object, save() stores the exact object it posted, and undo/redo restore
+  // the exact objects history captured — so reference equality tracks
+  // dirtiness correctly without double-stringifying the whole page on every
+  // keystroke-triggered render.
+  const dirty = page !== savedPage;
 
   /* ---------------- mutations + history ---------------- */
 
@@ -268,27 +270,42 @@ export function Editor({ slug, initialPage, availablePages = [] }: Props) {
       patch: Record<string, unknown>,
       target: Device = device,
     ) => {
-      const next = clone(page);
-      const sec = next.sections.find((s) => s.id === sectionId);
+      // This is the properties panel's per-keystroke path, so it copies
+      // only the mutated section/block spine instead of deep-cloning the
+      // whole page. Untouched sections/blocks keep their identity (nothing
+      // downstream ever mutates in place — every other op clones first).
+      const sec = page.sections.find((s) => s.id === sectionId);
       if (!sec) return;
-      const block = sec.blocks.find((b) => b.id === blockId);
-      if (!block) return;
-      if (target === "desktop") {
-        block.props = { ...block.props, ...patch } as Block["props"];
-      } else {
-        const currentMobile = block.mobile ?? {};
-        const currentProps = currentMobile.props ?? {};
-        const mergedProps: Record<string, unknown> = { ...currentProps };
-        for (const [k, v] of Object.entries(patch)) {
-          if (v === undefined) delete mergedProps[k];
-          else mergedProps[k] = v;
-        }
-        const idx = sec.blocks.findIndex((b) => b.id === blockId);
-        sec.blocks[idx] = pruneMobile({
-          ...block,
-          mobile: { ...currentMobile, props: mergedProps },
-        } as Block);
-      }
+      if (!sec.blocks.some((b) => b.id === blockId)) return;
+      const next: Page = {
+        ...page,
+        sections: page.sections.map((s) => {
+          if (s.id !== sectionId) return s;
+          return {
+            ...s,
+            blocks: s.blocks.map((b) => {
+              if (b.id !== blockId) return b;
+              if (target === "desktop") {
+                return {
+                  ...b,
+                  props: { ...b.props, ...patch },
+                } as Block;
+              }
+              const currentMobile = b.mobile ?? {};
+              const currentProps = currentMobile.props ?? {};
+              const mergedProps: Record<string, unknown> = { ...currentProps };
+              for (const [k, v] of Object.entries(patch)) {
+                if (v === undefined) delete mergedProps[k];
+                else mergedProps[k] = v;
+              }
+              return pruneMobile({
+                ...b,
+                mobile: { ...currentMobile, props: mergedProps },
+              } as Block);
+            }),
+          };
+        }),
+      };
       commit(next);
     },
     [page, commit, device]

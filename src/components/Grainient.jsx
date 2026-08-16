@@ -194,18 +194,40 @@ const Grainient = ({
     ro.observe(container);
     setSize();
 
+    // Skip GPU work while offscreen or tab-hidden (same gating as
+    // PrismaticBurst / LiquidEther). Idle rAF ticks are negligible; the
+    // fragment-shader render is the cost that matters. Time keeps running
+    // off the rAF timestamp, so the gradient doesn't "jump" on re-entry.
+    let isVisible = true;
+    let io = null;
+    if ('IntersectionObserver' in window) {
+      io = new IntersectionObserver(
+        entries => {
+          if (entries[0]) isVisible = entries[0].isIntersecting;
+        },
+        { root: null, threshold: 0.01 }
+      );
+      io.observe(container);
+    }
+
     let raf = 0;
     const t0 = performance.now();
     const loop = t => {
+      raf = requestAnimationFrame(loop);
+      if (!isVisible || document.hidden) return;
       program.uniforms.iTime.value = (t - t0) * 0.001;
       renderer.render({ scene: mesh });
-      raf = requestAnimationFrame(loop);
     };
     raf = requestAnimationFrame(loop);
 
     return () => {
       cancelAnimationFrame(raf);
       ro.disconnect();
+      io?.disconnect();
+      // Release the GL context explicitly — browsers cap live contexts
+      // (~16), and the editor re-runs this effect on every prop tweak, so
+      // waiting for GC can force-lose some other live background's context.
+      gl.getExtension('WEBGL_lose_context')?.loseContext();
       try {
         container.removeChild(canvas);
       } catch {

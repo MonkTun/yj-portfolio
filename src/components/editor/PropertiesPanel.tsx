@@ -2547,13 +2547,23 @@ function RemoveBgButton({
       }
       const inputBlob = await imgRes.blob();
       setStatus("Loading model…");
-      const mod = await import("@imgly/background-removal");
-      const blob = await mod.removeBackground(inputBlob, {
-        progress: (key: string, current: number, total: number) => {
-          const pct = total ? Math.round((current / total) * 100) : 0;
-          setStatus(`${key} ${pct}%`);
-        },
-      });
+      // The import() must live inside a statically-false branch in prod so
+      // the bundler drops it entirely: background removal is an editor-only
+      // feature (admin 404s in prod, see src/proxy.ts), but an ungated
+      // dynamic import still emitted ~47MB of onnxruntime WASM into every
+      // deploy's static assets.
+      let blob: Blob;
+      if (process.env.NODE_ENV === "development") {
+        const mod = await import("@imgly/background-removal");
+        blob = await mod.removeBackground(inputBlob, {
+          progress: (key: string, current: number, total: number) => {
+            const pct = total ? Math.round((current / total) * 100) : 0;
+            setStatus(`${key} ${pct}%`);
+          },
+        });
+      } else {
+        throw new Error("Background removal is only available in dev");
+      }
       setStatus("Uploading…");
       const stem =
         src

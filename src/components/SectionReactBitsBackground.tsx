@@ -56,31 +56,52 @@ export function SectionReactBitsBackground({
 }: {
   bg: Section["background"];
 }) {
-  const [mounted, setMounted] = useState(false);
-  const [vw, setVw] = useState<number>(0);
+  // Media-query state instead of a raw resize listener: the component only
+  // re-renders when the breakpoint or reduced-motion preference actually
+  // flips, not once per pixel of a window drag (which used to re-render —
+  // and for LiquidEther, fully rebuild — the WebGL sim per resize tick).
+  // `ready: false` until the queries are read so mobile visitors never
+  // download a WebGL chunk that a fallback replaces a tick later.
+  const [mq, setMq] = useState({ ready: false, mobile: false, reduced: false });
+
+  const breakpoint = bg.type === "reactbits" ? bg.mobileFallbackBreakpoint : 0;
 
   useEffect(() => {
-    setMounted(true);
-    const update = () => setVw(window.innerWidth);
+    const bpQuery =
+      breakpoint > 0
+        ? window.matchMedia(`(max-width: ${breakpoint - 1}px)`)
+        : null;
+    const rmQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
+    const update = () =>
+      setMq({
+        ready: true,
+        mobile: bpQuery?.matches ?? false,
+        reduced: rmQuery.matches,
+      });
     update();
-    window.addEventListener("resize", update);
-    return () => window.removeEventListener("resize", update);
-  }, []);
+    bpQuery?.addEventListener("change", update);
+    rmQuery.addEventListener("change", update);
+    return () => {
+      bpQuery?.removeEventListener("change", update);
+      rmQuery.removeEventListener("change", update);
+    };
+  }, [breakpoint]);
 
   if (bg.type !== "reactbits") return null;
+  if (!mq.ready) return null;
 
-  // Until we know the viewport size we render nothing — that way mobile
-  // visitors don't end up downloading the WebGL chunk only to be replaced
-  // by the CSS fallback a tick later.
-  if (!mounted) return null;
-
-  const isMobile =
-    bg.mobileFallbackBreakpoint > 0 && vw > 0 && vw < bg.mobileFallbackBreakpoint;
+  const isMobile = breakpoint > 0 && mq.mobile;
   const tintClass = imageTintBgClass[bg.tint];
   const showTint = tintClass !== null && bg.tintOpacity > 0;
 
+  // prefers-reduced-motion collapses the WebGL layer to the static CSS
+  // fallback (its keyframes are already gated in globals.css), or to
+  // nothing when no fallback kind is configured. Non-negotiable per the
+  // design contract — and it also skips the WebGL chunk download entirely.
+  const useFallback = isMobile || mq.reduced;
+
   let layer: React.ReactNode;
-  if (isMobile && bg.mobileFallbackKind !== "none") {
+  if (useFallback && bg.mobileFallbackKind !== "none") {
     layer = (
       <MobileFallback
         kind={bg.mobileFallbackKind}
@@ -88,6 +109,8 @@ export function SectionReactBitsBackground({
         colorB={bg.colorB}
       />
     );
+  } else if (mq.reduced) {
+    layer = null;
   } else {
     const Component = REGISTRY[bg.kind];
     layer = (

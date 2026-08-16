@@ -1,5 +1,6 @@
 import { promises as fs } from "node:fs";
 import path from "node:path";
+import { cache } from "react";
 import {
   pageSchema,
   siteConfigSchema,
@@ -28,13 +29,17 @@ function pageFile(slug: string) {
  * Nested slugs (`work/dawngeon`) resolve to nested files.
  * Throws if the file is missing or the JSON doesn't match the schema —
  * we want a hard fail in the build, not a silently-empty page.
+ *
+ * Wrapped in React's request-scoped cache() (as are the loaders below) so
+ * generateMetadata and the page component share one read+parse per request
+ * instead of hitting the filesystem twice.
  */
-export async function loadPage(slug: string): Promise<Page> {
+export const loadPage = cache(async (slug: string): Promise<Page> => {
   const file = pageFile(slug);
   const raw = await fs.readFile(file, "utf8");
   const parsed = JSON.parse(raw);
   return pageSchema.parse(parsed);
-}
+});
 
 /**
  * Persist a page to disk. Validates against pageSchema first; serializes
@@ -55,14 +60,14 @@ export async function savePage(slug: string, page: unknown): Promise<Page> {
  * migrated). Always validates so a hand-edited file with garbage gets
  * rejected at the boundary instead of poisoning later renders.
  */
-export async function loadSiteConfig(): Promise<SiteConfig> {
+export const loadSiteConfig = cache(async (): Promise<SiteConfig> => {
   try {
     const raw = await fs.readFile(SITE_CONFIG_FILE, "utf8");
     return siteConfigSchema.parse(JSON.parse(raw));
   } catch {
     return siteConfigSchema.parse({});
   }
-}
+});
 
 /** Persist the site config. */
 export async function saveSiteConfig(
@@ -82,7 +87,7 @@ export async function saveSiteConfig(
  * Load the theme (palette list + active palette). Falls back to a single
  * default palette so the site renders before the file is created.
  */
-export async function loadTheme(): Promise<Theme> {
+export const loadTheme = cache(async (): Promise<Theme> => {
   try {
     const raw = await fs.readFile(THEME_FILE, "utf8");
     return themeSchema.parse(JSON.parse(raw));
@@ -92,7 +97,7 @@ export async function loadTheme(): Promise<Theme> {
       palettes: [DEFAULT_PALETTE],
     };
   }
-}
+});
 
 /** Persist the theme. Validates first; activePaletteId must exist in the
  *  palette list (otherwise the site would render with no tokens). */

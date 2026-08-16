@@ -80,9 +80,41 @@ export function SectionVideoBackground({
     subscribe();
     const t = setTimeout(applyRate, 800);
 
+    // Pause the stream while the section is scrolled out of view or the tab
+    // is hidden — a looping background otherwise keeps fetching and decoding
+    // video for pixels nobody sees. Resume on re-entry (it's a muted
+    // autoplay background; there's no user-initiated pause to respect).
+    let inView = true;
+    function syncPlayback() {
+      if (inView && !document.hidden) {
+        send({ event: "command", func: "playVideo", args: [] });
+      } else {
+        send({ event: "command", func: "pauseVideo", args: [] });
+      }
+    }
+    let io: IntersectionObserver | null = null;
+    if ("IntersectionObserver" in window) {
+      io = new IntersectionObserver(
+        (entries) => {
+          if (entries[0]) {
+            inView = entries[0].isIntersecting;
+            syncPlayback();
+          }
+        },
+        { threshold: 0.01 }
+      );
+      io.observe(iframe);
+    }
+    function onVisibility() {
+      syncPlayback();
+    }
+    document.addEventListener("visibilitychange", onVisibility);
+
     return () => {
       window.removeEventListener("message", onMessage);
       iframe.removeEventListener("load", subscribe);
+      document.removeEventListener("visibilitychange", onVisibility);
+      io?.disconnect();
       clearTimeout(t);
     };
     // bg.playbackRate is the only knob users tweak after mount; the rest
@@ -119,6 +151,9 @@ export function SectionVideoBackground({
             title="Section background video"
             className="absolute inset-0 h-full w-full pointer-events-none"
             allow="autoplay; encrypted-media; picture-in-picture"
+            // Below-fold background embeds defer until scrolled near;
+            // in-viewport ones (the hero) load immediately regardless.
+            loading="lazy"
             tabIndex={-1}
             aria-hidden
           />

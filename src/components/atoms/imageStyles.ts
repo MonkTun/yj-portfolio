@@ -76,6 +76,22 @@ export const imageTintLabel: Record<ImageProps["tint"], string> = {
 };
 
 /**
+ * Whether a src can go through next/image's optimizer. Only local public/
+ * paths qualify: the editor's manual-src input streams partial strings
+ * ("h", "http…") and arbitrary external URLs into atoms per keystroke, and
+ * next/image throws at render for both — so anything else falls back to a
+ * raw <img>. SVGs are excluded too (next/image refuses them by default and
+ * they gain nothing from re-encoding).
+ */
+export function isOptimizableImageSrc(src: string): boolean {
+  return (
+    src.startsWith("/") &&
+    !src.startsWith("//") &&
+    !src.toLowerCase().endsWith(".svg")
+  );
+}
+
+/**
  * Style for a tint overlay div that *follows the image's alpha*. Uses the
  * image as a CSS mask so transparent pixels (e.g. after bg removal) stay
  * transparent — only the visible image gets coloured.

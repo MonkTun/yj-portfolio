@@ -1,5 +1,7 @@
 "use client";
 
+import NextImage from "next/image";
+
 import type { ImageProps } from "@/lib/schema";
 import { cn } from "@/lib/utils";
 
@@ -8,7 +10,11 @@ import {
   imageTintBgClass,
   imageTintMaskStyle,
   imageTransformCss,
+  isOptimizableImageSrc,
 } from "./imageStyles";
+
+/** Content column is max-w-7xl, so no block image ever renders wider. */
+const BLOCK_IMAGE_SIZES = "(max-width: 768px) 100vw, 1280px";
 
 export function Image(props: ImageProps) {
   const {
@@ -58,16 +64,33 @@ export function Image(props: ImageProps) {
     >
       {src ? (
         <>
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img
-            src={src}
-            alt={alt}
-            style={imgStyle}
-            className={cn(
-              "absolute inset-0 h-full w-full",
-              fit === "cover" ? "object-cover" : "object-contain"
-            )}
-          />
+          {isOptimizableImageSrc(src) ? (
+            // Local assets go through next/image so Vercel serves resized
+            // WebP variants instead of the raw multi-MB originals. `fill`
+            // keeps the exact absolute-positioning contract of the old
+            // <img>, and the focal/filter/transform styles pass through.
+            <NextImage
+              src={src}
+              alt={alt}
+              fill
+              sizes={BLOCK_IMAGE_SIZES}
+              style={imgStyle}
+              className={fit === "cover" ? "object-cover" : "object-contain"}
+            />
+          ) : (
+            // eslint-disable-next-line @next/next/no-img-element
+            <img
+              src={src}
+              alt={alt}
+              loading="lazy"
+              decoding="async"
+              style={imgStyle}
+              className={cn(
+                "absolute inset-0 h-full w-full",
+                fit === "cover" ? "object-cover" : "object-contain"
+              )}
+            />
+          )}
           {showTint && (
             <div
               aria-hidden

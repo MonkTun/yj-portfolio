@@ -1,3 +1,5 @@
+import NextImage from "next/image";
+
 import type { Section, Block, BlockLayout } from "@/lib/schema";
 import { atomRegistry } from "@/lib/atom-registry";
 import { cn } from "@/lib/utils";
@@ -11,6 +13,7 @@ import {
   imageTintBgClass,
   imageTintMaskStyle,
   imageTransformCss,
+  isOptimizableImageSrc,
 } from "@/components/atoms/imageStyles";
 import { SectionReactBitsBackground } from "@/components/SectionReactBitsBackground";
 import { SectionVideoBackground } from "@/components/SectionVideoBackground";
@@ -340,26 +343,43 @@ export function SectionImageBackground({ bg }: { bg: Section["background"] }) {
   if (bg.type !== "image" || !bg.src) return null;
   const tintClass = imageTintBgClass[bg.tint];
   const showTint = tintClass !== null && bg.tintOpacity > 0;
+  const imgStyle: React.CSSProperties = {
+    objectPosition: `${bg.focalX}% ${bg.focalY}%`,
+    filter: imageFilterAndBlurCss(bg.filter, bg.blur),
+    transform: imageTransformCss({
+      rotate: bg.rotate,
+      flipX: bg.flipX,
+      flipY: bg.flipY,
+      zoom: bg.zoom,
+    }),
+    transformOrigin: `${bg.focalX}% ${bg.focalY}%`,
+  };
   return (
     <>
-      {/* eslint-disable-next-line @next/next/no-img-element */}
-      <img
-        src={bg.src}
-        alt=""
-        aria-hidden
-        className="absolute inset-0 w-full h-full object-cover pointer-events-none"
-        style={{
-          objectPosition: `${bg.focalX}% ${bg.focalY}%`,
-          filter: imageFilterAndBlurCss(bg.filter, bg.blur),
-          transform: imageTransformCss({
-            rotate: bg.rotate,
-            flipX: bg.flipX,
-            flipY: bg.flipY,
-            zoom: bg.zoom,
-          }),
-          transformOrigin: `${bg.focalX}% ${bg.focalY}%`,
-        }}
-      />
+      {isOptimizableImageSrc(bg.src) ? (
+        // Full-bleed section backdrop — always viewport-wide, so let the
+        // optimizer pick the variant from the actual viewport.
+        <NextImage
+          src={bg.src}
+          alt=""
+          aria-hidden
+          fill
+          sizes="100vw"
+          className="object-cover pointer-events-none"
+          style={imgStyle}
+        />
+      ) : (
+        // eslint-disable-next-line @next/next/no-img-element
+        <img
+          src={bg.src}
+          alt=""
+          aria-hidden
+          loading="lazy"
+          decoding="async"
+          className="absolute inset-0 w-full h-full object-cover pointer-events-none"
+          style={imgStyle}
+        />
+      )}
       {bg.overlay > 0 && (
         <div
           aria-hidden

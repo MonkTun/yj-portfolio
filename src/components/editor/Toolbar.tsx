@@ -47,10 +47,12 @@ export function Toolbar({
     );
     if (ok) onAutoStack();
   }
-  // Every editable page renders through the public root with a `?preview=`
-  // override, so the editor preview link bypasses the construction-page
+  // Every authored page is served at its own /<slug> URL by the (site)
+  // catch-all route, so the preview link goes there directly (per-segment
+  // encoding keeps nested slugs like work/dawngeon routable). This bypasses
+  // the construction-page
   // default no matter which slug is being edited.
-  const baseHref = `/?preview=${encodeURIComponent(slug)}`;
+  const baseHref = `/${slug.split("/").map(encodeURIComponent).join("/")}`;
   const previewHref = previewAnchor ? `${baseHref}#${previewAnchor}` : baseHref;
 
   // If there are unsaved changes, the public route would render stale JSON

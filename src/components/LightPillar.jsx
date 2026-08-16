@@ -249,8 +249,30 @@ const LightPillar = ({
     const targetFPS = effectiveQuality === 'low' ? 30 : 60;
     const frameTime = 1000 / targetFPS;
 
+    // Skip GPU work while the section is scrolled out of view or the tab is
+    // hidden (same gating PrismaticBurst / LiquidEther use). The rAF keeps
+    // ticking — an idle callback is negligible; the raymarch render is the
+    // cost that matters.
+    let isVisible = true;
+    let io = null;
+    if ('IntersectionObserver' in window) {
+      io = new IntersectionObserver(
+        entries => {
+          if (entries[0]) isVisible = entries[0].isIntersecting;
+        },
+        { root: null, threshold: 0.01 }
+      );
+      io.observe(container);
+    }
+
     const animate = currentTime => {
       if (!materialRef.current || !rendererRef.current || !sceneRef.current || !cameraRef.current) return;
+
+      if (!isVisible || document.hidden) {
+        lastTime = currentTime;
+        rafRef.current = requestAnimationFrame(animate);
+        return;
+      }
 
       const deltaTime = currentTime - lastTime;
 
@@ -287,6 +309,7 @@ const LightPillar = ({
 
     return () => {
       window.removeEventListener('resize', handleResize);
+      io?.disconnect();
       if (interactive) {
         container.removeEventListener('mousemove', handleMouseMove);
       }

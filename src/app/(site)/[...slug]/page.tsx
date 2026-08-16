@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
-import { loadPage } from "@/lib/content";
+import { listPages, loadPage } from "@/lib/content";
 import { PageRenderer } from "@/components/PageRenderer";
 
 // Catch-all that serves any page authored under content/pages/<slug>.json
@@ -10,6 +10,15 @@ import { PageRenderer } from "@/components/PageRenderer";
 type Props = {
   params: Promise<{ slug: string[] }>;
 };
+
+// Content is deploy-frozen in production (the admin editor and its API are
+// dev-only, see src/proxy.ts), so every authored page can be prerendered at
+// build time and served from the CDN. Dev still renders on demand, so editor
+// saves show up without a rebuild.
+export async function generateStaticParams() {
+  const slugs = await listPages();
+  return slugs.map((s) => ({ slug: s.split("/") }));
+}
 
 function resolveSlug(parts: string[]): string {
   return parts.join("/");

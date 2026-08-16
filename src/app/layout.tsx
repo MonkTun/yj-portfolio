@@ -25,63 +25,38 @@ import {
 // ============================================================
 
 // Karepefx — display face for headlines, hero, drop caps.
-// Local OTFs in src/fonts/karepefx, six weights.
+// Local woff2 (subset from the source OTFs), six weights. Preloaded: it is
+// the active palette's display face and paints the hero.
 const karepefx = localFont({
   variable: "--font-karepefx",
   display: "swap",
   src: [
-    { path: "../fonts/karepefx/Karepefx-Light.otf", weight: "300", style: "normal" },
-    { path: "../fonts/karepefx/Karepefx-Regular.otf", weight: "400", style: "normal" },
-    { path: "../fonts/karepefx/Karepefx-Medium.otf", weight: "500", style: "normal" },
-    { path: "../fonts/karepefx/Karepefx-Bold.otf", weight: "700", style: "normal" },
-    { path: "../fonts/karepefx/Karepefx-Extrabold.otf", weight: "800", style: "normal" },
-    { path: "../fonts/karepefx/Karepefx-Black.otf", weight: "900", style: "normal" },
+    { path: "../fonts/karepefx/Karepefx-Light.woff2", weight: "300", style: "normal" },
+    { path: "../fonts/karepefx/Karepefx-Regular.woff2", weight: "400", style: "normal" },
+    { path: "../fonts/karepefx/Karepefx-Medium.woff2", weight: "500", style: "normal" },
+    { path: "../fonts/karepefx/Karepefx-Bold.woff2", weight: "700", style: "normal" },
+    { path: "../fonts/karepefx/Karepefx-Extrabold.woff2", weight: "800", style: "normal" },
+    { path: "../fonts/karepefx/Karepefx-Black.woff2", weight: "900", style: "normal" },
   ],
 });
 
-// ---- Pixel display faces ------------------------------------------------
-// Optional opt-in via the palette. preload:false because they're loud, 4MB
-// in Galmuri's case (full Korean glyph coverage), and only the active
-// palette's fonts should ever block the first paint.
+// The pixel faces (Galmuri9, PF Stardust, PF Stardust S) are NOT registered
+// through next/font: they live as hand-written @font-face rules in
+// globals.css, split into latin/hangul woff2 slices with unicode-range so a
+// visitor downloads ~8KB of latin glyphs instead of the 4.6MB source TTF —
+// the hangul slice only loads if Korean text actually renders. next/font
+// can't express unicode-range slices, which is why these are manual.
 
-// Galmuri9 — 9px Korean pixel font with full Hangul + Latin coverage.
-// Single weight; works as a display or kicker.
-const galmuri9 = localFont({
-  variable: "--font-galmuri9",
-  display: "swap",
-  preload: false,
-  src: [
-    { path: "../fonts/galmuri9/Galmuri9.ttf", weight: "400", style: "normal" },
-  ],
-});
-
-// PF Stardust — chunky pixel display, regular + bold.
-const pfStardust = localFont({
-  variable: "--font-pf-stardust",
-  display: "swap",
-  preload: false,
-  src: [
-    { path: "../fonts/pf-stardust/PFStardust-Regular.ttf", weight: "400", style: "normal" },
-    { path: "../fonts/pf-stardust/PFStardust-Bold.ttf", weight: "700", style: "normal" },
-  ],
-});
-
-// PF Stardust S — small / condensed companion to PF Stardust.
-const pfStardustS = localFont({
-  variable: "--font-pf-stardust-s",
-  display: "swap",
-  preload: false,
-  src: [
-    { path: "../fonts/pf-stardust-s/PFStardustS-Regular.ttf", weight: "400", style: "normal" },
-    { path: "../fonts/pf-stardust-s/PFStardustS-Bold.ttf", weight: "700", style: "normal" },
-  ],
-});
-
+// Only the active palette's faces preload (Crimson Pro is the current body
+// face). Everything else stays registered for the palette switcher but
+// loads on demand via its CSS variable — preloading all 11 families cost
+// ~600KB of contended bandwidth on every page view.
 const playfairDisplay = Playfair_Display({
   variable: "--font-playfair-display",
   subsets: ["latin"],
   style: ["normal", "italic"],
   display: "swap",
+  preload: false,
 });
 
 const newsreader = Newsreader({
@@ -89,6 +64,7 @@ const newsreader = Newsreader({
   subsets: ["latin"],
   style: ["normal", "italic"],
   display: "swap",
+  preload: false,
 });
 
 const crimsonPro = Crimson_Pro({
@@ -103,12 +79,14 @@ const bricolage = Bricolage_Grotesque({
   subsets: ["latin"],
   weight: ["400", "500", "600", "700"],
   display: "swap",
+  preload: false,
 });
 
 const dmSans = DM_Sans({
   variable: "--font-dm-sans",
   subsets: ["latin"],
   display: "swap",
+  preload: false,
 });
 
 const plexMono = IBM_Plex_Mono({
@@ -116,6 +94,7 @@ const plexMono = IBM_Plex_Mono({
   subsets: ["latin"],
   weight: ["400", "500"],
   display: "swap",
+  preload: false,
 });
 
 const jetbrainsMono = JetBrains_Mono({
@@ -123,6 +102,7 @@ const jetbrainsMono = JetBrains_Mono({
   subsets: ["latin"],
   weight: ["400", "500"],
   display: "swap",
+  preload: false,
 });
 
 export const metadata: Metadata = {
@@ -164,9 +144,6 @@ export default async function RootLayout({
         dmSans.variable,
         plexMono.variable,
         jetbrainsMono.variable,
-        galmuri9.variable,
-        pfStardust.variable,
-        pfStardustS.variable,
       )}
       style={paletteVars}
     >
