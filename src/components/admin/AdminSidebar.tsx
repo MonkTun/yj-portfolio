@@ -21,7 +21,7 @@ export function AdminSidebar() {
   return (
     <nav aria-label="Editor sections" className="space-y-10">
       <div>
-        <p className="kicker">§ Editor</p>
+        <p className="kicker">Editor</p>
         <p className="font-display text-3xl mt-2 leading-none">Settings</p>
         <p className="kicker text-foreground/40 mt-3">Local only</p>
       </div>

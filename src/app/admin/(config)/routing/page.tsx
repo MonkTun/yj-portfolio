@@ -9,7 +9,7 @@ export default async function RoutingIndex() {
   return (
     <>
       <header>
-        <p className="kicker">§ 02 — Wiring</p>
+        <p className="kicker">02 — Wiring</p>
         <h1 className="font-display text-6xl mt-4">Routing</h1>
         <p className="mt-4 text-foreground/70 italic max-w-2xl">
           Decides which page renders at <code className="font-sans">/</code>{" "}

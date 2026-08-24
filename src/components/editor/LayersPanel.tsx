@@ -237,7 +237,7 @@ function SectionRow({
           onClick={() => onSelect({ type: "section", sectionId: section.id })}
           className="flex-1 text-left py-2 pr-2"
         >
-          <span className="block text-sm">§ {index + 1}</span>
+          <span className="block text-sm">{index + 1}</span>
           <span className="kicker text-current/50">
             {section.blocks.length} block
             {section.blocks.length === 1 ? "" : "s"}

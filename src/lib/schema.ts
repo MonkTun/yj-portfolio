@@ -9,7 +9,8 @@ import { z } from "zod";
      - col: 1..12  (1-indexed for human-friendliness in JSON)
      - colSpan: 1..12
      - row: 1..N   (1-indexed; auto-flow if omitted)
-     - rowSpan: positive integer in 8px row-height units
+     - rowSpan: positive integer in ROW_HEIGHT_PX (16px) row units — see
+       lib/grid.ts; `content/` was migrated from 8px rows in Aug 2026
    ============================================================ */
 
 export const blockLayoutSchema = z.object({

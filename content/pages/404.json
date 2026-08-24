@@ -19,11 +19,11 @@
             "col": 3,
             "colSpan": 8,
             "row": 1,
-            "rowSpan": 3
+            "rowSpan": 2
           },
           "type": "text",
           "props": {
-            "content": "§ 404 — Misprint",
+            "content": "404 — Misprint",
             "variant": "kicker",
             "align": "left",
             "color": "muted",
@@ -35,8 +35,8 @@
           "layout": {
             "col": 3,
             "colSpan": 9,
-            "row": 5,
-            "rowSpan": 36
+            "row": 3,
+            "rowSpan": 18
           },
           "type": "text",
           "props": {
@@ -54,8 +54,8 @@
           "layout": {
             "col": 3,
             "colSpan": 7,
-            "row": 23,
-            "rowSpan": 18
+            "row": 12,
+            "rowSpan": 9
           },
           "type": "text",
           "props": {
@@ -71,8 +71,8 @@
           "layout": {
             "col": 3,
             "colSpan": 3,
-            "row": 28,
-            "rowSpan": 5
+            "row": 15,
+            "rowSpan": 2
           },
           "type": "button",
           "props": {

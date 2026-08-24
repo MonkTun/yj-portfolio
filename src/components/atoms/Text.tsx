@@ -131,6 +131,14 @@ function EditableText({ Tag, className, style, content }: EditableTextProps) {
         style={style}
         contentEditable
         suppressContentEditableWarning
+        // Opt this editable surface into browser/extension writing tools.
+        // Grammarly skips contenteditables that don't look like editors;
+        // these are its documented enable attributes, plus spellcheck so
+        // the browser's own checker works too.
+        spellCheck
+        data-gramm="true"
+        data-gramm_editor="true"
+        data-enable-grammarly="true"
         onBlur={commit}
         onKeyDown={(e: KeyboardEvent) => {
           if (e.key === "Escape") {

@@ -16,6 +16,7 @@ import {
 } from "@/components/SectionRenderer";
 import { SectionReactBitsBackground } from "@/components/SectionReactBitsBackground";
 import { SectionVideoBackground } from "@/components/SectionVideoBackground";
+import { GRID_COLS, MODULE_PX, MODULES_PER_MAJOR } from "@/lib/grid";
 import { mergeSectionForMobile, type Device } from "@/lib/responsive";
 import { cn } from "@/lib/utils";
 
@@ -124,9 +125,14 @@ export function SectionFrame({
           )}
           style={bgInnerStyle}
         >
-          {/* 12-col grid guide — appears whenever this section is the focus
+          {/* Layout grid guide — appears whenever this section is the focus
               so the user understands where blocks snap. Sits behind the
-              actual grid at z-0; SectionGrid renders on top. */}
+              actual grid at z-0; SectionGrid renders on top.
+
+              Both axes are drawn from the same constants the snap uses
+              (lib/grid.ts): 12 column tracks across, and one rule per
+              vertical module down (heavier every MODULES_PER_MAJOR) so the
+              vertical axis reads as a grid rather than a continuum. */}
           {active && (
             <div
               aria-hidden
@@ -135,8 +141,16 @@ export function SectionFrame({
                 device === "mobile" ? "px-4" : "px-6 md:px-10",
               )}
             >
-              <div className="relative h-full w-full grid grid-cols-12 gap-x-4">
-                {Array.from({ length: 12 }).map((_, i) => (
+              <div
+                className="relative h-full w-full grid grid-cols-12 gap-x-4 grid-row-guides"
+                style={
+                  {
+                    "--module-px": `${MODULE_PX}px`,
+                    "--major-px": `${MODULE_PX * MODULES_PER_MAJOR}px`,
+                  } as CSSProperties
+                }
+              >
+                {Array.from({ length: GRID_COLS }).map((_, i) => (
                   <div
                     key={i}
                     className="border-l border-r border-dashed border-accent/20"
@@ -182,7 +196,7 @@ export function SectionFrame({
             active ? "opacity-100" : "opacity-0 group-hover/section:opacity-100"
           )}
         >
-          ⋮⋮ §{index + 1}
+          ⋮⋮ {index + 1}
         </button>
 
         <SectionToolbar

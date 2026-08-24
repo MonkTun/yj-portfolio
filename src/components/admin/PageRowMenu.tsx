@@ -6,10 +6,12 @@ import type { SiteConfig } from "@/lib/schema";
 
 type Props = {
   slug: string;
+  /** "grid" = content/pages JSON, "md" = content/docs markdown. */
+  kind: "grid" | "md";
   config: SiteConfig;
 };
 
-export function PageRowMenu({ slug, config }: Props) {
+export function PageRowMenu({ slug, kind, config }: Props) {
   const router = useRouter();
   const [open, setOpen] = useState(false);
   const [busy, setBusy] = useState<string | null>(null);
@@ -47,7 +49,11 @@ export function PageRowMenu({ slug, config }: Props) {
   }
 
   async function duplicate() {
-    const res = await fetch("/api/admin/page/duplicate", {
+    // Grid pages and markdown docs clone through their own dev-only APIs;
+    // both auto-pick a free "<slug>-copy" destination.
+    const endpoint =
+      kind === "md" ? "/api/admin/doc" : "/api/admin/page/duplicate";
+    const res = await fetch(endpoint, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ source: slug }),
@@ -70,15 +76,22 @@ export function PageRowMenu({ slug, config }: Props) {
   }
 
   async function remove() {
+    const file =
+      kind === "md"
+        ? `content/docs/${slug}.md`
+        : `content/pages/${slug}.json`;
     const ok = window.confirm(
-      `Delete /${slug}?\n\nThis removes content/pages/${slug}.json and can't be undone from the UI.`
+      `Delete /${slug}?\n\nThis removes ${file} and can't be undone from the UI.`
     );
     if (!ok) return;
-    const res = await fetch("/api/admin/page", {
-      method: "DELETE",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ slug }),
-    });
+    const res = await fetch(
+      kind === "md" ? "/api/admin/doc" : "/api/admin/page",
+      {
+        method: "DELETE",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ slug }),
+      }
+    );
     const body = await res.json().catch(() => ({}));
     if (!res.ok) throw new Error(body?.error ?? `HTTP ${res.status}`);
     router.refresh();
@@ -116,33 +129,39 @@ export function PageRowMenu({ slug, config }: Props) {
           <MenuItem onClick={() => call("duplicate", duplicate)}>
             Duplicate
           </MenuItem>
-          <MenuDivider />
-          <MenuItem
-            onClick={() =>
-              call("home", () => assignRole("homeSlug", "Home"))
-            }
-            checked={isHome}
-          >
-            Set as Home
-          </MenuItem>
-          <MenuItem
-            onClick={() =>
-              call("construction", () =>
-                assignRole("constructionSlug", "Construction")
-              )
-            }
-            checked={isConstruction}
-          >
-            Set as Construction
-          </MenuItem>
-          <MenuItem
-            onClick={() =>
-              call("404", () => assignRole("notFoundSlug", "404"))
-            }
-            checked={is404}
-          >
-            Set as 404
-          </MenuItem>
+          {/* Routing roles resolve through loadPage (grid JSON) only, so
+              markdown pages can't take them — hide the section entirely. */}
+          {kind === "grid" && (
+            <>
+              <MenuDivider />
+              <MenuItem
+                onClick={() =>
+                  call("home", () => assignRole("homeSlug", "Home"))
+                }
+                checked={isHome}
+              >
+                Set as Home
+              </MenuItem>
+              <MenuItem
+                onClick={() =>
+                  call("construction", () =>
+                    assignRole("constructionSlug", "Construction")
+                  )
+                }
+                checked={isConstruction}
+              >
+                Set as Construction
+              </MenuItem>
+              <MenuItem
+                onClick={() =>
+                  call("404", () => assignRole("notFoundSlug", "404"))
+                }
+                checked={is404}
+              >
+                Set as 404
+              </MenuItem>
+            </>
+          )}
           <MenuDivider />
           <MenuItem
             onClick={() => call("delete", remove)}

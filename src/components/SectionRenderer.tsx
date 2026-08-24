@@ -2,6 +2,7 @@ import NextImage from "next/image";
 
 import type { Section, Block, BlockLayout } from "@/lib/schema";
 import { atomRegistry } from "@/lib/atom-registry";
+import { ROW_HEIGHT_PX } from "@/lib/grid";
 import { cn } from "@/lib/utils";
 import {
   hasMobileOverrides,
@@ -136,8 +137,6 @@ export function sectionEditorClasses(
     ALIGN_DESKTOP_RAW[section.align],
   );
 }
-
-const ROW_HEIGHT_PX = 8;
 
 /**
  * Class + style for a section background. Image / video / reactbits get

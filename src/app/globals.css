@@ -295,6 +295,32 @@ body {
     background-size: 100% 1px;
     color: var(--accent);
   }
+
+  /* ---------- editor canvas: vertical layout module ----------
+     The 12 columns are drawn as real elements (SectionFrame); the vertical
+     module is drawn as a background so a tall section costs one node rather
+     than hundreds of rules. `--module-px` / `--major-px` are set inline by
+     SectionFrame from the constants in lib/grid.ts, so the guides can never
+     drift from the step blocks actually snap to.
+
+     Painted on the grid container itself, which has no padding — so the
+     rules start exactly at row 0 of the RGL grid stacked above them. Major
+     rule is listed first so it paints over the minor one it coincides with. */
+  .grid-row-guides {
+    background-image:
+      repeating-linear-gradient(
+        to bottom,
+        color-mix(in oklab, var(--accent) 28%, transparent) 0 1px,
+        transparent 1px var(--major-px)
+      ),
+      repeating-linear-gradient(
+        to bottom,
+        color-mix(in oklab, var(--accent) 10%, transparent) 0 1px,
+        transparent 1px var(--module-px)
+      );
+    background-position: 0 0;
+    background-repeat: repeat;
+  }
 }
 
 /* ============================================================

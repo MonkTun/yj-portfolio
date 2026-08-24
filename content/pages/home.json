@@ -8,7 +8,7 @@
       "id": "sec_hero",
       "background": {
         "type": "video",
-        "url": "https://youtu.be/3QuGe29jRBc?si=qYFgPPSaIIrxoKfr",
+        "url": "https://youtu.be/GXg-eGbxVlo",
         "overlay": 40,
         "muted": true,
         "loop": true,
@@ -25,8 +25,8 @@
           "layout": {
             "col": 2,
             "colSpan": 6,
-            "row": 4,
-            "rowSpan": 36
+            "row": 3,
+            "rowSpan": 18
           },
           "mobile": {
             "layout": {
@@ -40,13 +40,79 @@
           },
           "type": "text",
           "props": {
-            "content": "Youngje<br>Park.",
+            "content": "Youngje<br>Park",
             "variant": "h1",
             "align": "left",
             "color": "foreground",
             "transform": "upper",
             "lineHeight": 0.75,
             "letterSpacing": -0.025
+          }
+        },
+        {
+          "id": "blk_c39c9ecc",
+          "layout": {
+            "col": 2,
+            "colSpan": 8,
+            "row": 18,
+            "rowSpan": 3
+          },
+          "type": "text",
+          "props": {
+            "content": "<em><strong>Game</strong><strong> Designer </strong>&amp;<strong> Programmer</strong></em>",
+            "variant": "caption",
+            "align": "left",
+            "color": "muted",
+            "transform": "none",
+            "fontSize": 30
+          }
+        }
+      ]
+    },
+    {
+      "id": "sec_36a33964",
+      "background": {
+        "type": "color",
+        "token": "surface"
+      },
+      "padding": "md",
+      "minHeight": "auto",
+      "align": "top",
+      "blocks": [
+        {
+          "id": "blk_78327086",
+          "layout": {
+            "col": 1,
+            "colSpan": 7,
+            "row": 5,
+            "rowSpan": 7
+          },
+          "type": "text",
+          "props": {
+            "content": "Hello visitor! I am currently reworking this website, so some content is still a work in progress. Meanwhile, feel free to check out this portfolio reel video I made!",
+            "variant": "body",
+            "align": "left",
+            "color": "foreground",
+            "transform": "none"
+          }
+        },
+        {
+          "id": "blk_ed0c1275",
+          "layout": {
+            "col": 8,
+            "colSpan": 5,
+            "row": 1,
+            "rowSpan": 16
+          },
+          "type": "video",
+          "props": {
+            "url": "https://youtu.be/GXg-eGbxVlo",
+            "autoplay": false,
+            "muted": false,
+            "loop": false,
+            "controls": true,
+            "aspect": "16/9",
+            "radius": 0
           }
         }
       ]
@@ -65,14 +131,14 @@
           "layout": {
             "col": 1,
             "colSpan": 12,
-            "row": 10,
-            "rowSpan": 24,
+            "row": 6,
+            "rowSpan": 12,
             "bleed": "both"
           },
           "mobile": {
             "layout": {
               "row": 1,
-              "rowSpan": 21
+              "rowSpan": 11
             }
           },
           "type": "projectCarousel",
@@ -259,7 +325,7 @@
             "col": 1,
             "colSpan": 12,
             "row": 1,
-            "rowSpan": 6
+            "rowSpan": 3
           },
           "type": "text",
           "props": {
@@ -297,13 +363,13 @@
             "col": 7,
             "colSpan": 6,
             "row": 1,
-            "rowSpan": 3
+            "rowSpan": 2
           },
           "mobile": {
             "layout": {
               "col": 1,
               "colSpan": 12,
-              "row": 61
+              "row": 31
             }
           },
           "type": "text",
@@ -320,14 +386,14 @@
           "layout": {
             "col": 7,
             "colSpan": 6,
-            "row": 4,
-            "rowSpan": 9
+            "row": 3,
+            "rowSpan": 4
           },
           "mobile": {
             "layout": {
               "col": 1,
               "colSpan": 12,
-              "row": 64
+              "row": 33
             }
           },
           "type": "text",
@@ -344,14 +410,15 @@
           "layout": {
             "col": 7,
             "colSpan": 5,
-            "row": 13,
-            "rowSpan": 15
+            "row": 7,
+            "rowSpan": 8
           },
           "mobile": {
             "layout": {
               "col": 1,
               "colSpan": 12,
-              "row": 70
+              "row": 36,
+              "rowSpan": 7
             }
           },
           "type": "text",
@@ -369,7 +436,7 @@
             "col": 2,
             "colSpan": 4,
             "row": 1,
-            "rowSpan": 60
+            "rowSpan": 30
           },
           "mobile": {
             "layout": {
@@ -402,14 +469,15 @@
           "layout": {
             "col": 2,
             "colSpan": 6,
-            "row": 94,
-            "rowSpan": 3
+            "row": 48,
+            "rowSpan": 1
           },
           "mobile": {
             "layout": {
               "col": 1,
               "colSpan": 12,
-              "row": 169
+              "row": 85,
+              "rowSpan": 2
             }
           },
           "type": "text",
@@ -426,14 +494,15 @@
           "layout": {
             "col": 2,
             "colSpan": 6,
-            "row": 97,
-            "rowSpan": 9
+            "row": 49,
+            "rowSpan": 5
           },
           "mobile": {
             "layout": {
               "col": 1,
               "colSpan": 12,
-              "row": 172
+              "row": 87,
+              "rowSpan": 4
             }
           },
           "type": "text",
@@ -450,14 +519,15 @@
           "layout": {
             "col": 2,
             "colSpan": 5,
-            "row": 106,
-            "rowSpan": 15
+            "row": 54,
+            "rowSpan": 7
           },
           "mobile": {
             "layout": {
               "col": 1,
               "colSpan": 12,
-              "row": 181
+              "row": 91,
+              "rowSpan": 8
             }
           },
           "type": "text",
@@ -474,14 +544,14 @@
           "layout": {
             "col": 8,
             "colSpan": 4,
-            "row": 85,
-            "rowSpan": 60
+            "row": 43,
+            "rowSpan": 30
           },
           "mobile": {
             "layout": {
               "col": 1,
               "colSpan": 12,
-              "row": 103
+              "row": 52
             }
           },
           "type": "image",
@@ -509,14 +579,14 @@
           "layout": {
             "col": 2,
             "colSpan": 3,
-            "row": 121,
-            "rowSpan": 6
+            "row": 61,
+            "rowSpan": 3
           },
           "mobile": {
             "layout": {
               "col": 1,
               "colSpan": 12,
-              "row": 193
+              "row": 97
             }
           },
           "type": "button",
@@ -533,14 +603,14 @@
           "layout": {
             "col": 7,
             "colSpan": 3,
-            "row": 34,
-            "rowSpan": 6
+            "row": 18,
+            "rowSpan": 3
           },
           "mobile": {
             "layout": {
               "col": 1,
               "colSpan": 12,
-              "row": 85
+              "row": 43
             }
           },
           "type": "button",
@@ -557,14 +627,15 @@
           "layout": {
             "col": 7,
             "colSpan": 1,
-            "row": 49,
-            "rowSpan": 9
+            "row": 25,
+            "rowSpan": 5
           },
           "mobile": {
             "layout": {
               "col": 1,
               "colSpan": 4,
-              "row": 94
+              "row": 48,
+              "rowSpan": 4
             }
           },
           "type": "image",
@@ -590,14 +661,15 @@
           "layout": {
             "col": 8,
             "colSpan": 1,
-            "row": 49,
-            "rowSpan": 9
+            "row": 25,
+            "rowSpan": 5
           },
           "mobile": {
             "layout": {
               "col": 4,
               "colSpan": 4,
-              "row": 94
+              "row": 48,
+              "rowSpan": 4
             }
           },
           "type": "image",
@@ -635,13 +707,13 @@
             "col": 2,
             "colSpan": 6,
             "row": 1,
-            "rowSpan": 3
+            "rowSpan": 2
           },
           "mobile": {
             "layout": {
               "col": 1,
               "colSpan": 12,
-              "row": 61
+              "row": 31
             }
           },
           "type": "text",
@@ -658,14 +730,14 @@
           "layout": {
             "col": 2,
             "colSpan": 6,
-            "row": 4,
-            "rowSpan": 9
+            "row": 3,
+            "rowSpan": 4
           },
           "mobile": {
             "layout": {
               "col": 1,
               "colSpan": 12,
-              "row": 64
+              "row": 33
             }
           },
           "type": "text",
@@ -682,14 +754,15 @@
           "layout": {
             "col": 2,
             "colSpan": 5,
-            "row": 13,
-            "rowSpan": 15
+            "row": 7,
+            "rowSpan": 8
           },
           "mobile": {
             "layout": {
               "col": 1,
               "colSpan": 12,
-              "row": 70
+              "row": 36,
+              "rowSpan": 7
             }
           },
           "type": "text",
@@ -707,7 +780,7 @@
             "col": 8,
             "colSpan": 4,
             "row": 1,
-            "rowSpan": 60
+            "rowSpan": 30
           },
           "mobile": {
             "layout": {
@@ -740,14 +813,14 @@
           "layout": {
             "col": 2,
             "colSpan": 3,
-            "row": 34,
-            "rowSpan": 6
+            "row": 18,
+            "rowSpan": 3
           },
           "mobile": {
             "layout": {
               "col": 1,
               "colSpan": 12,
-              "row": 85
+              "row": 43
             }
           },
           "type": "button",
@@ -777,7 +850,7 @@
             "col": 2,
             "colSpan": 6,
             "row": 1,
-            "rowSpan": 3
+            "rowSpan": 2
           },
           "mobile": {
             "layout": {
@@ -799,15 +872,15 @@
           "layout": {
             "col": 2,
             "colSpan": 7,
-            "row": 4,
-            "rowSpan": 15
+            "row": 3,
+            "rowSpan": 7
           },
           "mobile": {
             "layout": {
               "col": 1,
               "colSpan": 12,
-              "row": 4,
-              "rowSpan": 15
+              "row": 3,
+              "rowSpan": 7
             }
           },
           "type": "text",
@@ -825,14 +898,14 @@
           "layout": {
             "col": 2,
             "colSpan": 10,
-            "row": 22,
-            "rowSpan": 3
+            "row": 12,
+            "rowSpan": 1
           },
           "mobile": {
             "layout": {
               "col": 1,
               "colSpan": 12,
-              "row": 22
+              "row": 12
             }
           },
           "type": "text",

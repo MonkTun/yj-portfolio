@@ -6,6 +6,7 @@ import type {
   SectionMobileOverride,
 } from "@/lib/schema";
 import { MOBILE_OVERRIDABLE_KEYS } from "@/lib/mobile-overrides";
+import { fitRowSpan } from "@/lib/grid";
 
 export type Device = "desktop" | "mobile";
 
@@ -181,7 +182,10 @@ export function autoStackSection(section: Section): Section {
   const stacked = new Map<string, BlockLayout>();
   let cursor = 1;
   for (const b of ordered) {
-    const rowSpan = b.layout.rowSpan ?? 6;
+    // Round each height UP to a whole vertical module so the stack lands on
+    // the same grid the canvas draws and snaps to — growing rather than
+    // rounding keeps a block's box from shrinking under its content.
+    const rowSpan = fitRowSpan(b.layout.rowSpan ?? 3);
     stacked.set(b.id, { col: 1, colSpan: 12, row: cursor, rowSpan });
     cursor += rowSpan;
   }

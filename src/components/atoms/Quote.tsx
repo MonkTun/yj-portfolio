@@ -89,6 +89,10 @@ function EditableSpan({
       )}
       contentEditable
       suppressContentEditableWarning
+      spellCheck
+      data-gramm="true"
+      data-gramm_editor="true"
+      data-enable-grammarly="true"
       onBlur={() => {
         const cleaned = sanitizeRichText(ref.current?.innerHTML ?? "");
         if (cleaned !== value) onCommit(cleaned);

@@ -403,7 +403,7 @@ function TypePreview({
       }}
     >
       <div className="px-6 py-7 sm:px-8 sm:py-9">
-        <p className="kicker">§ {paletteName} — type preview</p>
+        <p className="kicker">{paletteName} — type preview</p>
         <p
           className="font-display mt-3 leading-[0.9] tracking-[-0.02em] font-black"
           style={{ fontSize: "calc(var(--text-header) * 0.34)" }}

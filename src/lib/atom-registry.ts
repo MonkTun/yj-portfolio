@@ -18,7 +18,10 @@ type AtomEntry<P = unknown> = {
   component: ComponentType<any>;
   /** Default props applied when this atom is added via "+ Add block". */
   defaultProps: P;
-  /** Default size in 12-col grid units when newly inserted. */
+  /** Default size when newly inserted: `colSpan` in columns, `rowSpan` in
+   *  ROW_HEIGHT_PX rows (lib/grid.ts). If ROWS_PER_MODULE is ever raised above
+   *  1, these have to be whole modules too — otherwise a freshly added block
+   *  jumps the first time it's dragged. */
   defaultLayout: { colSpan: number; rowSpan: number };
 };
 
@@ -41,7 +44,7 @@ export const atomRegistry: Record<BlockType, AtomEntry<any>> = {
       align: "left",
       color: "foreground",
     },
-    defaultLayout: { colSpan: 12, rowSpan: 6 },
+    defaultLayout: { colSpan: 12, rowSpan: 3 },
   },
   image: {
     type: "image",
@@ -63,7 +66,7 @@ export const atomRegistry: Record<BlockType, AtomEntry<any>> = {
       tint: "none",
       tintOpacity: 0,
     },
-    defaultLayout: { colSpan: 6, rowSpan: 30 },
+    defaultLayout: { colSpan: 6, rowSpan: 15 },
   },
   button: {
     type: "button",
@@ -75,14 +78,14 @@ export const atomRegistry: Record<BlockType, AtomEntry<any>> = {
       variant: "primary",
       align: "left",
     },
-    defaultLayout: { colSpan: 4, rowSpan: 6 },
+    defaultLayout: { colSpan: 4, rowSpan: 3 },
   },
   spacer: {
     type: "spacer",
     label: "Spacer",
     component: Spacer,
     defaultProps: { height: 48 },
-    defaultLayout: { colSpan: 12, rowSpan: 6 },
+    defaultLayout: { colSpan: 12, rowSpan: 3 },
   },
   line: {
     type: "line",
@@ -99,7 +102,7 @@ export const atomRegistry: Record<BlockType, AtomEntry<any>> = {
       quote: "A quote that earns the spread.",
       attribution: "",
     },
-    defaultLayout: { colSpan: 8, rowSpan: 18 },
+    defaultLayout: { colSpan: 8, rowSpan: 9 },
   },
   video: {
     type: "video",
@@ -114,7 +117,7 @@ export const atomRegistry: Record<BlockType, AtomEntry<any>> = {
       aspect: "16/9",
       radius: 0,
     },
-    defaultLayout: { colSpan: 8, rowSpan: 36 },
+    defaultLayout: { colSpan: 8, rowSpan: 18 },
   },
   projectCarousel: {
     type: "projectCarousel",
@@ -152,7 +155,7 @@ export const atomRegistry: Record<BlockType, AtomEntry<any>> = {
       autoScrollSpeed: 40,
       pauseOnHover: true,
     },
-    defaultLayout: { colSpan: 12, rowSpan: 64 },
+    defaultLayout: { colSpan: 12, rowSpan: 33 },
   },
 };
 

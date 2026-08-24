@@ -29,7 +29,7 @@
             "col": 3,
             "colSpan": 8,
             "row": 1,
-            "rowSpan": 3
+            "rowSpan": 2
           },
           "type": "text",
           "props": {
@@ -45,8 +45,8 @@
           "layout": {
             "col": 3,
             "colSpan": 10,
-            "row": 5,
-            "rowSpan": 36
+            "row": 3,
+            "rowSpan": 18
           },
           "type": "text",
           "props": {
@@ -64,8 +64,8 @@
           "layout": {
             "col": 1,
             "colSpan": 4,
-            "row": 65,
-            "rowSpan": 3
+            "row": 33,
+            "rowSpan": 2
           },
           "type": "text",
           "props": {
@@ -81,8 +81,8 @@
           "layout": {
             "col": 11,
             "colSpan": 2,
-            "row": 65,
-            "rowSpan": 3
+            "row": 33,
+            "rowSpan": 2
           },
           "type": "button",
           "props": {
@@ -98,8 +98,8 @@
           "layout": {
             "col": 3,
             "colSpan": 7,
-            "row": 44,
-            "rowSpan": 18
+            "row": 23,
+            "rowSpan": 9
           },
           "type": "text",
           "props": {

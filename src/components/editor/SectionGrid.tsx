@@ -6,20 +6,28 @@ import GridLayout, {
   type Layout,
   type LayoutItem,
 } from "react-grid-layout";
-// noOverlapCompactor lives in the `core` entry, not the main one.
-import { noOverlapCompactor } from "react-grid-layout/core";
+// noOverlapCompactor and the built-in constraints live in the `core` entry,
+// not the main one.
+import {
+  gridBounds,
+  minMaxSize,
+  noOverlapCompactor,
+} from "react-grid-layout/core";
 
 import type { Block, BlockLayout, Section } from "@/lib/schema";
 import { atomRegistry } from "@/lib/atom-registry";
 import { blockBleedStyle } from "@/components/SectionRenderer";
-import { blockToLayoutItem, layoutItemToBlockLayout } from "@/lib/rgl";
+import { blockToLayoutItem, layoutItemToBlockLayout, moduleSnap } from "@/lib/rgl";
+import { COL_GAP_PX, GRID_COLS, ROW_HEIGHT_PX } from "@/lib/grid";
 import { mergeBlockForMobile, type Device } from "@/lib/responsive";
 import { cn } from "@/lib/utils";
 import { EditProvider } from "@/components/EditContext";
 
 import { BlockToolbar } from "./BlockToolbar";
 
-const ROW_HEIGHT_PX = 8;
+// `gridBounds` and `minMaxSize` are RGL's defaults; passing `constraints` at
+// all replaces that list, so they have to be repeated alongside `moduleSnap`.
+const CONSTRAINTS = [gridBounds, minMaxSize, moduleSnap];
 
 type Props = {
   section: Section;
@@ -100,12 +108,16 @@ export function SectionGrid({
           width={width}
           layout={layout}
           gridConfig={{
-            cols: 12,
+            cols: GRID_COLS,
             rowHeight: ROW_HEIGHT_PX,
-            margin: [16, 0],
+            margin: [COL_GAP_PX, 0],
             containerPadding: [0, 0],
             maxRows: Infinity,
           }}
+          // Columns quantise the horizontal axis for free; `moduleSnap` does
+          // the same for the vertical one so blocks land on the 24px module
+          // the guides draw. See lib/grid.ts.
+          constraints={CONSTRAINTS}
           dragConfig={{
             enabled: true,
             bounded: false,

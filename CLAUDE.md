@@ -9,6 +9,13 @@ YJ's (Youngje Park's) personal portfolio. Two surfaces share the same codebase:
 1. **Public portfolio** — the site visitors see.
 2. **Admin / editor** — a self-built, Framer-style visual editor where YJ can drag, drop, and arrange UI elements freely without writing code for every change. Think: DIY Framer. The output of the editor is what the public site renders.
 
+Pages come in **two authoring formats** (Aug 2026):
+
+- **Grid pages** — `content/pages/<slug>.json`, made in the admin editor. Layout-first: home, 404, construction, art pages (neighborhoods, banana-republic).
+- **Markdown pages** — `content/docs/<slug>.md`, written by hand, in Obsidian, or in the admin's markdown editor (`/admin/edit/<slug>` detects the format: grid slugs open the visual Editor, doc slugs open `MarkdownEditor.tsx` — source textarea + live iframe preview, saving through the dev-only `/api/admin/doc` route, which preserves unknown frontmatter keys). Creation/duplication/deletion also work from `/admin/pages` (format toggle on the New page form). Both create APIs refuse a slug the other format already owns, since JSON shadows markdown. Writing-first: the `work/*` case studies live here now (their old grid JSON is in git history pre-2026-08-24 if a re-migration is ever needed). Loaded by `src/lib/markdown.ts`, rendered by `src/components/MarkdownPage.tsx` through the *same* typographic class maps as the grid atoms (`atomStyles.ts`) plus the Video/Button/Quote atoms, so the two formats are visually indistinguishable. Authoring conventions (`####` kicker headings, gallery rows, YouTube embeds, link-paragraph buttons, frontmatter) are documented in `content/docs/README.md` — keep that file honest when the renderer changes. On a slug collision the JSON page wins (the catch-all route tries `loadPage` before `loadDoc`).
+
+**Obsidian**: the repo root is an Obsidian vault — `.obsidian/app.json` is committed (standard markdown links, absolute-in-vault paths, attachments → `public/attachments/`, new notes → `content/docs/`); the rest of `.obsidian/` is gitignored. Pasted images land in `public/attachments/` and `resolveDocSrc` strips the `public/` prefix so they serve. Don't switch the vault to wikilinks — the site renderer reads standard markdown only.
+
 The repo was reset from a Vite SPA to a Next.js project on 2026-05-05 to keep the existing Vercel project (and its domain settings) intact while moving to a stack better suited to mixing static portfolio pages with an authoring tool.
 
 ## Stack
@@ -104,7 +111,7 @@ No purples. No blue greys. No pure white *as a body / background color* — whit
 - `--font-display` — **Karepefx** (local woff2 in `src/fonts/karepefx`, subset from the source OTFs kept alongside; weights 300/400/500/700/800/900). Used for hero, headlines, section titles, large pull quotes, drop caps. Distinctive geometric/futurist face — the visual signature of the site. Display sizes lean into the heavier weights (700–900); body-display sizes stay at 400–500.
 - **Pixel faces (Galmuri9, PF Stardust, PF Stardust S) are NOT in next/font.** They're hand-written `@font-face` rules in `globals.css`, split into latin/hangul woff2 slices (`public/fonts/`) with `unicode-range` so visitors fetch ~8KB of latin glyphs instead of the 4.6MB source TTF — the hangul slice only downloads if Korean text renders. next/font can't express unicode-range slices. Their `--font-*` variables are bound in `globals.css :root`, not by a `.variable` class. If a new pixel/CJK font is added, follow this pattern (subset with `pyftsubset --flavor=woff2`), don't feed a multi-MB TTF to next/font.
 - `--font-body` — **Newsreader** (variable, Google Fonts). Used for all running text. Italic is the working italic — use it freely (publications, dates, foreign words).
-- `--font-mono` — **IBM Plex Mono**. Used for metadata: dates, credit lines, image captions, section numbers (`§ 02 — Selected work`), URLs, and editor UI labels.
+- `--font-mono` — **IBM Plex Mono**. Used for metadata: dates, credit lines, image captions, section numbers (`02 — Selected work`), URLs, and editor UI labels.
 
 **Banned (per the design contract)**: Inter, Roboto, Arial, system-ui as primary face, Space Grotesk, Geist Sans/Mono as primary faces, and Fraunces (was the previous direction; replaced by Karepefx). Sans-serif body in general — body is serif on this site.
 
@@ -119,7 +126,7 @@ No purples. No blue greys. No pure white *as a body / background color* — whit
 
 - Asymmetric magazine grid; deliberate offsets (a headline starts at column 3 of 12; an image bleeds to column 9). Not chaotic — *composed*.
 - Generous dark space. A spread can be mostly empty.
-- Numbered sections (`§ 01`, `§ 02`). Hairline dividers (1px `--border`) between major sections.
+- Numbered sections (`01`, `02`) — plain numbers, no `§` mark (dropped Aug 2026; do not reintroduce it in kickers, templates, or editor chrome). Hairline dividers (1px `--border`) between major sections.
 
 **Motion vocabulary**:
 
@@ -174,4 +181,5 @@ That's it. No purple gradients, no neon, no glow halos, no scanlines, no mesh bl
 - **The public site is fully static** (Aug 2026): `/` prerenders and `[...slug]` uses `generateStaticParams`, safe because content is deploy-frozen in prod (admin is dev-only via `src/proxy.ts`). Don't reintroduce request-time APIs (`searchParams`, `headers()`, `cookies()`) into `(site)` routes — that silently flips them back to per-request serverless renders. The editor previews pages at their own `/<slug>` URL, not `/?preview=`.
 - **Images go through `next/image` behind a local-path gate** (`isOptimizableImageSrc` in `atoms/imageStyles.ts`): only `/...` paths that aren't SVG use the optimizer; everything else (partial strings mid-keystroke in the editor, external URLs) falls back to a raw lazy `<img>`. Keep that gate when touching the Image atom, ProjectCarousel, or SectionImageBackground — `next/image` throws on invalid src and would crash the editor canvas.
 - **WebGL background loops must pause offscreen**: every bit (LiquidEther, PrismaticBurst, Grainient, LightPillar, GridScan) gates its rAF render on an IntersectionObserver + `document.hidden`, and `SectionReactBitsBackground` swaps to the CSS fallback under `prefers-reduced-motion`. New backgrounds must follow the same pattern.
+- **The layout grid is quantised on BOTH axes** (`src/lib/grid.ts`, Aug 2026): 12 columns across, 16px rows down, 16px gutter — one base unit for both. `ROW_HEIGHT_PX` went 8 → 16 and `content/` was migrated by halving row EDGES (`row'  = round((row-1)/2)+1`, `rowSpan' = mapEdge(row+rowSpan) - mapEdge(row)`) rather than rounding `row` and `rowSpan` independently — that's what preserved shared edges and stacking order, at the cost of ≤8px of edge drift. **A 24px rhythm can't land on a 16px grid, so don't "fix" the 8px offsets by re-rounding; re-migrate from git history if the unit ever changes again.** `moduleSnap` (`lib/rgl.ts`) snaps `y`/`h` on drag + resize and `SectionFrame` draws the matching rules, both off `ROWS_PER_MODULE` (currently 1 — the row is the module). Import the constants; don't re-declare `12`, `16`, or a bare row count in a component.
 - The `@imgly/background-removal` import in PropertiesPanel is wrapped in `if (process.env.NODE_ENV === "development")` so its ~47MB of onnxruntime WASM stays out of production builds. Keep the import inside that statically-false branch (not merely after a dev-check throw), or the WASM comes back to every deploy.

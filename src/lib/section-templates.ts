@@ -7,6 +7,11 @@ import type { Block, Section } from "@/lib/schema";
  *
  * Keep these tightly-curated — too many templates makes the picker
  * noisy. Each should have a clear use case.
+ *
+ * Every `row` / `rowSpan` below sits on the vertical module (see
+ * ROWS_PER_MODULE in lib/grid.ts) — an inserted template has to land on the
+ * same grid the canvas draws, or the first thing the user does after picking
+ * one is watch every block jump as it snaps.
  */
 
 /**
@@ -73,9 +78,9 @@ export const sectionTemplates: SectionTemplate[] = [
       blocks: [
         {
           type: "text",
-          layout: { col: 2, colSpan: 6, row: 1, rowSpan: 4 },
+          layout: { col: 2, colSpan: 6, row: 1, rowSpan: 3 },
           props: {
-            content: "§ 00 — Index",
+            content: "00 — Index",
             variant: "kicker",
             align: "left",
             color: "foreground",
@@ -83,7 +88,7 @@ export const sectionTemplates: SectionTemplate[] = [
         },
         {
           type: "text",
-          layout: { col: 2, colSpan: 11, row: 6, rowSpan: 24 },
+          layout: { col: 2, colSpan: 11, row: 4, rowSpan: 12 },
           props: {
             content: "Your<br>Name.",
             variant: "h1",
@@ -93,7 +98,7 @@ export const sectionTemplates: SectionTemplate[] = [
         },
         {
           type: "text",
-          layout: { col: 5, colSpan: 7, row: 32, rowSpan: 8 },
+          layout: { col: 5, colSpan: 7, row: 16, rowSpan: 5 },
           props: {
             content: "A short, opinionated sentence about what you do.",
             variant: "body",
@@ -124,9 +129,9 @@ export const sectionTemplates: SectionTemplate[] = [
       blocks: [
         {
           type: "text",
-          layout: { col: 2, colSpan: 3, row: 1, rowSpan: 3 },
+          layout: { col: 2, colSpan: 3, row: 1, rowSpan: 2 },
           props: {
-            content: "§ 01",
+            content: "01",
             variant: "kicker",
             align: "left",
             color: "muted",
@@ -134,12 +139,12 @@ export const sectionTemplates: SectionTemplate[] = [
         },
         {
           type: "line",
-          layout: { col: 5, colSpan: 7, row: 2, rowSpan: 1 },
+          layout: { col: 5, colSpan: 7, row: 1, rowSpan: 1 },
           props: { thickness: 1, color: "border" },
         },
         {
           type: "text",
-          layout: { col: 2, colSpan: 10, row: 5, rowSpan: 12 },
+          layout: { col: 2, colSpan: 10, row: 3, rowSpan: 6 },
           props: {
             content: "Section title.",
             variant: "h2",
@@ -170,7 +175,7 @@ export const sectionTemplates: SectionTemplate[] = [
       blocks: [
         {
           type: "text",
-          layout: { col: 2, colSpan: 4, row: 1, rowSpan: 4 },
+          layout: { col: 2, colSpan: 4, row: 1, rowSpan: 3 },
           props: {
             content: "On making.",
             variant: "kicker",
@@ -180,7 +185,7 @@ export const sectionTemplates: SectionTemplate[] = [
         },
         {
           type: "text",
-          layout: { col: 7, colSpan: 5, row: 1, rowSpan: 18 },
+          layout: { col: 7, colSpan: 5, row: 1, rowSpan: 9 },
           props: {
             content:
               "Write the body of this section here. The opening paragraph carries weight — keep it precise and a touch unexpected.",
@@ -212,12 +217,12 @@ export const sectionTemplates: SectionTemplate[] = [
       blocks: [
         {
           type: "image",
-          layout: { col: 2, colSpan: 7, row: 1, rowSpan: 40 },
+          layout: { col: 2, colSpan: 7, row: 1, rowSpan: 21 },
           props: { src: "", alt: "", fit: "cover", aspect: "4/3" },
         },
         {
           type: "text",
-          layout: { col: 9, colSpan: 4, row: 32, rowSpan: 6 },
+          layout: { col: 9, colSpan: 4, row: 16, rowSpan: 3 },
           props: {
             content: "Caption goes here, italic and small.",
             variant: "caption",
@@ -245,7 +250,7 @@ export const sectionTemplates: SectionTemplate[] = [
       blocks: [
         {
           type: "quote",
-          layout: { col: 3, colSpan: 8, row: 1, rowSpan: 18 },
+          layout: { col: 3, colSpan: 8, row: 1, rowSpan: 9 },
           props: {
             quote: "A quote that earns the spread.",
             attribution: "Note to self",
@@ -274,7 +279,7 @@ export const sectionTemplates: SectionTemplate[] = [
       blocks: [
         {
           type: "text",
-          layout: { col: 2, colSpan: 6, row: 1, rowSpan: 3 },
+          layout: { col: 2, colSpan: 6, row: 1, rowSpan: 2 },
           props: {
             content: "Get in touch",
             variant: "kicker",
@@ -284,7 +289,7 @@ export const sectionTemplates: SectionTemplate[] = [
         },
         {
           type: "text",
-          layout: { col: 2, colSpan: 7, row: 4, rowSpan: 12 },
+          layout: { col: 2, colSpan: 7, row: 3, rowSpan: 6 },
           props: {
             content: "you@example.com",
             variant: "h2",
@@ -294,7 +299,7 @@ export const sectionTemplates: SectionTemplate[] = [
         },
         {
           type: "text",
-          layout: { col: 9, colSpan: 3, row: 4, rowSpan: 8 },
+          layout: { col: 9, colSpan: 3, row: 3, rowSpan: 4 },
           props: {
             content: "GitHub ↗<br>LinkedIn ↗<br>Resume ↗",
             variant: "kicker",
