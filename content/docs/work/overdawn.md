@@ -7,9 +7,9 @@ description: "A 2.5D bullet-time shooter built in Unity. Director and lead engin
 
 # Overdawn.
 
-A 2.5D bullet-time shooter built in Unity. As a blood-thirst merc in the dystopian city of Andrean, slow time, find your flow state, and punch a hole through the people trying to kill you.
+A 2.5D bullet-time shooter built in Unity. As a blood-thirst mercenary in the dystopian city of Andrean, slow time, find your flow state, and punch a hole in your enemies' head.
 
-- **Status** — Ongoing
+- **Status** — Paused
 - **Type** — Commercial
 - **Duration** — ~3 years
 - **Stack** — Unity (C#), SteamAPI, GitHub, Odin Inspector, Yarn Spinner
@@ -17,11 +17,11 @@ A 2.5D bullet-time shooter built in Unity. As a blood-thirst merc in the dystopi
 
 #### 01
 
-## Trailer.
+## Trailer
 
 https://www.youtube.com/watch?v=E7KgVHyf0ak
 
-Overdawn is a narrative-driven game about memory and consequence. The trailer hints at the world, characters, and a few seconds of the core combat loop — slow time, line up an arc, fire.
+The latest trailer.
 
 [Linktree](https://linktr.ee/overdawn) [Steam Store](https://store.steampowered.com/app/3519070/Overdawn/)
 
