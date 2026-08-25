@@ -8,7 +8,14 @@ import {
   type ApplicationStatus,
   type Contact,
 } from "@/lib/jobs/schema";
-import { daysAgo, removeApplication, updateApplication } from "./api";
+import {
+  daysAgo,
+  removeApplication,
+  scoreApplication,
+  updateApplication,
+} from "./api";
+import { ScoreBadge } from "./ScoreBadge";
+import { TailorOverlay } from "./TailorOverlay";
 
 type Status = "idle" | "saving" | "saved" | "error";
 
@@ -250,6 +257,15 @@ export function ApplicationDetail({
             </Field>
           </div>
 
+          {/* keyword match + tailor */}
+          <MatchSection
+            draft={draft}
+            onScored={(app) => {
+              setDraft(app);
+              onSaved(app);
+            }}
+          />
+
           {/* log a touch */}
           <section className="border border-border rounded-sm p-4 bg-surface/40 space-y-3">
             <p className="kicker">Log a touch</p>
@@ -357,6 +373,132 @@ export function ApplicationDetail({
         </div>
       </aside>
     </div>
+  );
+}
+
+/** Gap report (phase 2) + AI tailor entry point (phase 4). */
+function MatchSection({
+  draft,
+  onScored,
+}: {
+  draft: Application;
+  onScored: (app: Application) => void;
+}) {
+  const [busy, setBusy] = useState<"score" | null>(null);
+  const [tailoring, setTailoring] = useState(false);
+  const [err, setErr] = useState<string | null>(null);
+  const ms = draft.matchScore;
+
+  async function recompute() {
+    setBusy("score");
+    setErr(null);
+    try {
+      const { application } = await scoreApplication(draft.id);
+      if (application) onScored(application);
+    } catch (e) {
+      setErr(e instanceof Error ? e.message : String(e));
+    } finally {
+      setBusy(null);
+    }
+  }
+
+  return (
+    <section className="border border-border rounded-sm p-4 bg-surface/40 space-y-3">
+      <div className="flex items-center gap-3">
+        <p className="kicker flex-1">Keyword match</p>
+        {ms && <ScoreBadge score={ms.score} />}
+        {ms && (
+          <span className="kicker text-foreground/40 normal-case tracking-normal">
+            vs {ms.variant} · {daysAgo(ms.computedAt)}
+          </span>
+        )}
+      </div>
+
+      {!draft.jd.trim() ? (
+        <p className="text-xs italic text-foreground/50">
+          Paste a JD above to score this application against your resume.
+        </p>
+      ) : !ms ? (
+        <p className="text-xs italic text-foreground/50">
+          Not scored yet — recompute to see matched and missing keywords.
+        </p>
+      ) : (
+        <>
+          {ms.missing.length > 0 && (
+            <div>
+              <p className="kicker text-foreground/40 mb-1.5">
+                missing ({ms.missing.length})
+              </p>
+              <div className="flex flex-wrap gap-1.5">
+                {ms.missing.slice(0, 20).map((k) => (
+                  <span
+                    key={k}
+                    className="px-1.5 py-0.5 rounded-sm border border-accent/40 text-accent text-[11px] font-sans"
+                  >
+                    {k}
+                  </span>
+                ))}
+              </div>
+            </div>
+          )}
+          {ms.matched.length > 0 && (
+            <div>
+              <p className="kicker text-foreground/40 mb-1.5">
+                matched ({ms.matched.length})
+              </p>
+              <div className="flex flex-wrap gap-1.5">
+                {ms.matched.map((k) => (
+                  <span
+                    key={k}
+                    className="px-1.5 py-0.5 rounded-sm border border-border text-foreground/60 text-[11px] font-sans"
+                  >
+                    {k}
+                  </span>
+                ))}
+              </div>
+            </div>
+          )}
+        </>
+      )}
+
+      <div className="flex items-center gap-2 pt-1">
+        <button
+          type="button"
+          onClick={() => void recompute()}
+          disabled={busy !== null || !draft.jd.trim()}
+          className="kicker px-3 py-2 rounded-sm border border-border hover:border-accent hover:text-accent transition-colors disabled:opacity-40"
+        >
+          {busy === "score" ? "Scoring…" : "Recompute"}
+        </button>
+        <button
+          type="button"
+          onClick={() => setTailoring(true)}
+          disabled={busy !== null || tailoring || !draft.jd.trim()}
+          className="kicker px-3 py-2 rounded-sm bg-accent text-accent-foreground hover:opacity-90 transition-opacity disabled:opacity-40"
+        >
+          ✦ Tailor resume
+        </button>
+        {draft.resumeVersion.startsWith("tailored/") && busy === null && (
+          <a
+            href={`/admin/jobs/resume?file=${encodeURIComponent(
+              draft.resumeVersion
+            )}&app=${encodeURIComponent(draft.id)}`}
+            className="kicker text-foreground/50 hover:text-accent transition-colors"
+          >
+            Open tailored →
+          </a>
+        )}
+      </div>
+      {err && <p className="text-xs italic text-foreground/70">Error: {err}</p>}
+
+      {tailoring && (
+        <TailorOverlay
+          appId={draft.id}
+          onDone={onScored}
+          onClose={() => setTailoring(false)}
+        />
+      )}
+    </section>
   );
 }
 

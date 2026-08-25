@@ -2,7 +2,12 @@
 
 import { useCallback, useEffect, useRef, useState } from "react";
 import Link from "next/link";
+import type { ScoreReport } from "@/lib/jobs/keywords";
+import type { Application } from "@/lib/jobs/schema";
 import { cn } from "@/lib/utils";
+import { scoreAgainst } from "./api";
+import { ChatPanel } from "./ChatPanel";
+import { ScoreBadge } from "./ScoreBadge";
 import "superdoc/style.css";
 
 /**
@@ -32,12 +37,32 @@ function normalizeDocxName(raw: string): string {
   return base ? `${base}.docx` : "";
 }
 
-export function ResumeWorkspace({ initialFiles }: { initialFiles: string[] }) {
+export function ResumeWorkspace({
+  initialFiles,
+  initialActive,
+  application,
+}: {
+  initialFiles: string[];
+  /** File to open on load (?file= deep link, e.g. from the Tailor button). */
+  initialActive?: string;
+  /** When set (?app=), the tailor side panel shows this application's JD +
+   *  live missing-keyword checklist against the open document. */
+  application?: Application | null;
+}) {
   const [files, setFiles] = useState<string[]>(initialFiles);
-  const [active, setActive] = useState<string | null>(initialFiles[0] ?? null);
+  const [active, setActive] = useState<string | null>(
+    initialActive ?? initialFiles[0] ?? null
+  );
   const [status, setStatus] = useState<Status>("idle");
   const [dirty, setDirty] = useState(false);
   const [err, setErr] = useState<string | null>(null);
+  // Bumped on every successful save so the tailor panel re-scores the doc.
+  const [saveCount, setSaveCount] = useState(0);
+  // Right rail: keyword checklist (needs an application) and/or chat.
+  const [panelTab, setPanelTab] = useState<"match" | "chat">(
+    application ? "match" : "chat"
+  );
+  const [chatOpen, setChatOpen] = useState(false);
 
   const editorRef = useRef<HTMLDivElement>(null);
   const toolbarRef = useRef<HTMLDivElement>(null);
@@ -129,6 +154,7 @@ export function ResumeWorkspace({ initialFiles }: { initialFiles: string[] }) {
       if (!res.ok) throw new Error(body?.error ?? `HTTP ${res.status}`);
       setDirty(false);
       setStatus("saved");
+      setSaveCount((c) => c + 1);
     } catch (e) {
       setStatus("error");
       setErr(e instanceof Error ? e.message : String(e));
@@ -184,6 +210,42 @@ export function ResumeWorkspace({ initialFiles }: { initialFiles: string[] }) {
     }
   }
 
+  // "Duplicate as…" (phase 3): Save-As copy of the active file — the fast
+  // path for spinning up role variants (gameplay-programmer.docx, …).
+  async function onDuplicate() {
+    if (!active) return;
+    const suggestion = active.replace(/\.docx$/i, "-copy.docx");
+    const raw = window.prompt("Duplicate as (name.docx):", suggestion);
+    if (!raw) return;
+    const name = normalizeDocxName(raw);
+    if (!name) {
+      setErr("Couldn't derive a valid file name from that.");
+      return;
+    }
+    if (files.includes(name)) {
+      setErr(`${name} already exists — pick another name.`);
+      return;
+    }
+    setErr(null);
+    try {
+      const res = await fetch(
+        `/api/admin/jobs/resume?file=${encodeURIComponent(active)}`
+      );
+      if (!res.ok) throw new Error(`Couldn't read ${active} (HTTP ${res.status})`);
+      const blob = await res.blob();
+      const put = await fetch(
+        `/api/admin/jobs/resume?file=${encodeURIComponent(name)}&create=1`,
+        { method: "PUT", body: blob }
+      );
+      const body = await put.json().catch(() => ({}));
+      if (!put.ok) throw new Error(body?.error ?? `HTTP ${put.status}`);
+      setFiles((prev) => [...prev, name].sort());
+      setActive(name);
+    } catch (e) {
+      setErr(e instanceof Error ? e.message : String(e));
+    }
+  }
+
   async function onDeleteFile(name: string) {
     if (!window.confirm(`Delete ${name}? This can't be undone.`)) return;
     try {
@@ -233,6 +295,23 @@ export function ResumeWorkspace({ initialFiles }: { initialFiles: string[] }) {
         </span>
         <div className="flex-1" />
         <span className="kicker text-foreground/40">{statusLabel}</span>
+        {active && (
+          <button
+            type="button"
+            onClick={() => {
+              if (chatOpen && panelTab === "chat" && !application) {
+                setChatOpen(false);
+              } else {
+                setChatOpen(true);
+                setPanelTab("chat");
+              }
+            }}
+            aria-pressed={chatOpen || panelTab === "chat"}
+            className="kicker px-3 py-2 rounded-sm border border-border hover:border-accent hover:text-accent transition-colors"
+          >
+            ✦ Chat
+          </button>
+        )}
         {active && (
           <a
             href={`/api/admin/jobs/resume?file=${encodeURIComponent(active)}`}
@@ -295,7 +374,7 @@ export function ResumeWorkspace({ initialFiles }: { initialFiles: string[] }) {
             )}
           </div>
 
-          <div>
+          <div className="space-y-2">
             <button
               type="button"
               onClick={() => fileInputRef.current?.click()}
@@ -303,6 +382,15 @@ export function ResumeWorkspace({ initialFiles }: { initialFiles: string[] }) {
             >
               Upload .docx
             </button>
+            {active && (
+              <button
+                type="button"
+                onClick={() => void onDuplicate()}
+                className="kicker w-full px-3 py-2.5 rounded-sm border border-border hover:border-accent hover:text-accent transition-colors"
+              >
+                Duplicate as…
+              </button>
+            )}
             <input
               ref={fileInputRef}
               type="file"
@@ -335,7 +423,187 @@ export function ResumeWorkspace({ initialFiles }: { initialFiles: string[] }) {
             )}
           </div>
         </main>
+
+        {/* right rail: keyword checklist (?app= deep links) + studio chat */}
+        {active && (application || chatOpen) && (
+          <aside className="w-96 shrink-0 border-l border-border flex flex-col min-h-0">
+            {application && (
+              <div className="shrink-0 flex border-b border-border">
+                <PanelTab
+                  active={panelTab === "match"}
+                  onClick={() => setPanelTab("match")}
+                >
+                  Checklist
+                </PanelTab>
+                <PanelTab
+                  active={panelTab === "chat"}
+                  onClick={() => {
+                    setChatOpen(true);
+                    setPanelTab("chat");
+                  }}
+                >
+                  Chat
+                </PanelTab>
+              </div>
+            )}
+            {panelTab === "match" && application && (
+              <div className="flex-1 overflow-y-auto">
+                <TailorPanel
+                  key={`${application.id}:${active}:${saveCount}`}
+                  application={application}
+                  file={active}
+                />
+              </div>
+            )}
+            {/* Chat stays mounted across tab switches so history survives. */}
+            <div
+              className={cn(
+                "flex-1 flex-col min-h-0",
+                panelTab === "chat" ? "flex" : "hidden"
+              )}
+            >
+              <ChatPanel
+                file={active}
+                appId={application?.id}
+                dirty={dirty}
+                onApplied={() => {
+                  if (active) void openFile(active);
+                }}
+              />
+            </div>
+          </aside>
+        )}
       </div>
+    </div>
+  );
+}
+
+function PanelTab({
+  active,
+  onClick,
+  children,
+}: {
+  active: boolean;
+  onClick: () => void;
+  children: React.ReactNode;
+}) {
+  return (
+    <button
+      type="button"
+      onClick={onClick}
+      aria-pressed={active}
+      className={cn(
+        "kicker flex-1 px-3 py-2.5 transition-colors",
+        active
+          ? "text-accent border-b-2 border-accent"
+          : "text-foreground/50 hover:text-foreground"
+      )}
+    >
+      {children}
+    </button>
+  );
+}
+
+/**
+ * Right-rail gap report while hand-tuning a tailored resume: score of the
+ * open document against the application's JD, with the missing-keyword
+ * checklist. Re-scored on every save (parent remounts via key) — a saved
+ * change that covers a keyword moves it to matched.
+ */
+function TailorPanel({
+  application,
+  file,
+}: {
+  application: Application;
+  file: string;
+}) {
+  const [report, setReport] = useState<ScoreReport | null>(null);
+  const [err, setErr] = useState<string | null>(null);
+
+  // External-system sync: score the saved file server-side on mount.
+  useEffect(() => {
+    let cancelled = false;
+    scoreAgainst(application.id, file)
+      .then(({ report }) => {
+        if (!cancelled) setReport(report);
+      })
+      .catch((e) => {
+        if (!cancelled) setErr(e instanceof Error ? e.message : String(e));
+      });
+    return () => {
+      cancelled = true;
+    };
+  }, [application.id, file]);
+
+  return (
+    <div className="px-4 py-6 space-y-5">
+      <div>
+        <p className="kicker">Tailoring for</p>
+        <p className="font-display text-xl mt-1.5 leading-tight">
+          {application.company}
+        </p>
+        <p className="font-body italic text-foreground/70 text-sm mt-0.5">
+          {application.role}
+        </p>
+      </div>
+
+      {err && <p className="text-xs italic text-foreground/70">Error: {err}</p>}
+
+      {!report ? (
+        !err && <p className="kicker text-foreground/40">Scoring…</p>
+      ) : (
+        <>
+          <div className="flex items-center gap-2">
+            <ScoreBadge score={report.score} />
+            <span className="kicker text-foreground/40 normal-case tracking-normal">
+              vs this document · updates on save
+            </span>
+          </div>
+
+          {report.missing.length > 0 && (
+            <div>
+              <p className="kicker text-foreground/40 mb-1.5">
+                still missing ({report.missing.length})
+              </p>
+              <ul className="space-y-1">
+                {report.missing.map((k) => (
+                  <li key={k} className="flex items-center gap-2 text-sm font-sans">
+                    <span className="text-foreground/30">○</span>
+                    <span className="text-foreground/80">{k}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )}
+
+          {report.matched.length > 0 && (
+            <div>
+              <p className="kicker text-foreground/40 mb-1.5">
+                covered ({report.matched.length})
+              </p>
+              <ul className="space-y-1">
+                {report.matched.map((k) => (
+                  <li key={k} className="flex items-center gap-2 text-sm font-sans">
+                    <span className="text-accent">●</span>
+                    <span className="text-foreground/60">{k}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )}
+        </>
+      )}
+
+      {application.jd && (
+        <details className="border-t border-border pt-4">
+          <summary className="kicker cursor-pointer text-foreground/60 hover:text-foreground transition-colors">
+            Job description
+          </summary>
+          <p className="mt-3 text-xs font-sans whitespace-pre-wrap text-foreground/70 leading-relaxed">
+            {application.jd}
+          </p>
+        </details>
+      )}
     </div>
   );
 }

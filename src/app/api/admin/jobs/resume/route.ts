@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { normalizeDocxBulletFonts } from "@/lib/jobs/docx";
 import {
   deleteResumeFile,
   listResumeFiles,
@@ -118,6 +119,16 @@ export async function PUT(req: Request) {
     );
   }
 
+  // Fresh uploads get the Google-Docs bullet-font fix (oversized Noto Sans
+  // Symbols glyphs in SuperDoc) applied automatically; editor re-saves of
+  // existing files (no create=1) pass through untouched.
+  let normalized = false;
+  if (create) {
+    const result = normalizeDocxBulletFonts(data);
+    data = result.data;
+    normalized = result.changed;
+  }
+
   try {
     await writeResumeFile(name, data);
   } catch (err) {
@@ -129,7 +140,7 @@ export async function PUT(req: Request) {
       { status: 500 }
     );
   }
-  return NextResponse.json({ ok: true, name, size: data.byteLength });
+  return NextResponse.json({ ok: true, name, size: data.byteLength, normalized });
 }
 
 export async function DELETE(req: Request) {

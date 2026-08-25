@@ -23,12 +23,20 @@ export default async function JobsIndex() {
             autofill; anything else, paste the JD.
           </p>
         </div>
-        <Link
-          href="/admin/jobs/resume"
-          className="kicker shrink-0 px-4 py-2.5 rounded-sm border border-border hover:border-accent hover:text-accent transition-colors"
-        >
-          Resume studio →
-        </Link>
+        <div className="flex gap-3 shrink-0">
+          <Link
+            href="/admin/jobs/discover"
+            className="kicker px-4 py-2.5 rounded-sm border border-border hover:border-accent hover:text-accent transition-colors"
+          >
+            Discover →
+          </Link>
+          <Link
+            href="/admin/jobs/resume"
+            className="kicker px-4 py-2.5 rounded-sm border border-border hover:border-accent hover:text-accent transition-colors"
+          >
+            Resume studio →
+          </Link>
+        </div>
       </header>
 
       <JobsBoard initial={applications} resumeFiles={resumeFiles.map((f) => f.name)} />

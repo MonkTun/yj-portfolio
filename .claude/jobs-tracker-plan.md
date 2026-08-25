@@ -17,10 +17,96 @@ discovery ranked by resume fit. Dev-only (never deploys), data gitignored in
 | 0 — SuperDoc spike | ✅ Done, validated on YJ's real resume |
 | 1 — Tracker (kanban, autofill, contacts/events) | ✅ Done, verified end-to-end |
 | 1.5 — Light admin theme + docx bullet normalization + page centering | ✅ Done |
-| 2 — Keyword engine | ⬜ Next |
-| 3 — Resume bank + variants | ⬜ |
-| 4 — AI tailor button | ⬜ |
-| 5 — Discovery feeds | ⬜ |
+| 2 — Keyword engine | ✅ Done 2026-08-25 (score 71 on real resume vs sample gameplay JD; badges, gap report, recompute) |
+| 3 — Resume bank + variants | ✅ Code done + bank.md seeded; role-variant docx files are YJ's hand-shaping in the studio ("Duplicate as…" button ready) |
+| 4 — AI tailor button | ✅ Done, verified live (49 s run, 5 honest edits, score 71 → 76, one-page guard held) |
+| 5 — Discovery feeds | ✅ Done, verified live (400 Simplify leads scored + cached; watchlist board fetch verified against a real Greenhouse board; promote snapshotted a 5.4 K-char JD) |
+
+All five phases shipped 2026-08-25. What remains is YJ-side content, not code:
+hand-shape the three role variants via **Duplicate as…** in the studio
+(`gameplay-programmer.docx`, `technical-designer.docx`, `game-designer.docx`),
+and fill `content/jobs/watchlist.json` with real board slugs.
+
+## What exists (map — phases 2–5 additions)
+
+- `src/lib/jobs/docx.ts` — dependency-free docx zip read/write via
+  `node:zlib` (`crc32`/`inflateRawSync`/`deflateRawSync`): `docxText` /
+  `docxParagraphs` (extraction), `normalizeDocxBulletFonts` (the Google-Docs
+  Noto Sans Symbols fix, now auto-applied on `?create=1` uploads),
+  `applyParagraphEdits` (tailor's deterministic apply — first text run keeps
+  formatting + gets the whole new text, later text runs dropped). No mammoth,
+  no jszip.
+- `src/lib/jobs/skills.ts` — curated dictionary (~250 canonicals + aliases,
+  hard/soft). Bare "go"/"r" deliberately unmatched (false-positive traps —
+  "Golang" + no "R" entry).
+- `src/lib/jobs/keywords.ts` — pure engine: normalize (keeps `+`/`#`, so
+  c++/c# survive; "node.js" ≡ "node js"), longest-phrase-first n-gram match,
+  2× boost inside requirements-type sections, Jobscan-style buckets
+  (hard 60 / title 15 / soft 10 / other 15, renormalized over non-empty
+  buckets). `titleAlignment()` for JD-less leads.
+- `src/lib/jobs/bank.ts` + `content/jobs/bank.md` — bullet bank parser
+  (`- text #tags ^id` under `##` role headings); seeded from the real resume.
+- `src/lib/jobs/ats.ts` — Greenhouse/Lever/Ashby fetchers (single posting +
+  whole board with full JD); fetch-posting route now imports from here.
+- `src/lib/jobs/leads.ts` — watchlist.json / leads.json (cache + dismissed
+  ids) persistence, `leadId` = sha1(url) prefix.
+- `src/lib/jobs/claude.ts` — shared headless-claude runner:
+  `claude -p --output-format stream-json --verbose
+  --include-partial-messages`, prompt on stdin, parses `stream_event` text/
+  thinking deltas + the final `result`; supports `--resume <sessionId>` and
+  `--append-system-prompt`. Also `wordCount()`.
+- Routes: `/api/admin/jobs/score` (`{}` all, `{id}` one — persisted;
+  `{id, resume}` report-only for the studio panel), `/api/admin/jobs/tailor`
+  (**streams ndjson**: `stage`/`thought`/`result`/`error` events; cwd
+  content/jobs so repo CLAUDE.md stays out of context), `/api/admin/jobs/
+  chat` (studio chat, streamed, session via `--resume`; re-reads the docx
+  every turn so edit indices stay fresh), `/api/admin/jobs/resume/edits`
+  (apply a chat-proposed edit list to a file on disk),
+  `/api/admin/jobs/discover` (GET cached/refresh, POST dismiss/restore/
+  promote).
+- UI: `ScoreBadge` (accent ≥ 70), gap report + Tailor button in
+  `ApplicationDetail` → `TailorOverlay` (stage progress bar + Claude's
+  live-streamed plan; the JSON fence is hidden client-side), studio right
+  rail with Checklist | Chat tabs — `TailorPanel` (`?file=&app=` deep link,
+  re-scores on every save via key remount) and `ChatPanel` (streamed chat,
+  ```edits fences render as an Apply card → `/resume/edits` → editor
+  reloads; Apply blocked while the doc has unsaved changes), "Duplicate
+  as…" + ✦ Chat toggle in the studio chrome, `/admin/jobs/discover` page
+  (`DiscoverList`).
+- `.claude/skills/tailor/SKILL.md` — conversational path to the same
+  pipeline.
+
+### Tailor prompt contract (v2, YJ's spec — keep these rules)
+
+- **ONE PAGE NO MATTER WHAT — the binding budget is LINES, not words.**
+  Words alone failed (Aug 2026: a "same-size" tailor of the base resume
+  rendered 2 pages — the base sits right AT the page boundary).
+  `src/lib/jobs/onepage.ts`: `estimateLines` (ceil(chars/90) per paragraph,
+  empty = 1; only used relatively), budget = `onePageBudget(sourceLines)` =
+  min(source − 2, **85% of source**) so every tailor decisively shrinks the
+  doc. The prompt demands DROPPING whole experiences **ranked purely by JD
+  relevance, section-agnostic** (YJ's clarification: never "always drop
+  ORGANIZATIONS" — a LavaLab entry is the top keep for a Next.js JD, filler
+  PROJECTS entries drop just as readily; org line + role line + bullets +
+  trailing spacer all deleted); after one re-prompt, `enforceOnePage` drops
+  the least-JD-relevant role blocks deterministically (ranked by JD keyword
+  weight; section only breaks exact ties, ORGANIZATIONS yielding; empty org
+  lines and emptied section headings swept; keeps ≥ 3 blocks). Verified
+  live: 86 → 70 est lines, LavaLab + Open Alpha dropped whole for a
+  gameplay JD, score 69 → 89 — and for a full-stack JD the enforcer keeps
+  LavaLab/Holowand and drops gameplay filler instead.
+- **Words are secondary**: 475–600, aim ~550 — the line budget wins on
+  conflict (a post-drop count slightly under 475 is accepted).
+- **XYZ formula**: "Accomplished [X] as measured by [Y], by doing [Z]" —
+  metric must already exist in the resume or bank; never fabricate.
+- **Banned buzzwords** (list in the route): motivated, passionate, synergy,
+  team player, results-driven, dynamic, innovative, utilize, leveraged,
+  responsible for, …
+- **Keyword priority: Preferred Qualifications (×2.5) > Requirements (×2) >
+  Responsibilities (×1.5)** — encoded in `keywords.ts` section boosts, so
+  `missing` arrives pre-sorted by that priority.
+- The model replies with a ≤120-word plain-prose plan FIRST (that's what
+  streams into the progress UI), then the ```json edit fence.
 
 ## What exists (map)
 
@@ -129,6 +215,25 @@ a layout engine — approximate by character/line budget vs the original.)
   creates a Bookmarked application with JD snapshotted.
 
 ## Gotchas already paid for (don't re-learn these)
+
+- **zsh `echo` mangles JSON escapes** — smoke-testing with
+  `echo "$JSON" | python3` corrupts `\n` in JD strings and can silently
+  create duplicate test records (it did). Use `printf '%s'`, and always
+  re-list applications after cleanup to catch orphans.
+- **Node 22 runs the TS libs directly** for scratch verification:
+  `node --experimental-strip-types x.mts`, but relative imports inside
+  `src/lib/jobs/*` won't resolve extensionless — import lib files by
+  absolute path from the scratch script (or sed the import).
+- **Simplify listings.json carries no JD text** — title-only rank, scaled
+  ×0.6 (cap 60) so generic "Software Engineer Intern" titles can't tie at
+  100 above real full-JD watchlist matches.
+- **Promote also dismisses the lead id** so it can't resurface; restoring a
+  lead after deleting its promoted application needs an explicit
+  `{action:"restore"}`.
+- **Feed URLs**: `raw.githubusercontent.com/SimplifyJobs/
+  {Summer2026-Internships,New-Grad-Positions}/dev/.github/scripts/
+  listings.json` — repo renames redirect, so the season in the URL keeps
+  working across cycles.
 
 - **SuperDoc peers**: `@hocuspocus/provider` + `yjs` must stay installed even
   though collaboration is unused — removing them breaks the bundle.

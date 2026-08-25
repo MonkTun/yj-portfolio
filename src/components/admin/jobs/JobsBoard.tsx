@@ -12,6 +12,7 @@ import { cn } from "@/lib/utils";
 import { daysAgo, daysSince, updateApplication } from "./api";
 import { AddJobForm } from "./AddJobForm";
 import { ApplicationDetail } from "./ApplicationDetail";
+import { ScoreBadge } from "./ScoreBadge";
 
 type View = "board" | "list";
 
@@ -181,7 +182,8 @@ function Card({
               className="h-1.5 w-1.5 rounded-full bg-accent shrink-0"
             />
           )}
-          <span className="truncate">{app.company}</span>
+          <span className="truncate flex-1">{app.company}</span>
+          {app.matchScore && <ScoreBadge score={app.matchScore.score} />}
         </p>
         <p className="font-display text-lg leading-tight mt-1">{app.role}</p>
         <p className="kicker text-foreground/40 mt-2 normal-case tracking-normal">
@@ -248,6 +250,7 @@ function ListView({
                       follow up
                     </span>
                   )}
+                  {app.matchScore && <ScoreBadge score={app.matchScore.score} />}
                 </p>
                 <p className="font-display text-2xl mt-1.5 truncate">
                   {app.role}
