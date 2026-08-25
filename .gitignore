@@ -43,3 +43,6 @@ next-env.d.ts
 # obsidian (vault = repo root) — commit shared settings only
 /.obsidian/*
 !/.obsidian/app.json
+
+# job tracker — private application data, dev-only (admin never deploys)
+/content/jobs/

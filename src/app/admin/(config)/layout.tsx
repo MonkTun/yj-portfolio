@@ -9,7 +9,10 @@ export default function ConfigLayout({
   children: React.ReactNode;
 }) {
   return (
-    <div className="flex min-h-screen">
+    // admin-light flips the token palette to warm paper for the whole
+    // settings surface (see globals.css) — the bg/text utilities here
+    // re-paint over the dark admin root.
+    <div className="admin-light flex min-h-screen bg-background text-foreground">
       <aside className="w-64 shrink-0 border-r border-border px-8 py-12 sticky top-0 self-start h-screen">
         <AdminSidebar />
       </aside>

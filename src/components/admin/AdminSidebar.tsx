@@ -14,6 +14,7 @@ const NAV: NavItem[] = [
   { href: "/admin/pages", number: "01", label: "Pages" },
   { href: "/admin/routing", number: "02", label: "Routing" },
   { href: "/admin/theme", number: "03", label: "Palette" },
+  { href: "/admin/jobs", number: "04", label: "Jobs" },
 ];
 
 export function AdminSidebar() {

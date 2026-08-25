@@ -173,6 +173,15 @@ That's it. No purple gradients, no neon, no glow halos, no scanlines, no mesh bl
 - Tailwind for styling. Avoid one-off CSS files unless there's a real reason; global tokens in `globals.css` are the exception.
 - Don't reintroduce Vite, CRA, or any non-Next build tooling.
 
+## Job tracker (dev-only, Aug 2026)
+
+`/admin/jobs` is a private internship/job tracker + resume studio — a third admin surface next to the page editors, never deployed (same `src/proxy.ts` dev gate as the rest of admin).
+
+- **Data**: `content/jobs/` — **gitignored** (private application data). `applications.json` (kanban records with JD snapshots, contacts, events) via `src/lib/jobs/{schema,store}.ts` (zod, same load/save pattern as `site.json`). Resume docx files live in `content/jobs/resume/` (+ `tailored/` subfolder), name-validated, binary round-tripped through `/api/admin/jobs/resume`.
+- **Add-job autofill** (`/api/admin/jobs/fetch-posting`): Greenhouse / Lever / Ashby URLs are fetched server-side from their public no-auth JSON APIs (full JD text); other URLs get a best-effort page fetch. The paste-the-JD textarea is the permanent fallback — don't remove it.
+- **Resume studio** (`/admin/jobs/resume`, full-bleed like `/admin/edit`): **SuperDoc** (`superdoc` npm, AGPL — fine here because the editor only runs on localhost dev) edits the docx in-browser; Save calls `superdoc.export({exportType:['docx'], triggerDownload:false})` and PUTs the Blob. SuperDoc requires its collaboration peers `@hocuspocus/provider` + `yjs` to be installed even when unused — removing them breaks the bundle with "Can't resolve '@hocuspocus/provider'".
+- Planned next phases — **the full handoff roadmap lives in `.claude/jobs-tracker-plan.md`** (phases, gotchas already paid for, verification recipe): keyword match scoring, `/tailor` via headless `claude -p` (subscription-billed — do NOT wire an API key), discovery feeds (SimplifyJobs listings.json + ATS board polling).
+
 ## Gotchas
 
 - This is a fresh template — nothing from the previous Vite codebase (components, routes, assets under `public/projects`, `resume.pdf`) was carried over. If YJ asks for "the old X," it has to be pulled from git history (`git log --all`) or the GitHub UI, not assumed to exist on disk.

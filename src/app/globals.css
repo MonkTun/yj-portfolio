@@ -130,6 +130,8 @@
   /* ---------- shadcn primitives — retuned to fit the dark theme ----------
      These tokens get pulled in whenever a shadcn component is used; their
      values just need to be coherent with the palette above. */
+  /* (light admin override lives in .admin-light below — same token names,
+     paper values; the public site never uses it.) */
   --card: var(--surface);
   --card-foreground: var(--foreground);
   --popover: var(--surface);
@@ -164,6 +166,44 @@
   --duration: 600ms;
   --duration-slow: 900ms;
   --ease: cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* ---------- light admin override: warm paper ----------
+   Scoped inversion of the core palette for admin work surfaces (settings
+   pages, jobs tracker, resume studio) so white-page tools like SuperDoc sit
+   in matching chrome. Custom-property re-declarations only — descendants of
+   an .admin-light element resolve the same token names to paper values, so
+   every bg-background / text-foreground / glass-* utility flips with zero
+   component changes. The page-edit routes (/admin/edit) stay dark because
+   their canvas previews the real site. NOT for the public site. */
+.admin-light {
+  --background: #f6f1e7;
+  --foreground: #1c1814;
+  --muted: #ece5d6;
+  --muted-foreground: #7a7264;
+  --surface: #fdfbf5;
+  --surface-foreground: #1c1814;
+  --border: #ddd3c0;
+  /* Moss holds, one step darker for contrast on paper. */
+  --accent: #4f7a31;
+  --accent-foreground: #ffffff;
+  --ring: #4f7a31;
+}
+
+/* The fixed body vignette darkens corners — right for the dark site, murky
+   on paper. Drop it while an admin-light surface is on screen (grain stays:
+   screen-blend cream noise is invisible on paper, harmless). */
+body:has(.admin-light) .vignette {
+  display: none;
+}
+
+/* Center SuperDoc's page stack in the resume studio pane. Its root
+   (.superdoc) is a flex row that start-aligns the page column
+   (.superdoc__layers); auto inline margins center it when the pane is wider
+   than the page and collapse to 0 when zoom makes the page overflow — unlike
+   justify-content: center, which would clip the left edge unreachably. */
+.resume-studio .superdoc__layers {
+  margin-inline: auto;
 }
 
 /* Tailwind v4 theme — exposes tokens as utilities
