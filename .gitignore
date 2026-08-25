@@ -46,3 +46,6 @@ next-env.d.ts
 
 # job tracker — private application data, dev-only (admin never deploys)
 /content/jobs/
+
+# Chrome automation profile (private browser data — never commit)
+chrome-profile/
