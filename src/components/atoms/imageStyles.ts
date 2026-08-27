@@ -111,7 +111,10 @@ export function imageTintMaskStyle({
   zoom = 1,
 }: {
   src: string;
-  fit: ImageProps["fit"];
+  /** "match-x" / "match-y" are the section background's single-axis fits:
+   *  the mask spans one dimension and lets the other follow the image's
+   *  aspect ratio, mirroring the img sizing in SectionImageBackground. */
+  fit: ImageProps["fit"] | "match-x" | "match-y";
   focalX: number;
   focalY: number;
   rotate: number;
@@ -123,7 +126,14 @@ export function imageTintMaskStyle({
   // generate slugified filenames in /api/admin/upload, so quotes are not
   // expected.
   const url = `url('${src}')`;
-  const size = fit === "cover" ? "cover" : "contain";
+  const size =
+    fit === "cover"
+      ? "cover"
+      : fit === "contain"
+        ? "contain"
+        : fit === "match-x"
+          ? "100% auto"
+          : "auto 100%";
   const position = `${focalX}% ${focalY}%`;
   // mask-mode defaults to `match-source`, which uses the alpha channel for
   // raster image masks — exactly what we want, so no need to set it.

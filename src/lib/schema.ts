@@ -178,8 +178,7 @@ export const videoPropsSchema = z.object({
   aspect: z.string().default("16/9"),
   /** Which block dimension the video sizes from: "width" fills the block's
    *  width and derives height from `aspect`; "height" fills the block's
-   *  height and derives width (grid pages only — markdown flow has no
-   *  fixed height, so "height" falls back to width-driven there). */
+   *  height and derives width. */
   fit: z.enum(["width", "height"]).default("width"),
   /** Corner radius in px. */
   radius: z.number().int().min(0).max(200).default(0),
@@ -353,6 +352,14 @@ export const sectionBackgroundSchema = z.discriminatedUnion("type", [
   z.object({
     type: z.literal("image"),
     src: z.string(),
+    /** Which section dimension the image scales to match:
+     *  - "both" — cover: fills width AND height, cropping whatever
+     *    overflows (the classic full-bleed backdrop).
+     *  - "x" — matches the section's width; height follows the image's
+     *    own aspect ratio. Taller overflow crops toward the focal point,
+     *    a shorter image leaves the section background showing.
+     *  - "y" — matches the section's height; width follows likewise. */
+    fit: z.enum(["both", "x", "y"]).default("both"),
     /** 0-100, % darkening overlay (legacy field — prefer tint+tintOpacity). */
     overlay: z.number().min(0).max(100).default(0),
     /** Same non-destructive effects as the Image atom. */
@@ -428,6 +435,12 @@ export const sectionSchema = z.object({
   padding: sectionPaddingSchema.default("lg"),
   minHeight: sectionMinHeightSchema.default("auto"),
   align: sectionAlignSchema.default("top"),
+  /** Opt-in hover focus: the section greys out (desaturated + dimmed)
+   *  whenever the pointer is not over it, and restores on hover.
+   *  Hover-capable devices only — touch viewports always render full color
+   *  (see `.section-dim-unhovered` in globals.css). Optional rather than
+   *  defaulted so existing JSON and section templates stay untouched. */
+  dimUnhovered: z.boolean().optional(),
   mobile: sectionMobileOverrideSchema,
   blocks: z.array(blockSchema),
 });

@@ -336,6 +336,22 @@ body {
     color: var(--accent);
   }
 
+  /* Opt-in section hover focus (Section.dimUnhovered) — the section greys
+     out whenever the pointer is elsewhere and restores on hover. Gated to
+     hover-capable inputs so touch viewports never see a permanently grey
+     section; :focus-within keeps keyboard-focused sections legible. */
+  .section-dim-unhovered {
+    transition:
+      opacity var(--duration) var(--ease),
+      filter var(--duration) var(--ease);
+  }
+  @media (hover: hover) {
+    .section-dim-unhovered:not(:hover):not(:focus-within) {
+      opacity: 0.45;
+      filter: grayscale(1);
+    }
+  }
+
   /* ---------- editor canvas: vertical layout module ----------
      The 12 columns are drawn as real elements (SectionFrame); the vertical
      module is drawn as a background so a tall section costs one node rather

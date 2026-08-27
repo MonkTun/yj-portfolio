@@ -4,7 +4,6 @@ import { z } from "zod";
 import { promises as fs } from "node:fs";
 import path from "node:path";
 import { loadSiteConfig, savePage } from "@/lib/content";
-import { docExists } from "@/lib/markdown";
 import type { Page } from "@/lib/schema";
 
 export const runtime = "nodejs";
@@ -54,15 +53,6 @@ export async function POST(req: Request) {
     );
   } catch {
     // Doesn't exist — good, we can create it.
-  }
-
-  // A grid page here would silently shadow an existing markdown page (the
-  // catch-all route tries JSON first) — refuse rather than hide content.
-  if (await docExists(body.slug)) {
-    return NextResponse.json(
-      { error: `A markdown page already owns /${body.slug}.` },
-      { status: 409 }
-    );
   }
 
   const blank: Page = {

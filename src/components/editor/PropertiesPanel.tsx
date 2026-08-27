@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 
 import type {
@@ -24,6 +24,7 @@ import {
 import { SOCIAL_PLATFORM_LABELS } from "@/components/atoms/SocialLinks";
 import { getYouTubeId } from "@/lib/youtube";
 import { downscaleImage } from "@/lib/downscale-image";
+import { UPLOAD_MAX_BYTES, UPLOAD_MAX_MB } from "@/lib/upload-limits";
 import { atomRegistry } from "@/lib/atom-registry";
 import { cn } from "@/lib/utils";
 import {
@@ -435,6 +436,21 @@ function SectionProps({
           value={section.align}
           onChange={(v) => onUpdate({ align: v as Section["align"] })}
         />
+      </Field>
+      <Field label="grey out unhovered">
+        <ToggleBtn
+          label={section.dimUnhovered ? "On" : "Off"}
+          active={!!section.dimUnhovered}
+          onToggle={() =>
+            // `undefined` (not `false`) when off, so the key drops out of
+            // the saved JSON entirely — the option is strictly opt-in.
+            onUpdate({ dimUnhovered: section.dimUnhovered ? undefined : true })
+          }
+        />
+        <p className="text-xs text-foreground/40 italic mt-1">
+          Greys the section out until the pointer hovers it. Public site
+          only, on hover-capable devices.
+        </p>
       </Field>
 
       <hr className="rule" />
@@ -2005,6 +2021,7 @@ function ImageEffects({
   src,
   aspect,
   fit,
+  fitAxis,
   filter,
   focalX,
   focalY,
@@ -2020,6 +2037,10 @@ function ImageEffects({
   src: string;
   aspect?: string;
   fit: ImageProps["fit"];
+  /** Section backgrounds only: which section axis the image scales to
+   *  match. Undefined hides the control (image blocks / carousel items
+   *  size via their own fit/aspect props instead). Emits `{ fit }`. */
+  fitAxis?: "both" | "x" | "y";
   filter: ImageProps["filter"];
   focalX: number;
   focalY: number;
@@ -2123,6 +2144,21 @@ function ImageEffects({
           onChange={(patch) => onChange(patch)}
         />
       </Field>
+
+      {fitAxis !== undefined && (
+        <Field label="scale to match">
+          <SegmentBar
+            options={["both", "x", "y"]}
+            labels={{ both: "Both", x: "Width", y: "Height" }}
+            value={fitAxis}
+            onChange={(v) => onChange({ fit: v })}
+          />
+          <p className="text-xs text-foreground/40 italic">
+            Both fills the section and crops overflow; Width / Height match
+            one axis and let the other follow the image&apos;s proportions.
+          </p>
+        </Field>
+      )}
 
       <Field label={`scale — ${zoom.toFixed(2)}×`}>
         <input
@@ -2294,6 +2330,7 @@ function SectionBackgroundEditor({
       return onChange({
         type: "image",
         src: "",
+        fit: "both",
         overlay: 0,
         filter: "none",
         focalX: 50,
@@ -2381,7 +2418,25 @@ function SectionBackgroundEditor({
               }
               // No aspect lock — the section's own dimensions drive the frame.
               effectsContext={{ fit: "cover" }}
+              fitAxis={bg.fit}
             />
+          </Field>
+
+          <Field label="scale to match">
+            <SegmentBar
+              options={["both", "x", "y"]}
+              labels={{ both: "Both", x: "Width", y: "Height" }}
+              value={bg.fit}
+              onChange={(v) =>
+                onChange({ ...bg, fit: v as "both" | "x" | "y" })
+              }
+            />
+            <p className="text-xs text-foreground/40 italic">
+              Both fills the section and crops the overflow. Width / Height
+              match one axis only — the other follows the image&apos;s own
+              proportions, cropping toward the focal point or letting the
+              section background show through.
+            </p>
           </Field>
 
           <Field label={`overlay — ${bg.overlay}%`}>
@@ -2803,6 +2858,344 @@ function RemoveBgButton({
   );
 }
 
+/* ---------------- crop tool ---------------- */
+
+/** Aspect presets for the crop tool. `ratio` = width / height; null = free. */
+const CROP_ASPECTS = [
+  { id: "free", label: "Free", ratio: null },
+  { id: "1:1", label: "1:1", ratio: 1 },
+  { id: "4:5", label: "4:5", ratio: 4 / 5 },
+  { id: "4:3", label: "4:3", ratio: 4 / 3 },
+  { id: "3:2", label: "3:2", ratio: 3 / 2 },
+  { id: "16:9", label: "16:9", ratio: 16 / 9 },
+] as const;
+
+type CropAspectId = (typeof CROP_ASPECTS)[number]["id"];
+
+/** Crop rectangle as fractions (0–1) of the source image box. */
+type CropRect = { x: number; y: number; w: number; h: number };
+
+type CropDragMode = "move" | "nw" | "ne" | "sw" | "se";
+
+/** Smallest crop edge, as a fraction of the image. */
+const CROP_MIN = 0.03;
+
+const cropClamp = (v: number, lo: number, hi: number) =>
+  Math.min(hi, Math.max(lo, v));
+
+/** Largest rect of the given px aspect ratio, centered, in fraction space. */
+function centeredCropRect(
+  ratio: number | null,
+  nat: { w: number; h: number } | null
+): CropRect {
+  if (!ratio || !nat) return { x: 0, y: 0, w: 1, h: 1 };
+  const cropW = Math.min(nat.w, nat.h * ratio);
+  const w = cropW / nat.w;
+  const h = cropW / ratio / nat.h;
+  return { x: (1 - w) / 2, y: (1 - h) / 2, w, h };
+}
+
+/** Resize from a corner, keeping the opposite corner anchored. Fraction
+ *  space is non-square, so the aspect lock converts through the image's
+ *  natural px dimensions. */
+function resizeCropRect(
+  start: CropRect,
+  mode: Exclude<CropDragMode, "move">,
+  dx: number,
+  dy: number,
+  ratio: number | null,
+  nat: { w: number; h: number } | null
+): CropRect {
+  const right = start.x + start.w;
+  const bottom = start.y + start.h;
+  const east = mode === "ne" || mode === "se";
+  const south = mode === "sw" || mode === "se";
+  const maxW = east ? 1 - start.x : right;
+  const maxH = south ? 1 - start.y : bottom;
+  let w = cropClamp(east ? start.w + dx : start.w - dx, CROP_MIN, maxW);
+  let h = cropClamp(south ? start.h + dy : start.h - dy, CROP_MIN, maxH);
+  if (ratio && nat) {
+    h = (w * nat.w) / (ratio * nat.h);
+    if (h > maxH) {
+      h = maxH;
+      w = (h * ratio * nat.h) / nat.w;
+    } else if (h < CROP_MIN) {
+      h = CROP_MIN;
+      w = cropClamp((h * ratio * nat.h) / nat.w, CROP_MIN, maxW);
+    }
+  }
+  return {
+    x: east ? start.x : right - w,
+    y: south ? start.y : bottom - h,
+    w,
+    h,
+  };
+}
+
+const CROP_HANDLES: ReadonlyArray<{
+  mode: Exclude<CropDragMode, "move">;
+  cls: string;
+}> = [
+  { mode: "nw", cls: "left-0 top-0 -translate-x-1/2 -translate-y-1/2 cursor-nwse-resize" },
+  { mode: "ne", cls: "right-0 top-0 translate-x-1/2 -translate-y-1/2 cursor-nesw-resize" },
+  { mode: "sw", cls: "left-0 bottom-0 -translate-x-1/2 translate-y-1/2 cursor-nesw-resize" },
+  { mode: "se", cls: "right-0 bottom-0 translate-x-1/2 translate-y-1/2 cursor-nwse-resize" },
+];
+
+/**
+ * Destructive crop, following the RemoveBgButton pattern: drag a rectangle
+ * over the image (aspect presets or freeform), Apply bakes that region to a
+ * canvas at the source's native resolution and uploads the result into
+ * /public/uploads/ as a new file — the original stays in the library — then
+ * selects the copy. Local-path sources only: a cross-origin image would
+ * taint the canvas and the export would throw.
+ */
+function CropTool({
+  src,
+  onResult,
+}: {
+  src: string;
+  onResult: (src: string) => void;
+}) {
+  const [active, setActive] = useState(false);
+  const [busy, setBusy] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const [rect, setRect] = useState<CropRect>({ x: 0, y: 0, w: 1, h: 1 });
+  const [aspectId, setAspectId] = useState<CropAspectId>("free");
+  const [natural, setNatural] = useState<{ w: number; h: number } | null>(
+    null
+  );
+  const boxRef = useRef<HTMLDivElement>(null);
+
+  const local = src.startsWith("/") && !src.startsWith("//");
+
+  function startDrag(e: React.PointerEvent, mode: CropDragMode) {
+    e.preventDefault();
+    e.stopPropagation();
+    const box = boxRef.current?.getBoundingClientRect();
+    if (!box || busy) return;
+    const start = rect;
+    const sx = e.clientX;
+    const sy = e.clientY;
+    const ratio =
+      CROP_ASPECTS.find((a) => a.id === aspectId)?.ratio ?? null;
+    const onMove = (ev: PointerEvent) => {
+      const dx = (ev.clientX - sx) / box.width;
+      const dy = (ev.clientY - sy) / box.height;
+      setRect(
+        mode === "move"
+          ? {
+              x: cropClamp(start.x + dx, 0, 1 - start.w),
+              y: cropClamp(start.y + dy, 0, 1 - start.h),
+              w: start.w,
+              h: start.h,
+            }
+          : resizeCropRect(start, mode, dx, dy, ratio, natural)
+      );
+    };
+    const onUp = () => {
+      window.removeEventListener("pointermove", onMove);
+      window.removeEventListener("pointerup", onUp);
+    };
+    window.addEventListener("pointermove", onMove);
+    window.addEventListener("pointerup", onUp);
+  }
+
+  function pickAspect(id: CropAspectId) {
+    setAspectId(id);
+    const ratio = CROP_ASPECTS.find((a) => a.id === id)?.ratio ?? null;
+    if (ratio) setRect(centeredCropRect(ratio, natural));
+  }
+
+  async function apply() {
+    if (!natural || busy) return;
+    setBusy(true);
+    setError(null);
+    try {
+      const img = new window.Image();
+      img.decoding = "async";
+      img.src = src;
+      await img.decode();
+      const sx = Math.round(rect.x * natural.w);
+      const sy = Math.round(rect.y * natural.h);
+      const sw = Math.max(1, Math.round(rect.w * natural.w));
+      const sh = Math.max(1, Math.round(rect.h * natural.h));
+      const canvas = document.createElement("canvas");
+      canvas.width = sw;
+      canvas.height = sh;
+      const ctx = canvas.getContext("2d");
+      if (!ctx) throw new Error("Canvas 2D unavailable");
+      ctx.drawImage(img, sx, sy, sw, sh, 0, 0, sw, sh);
+      // PNG sources keep PNG (alpha survives, e.g. after bg removal);
+      // everything else re-encodes to WebP like the uploader does.
+      const isPng = src.toLowerCase().endsWith(".png");
+      const blob = await new Promise<Blob | null>((resolve) =>
+        canvas.toBlob(resolve, isPng ? "image/png" : "image/webp", 0.9)
+      );
+      if (!blob) throw new Error("Canvas export failed");
+      const stem =
+        src
+          .split("/")
+          .pop()
+          ?.replace(/\.[^.]+$/, "") ?? "image";
+      const file = new File([blob], `${stem}-crop.${isPng ? "png" : "webp"}`, {
+        type: blob.type,
+      });
+      const fd = new FormData();
+      fd.append("file", file);
+      const res = await fetch("/api/admin/upload", {
+        method: "POST",
+        body: fd,
+      });
+      if (!res.ok) {
+        const text = await res.text();
+        throw new Error(`Upload failed (${res.status}): ${text.slice(0, 120)}`);
+      }
+      const j = (await res.json()) as { src: string };
+      onResult(j.src);
+      setActive(false);
+    } catch (err) {
+      console.error("[Crop] failed:", err);
+      setError(err instanceof Error ? err.message : String(err));
+    } finally {
+      setBusy(false);
+    }
+  }
+
+  if (!active) {
+    return (
+      <div className="space-y-1.5">
+        <button
+          type="button"
+          disabled={!src || !local}
+          onClick={() => {
+            setRect({ x: 0, y: 0, w: 1, h: 1 });
+            setAspectId("free");
+            setError(null);
+            setActive(true);
+          }}
+          className="kicker w-full px-3 py-2 rounded-sm bg-background/40 border border-border text-foreground hover:bg-foreground/10 hover:border-accent transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+        >
+          Crop image
+        </button>
+        <p className="text-xs text-foreground/40 italic">
+          {local
+            ? "Saves the cropped region as a new file and selects it — the original stays in the library."
+            : "Only local /uploads images can be cropped."}
+        </p>
+      </div>
+    );
+  }
+
+  return (
+    <div className="space-y-2">
+      <div
+        ref={boxRef}
+        className="relative mx-auto w-fit max-w-full select-none touch-none"
+      >
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img
+          src={src}
+          alt=""
+          draggable={false}
+          onLoad={(e) =>
+            setNatural({
+              w: e.currentTarget.naturalWidth,
+              h: e.currentTarget.naturalHeight,
+            })
+          }
+          className="block max-h-80 max-w-full rounded-sm"
+        />
+        {/* Dim everything outside the crop rect. */}
+        <div
+          aria-hidden
+          className="absolute inset-x-0 top-0 bg-background/70 pointer-events-none"
+          style={{ height: `${rect.y * 100}%` }}
+        />
+        <div
+          aria-hidden
+          className="absolute inset-x-0 bottom-0 bg-background/70 pointer-events-none"
+          style={{ height: `${(1 - rect.y - rect.h) * 100}%` }}
+        />
+        <div
+          aria-hidden
+          className="absolute left-0 bg-background/70 pointer-events-none"
+          style={{
+            top: `${rect.y * 100}%`,
+            height: `${rect.h * 100}%`,
+            width: `${rect.x * 100}%`,
+          }}
+        />
+        <div
+          aria-hidden
+          className="absolute right-0 bg-background/70 pointer-events-none"
+          style={{
+            top: `${rect.y * 100}%`,
+            height: `${rect.h * 100}%`,
+            width: `${(1 - rect.x - rect.w) * 100}%`,
+          }}
+        />
+        {/* The crop rect itself — drag to move, corners to resize. */}
+        <div
+          onPointerDown={(e) => startDrag(e, "move")}
+          className="absolute border border-accent cursor-move"
+          style={{
+            left: `${rect.x * 100}%`,
+            top: `${rect.y * 100}%`,
+            width: `${rect.w * 100}%`,
+            height: `${rect.h * 100}%`,
+          }}
+        >
+          {CROP_HANDLES.map((hnd) => (
+            <div
+              key={hnd.mode}
+              onPointerDown={(e) => startDrag(e, hnd.mode)}
+              className={cn(
+                "absolute h-3 w-3 rounded-full bg-accent",
+                hnd.cls
+              )}
+            />
+          ))}
+        </div>
+      </div>
+
+      <SegmentBar
+        options={CROP_ASPECTS.map((a) => a.id)}
+        labels={Object.fromEntries(CROP_ASPECTS.map((a) => [a.id, a.label]))}
+        value={aspectId}
+        onChange={(v) => pickAspect(v as CropAspectId)}
+      />
+
+      {natural && (
+        <p className="kicker text-foreground/40">
+          {Math.max(1, Math.round(rect.w * natural.w))} ×{" "}
+          {Math.max(1, Math.round(rect.h * natural.h))} px
+        </p>
+      )}
+      {error && <p className="text-xs text-accent italic break-all">{error}</p>}
+
+      <div className="flex gap-1">
+        <button
+          type="button"
+          disabled={busy || !natural}
+          onClick={apply}
+          className="kicker flex-1 px-3 py-2 rounded-sm bg-accent text-accent-foreground transition-colors hover:opacity-90 disabled:opacity-50 disabled:cursor-not-allowed"
+        >
+          {busy ? "Saving…" : "Apply crop"}
+        </button>
+        <button
+          type="button"
+          disabled={busy}
+          onClick={() => setActive(false)}
+          className="kicker flex-1 px-3 py-2 rounded-sm bg-background/40 border border-border text-foreground hover:bg-foreground/10 transition-colors"
+        >
+          Cancel
+        </button>
+      </div>
+    </div>
+  );
+}
+
 /**
  * Click-to-pick + drag-and-drop image uploader. Posts to /api/admin/upload
  * which copies the file into public/uploads/ and returns its URL. Dev-only
@@ -2897,6 +3290,7 @@ function ImageDialog({
   effects,
   onEffectsChange,
   effectsContext,
+  fitAxis,
 }: {
   value: string;
   onChange: (src: string) => void;
@@ -2905,6 +3299,9 @@ function ImageDialog({
   effects?: ImageEffectValues;
   onEffectsChange?: (patch: Record<string, unknown>) => void;
   effectsContext?: { fit: ImageProps["fit"]; aspect?: string };
+  /** Section backgrounds only — shows the "scale to match" axis control
+   *  in the Adjust tab. See ImageEffects. */
+  fitAxis?: "both" | "x" | "y";
 }) {
   const [open, setOpen] = useState(false);
   const [tab, setTab] = useState<"source" | "adjust">("source");
@@ -3005,6 +3402,18 @@ function ImageDialog({
                   />
                 </Field>
 
+                {value && (
+                  <Field label="crop">
+                    <CropTool
+                      src={value}
+                      onResult={(src) => {
+                        onChange(src);
+                        refreshLibrary();
+                      }}
+                    />
+                  </Field>
+                )}
+
                 {enableRemoveBg && value && (
                   <Field label="remove background">
                     <RemoveBgButton
@@ -3032,6 +3441,7 @@ function ImageDialog({
               <ImageEffects
                 src={value}
                 fit={effectsContext?.fit ?? "cover"}
+                fitAxis={fitAxis}
                 aspect={effectsContext?.aspect}
                 filter={effects.filter}
                 focalX={effects.focalX}
@@ -3090,6 +3500,17 @@ function ImageUploader({
       // Downscale / re-encode oversized images in the browser before upload so
       // huge source files don't hit the body cap or end up on the live page.
       const file = await downscaleImage(rawFile);
+      // Preflight the shared cap: past it the proxy's body clone truncates
+      // the stream and the server can only answer "Invalid form data".
+      // Mostly bites animated GIFs, which downscaleImage can't re-encode.
+      if (file.size > UPLOAD_MAX_BYTES) {
+        throw new Error(
+          `File too large: ${(file.size / (1024 * 1024)).toFixed(1)} MB (max ${UPLOAD_MAX_MB} MB). ` +
+            (file.type === "image/gif"
+              ? "GIFs can't be compressed in-browser — trim it or convert to video."
+              : "")
+        );
+      }
       const fd = new FormData();
       fd.append("file", file);
       const res = await fetch("/api/admin/upload", {

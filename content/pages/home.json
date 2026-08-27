@@ -484,6 +484,7 @@
       "background": {
         "type": "image",
         "src": "/uploads/game-trailer-thumbnail-1920-x-1080-px-mtbsm0ua.png",
+        "fit": "both",
         "overlay": 75,
         "filter": "none",
         "focalX": 50,
@@ -504,7 +505,7 @@
           "id": "blk_overdawn_meta",
           "layout": {
             "col": 8,
-            "colSpan": 4,
+            "colSpan": 5,
             "row": 1,
             "rowSpan": 2
           },
@@ -692,6 +693,7 @@
       "background": {
         "type": "image",
         "src": "/projects/dawngeonTitle.png",
+        "fit": "both",
         "overlay": 88,
         "filter": "none",
         "focalX": 50,
@@ -834,7 +836,8 @@
       "background": {
         "type": "image",
         "src": "/uploads/thang-mtbsuoo7.webp",
-        "overlay": 79,
+        "fit": "both",
+        "overlay": 76,
         "filter": "none",
         "focalX": 50,
         "focalY": 50,
@@ -980,7 +983,8 @@
       "background": {
         "type": "image",
         "src": "/uploads/br-posterwithpaperandtatter-mqg50uv2.webp",
-        "overlay": 64,
+        "fit": "both",
+        "overlay": 66,
         "filter": "none",
         "focalX": 50,
         "focalY": 50,
@@ -1120,7 +1124,8 @@
       "background": {
         "type": "image",
         "src": "/uploads/melon-mtbtkecm.jpg",
-        "overlay": 80,
+        "fit": "both",
+        "overlay": 64,
         "filter": "none",
         "focalX": 50,
         "focalY": 50,
@@ -1135,6 +1140,7 @@
       "padding": "lg",
       "minHeight": "auto",
       "align": "top",
+      "dimUnhovered": true,
       "blocks": [
         {
           "id": "blk_6165992c",

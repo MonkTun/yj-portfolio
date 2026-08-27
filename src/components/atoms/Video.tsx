@@ -25,8 +25,7 @@ function parseAspectRatio(aspect: string): number {
  * units, and if that width doesn't fit the whole frame scales down
  * (contain semantics). Either way the frame is always exactly `aspect`,
  * so the YouTube player never letterboxes inside it. `fit: "height"`
- * requires a definite block height, which grid pages provide; markdown
- * flow should stick to the default `"width"`.
+ * requires a definite block height, which the grid layout provides.
  */
 export function Video(props: VideoProps) {
   const { url, autoplay, muted, loop, controls, start, aspect, fit, radius } =

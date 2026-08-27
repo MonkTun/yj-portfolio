@@ -2,11 +2,8 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { cn } from "@/lib/utils";
 
 const slugRegex = /^[a-z0-9][a-z0-9-/]*$/;
-
-type Format = "grid" | "md";
 
 function slugify(input: string): string {
   return input
@@ -22,7 +19,6 @@ export function NewPageForm({ existing }: { existing: string[] }) {
   const router = useRouter();
   const [slug, setSlug] = useState("");
   const [title, setTitle] = useState("");
-  const [format, setFormat] = useState<Format>("grid");
   const [busy, setBusy] = useState(false);
   const [err, setErr] = useState<string | null>(null);
 
@@ -38,17 +34,14 @@ export function NewPageForm({ existing }: { existing: string[] }) {
     setBusy(true);
     setErr(null);
     try {
-      const res = await fetch(
-        format === "md" ? "/api/admin/doc" : "/api/admin/page",
-        {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            slug: cleanSlug,
-            title: title.trim() || cleanSlug,
-          }),
-        }
-      );
+      const res = await fetch("/api/admin/page", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          slug: cleanSlug,
+          title: title.trim() || cleanSlug,
+        }),
+      });
       const body = await res.json().catch(() => ({}));
       if (!res.ok) {
         throw new Error(body?.error ?? `HTTP ${res.status}`);
@@ -65,29 +58,7 @@ export function NewPageForm({ existing }: { existing: string[] }) {
       onSubmit={onSubmit}
       className="mt-12 border border-border rounded-sm p-5 space-y-4 bg-surface/40"
     >
-      <div className="flex items-center justify-between gap-4">
-        <p className="kicker">New page</p>
-        <div
-          role="group"
-          aria-label="Page format"
-          className="flex items-center rounded-sm border border-border overflow-hidden"
-        >
-          <FormatButton
-            active={format === "grid"}
-            onClick={() => setFormat("grid")}
-            label="Grid — visual editor, content/pages/*.json"
-          >
-            Grid
-          </FormatButton>
-          <FormatButton
-            active={format === "md"}
-            onClick={() => setFormat("md")}
-            label="Markdown — writing-first, content/docs/*.md"
-          >
-            Markdown
-          </FormatButton>
-        </div>
-      </div>
+      <p className="kicker">New page</p>
       <div className="grid grid-cols-1 sm:grid-cols-[1fr_1fr_auto] gap-3 items-end">
         <label className="block">
           <span className="kicker block mb-1.5">slug</span>
@@ -120,11 +91,6 @@ export function NewPageForm({ existing }: { existing: string[] }) {
           {busy ? "Creating…" : "Create page"}
         </button>
       </div>
-      <p className="text-xs italic text-foreground/50">
-        {format === "grid"
-          ? "Opens in the visual editor; layout-first (drag blocks on the grid)."
-          : "Opens in the markdown editor; writing-first (also editable in Obsidian)."}
-      </p>
       {collides && (
         <p className="text-xs italic text-foreground/70">
           A page with that slug already exists.
@@ -140,34 +106,5 @@ export function NewPageForm({ existing }: { existing: string[] }) {
         <p className="text-xs italic text-foreground/70">Error: {err}</p>
       )}
     </form>
-  );
-}
-
-function FormatButton({
-  active,
-  onClick,
-  label,
-  children,
-}: {
-  active: boolean;
-  onClick: () => void;
-  label: string;
-  children: React.ReactNode;
-}) {
-  return (
-    <button
-      type="button"
-      onClick={onClick}
-      title={label}
-      aria-pressed={active}
-      className={cn(
-        "kicker px-3 py-1.5 transition-colors",
-        active
-          ? "bg-accent text-accent-foreground"
-          : "text-foreground/70 hover:bg-surface hover:text-accent"
-      )}
-    >
-      {children}
-    </button>
   );
 }

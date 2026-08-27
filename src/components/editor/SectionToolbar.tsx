@@ -292,6 +292,7 @@ function BackgroundPicker({
               onChange({
                 type: "image",
                 src,
+                fit: "both",
                 overlay: 30,
                 filter: "none",
                 focalX: 50,
@@ -313,6 +314,21 @@ function BackgroundPicker({
         Full effects editor (filter, focal point, rotate, flip…) lives in the
         right-side panel.
       </p>
+      {value.type === "image" && (
+        <div>
+          <span className="kicker block mb-1">Scale to match</span>
+          <SegmentedGroup
+            label="Scale to match"
+            options={[
+              { value: "both", label: "Both" },
+              { value: "x", label: "Width" },
+              { value: "y", label: "Height" },
+            ]}
+            value={value.fit}
+            onChange={(fit) => onChange({ ...value, fit })}
+          />
+        </div>
+      )}
       {value.type === "image" && (
         <label className="block">
           <span className="kicker block mb-1">

@@ -1,15 +1,10 @@
 import Link from "next/link";
 import { listPages, loadSiteConfig } from "@/lib/content";
-import { listDocs } from "@/lib/markdown";
 import { NewPageForm } from "@/components/admin/NewPageForm";
 import { PageRowMenu } from "@/components/admin/PageRowMenu";
 import type { SiteConfig } from "@/lib/schema";
 
 export const dynamic = "force-dynamic";
-
-export type PageKind = "grid" | "md";
-
-type Entry = { slug: string; kind: PageKind };
 
 // Where each slug actually shows up on the public site, given the current
 // site config. The slug currently assigned a routing role gets a
@@ -44,22 +39,21 @@ function leafName(slug: string): string {
   return slug.split("/").pop() ?? slug;
 }
 
-type Group = { key: string; label: string; entries: Entry[] };
+type Group = { key: string; label: string; slugs: string[] };
 
-function buildGroups(entries: Entry[]): Group[] {
-  const map = new Map<string, Entry[]>();
-  for (const entry of entries) {
-    const key = groupFor(entry.slug);
+function buildGroups(slugs: string[]): Group[] {
+  const map = new Map<string, string[]>();
+  for (const slug of slugs) {
+    const key = groupFor(slug);
     const list = map.get(key) ?? [];
-    list.push(entry);
+    list.push(slug);
     map.set(key, list);
   }
-  const bySlug = (a: Entry, b: Entry) => a.slug.localeCompare(b.slug);
   const root: Group | null = map.has(ROOT_GROUP)
     ? {
         key: ROOT_GROUP,
         label: "Pages",
-        entries: map.get(ROOT_GROUP)!.slice().sort(bySlug),
+        slugs: map.get(ROOT_GROUP)!.slice().sort(),
       }
     : null;
   const folders: Group[] = [...map.entries()]
@@ -68,25 +62,14 @@ function buildGroups(entries: Entry[]): Group[] {
     .map(([key, list]) => ({
       key,
       label: key,
-      entries: list.slice().sort(bySlug),
+      slugs: list.slice().sort(),
     }));
   return root ? [root, ...folders] : folders;
 }
 
 export default async function PagesIndex() {
-  const [gridSlugs, docSlugs, config] = await Promise.all([
-    listPages(),
-    listDocs(),
-    loadSiteConfig(),
-  ]);
-
-  // One row per slug. On a collision the grid page wins — same precedence
-  // as the public catch-all route, where JSON shadows markdown.
-  const bySlug = new Map<string, Entry>();
-  for (const slug of docSlugs) bySlug.set(slug, { slug, kind: "md" });
-  for (const slug of gridSlugs) bySlug.set(slug, { slug, kind: "grid" });
-  const entries = [...bySlug.values()];
-  const groups = buildGroups(entries);
+  const [slugs, config] = await Promise.all([listPages(), loadSiteConfig()]);
+  const groups = buildGroups(slugs);
 
   return (
     <>
@@ -94,11 +77,8 @@ export default async function PagesIndex() {
         <p className="kicker">01 — Content</p>
         <h1 className="font-display text-6xl mt-4">Pages</h1>
         <p className="mt-4 text-foreground/70 italic max-w-2xl">
-          Grid pages live in{" "}
-          <code className="font-sans text-sm">content/pages/</code> (the visual
-          editor); markdown pages live in{" "}
-          <code className="font-sans text-sm">content/docs/</code> (writing-first,
-          also editable in Obsidian). Save, then{" "}
+          The editor writes JSON straight to{" "}
+          <code className="font-sans text-sm">content/pages/</code>. Save, then{" "}
           <code className="font-sans text-sm">git commit</code> to publish. Use
           a slash in the slug (e.g.{" "}
           <code className="font-sans text-sm">work/new-thing</code>) to file a
@@ -112,13 +92,13 @@ export default async function PagesIndex() {
         ))}
       </div>
 
-      {entries.length === 0 && (
+      {slugs.length === 0 && (
         <p className="mt-16 text-foreground/60 italic">
           No pages yet — use the form below to create one.
         </p>
       )}
 
-      <NewPageForm existing={entries.map((e) => e.slug)} />
+      <NewPageForm existing={slugs} />
     </>
   );
 }
@@ -135,11 +115,11 @@ function PageGroup({
       <header className="flex items-baseline justify-between gap-4 pb-3 border-b border-border">
         <h2 className="kicker text-foreground">{group.label}</h2>
         <span className="kicker text-foreground/40">
-          {group.entries.length} {group.entries.length === 1 ? "page" : "pages"}
+          {group.slugs.length} {group.slugs.length === 1 ? "page" : "pages"}
         </span>
       </header>
       <ul className="divide-y divide-border">
-        {group.entries.map(({ slug, kind }) => {
+        {group.slugs.map((slug) => {
           const badges = roleBadges(slug, config);
           return (
             <li
@@ -153,11 +133,6 @@ function PageGroup({
                 <div>
                   <p className="kicker flex items-center gap-2 flex-wrap">
                     <span>{publicLabel(slug, config)}</span>
-                    {kind === "md" && (
-                      <span className="px-1.5 py-0.5 rounded-sm bg-surface border border-border text-foreground/60 text-[10px]">
-                        markdown
-                      </span>
-                    )}
                     {badges.map((b) => (
                       <span
                         key={b}
@@ -175,7 +150,7 @@ function PageGroup({
                   Edit →
                 </span>
               </Link>
-              <PageRowMenu slug={slug} kind={kind} config={config} />
+              <PageRowMenu slug={slug} config={config} />
             </li>
           );
         })}

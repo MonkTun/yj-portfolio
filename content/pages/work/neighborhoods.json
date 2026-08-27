@@ -1,0 +1,367 @@
+{
+  "meta": {
+    "title": "Neighborhoods"
+  },
+  "sections": [
+    {
+      "id": "sec_4359caae",
+      "background": {
+        "type": "video",
+        "url": "https://www.youtube.com/watch?v=UpH6HB-Km_0",
+        "overlay": 60,
+        "muted": true,
+        "loop": true,
+        "start": 4,
+        "playbackRate": 0.75,
+        "tint": "none",
+        "tintOpacity": 0
+      },
+      "padding": "sm",
+      "minHeight": "auto",
+      "align": "top",
+      "blocks": [
+        {
+          "id": "blk_fa3fabe8",
+          "layout": {
+            "col": 2,
+            "colSpan": 10,
+            "row": 2,
+            "rowSpan": 17
+          },
+          "type": "image",
+          "props": {
+            "src": "/uploads/e-line-watermark-mtbzb0fz-crop-mtbzjid2.png",
+            "alt": "",
+            "fit": "contain",
+            "radius": 0,
+            "filter": "none",
+            "focalX": 47,
+            "focalY": 20,
+            "rotate": 0,
+            "flipX": false,
+            "flipY": false,
+            "blur": 0,
+            "zoom": 1,
+            "tint": "none",
+            "tintOpacity": 0
+          }
+        },
+        {
+          "id": "blk_8a378c6a",
+          "layout": {
+            "col": 12,
+            "colSpan": 1,
+            "row": 20,
+            "rowSpan": 3
+          },
+          "type": "image",
+          "props": {
+            "src": "/uploads/e-line-watermark-mtbzb0fz-crop-mtbzmkw0.png",
+            "alt": "",
+            "fit": "contain",
+            "radius": 0,
+            "filter": "none",
+            "focalX": 50,
+            "focalY": 50,
+            "rotate": 0,
+            "flipX": false,
+            "flipY": false,
+            "blur": 0,
+            "zoom": 1,
+            "tint": "none",
+            "tintOpacity": 0
+          }
+        }
+      ]
+    },
+    {
+      "id": "sec_c42b3e4b",
+      "background": {
+        "type": "transparent"
+      },
+      "padding": "md",
+      "minHeight": "auto",
+      "align": "top",
+      "blocks": [
+        {
+          "id": "blk_2c138bb3",
+          "layout": {
+            "col": 1,
+            "colSpan": 12,
+            "row": 4,
+            "rowSpan": 8
+          },
+          "type": "text",
+          "props": {
+            "content": "This summer (2026), I interned at E-Line Media, a Phoenix-based video game studio with a long history of creating games that emphasize social impact. I was specifically part of the Neighborhoods, a game in which, instead of just building a soaring skyline of skyscrapers, you listen to your neighbors' daily struggles and complaints and focus on improving the community. This highly anticipated title has generated millions of impressions, reached over 60,000 wishlists on Steam, and received a positive reception at its announcement, garnering over 300,000 views on the Mix Summer Showcase. I am forever proud and grateful to be part of the journey, contributing as a gameplay programmer. ",
+            "variant": "body",
+            "align": "left",
+            "color": "foreground",
+            "transform": "none"
+          }
+        },
+        {
+          "id": "blk_e380d25d",
+          "layout": {
+            "col": 1,
+            "colSpan": 12,
+            "row": 1,
+            "rowSpan": 3
+          },
+          "type": "text",
+          "props": {
+            "content": "About the Project",
+            "variant": "h3",
+            "align": "left",
+            "color": "foreground",
+            "transform": "none"
+          }
+        }
+      ]
+    },
+    {
+      "id": "sec_0b5545fe",
+      "background": {
+        "type": "transparent"
+      },
+      "padding": "md",
+      "minHeight": "auto",
+      "align": "top",
+      "blocks": [
+        {
+          "id": "blk_63852d04",
+          "layout": {
+            "col": 1,
+            "colSpan": 6,
+            "row": 1,
+            "rowSpan": 18
+          },
+          "type": "video",
+          "props": {
+            "url": "https://youtu.be/18ZV0sAOrH0",
+            "autoplay": false,
+            "muted": false,
+            "loop": false,
+            "controls": true,
+            "aspect": "16/9",
+            "fit": "width",
+            "radius": 0
+          }
+        }
+      ]
+    },
+    {
+      "id": "sec_6261b8a7",
+      "background": {
+        "type": "transparent"
+      },
+      "padding": "md",
+      "minHeight": "auto",
+      "align": "top",
+      "blocks": [
+        {
+          "id": "blk_86456e90",
+          "layout": {
+            "col": 1,
+            "colSpan": 6,
+            "row": 1,
+            "rowSpan": 18
+          },
+          "type": "image",
+          "props": {
+            "src": "/uploads/footfall-mtc07emu.png",
+            "alt": "",
+            "fit": "cover",
+            "radius": 0,
+            "filter": "none",
+            "focalX": 50,
+            "focalY": 50,
+            "rotate": 0,
+            "flipX": false,
+            "flipY": false,
+            "blur": 0,
+            "zoom": 1,
+            "tint": "none",
+            "tintOpacity": 0
+          }
+        },
+        {
+          "id": "blk_377fc56a",
+          "layout": {
+            "col": 1,
+            "colSpan": 6,
+            "row": 21,
+            "rowSpan": 18
+          },
+          "type": "image",
+          "props": {
+            "src": "/uploads/neighborhoodsprogress-mtc3oi4h.png",
+            "alt": "",
+            "fit": "cover",
+            "radius": 0,
+            "filter": "none",
+            "focalX": 50,
+            "focalY": 50,
+            "rotate": 0,
+            "flipX": false,
+            "flipY": false,
+            "blur": 0,
+            "zoom": 1,
+            "tint": "none",
+            "tintOpacity": 0
+          }
+        }
+      ]
+    },
+    {
+      "id": "sec_a1d8e629",
+      "background": {
+        "type": "transparent"
+      },
+      "padding": "md",
+      "minHeight": "auto",
+      "align": "top",
+      "blocks": [
+        {
+          "id": "blk_f0bf6ca6",
+          "layout": {
+            "col": 1,
+            "colSpan": 6,
+            "row": 1,
+            "rowSpan": 18
+          },
+          "type": "video",
+          "props": {
+            "url": "https://youtu.be/G7EzjliZ0Aw",
+            "autoplay": false,
+            "muted": false,
+            "loop": false,
+            "controls": true,
+            "aspect": "16/9",
+            "fit": "width",
+            "radius": 0
+          }
+        },
+        {
+          "id": "blk_980a110f",
+          "layout": {
+            "col": 7,
+            "colSpan": 6,
+            "row": 1,
+            "rowSpan": 18
+          },
+          "type": "video",
+          "props": {
+            "url": "https://youtu.be/k09sr3s52sc",
+            "autoplay": false,
+            "muted": false,
+            "loop": false,
+            "controls": true,
+            "aspect": "16/9",
+            "fit": "width",
+            "radius": 0
+          }
+        }
+      ]
+    },
+    {
+      "id": "sec_56ac5cfa",
+      "background": {
+        "type": "transparent"
+      },
+      "padding": "md",
+      "minHeight": "auto",
+      "align": "top",
+      "blocks": [
+        {
+          "id": "blk_d9e2e4b0",
+          "layout": {
+            "col": 1,
+            "colSpan": 7,
+            "row": 1,
+            "rowSpan": 20
+          },
+          "type": "video",
+          "props": {
+            "url": "https://youtu.be/_xmH6M-CRnw",
+            "autoplay": false,
+            "muted": false,
+            "loop": false,
+            "controls": true,
+            "aspect": "16/9",
+            "fit": "width",
+            "radius": 0
+          }
+        }
+      ]
+    },
+    {
+      "id": "sec_adaba911",
+      "background": {
+        "type": "transparent"
+      },
+      "padding": "md",
+      "minHeight": "auto",
+      "align": "top",
+      "blocks": [
+        {
+          "id": "blk_f9cdedf9",
+          "layout": {
+            "col": 1,
+            "colSpan": 7,
+            "row": 1,
+            "rowSpan": 20
+          },
+          "type": "video",
+          "props": {
+            "url": "https://youtu.be/SX2TgLG96bk",
+            "autoplay": false,
+            "muted": false,
+            "loop": false,
+            "controls": true,
+            "aspect": "16/9",
+            "fit": "width",
+            "radius": 0
+          }
+        }
+      ]
+    },
+    {
+      "id": "sec_4961d2d3",
+      "background": {
+        "type": "transparent"
+      },
+      "padding": "md",
+      "minHeight": "auto",
+      "align": "top",
+      "blocks": [
+        {
+          "id": "blk_dd012180",
+          "layout": {
+            "col": 8,
+            "colSpan": 4,
+            "row": 1,
+            "rowSpan": 19
+          },
+          "type": "image",
+          "props": {
+            "src": "/uploads/graffiti-mtc3e7rh.webp",
+            "alt": "",
+            "fit": "cover",
+            "radius": 0,
+            "filter": "none",
+            "focalX": 50,
+            "focalY": 50,
+            "rotate": 0,
+            "flipX": false,
+            "flipY": false,
+            "blur": 0,
+            "zoom": 1,
+            "tint": "none",
+            "tintOpacity": 0
+          }
+        }
+      ]
+    }
+  ]
+}
