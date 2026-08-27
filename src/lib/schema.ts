@@ -131,9 +131,10 @@ export const imagePropsSchema = z.object({
   flipY: z.boolean().default(false),
   /** Gaussian blur in px. */
   blur: z.number().int().min(0).max(50).default(0),
-  /** Zoom factor — scales the image up within its frame, toward the focal
-   *  point. 1 = fit, 3 = 3× in. */
-  zoom: z.number().min(1).max(3).default(1),
+  /** Scale factor — scales the image within its frame, toward the focal
+   *  point. 1 = fit, 3 = 3× in; below 1 shrinks the image inside its
+   *  block (the frame shows through around it). */
+  zoom: z.number().min(0.2).max(3).default(1),
   /** Color overlay token; rendered as an absolute div on top of the image. */
   tint: imageTintSchema.default("none"),
   /** 0–100; opacity of the tint overlay. */
@@ -175,6 +176,11 @@ export const videoPropsSchema = z.object({
   start: z.number().int().min(0).optional(),
   /** CSS aspect-ratio for the wrapper, e.g. "16/9" or "9/16". */
   aspect: z.string().default("16/9"),
+  /** Which block dimension the video sizes from: "width" fills the block's
+   *  width and derives height from `aspect`; "height" fills the block's
+   *  height and derives width (grid pages only — markdown flow has no
+   *  fixed height, so "height" falls back to width-driven there). */
+  fit: z.enum(["width", "height"]).default("width"),
   /** Corner radius in px. */
   radius: z.number().int().min(0).max(200).default(0),
 });
@@ -203,7 +209,7 @@ export const carouselItemSchema = z.object({
   flipX: z.boolean().default(false),
   flipY: z.boolean().default(false),
   blur: z.number().int().min(0).max(50).default(0),
-  zoom: z.number().min(1).max(3).default(1),
+  zoom: z.number().min(0.2).max(3).default(1),
   tint: imageTintSchema.default("none"),
   tintOpacity: z.number().int().min(0).max(100).default(0),
 });
@@ -263,6 +269,45 @@ export const projectCarouselPropsSchema = z.object({
   pauseOnHover: z.boolean().default(true),
 });
 
+/** Platforms the Social Links block knows how to draw an icon for. */
+export const socialPlatformSchema = z.enum([
+  "linkedin",
+  "discord",
+  "github",
+  "instagram",
+  "x",
+  "youtube",
+  "email",
+  "website",
+]);
+
+export const socialLinkItemSchema = z.object({
+  platform: socialPlatformSchema,
+  /** Full URL (or mailto:) — e.g. https://www.linkedin.com/in/you. */
+  href: z.string().default(""),
+  /** Optional custom label — shown on "pills", used as aria-label on "icons".
+   *  Empty falls back to the platform's display name. */
+  label: z.string().optional(),
+});
+
+/**
+ * Row of social/profile links. Two looks:
+ *  - "icons" — bare brand glyphs that tint to the accent on hover.
+ *  - "pills" — ghost-button chips with icon + mono kicker label.
+ */
+export const socialLinksPropsSchema = z.object({
+  items: z.array(socialLinkItemSchema).default([]),
+  variant: z.enum(["icons", "pills"]).default("icons"),
+  /** Icon size in px. */
+  size: z.number().int().min(14).max(48).default(20),
+  /** Gap between items in px. */
+  gap: z.number().int().min(0).max(64).default(20),
+  align: z.enum(["left", "center", "right"]).default("left"),
+  /** Resting color; hover is always the accent. */
+  color: z.enum(["foreground", "muted", "accent"]).default("foreground"),
+  newTab: z.boolean().default(true),
+});
+
 /* ----- Discriminated union of block types ----- */
 
 const blockBase = {
@@ -283,6 +328,11 @@ export const blockSchema = z.discriminatedUnion("type", [
     ...blockBase,
     type: z.literal("projectCarousel"),
     props: projectCarouselPropsSchema,
+  }),
+  z.object({
+    ...blockBase,
+    type: z.literal("socialLinks"),
+    props: socialLinksPropsSchema,
   }),
 ]);
 
@@ -313,7 +363,7 @@ export const sectionBackgroundSchema = z.discriminatedUnion("type", [
     flipX: z.boolean().default(false),
     flipY: z.boolean().default(false),
     blur: z.number().int().min(0).max(50).default(0),
-    zoom: z.number().min(1).max(3).default(1),
+    zoom: z.number().min(0.2).max(3).default(1),
     tint: imageTintSchema.default("none"),
     tintOpacity: z.number().int().min(0).max(100).default(0),
   }),
@@ -503,6 +553,9 @@ export type QuoteProps = z.infer<typeof quotePropsSchema>;
 export type VideoProps = z.infer<typeof videoPropsSchema>;
 export type CarouselItem = z.infer<typeof carouselItemSchema>;
 export type ProjectCarouselProps = z.infer<typeof projectCarouselPropsSchema>;
+export type SocialPlatform = z.infer<typeof socialPlatformSchema>;
+export type SocialLinkItem = z.infer<typeof socialLinkItemSchema>;
+export type SocialLinksProps = z.infer<typeof socialLinksPropsSchema>;
 
 export type Section = z.infer<typeof sectionSchema>;
 export type SectionBackground = z.infer<typeof sectionBackgroundSchema>;

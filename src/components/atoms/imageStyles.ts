@@ -27,8 +27,9 @@ export const imageFilterLabel: Record<ImageProps["filter"], string> = {
 };
 
 /** Compose rotate + flips + zoom into a single CSS transform string, or
- *  undefined. `zoom` (default 1) scales the image up within its frame; pair it
- *  with a focal-point transform-origin so it zooms toward the chosen point. */
+ *  undefined. `zoom` (default 1) scales the image within its frame — above 1
+ *  crops in, below 1 shrinks it so the frame shows through; pair it with a
+ *  focal-point transform-origin so it scales toward the chosen point. */
 export function imageTransformCss({
   rotate,
   flipX,

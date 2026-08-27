@@ -10,6 +10,7 @@ import { Line } from "@/components/atoms/Line";
 import { Quote } from "@/components/atoms/Quote";
 import { Video } from "@/components/atoms/Video";
 import { ProjectCarousel } from "@/components/atoms/ProjectCarousel";
+import { SocialLinks } from "@/components/atoms/SocialLinks";
 
 type AtomEntry<P = unknown> = {
   type: BlockType;
@@ -115,6 +116,7 @@ export const atomRegistry: Record<BlockType, AtomEntry<any>> = {
       loop: false,
       controls: true,
       aspect: "16/9",
+      fit: "width",
       radius: 0,
     },
     defaultLayout: { colSpan: 8, rowSpan: 18 },
@@ -156,6 +158,24 @@ export const atomRegistry: Record<BlockType, AtomEntry<any>> = {
       pauseOnHover: true,
     },
     defaultLayout: { colSpan: 12, rowSpan: 33 },
+  },
+  socialLinks: {
+    type: "socialLinks",
+    label: "Social Links",
+    component: SocialLinks,
+    defaultProps: {
+      items: [
+        { platform: "linkedin", href: "" },
+        { platform: "discord", href: "" },
+      ],
+      variant: "icons",
+      size: 20,
+      gap: 20,
+      align: "left",
+      color: "foreground",
+      newTab: true,
+    },
+    defaultLayout: { colSpan: 3, rowSpan: 3 },
   },
 };
 

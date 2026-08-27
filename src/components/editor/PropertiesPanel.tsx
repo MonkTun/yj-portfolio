@@ -13,8 +13,15 @@ import type {
   VideoProps,
   ProjectCarouselProps,
   CarouselItem,
+  SocialLinksProps,
+  SocialLinkItem,
+  SocialPlatform,
 } from "@/lib/schema";
-import { CAROUSEL_ITEM_EFFECT_DEFAULTS } from "@/lib/schema";
+import {
+  CAROUSEL_ITEM_EFFECT_DEFAULTS,
+  socialPlatformSchema,
+} from "@/lib/schema";
+import { SOCIAL_PLATFORM_LABELS } from "@/components/atoms/SocialLinks";
 import { getYouTubeId } from "@/lib/youtube";
 import { downscaleImage } from "@/lib/downscale-image";
 import { atomRegistry } from "@/lib/atom-registry";
@@ -577,6 +584,12 @@ function BlockProps({
           onUpdate={onUpdate}
         />
       )}
+      {block.type === "socialLinks" && (
+        <SocialLinksBlockProps
+          props={block.props as SocialLinksProps}
+          onUpdate={onUpdate}
+        />
+      )}
       {block.type === "quote" && (
         <>
           <Field label="quote">
@@ -690,7 +703,8 @@ function BlockMobileProps({
       )}
       {(block.type === "line" ||
         block.type === "quote" ||
-        block.type === "projectCarousel") && (
+        block.type === "projectCarousel" ||
+        block.type === "socialLinks") && (
         <Hint>This block has no mobile-specific style overrides.</Hint>
       )}
 
@@ -1569,6 +1583,181 @@ function ProjectCarouselBlockProps({
   );
 }
 
+function SocialLinksBlockProps({
+  props,
+  onUpdate,
+}: {
+  props: SocialLinksProps;
+  onUpdate: (patch: Record<string, unknown>) => void;
+}) {
+  const items = props.items;
+
+  const setItem = (i: number, patch: Partial<SocialLinkItem>) => {
+    onUpdate({
+      items: items.map((it, idx) => (idx === i ? { ...it, ...patch } : it)),
+    });
+  };
+  const addItem = () => {
+    onUpdate({ items: [...items, { platform: "website", href: "" }] });
+  };
+  const removeItem = (i: number) => {
+    onUpdate({ items: items.filter((_, idx) => idx !== i) });
+  };
+  const move = (i: number, dir: -1 | 1) => {
+    const j = i + dir;
+    if (j < 0 || j >= items.length) return;
+    const next = items.slice();
+    [next[i], next[j]] = [next[j], next[i]];
+    onUpdate({ items: next });
+  };
+
+  return (
+    <>
+      <Field label="variant">
+        <SegmentBar
+          options={["icons", "pills"]}
+          labels={{ icons: "Icons", pills: "Pills" }}
+          value={props.variant}
+          onChange={(v) => onUpdate({ variant: v })}
+        />
+        <p className="text-xs text-foreground/40 italic mt-1.5">
+          {props.variant === "pills"
+            ? "Ghost-button chips with icon + label."
+            : "Bare glyphs that tint to the accent on hover."}
+        </p>
+      </Field>
+
+      <Field label="align">
+        <SegmentBar
+          options={["left", "center", "right"]}
+          value={props.align}
+          onChange={(v) => onUpdate({ align: v })}
+        />
+      </Field>
+
+      <Field label="color">
+        <SegmentBar
+          options={["foreground", "muted", "accent"]}
+          value={props.color}
+          onChange={(v) => onUpdate({ color: v })}
+        />
+      </Field>
+
+      <Field label={`icon size — ${props.size}px`}>
+        <input
+          type="range"
+          min={14}
+          max={48}
+          step={1}
+          value={props.size}
+          onChange={(e) =>
+            onUpdate({ size: parseInt(e.target.value, 10) || 20 })
+          }
+          className="w-full accent-accent"
+        />
+      </Field>
+
+      <Field label={`gap — ${props.gap}px`}>
+        <input
+          type="range"
+          min={0}
+          max={64}
+          step={2}
+          value={props.gap}
+          onChange={(e) => onUpdate({ gap: parseInt(e.target.value, 10) || 0 })}
+          className="w-full accent-accent"
+        />
+      </Field>
+
+      <Field label="links">
+        <ToggleBtn
+          label={props.newTab ? "New tab" : "Same tab"}
+          active={props.newTab}
+          onToggle={() => onUpdate({ newTab: !props.newTab })}
+        />
+      </Field>
+
+      <hr className="rule" />
+
+      <div className="flex items-center justify-between">
+        <span className="kicker">links · {items.length}</span>
+        <button
+          type="button"
+          onClick={addItem}
+          className="kicker px-2 py-1.5 rounded-sm bg-accent text-accent-foreground hover:opacity-90 transition-opacity"
+        >
+          + Add link
+        </button>
+      </div>
+
+      <div className="space-y-4">
+        {items.map((item, i) => (
+          <div
+            key={i}
+            className="rounded-sm border border-border bg-background/40 p-3 space-y-3"
+          >
+            <div className="flex items-center justify-between">
+              <span className="kicker text-foreground/50">#{i + 1}</span>
+              <div className="flex gap-1">
+                <CarouselItemBtn
+                  label="Move up"
+                  disabled={i === 0}
+                  onClick={() => move(i, -1)}
+                >
+                  ↑
+                </CarouselItemBtn>
+                <CarouselItemBtn
+                  label="Move down"
+                  disabled={i === items.length - 1}
+                  onClick={() => move(i, 1)}
+                >
+                  ↓
+                </CarouselItemBtn>
+                <CarouselItemBtn label="Remove" onClick={() => removeItem(i)}>
+                  ✕
+                </CarouselItemBtn>
+              </div>
+            </div>
+
+            <select
+              className={inputCls}
+              value={item.platform}
+              onChange={(e) =>
+                setItem(i, { platform: e.target.value as SocialPlatform })
+              }
+            >
+              {socialPlatformSchema.options.map((p) => (
+                <option key={p} value={p}>
+                  {SOCIAL_PLATFORM_LABELS[p]}
+                </option>
+              ))}
+            </select>
+            <input
+              className={cn(inputCls, "font-sans text-xs")}
+              placeholder={
+                item.platform === "email"
+                  ? "mailto:you@example.com"
+                  : "https://…"
+              }
+              value={item.href}
+              onChange={(e) => setItem(i, { href: e.target.value })}
+            />
+            <input
+              className={inputCls}
+              placeholder={`label (optional — "${SOCIAL_PLATFORM_LABELS[item.platform]}")`}
+              value={item.label ?? ""}
+              onChange={(e) =>
+                setItem(i, { label: e.target.value || undefined })
+              }
+            />
+          </div>
+        ))}
+        {items.length === 0 && <Hint>No links yet. Add one above.</Hint>}
+      </div>
+    </>
+  );
+}
+
 function CarouselItemBtn({
   label,
   onClick,
@@ -1935,10 +2124,10 @@ function ImageEffects({
         />
       </Field>
 
-      <Field label={`zoom — ${zoom.toFixed(2)}×`}>
+      <Field label={`scale — ${zoom.toFixed(2)}×`}>
         <input
           type="range"
-          min={1}
+          min={0.2}
           max={3}
           step={0.05}
           value={zoom}
@@ -1948,7 +2137,8 @@ function ImageEffects({
           className="w-full accent-accent"
         />
         <p className="text-xs text-foreground/40 italic">
-          Scales the image in toward the focal point below.
+          Scales the image toward the focal point below — under 1× shrinks
+          it inside its frame.
         </p>
       </Field>
 
@@ -3034,6 +3224,20 @@ function VideoBlockProps({
           value={props.aspect}
           onChange={(e) => onUpdate({ aspect: e.target.value || "16/9" })}
         />
+      </Field>
+
+      <Field label="fit">
+        <SegmentBar
+          options={["width", "height"]}
+          labels={{ width: "Width", height: "Height" }}
+          value={props.fit}
+          onChange={(v) => onUpdate({ fit: v })}
+        />
+        <p className="text-xs text-foreground/40 italic mt-1.5">
+          {props.fit === "height"
+            ? "Fills the block's height; width follows the aspect ratio."
+            : "Fills the block's width; height follows the aspect ratio."}
+        </p>
       </Field>
 
       <Field label={`corner radius — ${props.radius}px`}>

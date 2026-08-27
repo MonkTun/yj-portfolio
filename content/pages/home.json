@@ -67,6 +67,38 @@
             "transform": "none",
             "fontSize": 30
           }
+        },
+        {
+          "id": "blk_social_hero",
+          "layout": {
+            "col": 1,
+            "colSpan": 3,
+            "row": 24,
+            "rowSpan": 3
+          },
+          "type": "socialLinks",
+          "props": {
+            "items": [
+              {
+                "platform": "linkedin",
+                "href": "https://www.linkedin.com/in/youngjepark1"
+              },
+              {
+                "platform": "discord",
+                "href": "https://discord.com/users/340039649084833792"
+              },
+              {
+                "platform": "github",
+                "href": "https://github.com/MonkTun"
+              }
+            ],
+            "variant": "icons",
+            "size": 20,
+            "gap": 20,
+            "align": "left",
+            "color": "foreground",
+            "newTab": true
+          }
         }
       ]
     },
@@ -84,7 +116,7 @@
           "id": "blk_78327086",
           "layout": {
             "col": 1,
-            "colSpan": 7,
+            "colSpan": 6,
             "row": 5,
             "rowSpan": 7
           },
@@ -98,42 +130,12 @@
           }
         },
         {
-          "id": "blk_ed0c1275",
-          "layout": {
-            "col": 8,
-            "colSpan": 5,
-            "row": 1,
-            "rowSpan": 16
-          },
-          "type": "video",
-          "props": {
-            "url": "https://youtu.be/GXg-eGbxVlo",
-            "autoplay": false,
-            "muted": false,
-            "loop": false,
-            "controls": true,
-            "aspect": "16/9",
-            "radius": 0
-          }
-        }
-      ]
-    },
-    {
-      "id": "sec_cce5055c",
-      "background": {
-        "type": "transparent"
-      },
-      "padding": "sm",
-      "minHeight": "auto",
-      "align": "top",
-      "blocks": [
-        {
           "id": "blk_fa6381af",
           "layout": {
             "col": 1,
             "colSpan": 12,
-            "row": 6,
-            "rowSpan": 12,
+            "row": 22,
+            "rowSpan": 10,
             "bleed": "both"
           },
           "mobile": {
@@ -254,42 +256,6 @@
                 "tintOpacity": 0
               },
               {
-                "src": "/uploads/holowandbanner-mqg6te98.webp",
-                "alt": "",
-                "title": "New project",
-                "meta": "",
-                "description": "",
-                "starred": false,
-                "filter": "none",
-                "focalX": 37,
-                "focalY": 53,
-                "rotate": 0,
-                "flipX": false,
-                "flipY": false,
-                "blur": 0,
-                "zoom": 1,
-                "tint": "none",
-                "tintOpacity": 0
-              },
-              {
-                "src": "/uploads/potionproblems-mqg78g3u.jpg",
-                "alt": "",
-                "title": "New project",
-                "meta": "",
-                "description": "",
-                "starred": false,
-                "filter": "none",
-                "focalX": 50,
-                "focalY": 50,
-                "rotate": 0,
-                "flipX": false,
-                "flipY": false,
-                "blur": 0,
-                "zoom": 1,
-                "tint": "none",
-                "tintOpacity": 0
-              },
-              {
                 "src": "/uploads/communityg-mqhaapeg.png",
                 "alt": "",
                 "title": "New project",
@@ -317,20 +283,40 @@
             "showArrows": true,
             "newTab": false,
             "autoScrollSpeed": 55,
-            "pauseOnHover": false
+            "pauseOnHover": true
           }
         },
         {
-          "id": "blk_4b06c283",
+          "id": "blk_ed0c1275",
+          "layout": {
+            "col": 8,
+            "colSpan": 5,
+            "row": 1,
+            "rowSpan": 16
+          },
+          "type": "video",
+          "props": {
+            "url": "https://youtu.be/GXg-eGbxVlo",
+            "autoplay": false,
+            "muted": false,
+            "loop": false,
+            "controls": true,
+            "aspect": "16/9",
+            "fit": "width",
+            "radius": 0
+          }
+        },
+        {
+          "id": "blk_e99b5b71",
           "layout": {
             "col": 1,
-            "colSpan": 12,
+            "colSpan": 6,
             "row": 1,
-            "rowSpan": 3
+            "rowSpan": 4
           },
           "type": "text",
           "props": {
-            "content": "My Projects.",
+            "content": "About Me",
             "variant": "h3",
             "align": "left",
             "color": "foreground",
@@ -340,29 +326,39 @@
       ]
     },
     {
-      "id": "sec_proj_overdawn",
+      "id": "sec_1768d09a",
       "background": {
-        "type": "reactbits",
-        "kind": "light-pillar",
-        "intensity": 1,
-        "speed": 1,
-        "colorA": "#3e1353",
-        "colorB": "#0F0D0B",
-        "overlay": 40,
-        "tint": "none",
-        "tintOpacity": 0,
-        "mobileFallbackBreakpoint": 768,
-        "mobileFallbackKind": "gradient"
+        "type": "reverse"
       },
-      "padding": "md",
+      "padding": "lg",
       "minHeight": "auto",
-      "align": "top",
+      "align": "center",
       "blocks": [
         {
-          "id": "blk_overdawn_meta",
+          "id": "blk_3bae98b8",
           "layout": {
-            "col": 7,
+            "col": 1,
             "colSpan": 6,
+            "row": 1,
+            "rowSpan": 16
+          },
+          "type": "video",
+          "props": {
+            "url": "https://www.youtube.com/watch?v=UpH6HB-Km_0",
+            "autoplay": false,
+            "muted": false,
+            "loop": false,
+            "controls": true,
+            "aspect": "16/9",
+            "fit": "width",
+            "radius": 0
+          }
+        },
+        {
+          "id": "blk_d9dc5eb9",
+          "layout": {
+            "col": 8,
+            "colSpan": 5,
             "row": 1,
             "rowSpan": 2
           },
@@ -375,7 +371,7 @@
           },
           "type": "text",
           "props": {
-            "content": "Since 2022 — Director / Lead engineer",
+            "content": "2026 — Gameplay programming Intern @ E-Line Media",
             "variant": "kicker",
             "align": "left",
             "color": "muted",
@@ -383,10 +379,10 @@
           }
         },
         {
-          "id": "blk_overdawn_title",
+          "id": "blk_101ba393",
           "layout": {
-            "col": 7,
-            "colSpan": 6,
+            "col": 8,
+            "colSpan": 4,
             "row": 3,
             "rowSpan": 4
           },
@@ -399,7 +395,7 @@
           },
           "type": "text",
           "props": {
-            "content": "Overdawn.",
+            "content": "Neighborhoods",
             "variant": "h3",
             "align": "left",
             "color": "foreground",
@@ -407,9 +403,9 @@
           }
         },
         {
-          "id": "blk_overdawn_summary",
+          "id": "blk_218736fd",
           "layout": {
-            "col": 7,
+            "col": 8,
             "colSpan": 5,
             "row": 7,
             "rowSpan": 8
@@ -424,7 +420,7 @@
           },
           "type": "text",
           "props": {
-            "content": "A 2.5D bullet-time shooter built in Unity. Custom inventory, save, and quest systems written from first principles for a 30+ person team.",
+            "content": "Neighborhoods is a cozy city sim where you shape streets to help people thrive, gather, and develop strong opinions about a particular bench. We're reimagining the city builder as a city fixer.",
             "variant": "body",
             "align": "left",
             "color": "foreground",
@@ -432,177 +428,9 @@
           }
         },
         {
-          "id": "blk_overdawn_image",
-          "layout": {
-            "col": 2,
-            "colSpan": 4,
-            "row": 1,
-            "rowSpan": 30
-          },
-          "mobile": {
-            "layout": {
-              "col": 1,
-              "colSpan": 12
-            }
-          },
-          "type": "image",
-          "props": {
-            "src": "/projects/overdawnTitle.png",
-            "alt": "Overdawn",
-            "fit": "cover",
-            "href": "/work/overdawn",
-            "aspect": "4/5",
-            "radius": 49,
-            "filter": "none",
-            "focalX": 50,
-            "focalY": 50,
-            "rotate": 0,
-            "flipX": false,
-            "flipY": false,
-            "blur": 0,
-            "zoom": 1,
-            "tint": "none",
-            "tintOpacity": 0
-          }
-        },
-        {
-          "id": "blk_dawngeon_meta",
-          "layout": {
-            "col": 2,
-            "colSpan": 6,
-            "row": 48,
-            "rowSpan": 1
-          },
-          "mobile": {
-            "layout": {
-              "col": 1,
-              "colSpan": 12,
-              "row": 85,
-              "rowSpan": 2
-            }
-          },
-          "type": "text",
-          "props": {
-            "content": "2022 — Solo developer",
-            "variant": "kicker",
-            "align": "left",
-            "color": "muted",
-            "transform": "none"
-          }
-        },
-        {
-          "id": "blk_dawngeon_title",
-          "layout": {
-            "col": 2,
-            "colSpan": 6,
-            "row": 49,
-            "rowSpan": 5
-          },
-          "mobile": {
-            "layout": {
-              "col": 1,
-              "colSpan": 12,
-              "row": 87,
-              "rowSpan": 4
-            }
-          },
-          "type": "text",
-          "props": {
-            "content": "Dawngeon.",
-            "variant": "h3",
-            "align": "left",
-            "color": "foreground",
-            "transform": "none"
-          }
-        },
-        {
-          "id": "blk_dawngeon_summary",
-          "layout": {
-            "col": 2,
-            "colSpan": 5,
-            "row": 54,
-            "rowSpan": 7
-          },
-          "mobile": {
-            "layout": {
-              "col": 1,
-              "colSpan": 12,
-              "row": 91,
-              "rowSpan": 8
-            }
-          },
-          "type": "text",
-          "props": {
-            "content": "A pixel rogue-like RPG for the App Store. 140K+ downloads, 4.6 stars, charted #130 in Adventure. My first ship.",
-            "variant": "body",
-            "align": "left",
-            "color": "foreground",
-            "transform": "none"
-          }
-        },
-        {
-          "id": "blk_dawngeon_image",
+          "id": "blk_75520547",
           "layout": {
             "col": 8,
-            "colSpan": 4,
-            "row": 43,
-            "rowSpan": 30
-          },
-          "mobile": {
-            "layout": {
-              "col": 1,
-              "colSpan": 12,
-              "row": 52
-            }
-          },
-          "type": "image",
-          "props": {
-            "src": "/projects/dawngeonTitle.png",
-            "alt": "Dawngeon",
-            "fit": "cover",
-            "href": "/work/dawngeon",
-            "aspect": "4/5",
-            "radius": 50,
-            "filter": "none",
-            "focalX": 50,
-            "focalY": 50,
-            "rotate": 0,
-            "flipX": false,
-            "flipY": false,
-            "blur": 0,
-            "zoom": 1,
-            "tint": "none",
-            "tintOpacity": 0
-          }
-        },
-        {
-          "id": "blk_dawngeon_btn",
-          "layout": {
-            "col": 2,
-            "colSpan": 3,
-            "row": 61,
-            "rowSpan": 3
-          },
-          "mobile": {
-            "layout": {
-              "col": 1,
-              "colSpan": 12,
-              "row": 97
-            }
-          },
-          "type": "button",
-          "props": {
-            "label": "Read more →",
-            "href": "/work/dawngeon",
-            "variant": "ghost",
-            "align": "left",
-            "newTab": false
-          }
-        },
-        {
-          "id": "blk_overdawn_btn",
-          "layout": {
-            "col": 7,
             "colSpan": 3,
             "row": 18,
             "rowSpan": 3
@@ -617,18 +445,140 @@
           "type": "button",
           "props": {
             "label": "Read more →",
-            "href": "/work/overdawn",
+            "href": "/work/neighborhoods",
             "variant": "ghost",
             "align": "left",
             "newTab": false
           }
         },
         {
+          "id": "blk_ce302bae",
+          "layout": {
+            "col": 12,
+            "colSpan": 1,
+            "row": 16,
+            "rowSpan": 5
+          },
+          "type": "image",
+          "props": {
+            "src": "/uploads/neighborhoodsmix-mtbr58wd.avif",
+            "alt": "",
+            "fit": "cover",
+            "radius": 0,
+            "filter": "none",
+            "focalX": 50,
+            "focalY": 50,
+            "rotate": 0,
+            "flipX": false,
+            "flipY": false,
+            "blur": 0,
+            "zoom": 1,
+            "tint": "none",
+            "tintOpacity": 0
+          }
+        }
+      ]
+    },
+    {
+      "id": "sec_proj_overdawn",
+      "background": {
+        "type": "image",
+        "src": "/uploads/game-trailer-thumbnail-1920-x-1080-px-mtbsm0ua.png",
+        "overlay": 75,
+        "filter": "none",
+        "focalX": 50,
+        "focalY": 50,
+        "rotate": 0,
+        "flipX": false,
+        "flipY": false,
+        "blur": 0,
+        "zoom": 1,
+        "tint": "none",
+        "tintOpacity": 0
+      },
+      "padding": "md",
+      "minHeight": "auto",
+      "align": "top",
+      "blocks": [
+        {
+          "id": "blk_overdawn_meta",
+          "layout": {
+            "col": 8,
+            "colSpan": 4,
+            "row": 1,
+            "rowSpan": 2
+          },
+          "mobile": {
+            "layout": {
+              "col": 1,
+              "colSpan": 12,
+              "row": 31
+            }
+          },
+          "type": "text",
+          "props": {
+            "content": "2025 — Director / Lead engineer @ Overdawn STudio",
+            "variant": "kicker",
+            "align": "left",
+            "color": "muted",
+            "transform": "none"
+          }
+        },
+        {
+          "id": "blk_overdawn_title",
+          "layout": {
+            "col": 8,
+            "colSpan": 5,
+            "row": 3,
+            "rowSpan": 4
+          },
+          "mobile": {
+            "layout": {
+              "col": 1,
+              "colSpan": 12,
+              "row": 33
+            }
+          },
+          "type": "text",
+          "props": {
+            "content": "Overdawn",
+            "variant": "h3",
+            "align": "left",
+            "color": "foreground",
+            "transform": "none"
+          }
+        },
+        {
+          "id": "blk_overdawn_summary",
+          "layout": {
+            "col": 8,
+            "colSpan": 5,
+            "row": 7,
+            "rowSpan": 8
+          },
+          "mobile": {
+            "layout": {
+              "col": 1,
+              "colSpan": 12,
+              "row": 36,
+              "rowSpan": 7
+            }
+          },
+          "type": "text",
+          "props": {
+            "content": "I directed and engineered a 2.5D bullet-time shooter in Unity. I built custom inventory, skill tree, and quest systems from the ground up in a 20+ person team. Wishlist now on Steam!",
+            "variant": "body",
+            "align": "left",
+            "color": "foreground",
+            "transform": "none"
+          }
+        },
+        {
           "id": "blk_e84a9761",
           "layout": {
-            "col": 7,
+            "col": 11,
             "colSpan": 1,
-            "row": 25,
+            "row": 17,
             "rowSpan": 5
           },
           "mobile": {
@@ -660,9 +610,9 @@
         {
           "id": "blk_dc5a8b59",
           "layout": {
-            "col": 8,
+            "col": 12,
             "colSpan": 1,
-            "row": 25,
+            "row": 17,
             "rowSpan": 5
           },
           "mobile": {
@@ -690,13 +640,211 @@
             "tint": "none",
             "tintOpacity": 0
           }
+        },
+        {
+          "id": "blk_e5659595",
+          "layout": {
+            "col": 1,
+            "colSpan": 6,
+            "row": 1,
+            "rowSpan": 21
+          },
+          "type": "video",
+          "props": {
+            "url": "https://www.youtube.com/watch?v=3QuGe29jRBc",
+            "autoplay": false,
+            "muted": false,
+            "loop": false,
+            "controls": true,
+            "aspect": "16/9",
+            "fit": "width",
+            "radius": 0
+          }
+        },
+        {
+          "id": "blk_d8bc5b7b",
+          "layout": {
+            "col": 8,
+            "colSpan": 3,
+            "row": 18,
+            "rowSpan": 3
+          },
+          "mobile": {
+            "layout": {
+              "col": 1,
+              "colSpan": 12,
+              "row": 43
+            }
+          },
+          "type": "button",
+          "props": {
+            "label": "Read more →",
+            "href": "/work/overdawn",
+            "variant": "ghost",
+            "align": "left",
+            "newTab": false
+          }
+        }
+      ]
+    },
+    {
+      "id": "sec_59705ad3",
+      "background": {
+        "type": "image",
+        "src": "/projects/dawngeonTitle.png",
+        "overlay": 88,
+        "filter": "none",
+        "focalX": 50,
+        "focalY": 50,
+        "rotate": 0,
+        "flipX": false,
+        "flipY": false,
+        "blur": 0,
+        "zoom": 1,
+        "tint": "none",
+        "tintOpacity": 0
+      },
+      "padding": "md",
+      "minHeight": "half",
+      "align": "top",
+      "blocks": [
+        {
+          "id": "blk_30ad81f6",
+          "layout": {
+            "col": 8,
+            "colSpan": 5,
+            "row": 4,
+            "rowSpan": 1
+          },
+          "mobile": {
+            "layout": {
+              "col": 1,
+              "colSpan": 12,
+              "row": 85,
+              "rowSpan": 2
+            }
+          },
+          "type": "text",
+          "props": {
+            "content": "2022 — Solo developer",
+            "variant": "kicker",
+            "align": "left",
+            "color": "muted",
+            "transform": "none"
+          }
+        },
+        {
+          "id": "blk_b6a2a13b",
+          "layout": {
+            "col": 8,
+            "colSpan": 5,
+            "row": 6,
+            "rowSpan": 4
+          },
+          "mobile": {
+            "layout": {
+              "col": 1,
+              "colSpan": 12,
+              "row": 87,
+              "rowSpan": 4
+            }
+          },
+          "type": "text",
+          "props": {
+            "content": "Dawngeon",
+            "variant": "h3",
+            "align": "left",
+            "color": "foreground",
+            "transform": "none"
+          }
+        },
+        {
+          "id": "blk_bd11707a",
+          "layout": {
+            "col": 8,
+            "colSpan": 4,
+            "row": 10,
+            "rowSpan": 7
+          },
+          "mobile": {
+            "layout": {
+              "col": 1,
+              "colSpan": 12,
+              "row": 91,
+              "rowSpan": 8
+            }
+          },
+          "type": "text",
+          "props": {
+            "content": "I designed, self-taught, and developed a pixel rogue-like RPG for the App Store. 140K+ downloads, 4.6 stars, charted #130 in Adventure. My first ship. This is where my journey began.",
+            "variant": "body",
+            "align": "left",
+            "color": "foreground",
+            "transform": "none"
+          }
+        },
+        {
+          "id": "blk_9c0b7f39",
+          "layout": {
+            "col": 8,
+            "colSpan": 3,
+            "row": 20,
+            "rowSpan": 3
+          },
+          "mobile": {
+            "layout": {
+              "col": 1,
+              "colSpan": 12,
+              "row": 97
+            }
+          },
+          "type": "button",
+          "props": {
+            "label": "Read more →",
+            "href": "/work/dawngeon",
+            "variant": "ghost",
+            "align": "left",
+            "newTab": false
+          }
+        },
+        {
+          "id": "blk_c4a2ca4e",
+          "layout": {
+            "col": 1,
+            "colSpan": 6,
+            "row": 3,
+            "rowSpan": 20
+          },
+          "type": "video",
+          "props": {
+            "url": "https://www.youtube.com/watch?v=25WQUfCgPzE",
+            "autoplay": false,
+            "muted": false,
+            "loop": false,
+            "controls": true,
+            "aspect": "16/9",
+            "fit": "width",
+            "radius": 0
+          }
         }
       ]
     },
     {
       "id": "sec_proj_thang",
       "background": {
-        "type": "reverse"
+        "type": "image",
+        "src": "/uploads/thang-mtbsuoo7.webp",
+        "overlay": 79,
+        "filter": "none",
+        "focalX": 50,
+        "focalY": 50,
+        "rotate": 0,
+        "flipX": false,
+        "flipY": false,
+        "blur": 0,
+        "zoom": 1,
+        "tint": "none",
+        "tintOpacity": 0
       },
       "padding": "md",
       "minHeight": "auto",
@@ -705,7 +853,7 @@
         {
           "id": "blk_thang_meta",
           "layout": {
-            "col": 2,
+            "col": 1,
             "colSpan": 6,
             "row": 1,
             "rowSpan": 2
@@ -719,7 +867,7 @@
           },
           "type": "text",
           "props": {
-            "content": "2025 — Multiplayer engineer",
+            "content": "2025 — Multiplayer engineer @ Overdawn STUDIO",
             "variant": "kicker",
             "align": "left",
             "color": "muted",
@@ -729,7 +877,7 @@
         {
           "id": "blk_thang_title",
           "layout": {
-            "col": 2,
+            "col": 1,
             "colSpan": 6,
             "row": 3,
             "rowSpan": 4
@@ -743,7 +891,7 @@
           },
           "type": "text",
           "props": {
-            "content": "Thang.",
+            "content": "Thang",
             "variant": "h3",
             "align": "left",
             "color": "foreground",
@@ -753,7 +901,7 @@
         {
           "id": "blk_thang_summary",
           "layout": {
-            "col": 2,
+            "col": 1,
             "colSpan": 5,
             "row": 7,
             "rowSpan": 8
@@ -768,7 +916,7 @@
           },
           "type": "text",
           "props": {
-            "content": "A casual multiplayer freeze-tag shooter built on UE5, with a Next.js / MongoDB backend on AWS GameLift. Architected client-to-cloud end-to-end.",
+            "content": "A casual freeze-tag shooter built on UE5 and C++. Freeze your friends into popsicles and unlock powerful and whimsical weapons! I architected and engineered many multiplayer system, and also designed and collaborated with other designers.",
             "variant": "body",
             "align": "left",
             "color": "foreground",
@@ -776,43 +924,9 @@
           }
         },
         {
-          "id": "blk_thang_image",
-          "layout": {
-            "col": 8,
-            "colSpan": 4,
-            "row": 1,
-            "rowSpan": 30
-          },
-          "mobile": {
-            "layout": {
-              "col": 1,
-              "colSpan": 12
-            }
-          },
-          "type": "image",
-          "props": {
-            "src": "/projects/thangPoster.png",
-            "alt": "Thang",
-            "fit": "cover",
-            "href": "/work/thang",
-            "aspect": "4/5",
-            "radius": 50,
-            "filter": "none",
-            "focalX": 50,
-            "focalY": 50,
-            "rotate": 0,
-            "flipX": false,
-            "flipY": false,
-            "blur": 0,
-            "zoom": 1,
-            "tint": "none",
-            "tintOpacity": 0
-          }
-        },
-        {
           "id": "blk_thang_btn",
           "layout": {
-            "col": 2,
+            "col": 1,
             "colSpan": 3,
             "row": 18,
             "rowSpan": 3
@@ -832,14 +946,319 @@
             "align": "left",
             "newTab": false
           }
+        },
+        {
+          "id": "blk_98ad4912",
+          "layout": {
+            "col": 8,
+            "colSpan": 4,
+            "row": 1,
+            "rowSpan": 20
+          },
+          "type": "image",
+          "props": {
+            "src": "/uploads/thanglogo-mtbt6cdz.webp",
+            "alt": "",
+            "fit": "cover",
+            "radius": 0,
+            "filter": "none",
+            "focalX": 50,
+            "focalY": 50,
+            "rotate": 0,
+            "flipX": false,
+            "flipY": false,
+            "blur": 0,
+            "zoom": 1,
+            "tint": "none",
+            "tintOpacity": 0
+          }
+        }
+      ]
+    },
+    {
+      "id": "sec_bb16a778",
+      "background": {
+        "type": "image",
+        "src": "/uploads/br-posterwithpaperandtatter-mqg50uv2.webp",
+        "overlay": 64,
+        "filter": "none",
+        "focalX": 50,
+        "focalY": 50,
+        "rotate": 0,
+        "flipX": false,
+        "flipY": false,
+        "blur": 0,
+        "zoom": 1,
+        "tint": "none",
+        "tintOpacity": 0
+      },
+      "padding": "lg",
+      "minHeight": "auto",
+      "align": "top",
+      "blocks": [
+        {
+          "id": "blk_fbe55348",
+          "layout": {
+            "col": 1,
+            "colSpan": 6,
+            "row": 1,
+            "rowSpan": 22
+          },
+          "type": "video",
+          "props": {
+            "url": "https://www.youtube.com/watch?v=a2ICoAA_-Kc",
+            "autoplay": false,
+            "muted": false,
+            "loop": false,
+            "controls": true,
+            "aspect": "16/9",
+            "fit": "width",
+            "radius": 0
+          }
+        },
+        {
+          "id": "blk_93a76040",
+          "layout": {
+            "col": 8,
+            "colSpan": 5,
+            "row": 1,
+            "rowSpan": 2
+          },
+          "mobile": {
+            "layout": {
+              "col": 1,
+              "colSpan": 12,
+              "row": 31
+            }
+          },
+          "type": "text",
+          "props": {
+            "content": "2026 — Unreal Engine engineer @ USC (MFA)",
+            "variant": "kicker",
+            "align": "left",
+            "color": "muted",
+            "transform": "none"
+          }
+        },
+        {
+          "id": "blk_dee5ea76",
+          "layout": {
+            "col": 8,
+            "colSpan": 5,
+            "row": 3,
+            "rowSpan": 4
+          },
+          "mobile": {
+            "layout": {
+              "col": 1,
+              "colSpan": 12,
+              "row": 33
+            }
+          },
+          "type": "text",
+          "props": {
+            "content": "Banana Republic",
+            "variant": "h3",
+            "align": "left",
+            "color": "foreground",
+            "transform": "none"
+          }
+        },
+        {
+          "id": "blk_3c94961b",
+          "layout": {
+            "col": 8,
+            "colSpan": 5,
+            "row": 7,
+            "rowSpan": 8
+          },
+          "mobile": {
+            "layout": {
+              "col": 1,
+              "colSpan": 12,
+              "row": 36,
+              "rowSpan": 7
+            }
+          },
+          "type": "text",
+          "props": {
+            "content": "In Banana Republic, guerrilla fighters seize the supreme court. Neutralize terrorists, rescue hostages, choose to serve your country. Uncover a history of corruption and violence.",
+            "variant": "body",
+            "align": "left",
+            "color": "foreground",
+            "transform": "none"
+          }
+        },
+        {
+          "id": "blk_3d1bd355",
+          "layout": {
+            "col": 8,
+            "colSpan": 3,
+            "row": 18,
+            "rowSpan": 3
+          },
+          "mobile": {
+            "layout": {
+              "col": 1,
+              "colSpan": 12,
+              "row": 43
+            }
+          },
+          "type": "button",
+          "props": {
+            "label": "Read more →",
+            "href": "/work/banana-republic",
+            "variant": "ghost",
+            "align": "left",
+            "newTab": false
+          }
+        }
+      ]
+    },
+    {
+      "id": "sec_6e78d64f",
+      "background": {
+        "type": "image",
+        "src": "/uploads/melon-mtbtkecm.jpg",
+        "overlay": 80,
+        "filter": "none",
+        "focalX": 50,
+        "focalY": 50,
+        "rotate": 0,
+        "flipX": false,
+        "flipY": false,
+        "blur": 0,
+        "zoom": 1,
+        "tint": "none",
+        "tintOpacity": 0
+      },
+      "padding": "lg",
+      "minHeight": "auto",
+      "align": "top",
+      "blocks": [
+        {
+          "id": "blk_6165992c",
+          "layout": {
+            "col": 1,
+            "colSpan": 6,
+            "row": 1,
+            "rowSpan": 22
+          },
+          "type": "video",
+          "props": {
+            "url": "https://www.youtube.com/watch?v=u599hoyOiYQ",
+            "autoplay": false,
+            "muted": false,
+            "loop": false,
+            "controls": true,
+            "aspect": "16/9",
+            "fit": "width",
+            "radius": 0
+          }
+        },
+        {
+          "id": "blk_ebaa4a22",
+          "layout": {
+            "col": 8,
+            "colSpan": 5,
+            "row": 8,
+            "rowSpan": 8
+          },
+          "mobile": {
+            "layout": {
+              "col": 1,
+              "colSpan": 12,
+              "row": 36,
+              "rowSpan": 7
+            }
+          },
+          "type": "text",
+          "props": {
+            "content": "You’re Melon, a tiny hamster with a huge goal. Collect mix-ins, roll fast, and build momentum to churn the biggest ice cream scoop ever in this whimsical, on-rails runner.",
+            "variant": "body",
+            "align": "left",
+            "color": "foreground",
+            "transform": "none"
+          }
+        },
+        {
+          "id": "blk_718f8905",
+          "layout": {
+            "col": 8,
+            "colSpan": 5,
+            "row": 1,
+            "rowSpan": 2
+          },
+          "mobile": {
+            "layout": {
+              "col": 1,
+              "colSpan": 12,
+              "row": 31
+            }
+          },
+          "type": "text",
+          "props": {
+            "content": "2026 — Gameplay ProgrammeR (Unity) @ USC (AGP)",
+            "variant": "kicker",
+            "align": "left",
+            "color": "muted",
+            "transform": "none"
+          }
+        },
+        {
+          "id": "blk_311cbc08",
+          "layout": {
+            "col": 8,
+            "colSpan": 5,
+            "row": 3,
+            "rowSpan": 4
+          },
+          "mobile": {
+            "layout": {
+              "col": 1,
+              "colSpan": 12,
+              "row": 33
+            }
+          },
+          "type": "text",
+          "props": {
+            "content": "Move Move Melon",
+            "variant": "h3",
+            "align": "left",
+            "color": "foreground",
+            "transform": "none"
+          }
+        },
+        {
+          "id": "blk_f382e41f",
+          "layout": {
+            "col": 8,
+            "colSpan": 3,
+            "row": 18,
+            "rowSpan": 3
+          },
+          "mobile": {
+            "layout": {
+              "col": 1,
+              "colSpan": 12,
+              "row": 43
+            }
+          },
+          "type": "button",
+          "props": {
+            "label": "Read more →",
+            "href": "/work/move-move-melon",
+            "variant": "ghost",
+            "align": "left",
+            "newTab": false
+          }
         }
       ]
     },
     {
       "id": "sec_footer",
       "background": {
-        "type": "color",
-        "token": "accent"
+        "type": "reverse"
       },
       "padding": "lg",
       "minHeight": "auto",
@@ -848,7 +1267,7 @@
         {
           "id": "blk_footer_kicker",
           "layout": {
-            "col": 2,
+            "col": 1,
             "colSpan": 6,
             "row": 1,
             "rowSpan": 2
@@ -871,7 +1290,7 @@
         {
           "id": "blk_footer_email",
           "layout": {
-            "col": 2,
+            "col": 1,
             "colSpan": 7,
             "row": 3,
             "rowSpan": 7
@@ -897,7 +1316,7 @@
         {
           "id": "blk_footer_colophon",
           "layout": {
-            "col": 2,
+            "col": 1,
             "colSpan": 10,
             "row": 12,
             "rowSpan": 1
@@ -911,11 +1330,43 @@
           },
           "type": "text",
           "props": {
-            "content": "© Youngje Park — set in Karepefx &amp; Newsreader",
+            "content": "© Youngje Park<br>Website made possible BY claude code",
             "variant": "kicker",
             "align": "left",
             "color": "muted",
             "transform": "none"
+          }
+        },
+        {
+          "id": "blk_754e0bc4",
+          "layout": {
+            "col": 11,
+            "colSpan": 2,
+            "row": 5,
+            "rowSpan": 3
+          },
+          "type": "socialLinks",
+          "props": {
+            "items": [
+              {
+                "platform": "linkedin",
+                "href": "https://www.linkedin.com/in/youngjepark1"
+              },
+              {
+                "platform": "discord",
+                "href": "https://discord.com/users/340039649084833792"
+              },
+              {
+                "platform": "github",
+                "href": "https://github.com/MonkTun"
+              }
+            ],
+            "variant": "icons",
+            "size": 20,
+            "gap": 20,
+            "align": "right",
+            "color": "foreground",
+            "newTab": true
           }
         }
       ]
