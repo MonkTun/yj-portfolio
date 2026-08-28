@@ -726,7 +726,7 @@
         "tintOpacity": 0
       },
       "padding": "md",
-      "minHeight": "half",
+      "minHeight": "auto",
       "align": "top",
       "blocks": [
         {
@@ -831,7 +831,7 @@
           "layout": {
             "col": 1,
             "colSpan": 6,
-            "row": 2,
+            "row": 1,
             "rowSpan": 20
           },
           "mobile": {
@@ -856,7 +856,7 @@
         {
           "id": "blk_a3f18c2d",
           "layout": {
-            "col": 8,
+            "col": 1,
             "colSpan": 5,
             "row": 23,
             "rowSpan": 2
