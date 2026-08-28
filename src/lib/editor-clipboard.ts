@@ -21,6 +21,17 @@ export function writeClipboard(data: EditorClipboard): void {
     // localStorage can throw (private mode, quota, disabled). Copy is
     // best-effort — a failed write just means the next paste is a no-op.
   }
+  // Also overwrite the OS clipboard with a plain-text marker. The paste
+  // handler prefers an OS-clipboard image over this internal clipboard,
+  // which is only correct if copying blocks evicts whatever screenshot
+  // was sitting there — otherwise ⌘C on a block followed by ⌘V would
+  // paste a stale image. Best-effort: writeText needs focus and a secure
+  // context (the editor is localhost dev, which qualifies).
+  try {
+    void navigator.clipboard?.writeText("[yj-editor] copied blocks")?.catch(() => {});
+  } catch {
+    // Clipboard API missing or blocked — priority just degrades.
+  }
 }
 
 export function readClipboard(): EditorClipboard | null {

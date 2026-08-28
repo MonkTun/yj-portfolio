@@ -715,7 +715,7 @@
           "layout": {
             "col": 8,
             "colSpan": 5,
-            "row": 4,
+            "row": 2,
             "rowSpan": 1
           },
           "mobile": {
@@ -740,7 +740,7 @@
           "layout": {
             "col": 8,
             "colSpan": 5,
-            "row": 6,
+            "row": 4,
             "rowSpan": 4
           },
           "mobile": {
@@ -765,7 +765,7 @@
           "layout": {
             "col": 8,
             "colSpan": 4,
-            "row": 10,
+            "row": 8,
             "rowSpan": 7
           },
           "mobile": {
@@ -790,7 +790,7 @@
           "layout": {
             "col": 8,
             "colSpan": 3,
-            "row": 20,
+            "row": 18,
             "rowSpan": 3
           },
           "mobile": {
@@ -814,7 +814,7 @@
           "layout": {
             "col": 1,
             "colSpan": 6,
-            "row": 3,
+            "row": 2,
             "rowSpan": 20
           },
           "type": "video",
@@ -1148,7 +1148,7 @@
             "col": 1,
             "colSpan": 6,
             "row": 1,
-            "rowSpan": 22
+            "rowSpan": 18
           },
           "type": "video",
           "props": {
@@ -1167,7 +1167,7 @@
           "layout": {
             "col": 8,
             "colSpan": 5,
-            "row": 8,
+            "row": 7,
             "rowSpan": 8
           },
           "mobile": {
@@ -1240,7 +1240,7 @@
           "layout": {
             "col": 8,
             "colSpan": 3,
-            "row": 18,
+            "row": 16,
             "rowSpan": 3
           },
           "mobile": {

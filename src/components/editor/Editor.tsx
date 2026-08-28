@@ -22,6 +22,7 @@ import {
 } from "@/lib/responsive";
 import type { SectionTemplate } from "@/lib/section-templates";
 import { readClipboard, writeClipboard } from "@/lib/editor-clipboard";
+import { uploadImageFile } from "@/lib/upload-image";
 
 import { Toolbar } from "./Toolbar";
 import { Canvas } from "./Canvas";
@@ -678,6 +679,52 @@ export function Editor({ slug, initialPage, availablePages = [] }: Props) {
     setSelection({ type: "section", sectionId: dup.id });
   }, [selection, page, commit]);
 
+  /**
+   * Paste an image from the OS clipboard (screenshot, copied file): upload
+   * it through the shared uploader path, then drop an Image block into the
+   * same target section pasteClipboard would use. The upload round-trip is
+   * async — an edit made mid-flight would be clobbered by the stale
+   * closure, but uploads are local and sub-second.
+   */
+  const pasteImageFile = useCallback(
+    async (file: File) => {
+      const targetId =
+        selection.type === "block" || selection.type === "section"
+          ? selection.sectionId
+          : page.sections[page.sections.length - 1]?.id;
+      if (!targetId) return;
+      let src: string;
+      try {
+        src = await uploadImageFile(file);
+      } catch (err) {
+        setStatus("error");
+        setErrorMessage(err instanceof Error ? err.message : String(err));
+        return;
+      }
+      const next = clone(page);
+      const sec = next.sections.find((s) => s.id === targetId);
+      if (!sec) return;
+      const entry = atomRegistry.image;
+      const layout: BlockLayout = {
+        col: 1,
+        colSpan: entry.defaultLayout.colSpan,
+        row: nextFreeRow(sec.blocks, device),
+        rowSpan: entry.defaultLayout.rowSpan,
+      };
+      const newBlock: Block = {
+        id: newId("blk"),
+        type: "image",
+        layout,
+        ...(device === "mobile" ? { mobile: { layout } } : {}),
+        props: { ...defaultsForBlock("image"), src },
+      } as Block;
+      sec.blocks.push(newBlock);
+      commit(next);
+      setSelection(blockSel(targetId, newBlock.id));
+    },
+    [selection, page, device, commit]
+  );
+
   /* ---------------- history ---------------- */
 
   const undo = useCallback(() => {
@@ -779,10 +826,10 @@ export function Editor({ slug, initialPage, availablePages = [] }: Props) {
           e.preventDefault();
           cutSelection();
         }
-      } else if (key === "v") {
-        e.preventDefault();
-        pasteClipboard();
       }
+      // ⌘V is deliberately NOT handled here: preventing default on the
+      // keydown would suppress the native `paste` event below, and that
+      // event is the only way to read an image off the OS clipboard.
     }
     window.addEventListener("keydown", handler);
     return () => window.removeEventListener("keydown", handler);
@@ -797,8 +844,42 @@ export function Editor({ slug, initialPage, availablePages = [] }: Props) {
     deleteSection,
     copySelection,
     cutSelection,
-    pasteClipboard,
   ]);
+
+  /**
+   * Real OS paste events (⌘V outside any text field). An image on the
+   * clipboard uploads and lands as a new Image block; anything else falls
+   * back to the internal block/section clipboard. Typing contexts keep the
+   * browser's native paste untouched.
+   */
+  useEffect(() => {
+    function handler(e: ClipboardEvent) {
+      const target = e.target as HTMLElement | null;
+      const editing =
+        !!target &&
+        (target.isContentEditable ||
+          target.tagName === "INPUT" ||
+          target.tagName === "TEXTAREA" ||
+          target.tagName === "SELECT");
+      if (editing) return;
+
+      const items = e.clipboardData?.items;
+      const imageItem =
+        items &&
+        Array.from(items).find(
+          (it) => it.kind === "file" && it.type.startsWith("image/")
+        );
+      const file = imageItem?.getAsFile();
+      e.preventDefault();
+      if (file) {
+        void pasteImageFile(file);
+      } else {
+        pasteClipboard();
+      }
+    }
+    window.addEventListener("paste", handler);
+    return () => window.removeEventListener("paste", handler);
+  }, [pasteImageFile, pasteClipboard]);
 
   useEffect(() => {
     function handler(e: BeforeUnloadEvent) {

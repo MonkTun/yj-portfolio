@@ -89,11 +89,11 @@
             "col": 1,
             "colSpan": 12,
             "row": 4,
-            "rowSpan": 8
+            "rowSpan": 10
           },
           "type": "text",
           "props": {
-            "content": "This summer (2026), I interned at E-Line Media, a Phoenix-based video game studio with a long history of creating games that emphasize social impact. I was specifically part of the Neighborhoods, a game in which, instead of just building a soaring skyline of skyscrapers, you listen to your neighbors' daily struggles and complaints and focus on improving the community. This highly anticipated title has generated millions of impressions, reached over 60,000 wishlists on Steam, and received a positive reception at its announcement, garnering over 300,000 views on the Mix Summer Showcase. I am forever proud and grateful to be part of the journey, contributing as a gameplay programmer. ",
+            "content": "This summer (2026), I interned at E-Line Media, a Phoenix-based video game studio with a long history of creating games that emphasize social impact. I was specifically a part of the Neighborhoods, a game in which, instead of just building a soaring skyline of skyscrapers, you listen to your neighbors' daily struggles and complaints and focus on improving the community. This highly anticipated title has generated millions of impressions, reached over 60,000 wishlists on Steam, and received a positive reception at its announcement, garnering over 300,000 views on the Mix Summer Showcase. I am forever proud and grateful to be part of the journey, contributing as a gameplay programmer. ",
             "variant": "body",
             "align": "left",
             "color": "foreground",
@@ -188,9 +188,9 @@
         {
           "id": "blk_377fc56a",
           "layout": {
-            "col": 1,
+            "col": 7,
             "colSpan": 6,
-            "row": 21,
+            "row": 1,
             "rowSpan": 18
           },
           "type": "image",

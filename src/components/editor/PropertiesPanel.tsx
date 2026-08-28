@@ -23,8 +23,7 @@ import {
 } from "@/lib/schema";
 import { SOCIAL_PLATFORM_LABELS } from "@/components/atoms/SocialLinks";
 import { getYouTubeId } from "@/lib/youtube";
-import { downscaleImage } from "@/lib/downscale-image";
-import { UPLOAD_MAX_BYTES, UPLOAD_MAX_MB } from "@/lib/upload-limits";
+import { uploadImageFile } from "@/lib/upload-image";
 import { atomRegistry } from "@/lib/atom-registry";
 import { cn } from "@/lib/utils";
 import {
@@ -2790,7 +2789,26 @@ function RemoveBgButton({
           `Source returned ${ct || "no content-type"} — expected image/*`
         );
       }
-      const inputBlob = await imgRes.blob();
+      let inputBlob: Blob = await imgRes.blob();
+      // @imgly's decoder only handles png/jpeg/webp — an AVIF from the
+      // uploads library dies with "Invalid format: image/avif". The
+      // browser itself decodes AVIF fine, so transcode anything else to
+      // PNG through a canvas before handing it over.
+      if (!["image/png", "image/jpeg", "image/webp"].includes(inputBlob.type)) {
+        setStatus("Converting…");
+        const bitmap = await createImageBitmap(inputBlob);
+        const canvas = document.createElement("canvas");
+        canvas.width = bitmap.width;
+        canvas.height = bitmap.height;
+        canvas.getContext("2d")!.drawImage(bitmap, 0, 0);
+        bitmap.close();
+        inputBlob = await new Promise<Blob>((resolve, reject) =>
+          canvas.toBlob(
+            (b) => (b ? resolve(b) : reject(new Error("PNG transcode failed"))),
+            "image/png"
+          )
+        );
+      }
       setStatus("Loading model…");
       // The import() must live inside a statically-false branch in prod so
       // the bundler drops it entirely: background removal is an editor-only
@@ -3497,40 +3515,7 @@ function ImageUploader({
     setBusy(true);
     setError(null);
     try {
-      // Downscale / re-encode oversized images in the browser before upload so
-      // huge source files don't hit the body cap or end up on the live page.
-      const file = await downscaleImage(rawFile);
-      // Preflight the shared cap: past it the proxy's body clone truncates
-      // the stream and the server can only answer "Invalid form data".
-      // Mostly bites animated GIFs, which downscaleImage can't re-encode.
-      if (file.size > UPLOAD_MAX_BYTES) {
-        throw new Error(
-          `File too large: ${(file.size / (1024 * 1024)).toFixed(1)} MB (max ${UPLOAD_MAX_MB} MB). ` +
-            (file.type === "image/gif"
-              ? "GIFs can't be compressed in-browser — trim it or convert to video."
-              : "")
-        );
-      }
-      const fd = new FormData();
-      fd.append("file", file);
-      const res = await fetch("/api/admin/upload", {
-        method: "POST",
-        body: fd,
-      });
-      const text = await res.text();
-      let payload: { src?: string; error?: string } = {};
-      try {
-        payload = text ? JSON.parse(text) : {};
-      } catch {
-        // Non-JSON response — keep `text` for the error message.
-      }
-      if (!res.ok || !payload.src) {
-        throw new Error(
-          payload.error ??
-            `Upload failed (${res.status}${text ? `: ${text.slice(0, 120)}` : ""})`
-        );
-      }
-      onUploaded(payload.src);
+      onUploaded(await uploadImageFile(rawFile));
     } catch (err) {
       const msg = err instanceof Error ? err.message : String(err);
       console.error("[ImageUploader] upload failed:", err);

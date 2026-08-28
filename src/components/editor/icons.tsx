@@ -35,6 +35,15 @@ export function TrashIcon() {
   );
 }
 
+export function OpenLinkIcon() {
+  return (
+    <svg viewBox="0 0 16 16" width="14" height="14" fill="none" stroke="currentColor" strokeWidth={sw} strokeLinecap="round" strokeLinejoin="round" aria-hidden>
+      <path d="M6.5 3H4a1.5 1.5 0 0 0-1.5 1.5V12A1.5 1.5 0 0 0 4 13.5h7.5A1.5 1.5 0 0 0 13 12V9.5" />
+      <path d="M9.5 2.5H13.5V6.5M13.5 2.5 7.5 8.5" />
+    </svg>
+  );
+}
+
 export function ArrowUpIcon() {
   return (
     <svg viewBox="0 0 16 16" width="14" height="14" fill="none" stroke="currentColor" strokeWidth={sw} strokeLinecap="round" strokeLinejoin="round" aria-hidden>
