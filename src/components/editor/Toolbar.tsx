@@ -43,7 +43,7 @@ export function Toolbar({
 }: Props) {
   function handleAutoStack() {
     const ok = window.confirm(
-      "Auto-stack the page for mobile?\n\nThis replaces every block's mobile layout with a top-to-bottom stack derived from the desktop layout. Existing mobile layout overrides will be overwritten.\n\n(Block-level style overrides — fontSize, hidden, etc. — are kept.)",
+      "Auto-stack the page for mobile?\n\nThis rebuilds every block's mobile layout from the desktop one — desktop columns stack top-to-bottom, media keeps its aspect ratio and rough size, and text gets room to reflow. Existing mobile layout overrides will be overwritten.\n\n(Block-level style overrides — fontSize, hidden, etc. — are kept.)",
     );
     if (ok) onAutoStack();
   }

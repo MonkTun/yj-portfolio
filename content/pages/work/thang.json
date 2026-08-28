@@ -28,6 +28,13 @@
             "row": 1,
             "rowSpan": 13
           },
+          "mobile": {
+            "layout": {
+              "col": 1,
+              "colSpan": 12,
+              "rowSpan": 9
+            }
+          },
           "type": "image",
           "props": {
             "src": "/uploads/thang-logo-mtcj3cwv.webp",
@@ -65,6 +72,11 @@
             "row": 1,
             "rowSpan": 4
           },
+          "mobile": {
+            "layout": {
+              "colSpan": 12
+            }
+          },
           "type": "text",
           "props": {
             "content": "About the Project",
@@ -81,6 +93,11 @@
             "colSpan": 12,
             "row": 5,
             "rowSpan": 8
+          },
+          "mobile": {
+            "layout": {
+              "rowSpan": 16
+            }
           },
           "type": "text",
           "props": {
@@ -110,6 +127,11 @@
             "row": 1,
             "rowSpan": 4
           },
+          "mobile": {
+            "layout": {
+              "colSpan": 12
+            }
+          },
           "type": "text",
           "props": {
             "content": "Server-side rewind for latency-free input",
@@ -127,6 +149,13 @@
             "row": 5,
             "rowSpan": 14
           },
+          "mobile": {
+            "layout": {
+              "colSpan": 12,
+              "row": 22,
+              "rowSpan": 18
+            }
+          },
           "type": "text",
           "props": {
             "content": "Embarking on this journey, I immediately knew a shooter like this needs lag compensation. <br>First time learning Unreal Engine through this project, I immediately enrolled in Stephen Ulibarri's UE5 Networking course and fell in love with it. After completing the course,  I engineered 5+ core systems, including a server-side rewind algorithm for latency compensation that lets shooting, freeze states, and tag mechanics all feel instantaneous regardless of the player's connection.",
@@ -143,6 +172,14 @@
             "colSpan": 5,
             "row": 1,
             "rowSpan": 16
+          },
+          "mobile": {
+            "layout": {
+              "col": 1,
+              "colSpan": 12,
+              "row": 7,
+              "rowSpan": 13
+            }
           },
           "type": "image",
           "props": {
@@ -194,6 +231,11 @@
             "row": 1,
             "rowSpan": 4
           },
+          "mobile": {
+            "layout": {
+              "colSpan": 12
+            }
+          },
           "type": "text",
           "props": {
             "content": "Architecture",
@@ -210,6 +252,11 @@
             "colSpan": 12,
             "row": 5,
             "rowSpan": 12
+          },
+          "mobile": {
+            "layout": {
+              "rowSpan": 18
+            }
           },
           "type": "text",
           "props": {
@@ -239,6 +286,11 @@
             "row": 1,
             "rowSpan": 4
           },
+          "mobile": {
+            "layout": {
+              "colSpan": 12
+            }
+          },
           "type": "text",
           "props": {
             "content": "3D Artist",
@@ -256,6 +308,13 @@
             "row": 5,
             "rowSpan": 10
           },
+          "mobile": {
+            "layout": {
+              "colSpan": 12,
+              "row": 41,
+              "rowSpan": 14
+            }
+          },
           "type": "text",
           "props": {
             "content": "I modeled some weapons and the player characters in Thang. I first started by conceptualizing the character design and iterating based on the team's feedback. I designed art pipeline from Blender to Unreal Engine ensuring all new cosmetics items work on the same player model. The end result is a cute and unique player character that can be customized to the player's own unique style.",
@@ -272,6 +331,13 @@
             "colSpan": 3,
             "row": 1,
             "rowSpan": 16
+          },
+          "mobile": {
+            "layout": {
+              "col": 1,
+              "colSpan": 9,
+              "row": 5
+            }
           },
           "type": "image",
           "props": {
@@ -299,6 +365,13 @@
             "row": 1,
             "rowSpan": 16
           },
+          "mobile": {
+            "layout": {
+              "col": 1,
+              "colSpan": 9,
+              "row": 23
+            }
+          },
           "type": "image",
           "props": {
             "src": "/uploads/thangbear3-mtcjmlwm.png",
@@ -324,6 +397,13 @@
             "colSpan": 6,
             "row": 18,
             "rowSpan": 29
+          },
+          "mobile": {
+            "layout": {
+              "colSpan": 12,
+              "row": 58,
+              "rowSpan": 19
+            }
           },
           "type": "image",
           "props": {
@@ -351,6 +431,14 @@
             "row": 21,
             "rowSpan": 7
           },
+          "mobile": {
+            "layout": {
+              "col": 1,
+              "colSpan": 12,
+              "row": 79,
+              "rowSpan": 6
+            }
+          },
           "type": "image",
           "props": {
             "src": "/uploads/thangart-mtcjrhxg.png",
@@ -376,6 +464,13 @@
             "colSpan": 6,
             "row": 30,
             "rowSpan": 10
+          },
+          "mobile": {
+            "layout": {
+              "col": 1,
+              "colSpan": 12,
+              "row": 87
+            }
           },
           "type": "text",
           "props": {
@@ -405,6 +500,11 @@
             "row": 1,
             "rowSpan": 4
           },
+          "mobile": {
+            "layout": {
+              "colSpan": 12
+            }
+          },
           "type": "text",
           "props": {
             "content": "Gameplay Programming",
@@ -422,6 +522,13 @@
             "row": 5,
             "rowSpan": 15
           },
+          "mobile": {
+            "layout": {
+              "colSpan": 12,
+              "row": 20,
+              "rowSpan": 18
+            }
+          },
           "type": "text",
           "props": {
             "content": "I worked on key gameplay features.<br><br><strong>Parring</strong>: players can right click and do parring. I ensured this mechanic is network accurate and server authoritative by extending the lagCompensation component.<br><br><strong>Popsicles</strong>: Players can turn into popsicles when thrown into oven.<br><br>And so much more!",
@@ -438,6 +545,14 @@
             "colSpan": 6,
             "row": 1,
             "rowSpan": 19
+          },
+          "mobile": {
+            "layout": {
+              "col": 1,
+              "colSpan": 12,
+              "row": 5,
+              "rowSpan": 13
+            }
           },
           "type": "image",
           "props": {
@@ -475,6 +590,12 @@
             "colSpan": 3,
             "row": 1,
             "rowSpan": 3
+          },
+          "mobile": {
+            "layout": {
+              "col": 1,
+              "colSpan": 12
+            }
           },
           "type": "button",
           "props": {

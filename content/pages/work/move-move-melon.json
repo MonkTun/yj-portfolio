@@ -28,6 +28,13 @@
             "row": 1,
             "rowSpan": 20
           },
+          "mobile": {
+            "layout": {
+              "col": 1,
+              "colSpan": 12,
+              "rowSpan": 10
+            }
+          },
           "type": "image",
           "props": {
             "src": "/uploads/melonlogo-mtc5kve8.png",
@@ -65,6 +72,11 @@
             "row": 4,
             "rowSpan": 5
           },
+          "mobile": {
+            "layout": {
+              "rowSpan": 8
+            }
+          },
           "type": "text",
           "props": {
             "content": "Move, Move, Melon!! is a whimsical on-rails runner developed under USC's Advanced Games Project. In this 40+ member AGP team, I contributed as a gameplay programmer shipping various game features and designer-friendly tools. ",
@@ -81,6 +93,12 @@
             "colSpan": 3,
             "row": 10,
             "rowSpan": 2
+          },
+          "mobile": {
+            "layout": {
+              "colSpan": 12,
+              "row": 13
+            }
           },
           "type": "button",
           "props": {
@@ -127,6 +145,13 @@
             "row": 16,
             "rowSpan": 6
           },
+          "mobile": {
+            "layout": {
+              "colSpan": 12,
+              "row": 20,
+              "rowSpan": 13
+            }
+          },
           "type": "text",
           "props": {
             "content": "I partnered  with level designers and created the Mix-In Editor. This tool is built using Unity's IMGUI framework.<br>This intuitive tool can paint, edit, and bake Mix-ins without having to touch any GameObjects manually. This tool has led in increase productivity in all level iterations speed by about 250%.",
@@ -144,6 +169,12 @@
             "row": 5,
             "rowSpan": 7
           },
+          "mobile": {
+            "layout": {
+              "colSpan": 12,
+              "rowSpan": 11
+            }
+          },
           "type": "text",
           "props": {
             "content": "One of Move-Move-Melon's primary mechanic is this simple but addicting mechanic of collecting Mix-ins. However, it was difficult to iterate fast on the level designs as placing mix-ins wasn't intuitive at all. Designers had to manually add new gameObjects, dragging the prefab and adjusting the position manually.",
@@ -160,6 +191,13 @@
             "colSpan": 8,
             "row": 23,
             "rowSpan": 24
+          },
+          "mobile": {
+            "layout": {
+              "colSpan": 12,
+              "row": 34,
+              "rowSpan": 14
+            }
           },
           "type": "video",
           "props": {
@@ -181,6 +219,13 @@
             "row": 49,
             "rowSpan": 8
           },
+          "mobile": {
+            "layout": {
+              "colSpan": 12,
+              "row": 50,
+              "rowSpan": 10
+            }
+          },
           "type": "text",
           "props": {
             "content": "Other than mix-ins, I also expanded the editor as a hub for all designer tools, adding checkpoint painter and level settings editor as well. I overall shipped about 4 designer-friendly editor tools that streamlined level design and asset management.",
@@ -197,6 +242,11 @@
             "colSpan": 3,
             "row": 1,
             "rowSpan": 3
+          },
+          "mobile": {
+            "layout": {
+              "colSpan": 12
+            }
           },
           "type": "text",
           "props": {
@@ -215,6 +265,12 @@
             "row": 13,
             "rowSpan": 3
           },
+          "mobile": {
+            "layout": {
+              "colSpan": 12,
+              "row": 17
+            }
+          },
           "type": "text",
           "props": {
             "content": "Solution: Mix-in Editor",
@@ -231,6 +287,13 @@
             "colSpan": 8,
             "row": 57,
             "rowSpan": 9
+          },
+          "mobile": {
+            "layout": {
+              "colSpan": 12,
+              "row": 60,
+              "rowSpan": 19
+            }
           },
           "type": "quote",
           "props": {
@@ -257,9 +320,15 @@
             "row": 4,
             "rowSpan": 19
           },
+          "mobile": {
+            "layout": {
+              "colSpan": 12,
+              "rowSpan": 30
+            }
+          },
           "type": "text",
           "props": {
-            "content": "UI manager &amp; joystick: I worked on a persistent-singleton UI manager that owns menus, HUDs, and pop-ups across scenes. Plus, a dynamic joystick for mobile that gives players intuitive, responsive input that naturally follows the thumb.<br><br>Debugging: Integrated Quantum Console for in-game commands, state inspection, and live troubleshooting. Tracked down memory leaks and shader regressions and shipped fixes to keep the build healthy across a fast-moving team.<br><br>Player: I also worked on improving player feel: Acceleration that scales with the mix-ins the player has collected. On the engineering side, I also optimized movement and manager scripts to eliminate stale references and redundant instances, and migrated the surrounding logic onto an event-driven architecture for modularity.",
+            "content": "<strong>UI manager &amp; joystick</strong>: I worked on a persistent-singleton UI manager that owns menus, HUDs, and pop-ups across scenes. Plus, a dynamic joystick for mobile that gives players intuitive, responsive input that naturally follows the thumb.<br><br><strong>Debugging</strong>: Integrated Quantum Console for in-game commands, state inspection, and live troubleshooting. Tracked down memory leaks and shader regressions and shipped fixes to keep the build healthy across a fast-moving team.<br><br><strong>Player</strong>: I also worked on improving player feel: Acceleration that scales with the mix-ins the player has collected. On the engineering side, I also optimized movement and manager scripts to eliminate stale references and redundant instances, and migrated the surrounding logic onto an event-driven architecture for modularity.",
             "variant": "body",
             "align": "left",
             "color": "foreground",
@@ -273,6 +342,11 @@
             "colSpan": 4,
             "row": 1,
             "rowSpan": 3
+          },
+          "mobile": {
+            "layout": {
+              "colSpan": 12
+            }
           },
           "type": "text",
           "props": {
@@ -301,6 +375,11 @@
             "colSpan": 3,
             "row": 1,
             "rowSpan": 3
+          },
+          "mobile": {
+            "layout": {
+              "colSpan": 12
+            }
           },
           "type": "button",
           "props": {

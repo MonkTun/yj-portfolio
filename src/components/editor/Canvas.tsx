@@ -22,6 +22,7 @@ import type {
   Section,
 } from "@/lib/schema";
 import type { Device } from "@/lib/responsive";
+import { MOBILE_CANVAS_PX } from "@/lib/grid";
 import type { SectionTemplate } from "@/lib/section-templates";
 import { cn } from "@/lib/utils";
 
@@ -58,8 +59,6 @@ type Props = {
   onDuplicateBlock: (sectionId: string, blockId: string) => void;
   onDeleteBlock: (sectionId: string, blockId: string) => void;
 };
-
-const MOBILE_CANVAS_WIDTH = 425;
 
 export function Canvas({
   page,
@@ -117,7 +116,7 @@ export function Canvas({
             "my-6 ring-1 ring-border rounded-md overflow-hidden bg-background shadow-2xl",
         )}
         style={
-          device === "mobile" ? { width: MOBILE_CANVAS_WIDTH } : undefined
+          device === "mobile" ? { width: MOBILE_CANVAS_PX } : undefined
         }
       >
       <DndContext

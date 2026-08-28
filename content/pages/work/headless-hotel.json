@@ -7,7 +7,20 @@
     {
       "id": "sec_hh_hero",
       "background": {
-        "type": "transparent"
+        "type": "image",
+        "src": "/projects/headlessHotelTitle.png",
+        "fit": "both",
+        "overlay": 81,
+        "filter": "none",
+        "focalX": 50,
+        "focalY": 50,
+        "rotate": 0,
+        "flipX": false,
+        "flipY": false,
+        "blur": 0,
+        "zoom": 1,
+        "tint": "none",
+        "tintOpacity": 0
       },
       "padding": "xl",
       "minHeight": "screen",
@@ -20,6 +33,12 @@
             "colSpan": 8,
             "row": 1,
             "rowSpan": 2
+          },
+          "mobile": {
+            "layout": {
+              "col": 1,
+              "colSpan": 12
+            }
           },
           "type": "text",
           "props": {
@@ -36,12 +55,18 @@
             "col": 2,
             "colSpan": 11,
             "row": 4,
-            "rowSpan": 18
+            "rowSpan": 11
+          },
+          "mobile": {
+            "layout": {
+              "col": 1,
+              "colSpan": 12
+            }
           },
           "type": "text",
           "props": {
             "content": "Headless<br>Hotel.",
-            "variant": "h1",
+            "variant": "h2",
             "align": "left",
             "color": "foreground",
             "transform": "none",
@@ -54,8 +79,14 @@
           "layout": {
             "col": 2,
             "colSpan": 7,
-            "row": 23,
+            "row": 16,
             "rowSpan": 12
+          },
+          "mobile": {
+            "layout": {
+              "col": 1,
+              "colSpan": 12
+            }
           },
           "type": "text",
           "props": {
@@ -69,68 +100,15 @@
       ]
     },
     {
-      "id": "sec_hh_poster",
-      "background": {
-        "type": "transparent"
-      },
-      "padding": "md",
-      "minHeight": "auto",
-      "align": "top",
-      "blocks": [
-        {
-          "id": "blk_hh_poster",
-          "layout": {
-            "col": 2,
-            "colSpan": 11,
-            "row": 1,
-            "rowSpan": 30
-          },
-          "type": "image",
-          "props": {
-            "src": "/projects/headlessHotelTitle.png",
-            "alt": "Headless Hotel title",
-            "fit": "cover",
-            "aspect": "16/9",
-            "radius": 0,
-            "filter": "none",
-            "focalX": 50,
-            "focalY": 50,
-            "rotate": 0,
-            "flipX": false,
-            "flipY": false,
-            "blur": 0,
-            "tint": "none",
-            "tintOpacity": 0
-          }
-        }
-      ]
-    },
-    {
       "id": "sec_hh_vitals",
       "background": {
-        "type": "transparent"
+        "type": "color",
+        "token": "accent"
       },
-      "padding": "lg",
+      "padding": "sm",
       "minHeight": "auto",
       "align": "top",
       "blocks": [
-        {
-          "id": "blk_hh_vitals_kicker",
-          "layout": {
-            "col": 2,
-            "colSpan": 4,
-            "row": 1,
-            "rowSpan": 2
-          },
-          "type": "text",
-          "props": {
-            "content": "Vital signs",
-            "variant": "kicker",
-            "align": "left",
-            "color": "muted",
-            "transform": "none"
-          }
-        },
         {
           "id": "blk_hh_vitals_rule",
           "layout": {
@@ -138,6 +116,13 @@
             "colSpan": 5,
             "row": 2,
             "rowSpan": 1
+          },
+          "mobile": {
+            "layout": {
+              "col": 1,
+              "colSpan": 12,
+              "row": 11
+            }
           },
           "type": "line",
           "props": {
@@ -150,8 +135,14 @@
           "layout": {
             "col": 2,
             "colSpan": 10,
-            "row": 4,
-            "rowSpan": 14
+            "row": 1,
+            "rowSpan": 10
+          },
+          "mobile": {
+            "layout": {
+              "col": 1,
+              "colSpan": 12
+            }
           },
           "type": "text",
           "props": {
@@ -167,8 +158,14 @@
           "layout": {
             "col": 2,
             "colSpan": 3,
-            "row": 19,
+            "row": 14,
             "rowSpan": 2
+          },
+          "mobile": {
+            "layout": {
+              "col": 1,
+              "colSpan": 12
+            }
           },
           "type": "button",
           "props": {
@@ -198,6 +195,13 @@
             "row": 1,
             "rowSpan": 28
           },
+          "mobile": {
+            "layout": {
+              "col": 1,
+              "colSpan": 12,
+              "rowSpan": 10
+            }
+          },
           "type": "image",
           "props": {
             "src": "/projects/HHscreenshot.png",
@@ -212,67 +216,9 @@
             "flipX": false,
             "flipY": false,
             "blur": 0,
+            "zoom": 1,
             "tint": "none",
             "tintOpacity": 0
-          }
-        }
-      ]
-    },
-    {
-      "id": "sec_hh_systems_title",
-      "background": {
-        "type": "transparent"
-      },
-      "padding": "lg",
-      "minHeight": "auto",
-      "align": "top",
-      "blocks": [
-        {
-          "id": "blk_hh_systems_num",
-          "layout": {
-            "col": 2,
-            "colSpan": 3,
-            "row": 1,
-            "rowSpan": 2
-          },
-          "type": "text",
-          "props": {
-            "content": "01",
-            "variant": "kicker",
-            "align": "left",
-            "color": "muted",
-            "transform": "none"
-          }
-        },
-        {
-          "id": "blk_hh_systems_rule",
-          "layout": {
-            "col": 5,
-            "colSpan": 7,
-            "row": 2,
-            "rowSpan": 1
-          },
-          "type": "line",
-          "props": {
-            "thickness": 1,
-            "color": "border"
-          }
-        },
-        {
-          "id": "blk_hh_systems_h2",
-          "layout": {
-            "col": 2,
-            "colSpan": 10,
-            "row": 4,
-            "rowSpan": 9
-          },
-          "type": "text",
-          "props": {
-            "content": "Built in seven days.",
-            "variant": "h2",
-            "align": "left",
-            "color": "foreground",
-            "transform": "none"
           }
         }
       ]
@@ -282,22 +228,27 @@
       "background": {
         "type": "transparent"
       },
-      "padding": "md",
+      "padding": "sm",
       "minHeight": "auto",
       "align": "top",
       "blocks": [
         {
           "id": "blk_hh_inventory_kicker",
           "layout": {
-            "col": 2,
+            "col": 1,
             "colSpan": 5,
             "row": 1,
             "rowSpan": 2
           },
+          "mobile": {
+            "layout": {
+              "colSpan": 12
+            }
+          },
           "type": "text",
           "props": {
             "content": "Items &amp; inventory",
-            "variant": "kicker",
+            "variant": "h3",
             "align": "left",
             "color": "muted",
             "transform": "none"
@@ -306,14 +257,20 @@
         {
           "id": "blk_hh_inventory_body",
           "layout": {
-            "col": 2,
+            "col": 1,
             "colSpan": 5,
-            "row": 3,
-            "rowSpan": 14
+            "row": 4,
+            "rowSpan": 11
+          },
+          "mobile": {
+            "layout": {
+              "colSpan": 12,
+              "row": 20
+            }
           },
           "type": "text",
           "props": {
-            "content": "Pick up, store, and use the things you find. The inventory ties directly into the puzzle layer — every item is potentially the key to the next door.",
+            "content": "You can pick up, store, and use the things you find. The inventory ties directly into the puzzle layer, you can craft the items to unlock new tools and potentially a key to the escape.",
             "variant": "body",
             "align": "left",
             "color": "foreground",
@@ -328,6 +285,14 @@
             "row": 1,
             "rowSpan": 16
           },
+          "mobile": {
+            "layout": {
+              "col": 1,
+              "colSpan": 12,
+              "row": 5,
+              "rowSpan": 13
+            }
+          },
           "type": "image",
           "props": {
             "src": "/projects/HHInventorySystem.png",
@@ -341,6 +306,7 @@
             "flipX": false,
             "flipY": false,
             "blur": 0,
+            "zoom": 1,
             "tint": "none",
             "tintOpacity": 0
           }
@@ -352,22 +318,28 @@
       "background": {
         "type": "transparent"
       },
-      "padding": "md",
+      "padding": "sm",
       "minHeight": "auto",
       "align": "top",
       "blocks": [
         {
           "id": "blk_hh_crafting_kicker",
           "layout": {
-            "col": 8,
+            "col": 7,
             "colSpan": 5,
             "row": 1,
             "rowSpan": 2
           },
+          "mobile": {
+            "layout": {
+              "col": 1,
+              "colSpan": 12
+            }
+          },
           "type": "text",
           "props": {
             "content": "Crafting",
-            "variant": "kicker",
+            "variant": "h3",
             "align": "left",
             "color": "muted",
             "transform": "none"
@@ -376,14 +348,21 @@
         {
           "id": "blk_hh_crafting_body",
           "layout": {
-            "col": 8,
+            "col": 7,
             "colSpan": 5,
-            "row": 3,
-            "rowSpan": 14
+            "row": 5,
+            "rowSpan": 12
+          },
+          "mobile": {
+            "layout": {
+              "col": 1,
+              "colSpan": 12,
+              "row": 20
+            }
           },
           "type": "text",
           "props": {
-            "content": "Combine items into something stronger. Crafting rewards exploration — the recipes themselves are scattered through the level, so progress and discovery feed each other.",
+            "content": "I designed and implemented crafting system of the game in 2 days. Used Unity's Scriptable Object to create recipes that can be easily added and modified in the editor.",
             "variant": "body",
             "align": "left",
             "color": "foreground",
@@ -393,10 +372,17 @@
         {
           "id": "blk_hh_crafting_image",
           "layout": {
-            "col": 2,
+            "col": 1,
             "colSpan": 5,
             "row": 1,
             "rowSpan": 16
+          },
+          "mobile": {
+            "layout": {
+              "colSpan": 12,
+              "row": 5,
+              "rowSpan": 13
+            }
           },
           "type": "image",
           "props": {
@@ -411,98 +397,9 @@
             "flipX": false,
             "flipY": false,
             "blur": 0,
+            "zoom": 1,
             "tint": "none",
             "tintOpacity": 0
-          }
-        }
-      ]
-    },
-    {
-      "id": "sec_hh_ui",
-      "background": {
-        "type": "transparent"
-      },
-      "padding": "md",
-      "minHeight": "auto",
-      "align": "top",
-      "blocks": [
-        {
-          "id": "blk_hh_ui_kicker",
-          "layout": {
-            "col": 2,
-            "colSpan": 4,
-            "row": 1,
-            "rowSpan": 2
-          },
-          "type": "text",
-          "props": {
-            "content": "UI &amp; scene management",
-            "variant": "kicker",
-            "align": "left",
-            "color": "muted",
-            "transform": "none"
-          }
-        },
-        {
-          "id": "blk_hh_ui_body",
-          "layout": {
-            "col": 2,
-            "colSpan": 10,
-            "row": 3,
-            "rowSpan": 11
-          },
-          "type": "text",
-          "props": {
-            "content": "A UI management layer that orchestrates every screen in the game, plus the menus and scene transitions that hold the experience together. The framework had to be small enough to ship in a week and clean enough to not embarrass me later.",
-            "variant": "body",
-            "align": "left",
-            "color": "foreground",
-            "transform": "none"
-          }
-        }
-      ]
-    },
-    {
-      "id": "sec_hh_post",
-      "background": {
-        "type": "transparent"
-      },
-      "padding": "md",
-      "minHeight": "auto",
-      "align": "top",
-      "blocks": [
-        {
-          "id": "blk_hh_post_kicker",
-          "layout": {
-            "col": 2,
-            "colSpan": 4,
-            "row": 1,
-            "rowSpan": 2
-          },
-          "type": "text",
-          "props": {
-            "content": "Post-processing",
-            "variant": "kicker",
-            "align": "left",
-            "color": "muted",
-            "transform": "none"
-          }
-        },
-        {
-          "id": "blk_hh_post_body",
-          "layout": {
-            "col": 2,
-            "colSpan": 10,
-            "row": 3,
-            "rowSpan": 9
-          },
-          "type": "text",
-          "props": {
-            "content": "Bloom, color grading, and ambient occlusion through Unity's Post-Processing Stack to push the atmosphere closer to where it needed to be — closer to dread, further from default.",
-            "variant": "body",
-            "align": "left",
-            "color": "foreground",
-            "transform": "none"
           }
         }
       ]
@@ -519,15 +416,20 @@
         {
           "id": "blk_hh_player_kicker",
           "layout": {
-            "col": 2,
+            "col": 1,
             "colSpan": 4,
             "row": 1,
             "rowSpan": 2
           },
+          "mobile": {
+            "layout": {
+              "colSpan": 12
+            }
+          },
           "type": "text",
           "props": {
-            "content": "Player",
-            "variant": "kicker",
+            "content": "Player &amp; Art",
+            "variant": "h3",
             "align": "left",
             "color": "muted",
             "transform": "none"
@@ -536,14 +438,20 @@
         {
           "id": "blk_hh_player_body",
           "layout": {
-            "col": 2,
+            "col": 1,
             "colSpan": 10,
-            "row": 3,
+            "row": 5,
             "rowSpan": 9
+          },
+          "mobile": {
+            "layout": {
+              "colSpan": 12,
+              "rowSpan": 11
+            }
           },
           "type": "text",
           "props": {
-            "content": "Designed and animated the player character. Tuned the controller and the surrounding physics so movement reads as responsive but afraid — a small detail that flavors the entire game.",
+            "content": "Designed and animated the player character. Tuned the controller and the surrounding physics so movement reads as responsive but afraid.Bloom, color grading, and ambient occlusion through Unity's Post-Processing Stack to push the atmosphere closer to the horror ambience that we wanted.",
             "variant": "body",
             "align": "left",
             "color": "foreground",
@@ -564,14 +472,19 @@
         {
           "id": "blk_hh_outro_back",
           "layout": {
-            "col": 2,
+            "col": 1,
             "colSpan": 3,
             "row": 1,
             "rowSpan": 3
           },
+          "mobile": {
+            "layout": {
+              "colSpan": 12
+            }
+          },
           "type": "button",
           "props": {
-            "label": "← Back to index",
+            "label": "← Back to Home",
             "href": "/",
             "variant": "ghost",
             "align": "left",

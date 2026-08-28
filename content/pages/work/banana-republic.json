@@ -28,6 +28,10 @@
             "rowSpan": 21
           },
           "mobile": {
+            "layout": {
+              "col": 1,
+              "colSpan": 12
+            },
             "props": {
               "fit": "cover"
             }
@@ -70,6 +74,11 @@
             "row": 1,
             "rowSpan": 3
           },
+          "mobile": {
+            "layout": {
+              "rowSpan": 10
+            }
+          },
           "type": "text",
           "props": {
             "content": "Banana Republic is a MFA Thesis project by Nicolas Gomez Velandia, and I had an extreme pleasure to be part of his journey. As a gameplay programmer of the project, I touched on a few meaningful gameplay features such as shooting, quest, and objective system. ",
@@ -86,6 +95,12 @@
             "colSpan": 3,
             "row": 7,
             "rowSpan": 3
+          },
+          "mobile": {
+            "layout": {
+              "colSpan": 12,
+              "row": 14
+            }
           },
           "type": "button",
           "props": {
@@ -132,6 +147,13 @@
             "row": 5,
             "rowSpan": 10
           },
+          "mobile": {
+            "layout": {
+              "colSpan": 12,
+              "row": 22,
+              "rowSpan": 25
+            }
+          },
           "type": "text",
           "props": {
             "content": "In this Blueprint-only Unreal Engine project, I had to adapt and learn to build extendable systems only in the Unreal Editor. This meant that for creating complex game systems such as quests and objectives, I had to extend the Game Instance. I commented, grouped nodes into features, and cleaned up blueprints so they are highly readable and easy to maintain.<br>\nI also learned to use Perforce with Unreal Engine. I built habits of checking out files and updating them with the rest of my team so no one is blocked unknowingly. I also learned to read the blueprint codebase better, extensively using the find references feature and understanding the overall game structure.",
@@ -148,6 +170,14 @@
             "colSpan": 6,
             "row": 1,
             "rowSpan": 24
+          },
+          "mobile": {
+            "layout": {
+              "col": 1,
+              "colSpan": 12,
+              "row": 4,
+              "rowSpan": 16
+            }
           },
           "type": "image",
           "props": {
@@ -186,6 +216,11 @@
             "row": 1,
             "rowSpan": 3
           },
+          "mobile": {
+            "layout": {
+              "colSpan": 12
+            }
+          },
           "type": "text",
           "props": {
             "content": "Animating in Unreal Engine",
@@ -203,6 +238,12 @@
             "row": 5,
             "rowSpan": 11
           },
+          "mobile": {
+            "layout": {
+              "colSpan": 12,
+              "row": 20
+            }
+          },
           "type": "text",
           "props": {
             "content": "In one of my tasks, I also edited part of a reload animation to be reused as an inspection animation. The feature I was building was a tactical-shooter-style accurate reload, where the player swaps magazines instead of dropping the old one entirely and gaining a new full one infinitely.",
@@ -219,6 +260,14 @@
             "colSpan": 6,
             "row": 1,
             "rowSpan": 18
+          },
+          "mobile": {
+            "layout": {
+              "col": 1,
+              "colSpan": 12,
+              "row": 6,
+              "rowSpan": 12
+            }
           },
           "type": "image",
           "props": {
@@ -256,6 +305,11 @@
             "colSpan": 3,
             "row": 1,
             "rowSpan": 3
+          },
+          "mobile": {
+            "layout": {
+              "colSpan": 12
+            }
           },
           "type": "button",
           "props": {

@@ -41,6 +41,32 @@ export const MODULE_PX = ROW_HEIGHT_PX * ROWS_PER_MODULE;
 /** The editor draws a heavier rule every Nth module so tall sections stay countable. */
 export const MODULES_PER_MAJOR = 4;
 
+/**
+ * Nominal rendered width of the desktop content box: the section grid is
+ * `max-w-7xl` (1280px) minus `px-10` (2 × 40px). Used wherever a colSpan
+ * needs converting to real pixels (e.g. deriving mobile layouts).
+ */
+export const DESKTOP_CONTENT_PX = 1200;
+
+/** Width the editor renders the mobile canvas at (iPhone-ish). */
+export const MOBILE_CANVAS_PX = 425;
+
+/** Mobile content box: the canvas width minus `px-6` (2 × 24px). */
+export const MOBILE_CONTENT_PX = MOBILE_CANVAS_PX - 48;
+
+/** Rendered px width of a `colSpan` inside a content box `contentPx` wide. */
+export function colSpanPx(colSpan: number, contentPx: number): number {
+  const unit = (contentPx - (GRID_COLS - 1) * COL_GAP_PX) / GRID_COLS;
+  return colSpan * unit + (colSpan - 1) * COL_GAP_PX;
+}
+
+/** The colSpan whose rendered width in `contentPx` sits nearest `targetPx`. */
+export function colSpanForPx(targetPx: number, contentPx: number): number {
+  const unit = (contentPx - (GRID_COLS - 1) * COL_GAP_PX) / GRID_COLS;
+  const span = Math.round((targetPx + COL_GAP_PX) / (unit + COL_GAP_PX));
+  return Math.min(GRID_COLS, Math.max(1, span));
+}
+
 /** Snap a 0-indexed row offset (react-grid-layout's `y`) to the module. */
 export function snapRowOffset(y: number): number {
   return Math.max(0, Math.round(y / ROWS_PER_MODULE) * ROWS_PER_MODULE);

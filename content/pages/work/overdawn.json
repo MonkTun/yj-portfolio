@@ -28,6 +28,13 @@
             "row": 1,
             "rowSpan": 22
           },
+          "mobile": {
+            "layout": {
+              "col": 1,
+              "colSpan": 12,
+              "rowSpan": 11
+            }
+          },
           "type": "image",
           "props": {
             "src": "/uploads/overdawnlogo-mtcgqpze.png",
@@ -66,6 +73,13 @@
             "row": 4,
             "rowSpan": 11
           },
+          "mobile": {
+            "layout": {
+              "colSpan": 12,
+              "row": 23,
+              "rowSpan": 13
+            }
+          },
           "type": "text",
           "props": {
             "content": "Overdawn has been lucky enough to pick up some recognition along the way, and I'm endlessly proud of the team for every one of these.<br>— 2025 Game Development World Championship — Best Student Game finalist<br>— Tencent GWB 2025 — Student Category, bronze<br>— 2025 SAGE — Design runner-up<br>— Featured at the USC Games Expo",
@@ -82,6 +96,13 @@
             "colSpan": 2,
             "row": 1,
             "rowSpan": 7
+          },
+          "mobile": {
+            "layout": {
+              "col": 1,
+              "colSpan": 6,
+              "row": 6
+            }
           },
           "type": "image",
           "props": {
@@ -109,6 +130,12 @@
             "row": 16,
             "rowSpan": 3
           },
+          "mobile": {
+            "layout": {
+              "colSpan": 12,
+              "row": 37
+            }
+          },
           "type": "button",
           "props": {
             "label": "GDWC entry",
@@ -125,6 +152,13 @@
             "colSpan": 3,
             "row": 16,
             "rowSpan": 3
+          },
+          "mobile": {
+            "layout": {
+              "col": 1,
+              "colSpan": 12,
+              "row": 42
+            }
           },
           "type": "button",
           "props": {
@@ -143,6 +177,13 @@
             "row": 16,
             "rowSpan": 3
           },
+          "mobile": {
+            "layout": {
+              "col": 1,
+              "colSpan": 12,
+              "row": 47
+            }
+          },
           "type": "button",
           "props": {
             "label": "Tencent Awards",
@@ -159,6 +200,13 @@
             "colSpan": 2,
             "row": 9,
             "rowSpan": 7
+          },
+          "mobile": {
+            "layout": {
+              "col": 1,
+              "colSpan": 6,
+              "row": 14
+            }
           },
           "type": "image",
           "props": {
@@ -185,6 +233,11 @@
             "colSpan": 4,
             "row": 1,
             "rowSpan": 3
+          },
+          "mobile": {
+            "layout": {
+              "colSpan": 12
+            }
           },
           "type": "text",
           "props": {
@@ -227,6 +280,13 @@
             "row": 1,
             "rowSpan": 21
           },
+          "mobile": {
+            "layout": {
+              "colSpan": 12,
+              "row": 31,
+              "rowSpan": 27
+            }
+          },
           "type": "text",
           "props": {
             "content": "After releasing Dawngeon in high school, I started Overdawn as a solo project. The game iterated for years, starting as a PvP game and slowly finding its identity as a bullet-hell, bullet-time shooter. When I came to USC, I brought the game with me and started assembling a team of people who shared the vision. Recruiting wasn't easy, but through game development clubs and networking events, the team grew to 30+ programmers, artists, designers, and writers. As the director and lead engineer of Overdawn, I'm grateful every day for the people who keep this game alive.<br><br>None of it would exist without countless all-nighters with teammates who became  my close friends. ",
@@ -243,6 +303,13 @@
             "colSpan": 5,
             "row": 1,
             "rowSpan": 20
+          },
+          "mobile": {
+            "layout": {
+              "col": 1,
+              "colSpan": 12,
+              "rowSpan": 16
+            }
           },
           "type": "image",
           "props": {
@@ -269,6 +336,13 @@
             "colSpan": 3,
             "row": 14,
             "rowSpan": 12
+          },
+          "mobile": {
+            "layout": {
+              "col": 1,
+              "colSpan": 9,
+              "row": 17
+            }
           },
           "type": "image",
           "props": {
@@ -307,6 +381,13 @@
             "row": 5,
             "rowSpan": 23
           },
+          "mobile": {
+            "layout": {
+              "colSpan": 12,
+              "row": 26,
+              "rowSpan": 28
+            }
+          },
           "type": "text",
           "props": {
             "content": "With a team of 30+, the architecture had to let distinct game systems — controls, level management, quests — grow in parallel without stepping on each other. That was my goal from day one.<br><br><strong>Scenes:</strong> I built a central SceneManager that handles transitions, async loading and unloading, and a PersistentGameplay layer that survives scene changes.<br><strong>State:</strong> A singleton GameManager owns the high-level game states, Main Menu, In-Game, Paused, Game Over, and the transitions between them.<br><strong>Events:</strong> I connected everything through a decoupled event bus, so systems can talk to each other without coupling their lifetimes. This same backbone powers the sequence system.<br><strong>Persistence:</strong> A save/load layer retains player choices and progression across sessions.",
@@ -323,6 +404,13 @@
             "colSpan": 5,
             "row": 8,
             "rowSpan": 20
+          },
+          "mobile": {
+            "layout": {
+              "col": 1,
+              "colSpan": 12,
+              "rowSpan": 16
+            }
           },
           "type": "image",
           "props": {
@@ -349,6 +437,11 @@
             "colSpan": 4,
             "row": 1,
             "rowSpan": 5
+          },
+          "mobile": {
+            "layout": {
+              "colSpan": 12
+            }
           },
           "type": "text",
           "props": {
@@ -378,6 +471,11 @@
             "row": 1,
             "rowSpan": 4
           },
+          "mobile": {
+            "layout": {
+              "colSpan": 12
+            }
+          },
           "type": "text",
           "props": {
             "content": "In-Game Console",
@@ -395,6 +493,12 @@
             "row": 5,
             "rowSpan": 10
           },
+          "mobile": {
+            "layout": {
+              "colSpan": 12,
+              "row": 20
+            }
+          },
           "type": "text",
           "props": {
             "content": "I built an in-game console early in the project because I knew the cost of bad debugging compounds over a 3-year project. It lets us execute commands, inspect variables, and edit game state at runtime.",
@@ -411,6 +515,14 @@
             "colSpan": 6,
             "row": 1,
             "rowSpan": 17
+          },
+          "mobile": {
+            "layout": {
+              "col": 1,
+              "colSpan": 12,
+              "row": 7,
+              "rowSpan": 11
+            }
           },
           "type": "image",
           "props": {
@@ -449,6 +561,11 @@
             "row": 1,
             "rowSpan": 4
           },
+          "mobile": {
+            "layout": {
+              "colSpan": 12
+            }
+          },
           "type": "text",
           "props": {
             "content": "Custom Unity Editor Tools",
@@ -466,6 +583,12 @@
             "row": 5,
             "rowSpan": 15
           },
+          "mobile": {
+            "layout": {
+              "colSpan": 12,
+              "row": 27
+            }
+          },
           "type": "text",
           "props": {
             "content": "I built a suite of designer tools on top of Odin Inspector. The custom Painter lets designers paint terrain and props directly onto our 2.5D levels, and the Scene Switcher and Scene Behavior pair lets them manage transitions and per-scene logic without ever leaving the editor.",
@@ -482,6 +605,13 @@
             "colSpan": 2,
             "row": 1,
             "rowSpan": 18
+          },
+          "mobile": {
+            "layout": {
+              "col": 7,
+              "colSpan": 6,
+              "row": 7
+            }
           },
           "type": "image",
           "props": {
@@ -508,6 +638,13 @@
             "colSpan": 2,
             "row": 1,
             "rowSpan": 18
+          },
+          "mobile": {
+            "layout": {
+              "col": 1,
+              "colSpan": 6,
+              "row": 7
+            }
           },
           "type": "image",
           "props": {
@@ -546,6 +683,11 @@
             "row": 1,
             "rowSpan": 4
           },
+          "mobile": {
+            "layout": {
+              "colSpan": 12
+            }
+          },
           "type": "text",
           "props": {
             "content": "Quests",
@@ -563,6 +705,12 @@
             "row": 5,
             "rowSpan": 8
           },
+          "mobile": {
+            "layout": {
+              "colSpan": 12,
+              "rowSpan": 11
+            }
+          },
           "type": "text",
           "props": {
             "content": "I built the quest system covering objectives, progress, and rewards across main quests and optional side objectives. Quests are ScriptableObjects, so designers can author and iterate on them without writing a single line of code. Everything is bound directly to the UI, so players always get clear, immediate feedback.",
@@ -579,6 +727,14 @@
             "colSpan": 6,
             "row": 13,
             "rowSpan": 22
+          },
+          "mobile": {
+            "layout": {
+              "col": 1,
+              "colSpan": 12,
+              "row": 33,
+              "rowSpan": 15
+            }
           },
           "type": "image",
           "props": {
@@ -605,6 +761,13 @@
             "colSpan": 6,
             "row": 13,
             "rowSpan": 23
+          },
+          "mobile": {
+            "layout": {
+              "colSpan": 12,
+              "row": 16,
+              "rowSpan": 15
+            }
           },
           "type": "image",
           "props": {
@@ -643,6 +806,11 @@
             "row": 1,
             "rowSpan": 4
           },
+          "mobile": {
+            "layout": {
+              "colSpan": 12
+            }
+          },
           "type": "text",
           "props": {
             "content": "Cross-Scene NavMesh",
@@ -660,6 +828,13 @@
             "row": 5,
             "rowSpan": 20
           },
+          "mobile": {
+            "layout": {
+              "colSpan": 12,
+              "row": 23,
+              "rowSpan": 21
+            }
+          },
           "type": "text",
           "props": {
             "content": "Unity ships with basic pathfinding through NavMesh, but Overdawn's async, multi-scene levels needed much more. I indexed each scene with valid navigation points and built a NavigationManager that calculates paths across scenes using BFS, so NPCs and enemies can move through the world regardless of scene boundaries.<br><br>This same layer powers the transportation system that subways and elevators run on. It switches based on the player's currently active NavMesh, which determines which scene's behavior is active at any moment.",
@@ -676,6 +851,14 @@
             "colSpan": 6,
             "row": 2,
             "rowSpan": 21
+          },
+          "mobile": {
+            "layout": {
+              "col": 1,
+              "colSpan": 12,
+              "row": 7,
+              "rowSpan": 14
+            }
           },
           "type": "image",
           "props": {
@@ -714,6 +897,11 @@
             "row": 1,
             "rowSpan": 4
           },
+          "mobile": {
+            "layout": {
+              "colSpan": 12
+            }
+          },
           "type": "text",
           "props": {
             "content": "Three Rewrites to Get It Right",
@@ -731,6 +919,13 @@
             "row": 5,
             "rowSpan": 20
           },
+          "mobile": {
+            "layout": {
+              "colSpan": 12,
+              "row": 26,
+              "rowSpan": 25
+            }
+          },
           "type": "text",
           "props": {
             "content": "The sequence system is event-driven for modularity, and dialogue runs through Yarn Spinner. Getting the authoring right, though, took me three full rewrites:<br><br><strong>v1: </strong>I started with a simple GameObject-based system, which quickly became unmanageable as sequences grew.<br><strong>v2:</strong> Then I built a graph with XNode for visual scripting. It was better, but Unity's IMGUI made it slow and unfriendly to use.<br><strong>v3:</strong> I finally landed on Unity 6's Behavior Tree. It was originally meant for character behaviors, but the model fit our actor-centric authoring far better — and designers finally gained real flexibility over individual actions.",
@@ -747,6 +942,14 @@
             "colSpan": 5,
             "row": 1,
             "rowSpan": 22
+          },
+          "mobile": {
+            "layout": {
+              "col": 1,
+              "colSpan": 12,
+              "row": 7,
+              "rowSpan": 17
+            }
           },
           "type": "image",
           "props": {
@@ -773,6 +976,12 @@
             "colSpan": 12,
             "row": 26,
             "rowSpan": 32
+          },
+          "mobile": {
+            "layout": {
+              "row": 52,
+              "rowSpan": 11
+            }
           },
           "type": "image",
           "props": {
@@ -811,6 +1020,11 @@
             "row": 1,
             "rowSpan": 4
           },
+          "mobile": {
+            "layout": {
+              "colSpan": 12
+            }
+          },
           "type": "text",
           "props": {
             "content": "An Expandable Actor Hierarchy",
@@ -828,6 +1042,12 @@
             "row": 5,
             "rowSpan": 16
           },
+          "mobile": {
+            "layout": {
+              "colSpan": 12,
+              "row": 22
+            }
+          },
           "type": "text",
           "props": {
             "content": "I built the player from the ground up — responsive movement, combat, and interaction. The actor class hierarchy is designed to be extended, so new behaviors land as subclasses without ever touching the player core. I also wrote a custom animation layer that drives our 2.5D characters across multiple camera angles, with the object structure tuned for the dense interactions a bullet-time shooter demands.",
@@ -844,6 +1064,14 @@
             "colSpan": 6,
             "row": 1,
             "rowSpan": 19
+          },
+          "mobile": {
+            "layout": {
+              "col": 1,
+              "colSpan": 12,
+              "row": 7,
+              "rowSpan": 13
+            }
           },
           "type": "image",
           "props": {
@@ -882,6 +1110,11 @@
             "row": 1,
             "rowSpan": 4
           },
+          "mobile": {
+            "layout": {
+              "colSpan": 12
+            }
+          },
           "type": "text",
           "props": {
             "content": "Weapons",
@@ -899,6 +1132,12 @@
             "row": 5,
             "rowSpan": 18
           },
+          "mobile": {
+            "layout": {
+              "colSpan": 12,
+              "row": 27
+            }
+          },
           "type": "text",
           "props": {
             "content": "I designed the weapon system so that adding a new weapon is cheap. Projectiles share an object pool to keep performance steady allow multiple behaviors such as homing, bouncing, AoE to stack naturally. All damage flows through an IDamageable interface, which keeps the health system decoupled from any particular weapon.",
@@ -915,6 +1154,13 @@
             "colSpan": 7,
             "row": 14,
             "rowSpan": 22
+          },
+          "mobile": {
+            "layout": {
+              "colSpan": 12,
+              "row": 45,
+              "rowSpan": 12
+            }
           },
           "type": "image",
           "props": {
@@ -941,6 +1187,14 @@
             "colSpan": 5,
             "row": 13,
             "rowSpan": 23
+          },
+          "mobile": {
+            "layout": {
+              "col": 1,
+              "colSpan": 12,
+              "row": 7,
+              "rowSpan": 18
+            }
           },
           "type": "image",
           "props": {
@@ -979,6 +1233,12 @@
             "row": 1,
             "rowSpan": 4
           },
+          "mobile": {
+            "layout": {
+              "col": 1,
+              "colSpan": 12
+            }
+          },
           "type": "text",
           "props": {
             "content": "AI (Enemies)",
@@ -996,6 +1256,13 @@
             "row": 8,
             "rowSpan": 11
           },
+          "mobile": {
+            "layout": {
+              "col": 1,
+              "colSpan": 12,
+              "row": 23
+            }
+          },
           "type": "text",
           "props": {
             "content": "I designed and implemented multiple enemy archetypes, each with its own attacks and decision logic. A Behavior Tree drives their moment-to-moment choices, while the FOV system and take-cover behavior add just enough depth that combat never collapses into a shooting gallery.",
@@ -1012,6 +1279,13 @@
             "colSpan": 5,
             "row": 1,
             "rowSpan": 18
+          },
+          "mobile": {
+            "layout": {
+              "colSpan": 12,
+              "row": 7,
+              "rowSpan": 14
+            }
           },
           "type": "image",
           "props": {
@@ -1050,6 +1324,11 @@
             "row": 1,
             "rowSpan": 4
           },
+          "mobile": {
+            "layout": {
+              "colSpan": 12
+            }
+          },
           "type": "text",
           "props": {
             "content": "HUD &amp; Inventory",
@@ -1067,6 +1346,12 @@
             "row": 5,
             "rowSpan": 12
           },
+          "mobile": {
+            "layout": {
+              "colSpan": 12,
+              "row": 21
+            }
+          },
           "type": "text",
           "props": {
             "content": "I designed and built the health, ammo, and inventory UI, plus the surrounding chrome that ties the rest of the interface together. My goal was simple: the player should always know what's going on without ever having to stop and read.",
@@ -1083,6 +1368,14 @@
             "colSpan": 6,
             "row": 1,
             "rowSpan": 18
+          },
+          "mobile": {
+            "layout": {
+              "col": 1,
+              "colSpan": 12,
+              "row": 7,
+              "rowSpan": 12
+            }
           },
           "type": "image",
           "props": {
@@ -1121,6 +1414,12 @@
             "row": 1,
             "rowSpan": 4
           },
+          "mobile": {
+            "layout": {
+              "col": 1,
+              "colSpan": 12
+            }
+          },
           "type": "text",
           "props": {
             "content": "Skill Tree",
@@ -1138,6 +1437,13 @@
             "row": 5,
             "rowSpan": 13
           },
+          "mobile": {
+            "layout": {
+              "col": 1,
+              "colSpan": 12,
+              "row": 23
+            }
+          },
           "type": "text",
           "props": {
             "content": "I developed a skill system and designed the skill-tree UI, which adds depth to the gameplay.",
@@ -1154,6 +1460,13 @@
             "colSpan": 5,
             "row": 1,
             "rowSpan": 18
+          },
+          "mobile": {
+            "layout": {
+              "colSpan": 12,
+              "row": 7,
+              "rowSpan": 14
+            }
           },
           "type": "image",
           "props": {
@@ -1205,6 +1518,13 @@
             "row": 1,
             "rowSpan": 18
           },
+          "mobile": {
+            "layout": {
+              "col": 1,
+              "colSpan": 12,
+              "rowSpan": 14
+            }
+          },
           "type": "video",
           "props": {
             "url": "https://www.youtube.com/watch?v=E7KgVHyf0ak",
@@ -1225,6 +1545,12 @@
             "row": 14,
             "rowSpan": 2
           },
+          "mobile": {
+            "layout": {
+              "colSpan": 12,
+              "row": 33
+            }
+          },
           "type": "button",
           "props": {
             "label": "Steam Store",
@@ -1242,6 +1568,12 @@
             "row": 17,
             "rowSpan": 2
           },
+          "mobile": {
+            "layout": {
+              "colSpan": 12,
+              "row": 36
+            }
+          },
           "type": "button",
           "props": {
             "label": "Linktree",
@@ -1258,6 +1590,13 @@
             "colSpan": 6,
             "row": 1,
             "rowSpan": 11
+          },
+          "mobile": {
+            "layout": {
+              "colSpan": 12,
+              "row": 17,
+              "rowSpan": 14
+            }
           },
           "type": "text",
           "props": {
@@ -1286,6 +1625,11 @@
             "colSpan": 3,
             "row": 1,
             "rowSpan": 3
+          },
+          "mobile": {
+            "layout": {
+              "colSpan": 12
+            }
           },
           "type": "button",
           "props": {

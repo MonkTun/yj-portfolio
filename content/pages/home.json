@@ -200,7 +200,7 @@
           "layout": {
             "col": 1,
             "colSpan": 2,
-            "row": 10,
+            "row": 9,
             "rowSpan": 12
           },
           "mobile": {
@@ -232,7 +232,7 @@
           "layout": {
             "col": 1,
             "colSpan": 3,
-            "row": 19,
+            "row": 18,
             "rowSpan": 2
           },
           "mobile": {
@@ -365,7 +365,7 @@
           },
           "type": "text",
           "props": {
-            "content": "Neighborhoods is a cozy city sim where you shape streets to help people thrive, gather, and develop strong opinions about a particular bench. We're reimagining the city builder as a city fixer. I worked with Unreal Engine and C++ with project.",
+            "content": "Neighborhoods is a cozy city sim where you shape streets to help people thrive, gather, and develop strong opinions about a particular bench. We're reimagining the city builder as a city fixer. I worked with Unreal Engine and C++ in this project.",
             "variant": "body",
             "align": "left",
             "color": "foreground",
@@ -701,6 +701,177 @@
       ]
     },
     {
+      "id": "sec_59705ad3",
+      "background": {
+        "type": "image",
+        "src": "/projects/dawngeonTitle.png",
+        "fit": "both",
+        "overlay": 88,
+        "filter": "none",
+        "focalX": 50,
+        "focalY": 50,
+        "rotate": 0,
+        "flipX": false,
+        "flipY": false,
+        "blur": 0,
+        "zoom": 1,
+        "tint": "none",
+        "tintOpacity": 0
+      },
+      "padding": "md",
+      "minHeight": "half",
+      "align": "top",
+      "blocks": [
+        {
+          "id": "blk_30ad81f6",
+          "layout": {
+            "col": 8,
+            "colSpan": 5,
+            "row": 2,
+            "rowSpan": 1
+          },
+          "mobile": {
+            "layout": {
+              "col": 1,
+              "colSpan": 12,
+              "row": 85,
+              "rowSpan": 2
+            }
+          },
+          "type": "text",
+          "props": {
+            "content": "2022 — Solo developer",
+            "variant": "kicker",
+            "align": "left",
+            "color": "muted",
+            "transform": "none"
+          }
+        },
+        {
+          "id": "blk_b6a2a13b",
+          "layout": {
+            "col": 8,
+            "colSpan": 5,
+            "row": 4,
+            "rowSpan": 4
+          },
+          "mobile": {
+            "layout": {
+              "col": 1,
+              "colSpan": 12,
+              "row": 87,
+              "rowSpan": 4
+            }
+          },
+          "type": "text",
+          "props": {
+            "content": "Dawngeon",
+            "variant": "h3",
+            "align": "left",
+            "color": "foreground",
+            "transform": "none"
+          }
+        },
+        {
+          "id": "blk_bd11707a",
+          "layout": {
+            "col": 8,
+            "colSpan": 4,
+            "row": 8,
+            "rowSpan": 7
+          },
+          "mobile": {
+            "layout": {
+              "col": 1,
+              "colSpan": 12,
+              "row": 91,
+              "rowSpan": 8
+            }
+          },
+          "type": "text",
+          "props": {
+            "content": "I designed, self-taught, and developed a pixel rogue-like RPG for the App Store. 140K+ downloads, 4.6 stars, charted #130 in Adventure. My first ship. This is where my journey began.",
+            "variant": "body",
+            "align": "left",
+            "color": "foreground",
+            "transform": "none"
+          }
+        },
+        {
+          "id": "blk_9c0b7f39",
+          "layout": {
+            "col": 8,
+            "colSpan": 3,
+            "row": 18,
+            "rowSpan": 3
+          },
+          "mobile": {
+            "layout": {
+              "col": 1,
+              "colSpan": 12,
+              "row": 97
+            }
+          },
+          "type": "button",
+          "props": {
+            "label": "Read more →",
+            "href": "/work/dawngeon",
+            "variant": "ghost",
+            "align": "left",
+            "newTab": false
+          }
+        },
+        {
+          "id": "blk_c4a2ca4e",
+          "layout": {
+            "col": 1,
+            "colSpan": 6,
+            "row": 2,
+            "rowSpan": 20
+          },
+          "type": "video",
+          "props": {
+            "url": "https://www.youtube.com/watch?v=25WQUfCgPzE",
+            "autoplay": false,
+            "muted": false,
+            "loop": false,
+            "controls": true,
+            "aspect": "16/9",
+            "fit": "width",
+            "radius": 0
+          }
+        },
+        {
+          "id": "blk_a3f18c2d",
+          "layout": {
+            "col": 8,
+            "colSpan": 5,
+            "row": 23,
+            "rowSpan": 2
+          },
+          "mobile": {
+            "layout": {
+              "col": 1,
+              "colSpan": 12,
+              "row": 101
+            }
+          },
+          "type": "tags",
+          "props": {
+            "tags": [
+              "Unity",
+              "c#",
+              "Programmer",
+              "Designer"
+            ],
+            "size": 12,
+            "gap": 8,
+            "align": "left"
+          }
+        }
+      ]
+    },
+    {
       "id": "sec_6e78d64f",
       "background": {
         "type": "image",
@@ -904,7 +1075,8 @@
           },
           "mobile": {
             "layout": {
-              "colSpan": 12
+              "colSpan": 12,
+              "row": 17
             }
           },
           "type": "text",
@@ -927,7 +1099,7 @@
           "mobile": {
             "layout": {
               "colSpan": 12,
-              "row": 22
+              "row": 19
             }
           },
           "type": "text",
@@ -950,7 +1122,7 @@
           "mobile": {
             "layout": {
               "colSpan": 12,
-              "row": 26
+              "row": 24
             }
           },
           "type": "text",
@@ -1020,6 +1192,13 @@
             "colSpan": 6,
             "row": 1,
             "rowSpan": 19
+          },
+          "mobile": {
+            "layout": {
+              "col": 1,
+              "colSpan": 12,
+              "rowSpan": 15
+            }
           },
           "type": "video",
           "props": {
