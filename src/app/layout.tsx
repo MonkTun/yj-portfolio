@@ -106,6 +106,11 @@ const jetbrainsMono = JetBrains_Mono({
 });
 
 export const metadata: Metadata = {
+  // Canonical origin is the www host — the apex 308-redirects to it in
+  // Vercel's domain settings. Keeps search engines and social scrapers
+  // consolidated on one URL per page ("./" resolves to the current route).
+  metadataBase: new URL("https://www.youngjepark.com"),
+  alternates: { canonical: "./" },
   title: "Youngje Park",
   description: "Portfolio of Youngje Park — designer, engineer, game maker.",
 };
