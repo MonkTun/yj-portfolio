@@ -62,7 +62,7 @@
           "layout": {
             "col": 1,
             "colSpan": 12,
-            "row": 1,
+            "row": 4,
             "rowSpan": 5
           },
           "type": "text",
@@ -79,7 +79,7 @@
           "layout": {
             "col": 1,
             "colSpan": 3,
-            "row": 6,
+            "row": 10,
             "rowSpan": 2
           },
           "type": "button",
@@ -89,6 +89,23 @@
             "variant": "primary",
             "align": "center",
             "newTab": false
+          }
+        },
+        {
+          "id": "blk_9fec6dff",
+          "layout": {
+            "col": 1,
+            "colSpan": 12,
+            "row": 1,
+            "rowSpan": 3
+          },
+          "type": "text",
+          "props": {
+            "content": "About the Project",
+            "variant": "h3",
+            "align": "left",
+            "color": "foreground",
+            "transform": "none"
           }
         }
       ]
@@ -212,7 +229,7 @@
           "layout": {
             "col": 1,
             "colSpan": 8,
-            "row": 59,
+            "row": 57,
             "rowSpan": 9
           },
           "type": "quote",
