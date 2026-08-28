@@ -5,92 +5,34 @@
   },
   "sections": [
     {
-      "id": "sec_th_hero",
-      "background": {
-        "type": "transparent"
-      },
-      "padding": "xl",
-      "minHeight": "screen",
-      "align": "center",
-      "blocks": [
-        {
-          "id": "blk_th_hero_kicker",
-          "layout": {
-            "col": 2,
-            "colSpan": 8,
-            "row": 1,
-            "rowSpan": 2
-          },
-          "type": "text",
-          "props": {
-            "content": "Selected work — Multiplayer system engineer",
-            "variant": "kicker",
-            "align": "left",
-            "color": "muted",
-            "transform": "none"
-          }
-        },
-        {
-          "id": "blk_th_hero_title",
-          "layout": {
-            "col": 2,
-            "colSpan": 11,
-            "row": 4,
-            "rowSpan": 18
-          },
-          "type": "text",
-          "props": {
-            "content": "Thang.",
-            "variant": "h1",
-            "align": "left",
-            "color": "foreground",
-            "transform": "none",
-            "lineHeight": 0.85,
-            "letterSpacing": -0.025
-          }
-        },
-        {
-          "id": "blk_th_hero_tagline",
-          "layout": {
-            "col": 2,
-            "colSpan": 7,
-            "row": 23,
-            "rowSpan": 12
-          },
-          "type": "text",
-          "props": {
-            "content": "A casual multiplayer shooter where players compete to freeze each other in a fast, action-packed arena. Architected the full ecosystem — UE5 client, Next.js / Node.js / MongoDB backend, Firebase Auth, AWS GameLift.",
-            "variant": "body",
-            "align": "left",
-            "color": "foreground",
-            "transform": "none"
-          }
-        }
-      ]
-    },
-    {
       "id": "sec_th_poster",
       "background": {
-        "type": "transparent"
+        "type": "video",
+        "url": "https://youtu.be/zcte23wUrg8",
+        "overlay": 68,
+        "muted": true,
+        "loop": true,
+        "playbackRate": 1,
+        "tint": "none",
+        "tintOpacity": 0
       },
-      "padding": "md",
+      "padding": "xl",
       "minHeight": "auto",
       "align": "top",
       "blocks": [
         {
-          "id": "blk_th_poster",
+          "id": "blk_9865fd8d",
           "layout": {
-            "col": 2,
-            "colSpan": 11,
+            "col": 4,
+            "colSpan": 6,
             "row": 1,
-            "rowSpan": 30
+            "rowSpan": 13
           },
           "type": "image",
           "props": {
-            "src": "/projects/ThangHorizontal.png",
-            "alt": "Thang poster",
+            "src": "/uploads/thang-logo-mtcj3cwv.webp",
+            "alt": "",
             "fit": "cover",
-            "aspect": "16/9",
             "radius": 0,
             "filter": "none",
             "focalX": 50,
@@ -99,6 +41,7 @@
             "flipX": false,
             "flipY": false,
             "blur": 0,
+            "zoom": 1,
             "tint": "none",
             "tintOpacity": 0
           }
@@ -106,133 +49,43 @@
       ]
     },
     {
-      "id": "sec_th_vitals",
+      "id": "sec_th_unreal",
       "background": {
         "type": "transparent"
       },
-      "padding": "lg",
+      "padding": "md",
       "minHeight": "auto",
       "align": "top",
       "blocks": [
         {
-          "id": "blk_th_vitals_kicker",
+          "id": "blk_th_unreal_h3",
           "layout": {
-            "col": 2,
-            "colSpan": 4,
-            "row": 1,
-            "rowSpan": 2
-          },
-          "type": "text",
-          "props": {
-            "content": "Vital signs",
-            "variant": "kicker",
-            "align": "left",
-            "color": "muted",
-            "transform": "none"
-          }
-        },
-        {
-          "id": "blk_th_vitals_rule",
-          "layout": {
-            "col": 7,
+            "col": 1,
             "colSpan": 5,
-            "row": 2,
-            "rowSpan": 1
-          },
-          "type": "line",
-          "props": {
-            "thickness": 1,
-            "color": "border"
-          }
-        },
-        {
-          "id": "blk_th_vitals_body",
-          "layout": {
-            "col": 2,
-            "colSpan": 10,
-            "row": 4,
-            "rowSpan": 16
+            "row": 1,
+            "rowSpan": 4
           },
           "type": "text",
           "props": {
-            "content": "<strong>Status</strong> — Ongoing<br><strong>Type</strong> — Overdawn Studio commercial project<br><strong>Duration</strong> — 2 months<br><strong>Stack</strong> — Unreal Engine 5, Next.js, MongoDB, Firebase Auth, AWS GameLift<br><strong>Role</strong> — Multiplayer system engineer, technical designer",
-            "variant": "body",
+            "content": "About the Project",
+            "variant": "h3",
             "align": "left",
             "color": "foreground",
             "transform": "none"
           }
         },
         {
-          "id": "blk_th_btn_more",
+          "id": "blk_th_unreal_body",
           "layout": {
-            "col": 2,
-            "colSpan": 3,
-            "row": 21,
-            "rowSpan": 2
-          },
-          "type": "button",
-          "props": {
-            "label": "Learn more",
-            "href": "https://thang-backend.vercel.app/",
-            "variant": "primary",
-            "align": "left",
-            "newTab": true
-          }
-        }
-      ]
-    },
-    {
-      "id": "sec_th_systems_title",
-      "background": {
-        "type": "transparent"
-      },
-      "padding": "lg",
-      "minHeight": "auto",
-      "align": "top",
-      "blocks": [
-        {
-          "id": "blk_th_systems_num",
-          "layout": {
-            "col": 2,
-            "colSpan": 3,
-            "row": 1,
-            "rowSpan": 2
+            "col": 1,
+            "colSpan": 12,
+            "row": 5,
+            "rowSpan": 8
           },
           "type": "text",
           "props": {
-            "content": "01",
-            "variant": "kicker",
-            "align": "left",
-            "color": "muted",
-            "transform": "none"
-          }
-        },
-        {
-          "id": "blk_th_systems_rule",
-          "layout": {
-            "col": 5,
-            "colSpan": 7,
-            "row": 2,
-            "rowSpan": 1
-          },
-          "type": "line",
-          "props": {
-            "thickness": 1,
-            "color": "border"
-          }
-        },
-        {
-          "id": "blk_th_systems_h2",
-          "layout": {
-            "col": 2,
-            "colSpan": 10,
-            "row": 4,
-            "rowSpan": 9
-          },
-          "type": "text",
-          "props": {
-            "content": "What I built.",
-            "variant": "h2",
+            "content": "Thang is a whimsical shooter party game where you freeze your teammates into powerful weapons. The game loop is simple. You freeze them, you throw them into an oven, you get more powerful popsicle themed weapons that freeze your friends even faster or funnier.This project started with the same Overdawn crew. We wanted a game we could play together so we made one. I was an associate director, 3d modeler, programmer, and designer of this project.",
+            "variant": "body",
             "align": "left",
             "color": "foreground",
             "transform": "none"
@@ -250,33 +103,16 @@
       "align": "top",
       "blocks": [
         {
-          "id": "blk_th_core_kicker",
-          "layout": {
-            "col": 2,
-            "colSpan": 5,
-            "row": 1,
-            "rowSpan": 2
-          },
-          "type": "text",
-          "props": {
-            "content": "Core systems",
-            "variant": "kicker",
-            "align": "left",
-            "color": "muted",
-            "transform": "none"
-          }
-        },
-        {
           "id": "blk_th_core_h3",
           "layout": {
-            "col": 2,
-            "colSpan": 5,
-            "row": 3,
+            "col": 1,
+            "colSpan": 7,
+            "row": 1,
             "rowSpan": 4
           },
           "type": "text",
           "props": {
-            "content": "Server-side rewind for latency-free input.",
+            "content": "Server-side rewind for latency-free input",
             "variant": "h3",
             "align": "left",
             "color": "foreground",
@@ -286,80 +122,44 @@
         {
           "id": "blk_th_core_body",
           "layout": {
-            "col": 2,
-            "colSpan": 10,
-            "row": 8,
+            "col": 1,
+            "colSpan": 7,
+            "row": 5,
             "rowSpan": 14
           },
           "type": "text",
           "props": {
-            "content": "Engineered 5+ core systems, including a server-side rewind algorithm for latency compensation that lets shooting, freeze states, and tag mechanics all feel instantaneous regardless of the player's connection. The whole game balances on this — without SSR the rest doesn't matter.",
+            "content": "Embarking on this journey, I immediately knew a shooter like this needs lag compensation. <br>First time learning Unreal Engine through this project, I immediately enrolled in Stephen Ulibarri's UE5 Networking course and fell in love with it. After completing the course,  I engineered 5+ core systems, including a server-side rewind algorithm for latency compensation that lets shooting, freeze states, and tag mechanics all feel instantaneous regardless of the player's connection.",
             "variant": "body",
             "align": "left",
             "color": "foreground",
             "transform": "none"
           }
-        }
-      ]
-    },
-    {
-      "id": "sec_th_unreal",
-      "background": {
-        "type": "transparent"
-      },
-      "padding": "md",
-      "minHeight": "auto",
-      "align": "top",
-      "blocks": [
+        },
         {
-          "id": "blk_th_unreal_kicker",
+          "id": "blk_6663729f",
           "layout": {
-            "col": 2,
+            "col": 8,
             "colSpan": 5,
             "row": 1,
-            "rowSpan": 2
+            "rowSpan": 16
           },
-          "type": "text",
+          "type": "image",
           "props": {
-            "content": "Unreal Engine",
-            "variant": "kicker",
-            "align": "left",
-            "color": "muted",
-            "transform": "none"
-          }
-        },
-        {
-          "id": "blk_th_unreal_h3",
-          "layout": {
-            "col": 2,
-            "colSpan": 5,
-            "row": 3,
-            "rowSpan": 4
-          },
-          "type": "text",
-          "props": {
-            "content": "Movement, shooting, freeze, power-ups.",
-            "variant": "h3",
-            "align": "left",
-            "color": "foreground",
-            "transform": "none"
-          }
-        },
-        {
-          "id": "blk_th_unreal_body",
-          "layout": {
-            "col": 2,
-            "colSpan": 10,
-            "row": 8,
-            "rowSpan": 12
-          },
-          "type": "text",
-          "props": {
-            "content": "A network of gameplay systems in C++ and Blueprints — player movement, shooting mechanics, freeze states, power-ups — all designed to compose with the rewind layer underneath them.",
-            "variant": "body",
-            "align": "left",
-            "color": "foreground",
-            "transform": "none"
+            "src": "/uploads/thangs-mtcjcbbf.png",
+            "alt": "",
+            "fit": "cover",
+            "radius": 47,
+            "filter": "none",
+            "focalX": 50,
+            "focalY": 50,
+            "rotate": 0,
+            "flipX": false,
+            "flipY": false,
+            "blur": 0,
+            "zoom": 1,
+            "tint": "none",
+            "tintOpacity": 0
           }
         }
       ]
@@ -367,40 +167,36 @@
     {
       "id": "sec_th_stack",
       "background": {
-        "type": "transparent"
+        "type": "image",
+        "src": "/uploads/thangf-mtcjjq55.png",
+        "fit": "both",
+        "overlay": 78,
+        "filter": "none",
+        "focalX": 50,
+        "focalY": 50,
+        "rotate": 0,
+        "flipX": false,
+        "flipY": false,
+        "blur": 0,
+        "zoom": 1,
+        "tint": "none",
+        "tintOpacity": 0
       },
       "padding": "md",
       "minHeight": "auto",
       "align": "top",
       "blocks": [
         {
-          "id": "blk_th_stack_kicker",
-          "layout": {
-            "col": 2,
-            "colSpan": 5,
-            "row": 1,
-            "rowSpan": 2
-          },
-          "type": "text",
-          "props": {
-            "content": "Full-stack architecture",
-            "variant": "kicker",
-            "align": "left",
-            "color": "muted",
-            "transform": "none"
-          }
-        },
-        {
           "id": "blk_th_stack_h3",
           "layout": {
-            "col": 2,
+            "col": 1,
             "colSpan": 5,
-            "row": 3,
+            "row": 1,
             "rowSpan": 4
           },
           "type": "text",
           "props": {
-            "content": "Client, backend, identity, deploy.",
+            "content": "Architecture",
             "variant": "h3",
             "align": "left",
             "color": "foreground",
@@ -410,14 +206,14 @@
         {
           "id": "blk_th_stack_body",
           "layout": {
-            "col": 2,
-            "colSpan": 10,
-            "row": 8,
-            "rowSpan": 14
+            "col": 1,
+            "colSpan": 12,
+            "row": 5,
+            "rowSpan": 12
           },
           "type": "text",
           "props": {
-            "content": "Stitched the UE5 client to a RESTful Next.js / Node.js backend with MongoDB underneath. Identity flows through Firebase Auth; the backend lives on Vercel. The seam between the client and the web stack had to be invisible to players, and is.",
+            "content": "Originally, Thang had a RESTful Next.js / Node.js backend with MongoDB underneath. Its Identity flew through Firebase Auth and the backend lived on Vercel. This architecture prepared the game for more competitive settings allowing matchmaking and hosting dedicated servers. However, this was simply too much for an indie party game, so I had to find a cheaper alternative. We pivoted back to P2P and simplified networking stack into EOS. This allows us to keep the maintenance cost of the game to be $0. ",
             "variant": "body",
             "align": "left",
             "color": "foreground",
@@ -427,7 +223,7 @@
       ]
     },
     {
-      "id": "sec_th_party",
+      "id": "sec_f85b6832",
       "background": {
         "type": "transparent"
       },
@@ -436,33 +232,16 @@
       "align": "top",
       "blocks": [
         {
-          "id": "blk_th_party_kicker",
+          "id": "blk_a48ab008",
           "layout": {
-            "col": 2,
-            "colSpan": 5,
+            "col": 1,
+            "colSpan": 10,
             "row": 1,
-            "rowSpan": 2
-          },
-          "type": "text",
-          "props": {
-            "content": "Party &amp; matchmaking",
-            "variant": "kicker",
-            "align": "left",
-            "color": "muted",
-            "transform": "none"
-          }
-        },
-        {
-          "id": "blk_th_party_h3",
-          "layout": {
-            "col": 2,
-            "colSpan": 5,
-            "row": 3,
             "rowSpan": 4
           },
           "type": "text",
           "props": {
-            "content": "End-to-end on AWS GameLift.",
+            "content": "3D Artist",
             "variant": "h3",
             "align": "left",
             "color": "foreground",
@@ -470,20 +249,212 @@
           }
         },
         {
-          "id": "blk_th_party_body",
+          "id": "blk_f92591f0",
           "layout": {
-            "col": 2,
-            "colSpan": 10,
-            "row": 8,
-            "rowSpan": 12
+            "col": 1,
+            "colSpan": 6,
+            "row": 5,
+            "rowSpan": 10
           },
           "type": "text",
           "props": {
-            "content": "Designed and shipped the party and matchmaking UX on AWS GameLift, prioritizing a frictionless flow across distributed dedicated server instances. The shortest path from \"open the game\" to \"in a match with friends\" is the one I cared about most.",
+            "content": "I modeled some weapons and the player characters in Thang. I first started by conceptualizing the character design and iterating based on the team's feedback. I designed art pipeline from Blender to Unreal Engine ensuring all new cosmetics items work on the same player model. The end result is a cute and unique player character that can be customized to the player's own unique style.",
             "variant": "body",
             "align": "left",
             "color": "foreground",
             "transform": "none"
+          }
+        },
+        {
+          "id": "blk_42511526",
+          "layout": {
+            "col": 7,
+            "colSpan": 3,
+            "row": 1,
+            "rowSpan": 16
+          },
+          "type": "image",
+          "props": {
+            "src": "/uploads/thangconcept-mtcjm0ik.png",
+            "alt": "",
+            "fit": "cover",
+            "radius": 47,
+            "filter": "none",
+            "focalX": 50,
+            "focalY": 50,
+            "rotate": 0,
+            "flipX": false,
+            "flipY": false,
+            "blur": 0,
+            "zoom": 1,
+            "tint": "none",
+            "tintOpacity": 0
+          }
+        },
+        {
+          "id": "blk_4bbfa0fc",
+          "layout": {
+            "col": 10,
+            "colSpan": 3,
+            "row": 1,
+            "rowSpan": 16
+          },
+          "type": "image",
+          "props": {
+            "src": "/uploads/thangbear3-mtcjmlwm.png",
+            "alt": "",
+            "fit": "cover",
+            "radius": 47,
+            "filter": "none",
+            "focalX": 50,
+            "focalY": 50,
+            "rotate": 0,
+            "flipX": false,
+            "flipY": false,
+            "blur": 0,
+            "zoom": 1,
+            "tint": "none",
+            "tintOpacity": 0
+          }
+        },
+        {
+          "id": "blk_ba824574",
+          "layout": {
+            "col": 1,
+            "colSpan": 6,
+            "row": 18,
+            "rowSpan": 29
+          },
+          "type": "image",
+          "props": {
+            "src": "/uploads/thangbear-mtcjoext.png",
+            "alt": "",
+            "fit": "cover",
+            "radius": 120,
+            "filter": "none",
+            "focalX": 50,
+            "focalY": 50,
+            "rotate": 0,
+            "flipX": false,
+            "flipY": false,
+            "blur": 0,
+            "zoom": 1,
+            "tint": "none",
+            "tintOpacity": 0
+          }
+        },
+        {
+          "id": "blk_e065d812",
+          "layout": {
+            "col": 7,
+            "colSpan": 5,
+            "row": 21,
+            "rowSpan": 7
+          },
+          "type": "image",
+          "props": {
+            "src": "/uploads/thangart-mtcjrhxg.png",
+            "alt": "",
+            "fit": "cover",
+            "radius": 0,
+            "filter": "none",
+            "focalX": 50,
+            "focalY": 50,
+            "rotate": 0,
+            "flipX": false,
+            "flipY": false,
+            "blur": 0,
+            "zoom": 1,
+            "tint": "none",
+            "tintOpacity": 0
+          }
+        },
+        {
+          "id": "blk_5ba5ac3c",
+          "layout": {
+            "col": 7,
+            "colSpan": 6,
+            "row": 30,
+            "rowSpan": 10
+          },
+          "type": "text",
+          "props": {
+            "content": "Using my favorite art software, Aseprite, I also drew character eyes and animated them in Unreal Engine using its shader graph and linking the logic via adding custom eye cpo",
+            "variant": "body",
+            "align": "left",
+            "color": "foreground",
+            "transform": "none"
+          }
+        }
+      ]
+    },
+    {
+      "id": "sec_b54c4c47",
+      "background": {
+        "type": "transparent"
+      },
+      "padding": "md",
+      "minHeight": "auto",
+      "align": "top",
+      "blocks": [
+        {
+          "id": "blk_81939e9e",
+          "layout": {
+            "col": 1,
+            "colSpan": 7,
+            "row": 1,
+            "rowSpan": 4
+          },
+          "type": "text",
+          "props": {
+            "content": "Gameplay Programming",
+            "variant": "h3",
+            "align": "left",
+            "color": "foreground",
+            "transform": "none"
+          }
+        },
+        {
+          "id": "blk_571df779",
+          "layout": {
+            "col": 1,
+            "colSpan": 6,
+            "row": 5,
+            "rowSpan": 15
+          },
+          "type": "text",
+          "props": {
+            "content": "I worked on key gameplay features.<br><br><strong>Parring</strong>: players can right click and do parring. I ensured this mechanic is network accurate and server authoritative by extending the lagCompensation component.<br><br><strong>Popsicles</strong>: Players can turn into popsicles when thrown into oven.<br><br>And so much more!",
+            "variant": "body",
+            "align": "left",
+            "color": "foreground",
+            "transform": "none"
+          }
+        },
+        {
+          "id": "blk_25e96f2b",
+          "layout": {
+            "col": 7,
+            "colSpan": 6,
+            "row": 1,
+            "rowSpan": 19
+          },
+          "type": "image",
+          "props": {
+            "src": "/uploads/thangparring-mtcjwnru.png",
+            "alt": "",
+            "fit": "cover",
+            "radius": 55,
+            "filter": "none",
+            "focalX": 50,
+            "focalY": 50,
+            "rotate": 0,
+            "flipX": false,
+            "flipY": false,
+            "blur": 0,
+            "zoom": 1,
+            "tint": "none",
+            "tintOpacity": 0
           }
         }
       ]

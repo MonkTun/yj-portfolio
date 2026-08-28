@@ -43,6 +43,10 @@
     {
       "name": "Designer",
       "color": "#c08026"
+    },
+    {
+      "name": "Artist",
+      "color": "#398966"
     }
   ]
 }

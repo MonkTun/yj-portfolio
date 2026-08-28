@@ -909,7 +909,7 @@
           },
           "type": "text",
           "props": {
-            "content": "2025 — Multiplayer engineer @ Overdawn STUDIO",
+            "content": "2026 — Multiplayer engineer @ Overdawn STUDIO",
             "variant": "kicker",
             "align": "left",
             "color": "muted",
@@ -986,44 +986,11 @@
           }
         },
         {
-          "id": "blk_98ad4912",
-          "layout": {
-            "col": 8,
-            "colSpan": 4,
-            "row": 1,
-            "rowSpan": 19
-          },
-          "mobile": {
-            "layout": {
-              "col": 1,
-              "colSpan": 12,
-              "row": 3
-            }
-          },
-          "type": "image",
-          "props": {
-            "src": "/uploads/thanglogo-mtbt6cdz.webp",
-            "alt": "",
-            "fit": "contain",
-            "radius": 0,
-            "filter": "none",
-            "focalX": 50,
-            "focalY": 50,
-            "rotate": 0,
-            "flipX": false,
-            "flipY": false,
-            "blur": 0,
-            "zoom": 1,
-            "tint": "none",
-            "tintOpacity": 0
-          }
-        },
-        {
           "id": "blk_1a31d470",
           "layout": {
-            "col": 6,
+            "col": 7,
             "colSpan": 6,
-            "row": 22,
+            "row": 23,
             "rowSpan": 1
           },
           "mobile": {
@@ -1044,6 +1011,26 @@
             "size": 12,
             "gap": 8,
             "align": "right"
+          }
+        },
+        {
+          "id": "blk_4a924cfe",
+          "layout": {
+            "col": 7,
+            "colSpan": 6,
+            "row": 1,
+            "rowSpan": 19
+          },
+          "type": "video",
+          "props": {
+            "url": "https://youtu.be/zcte23wUrg8",
+            "autoplay": false,
+            "muted": false,
+            "loop": false,
+            "controls": true,
+            "aspect": "16/9",
+            "fit": "width",
+            "radius": 0
           }
         }
       ]

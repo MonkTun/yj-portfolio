@@ -2,5 +2,271 @@
   "meta": {
     "title": "Banana Republic"
   },
-  "sections": []
+  "sections": [
+    {
+      "id": "sec_25cad42a",
+      "background": {
+        "type": "video",
+        "url": "https://www.youtube.com/watch?v=a2ICoAA_-Kc",
+        "overlay": 70,
+        "muted": true,
+        "loop": true,
+        "playbackRate": 1,
+        "tint": "none",
+        "tintOpacity": 0
+      },
+      "padding": "xl",
+      "minHeight": "auto",
+      "align": "top",
+      "blocks": [
+        {
+          "id": "blk_fdfb31a7",
+          "layout": {
+            "col": 5,
+            "colSpan": 4,
+            "row": 1,
+            "rowSpan": 21
+          },
+          "mobile": {
+            "props": {
+              "fit": "cover"
+            }
+          },
+          "type": "image",
+          "props": {
+            "src": "/uploads/banna-mtckdzpf.png",
+            "alt": "",
+            "fit": "cover",
+            "radius": 0,
+            "filter": "none",
+            "focalX": 50,
+            "focalY": 50,
+            "rotate": 0,
+            "flipX": false,
+            "flipY": false,
+            "blur": 0,
+            "zoom": 1,
+            "tint": "none",
+            "tintOpacity": 0
+          }
+        }
+      ]
+    },
+    {
+      "id": "sec_05f21cc2",
+      "background": {
+        "type": "color",
+        "token": "surface"
+      },
+      "padding": "lg",
+      "minHeight": "auto",
+      "align": "top",
+      "blocks": [
+        {
+          "id": "blk_931002b6",
+          "layout": {
+            "col": 1,
+            "colSpan": 12,
+            "row": 1,
+            "rowSpan": 3
+          },
+          "type": "text",
+          "props": {
+            "content": "Banana Republic is a MFA Thesis project by Nicolas Gomez Velandia, and I had an extreme pleasure to be part of his journey. As a gameplay programmer of the project, I touched on a few meaningful gameplay features such as shooting, quest, and objective system. ",
+            "variant": "body",
+            "align": "left",
+            "color": "foreground",
+            "transform": "none"
+          }
+        },
+        {
+          "id": "blk_f170219e",
+          "layout": {
+            "col": 1,
+            "colSpan": 3,
+            "row": 7,
+            "rowSpan": 3
+          },
+          "type": "button",
+          "props": {
+            "label": "Steam Page",
+            "href": "https://store.steampowered.com/app/4440710/Banana_Republic/",
+            "variant": "primary",
+            "align": "left",
+            "newTab": false
+          }
+        }
+      ]
+    },
+    {
+      "id": "sec_73c79f01",
+      "background": {
+        "type": "transparent"
+      },
+      "padding": "sm",
+      "minHeight": "auto",
+      "align": "top",
+      "blocks": [
+        {
+          "id": "blk_cc61b411",
+          "layout": {
+            "col": 1,
+            "colSpan": 12,
+            "row": 1,
+            "rowSpan": 3
+          },
+          "type": "text",
+          "props": {
+            "content": "Working with Blueprints",
+            "variant": "h3",
+            "align": "left",
+            "color": "foreground",
+            "transform": "none"
+          }
+        },
+        {
+          "id": "blk_c98065e7",
+          "layout": {
+            "col": 1,
+            "colSpan": 6,
+            "row": 5,
+            "rowSpan": 10
+          },
+          "type": "text",
+          "props": {
+            "content": "In this Blueprint-only Unreal Engine project, I had to adapt and learn to build extendable systems only in the Unreal Editor. This meant that for creating complex game systems such as quests and objectives, I had to extend the Game Instance. I commented, grouped nodes into features, and cleaned up blueprints so they are highly readable and easy to maintain.<br>\nI also learned to use Perforce with Unreal Engine. I built habits of checking out files and updating them with the rest of my team so no one is blocked unknowingly. I also learned to read the blueprint codebase better, extensively using the find references feature and understanding the overall game structure.",
+            "variant": "body",
+            "align": "left",
+            "color": "foreground",
+            "transform": "none"
+          }
+        },
+        {
+          "id": "blk_e2973376",
+          "layout": {
+            "col": 7,
+            "colSpan": 6,
+            "row": 1,
+            "rowSpan": 24
+          },
+          "type": "image",
+          "props": {
+            "src": "/uploads/image-mtckfwp0.png",
+            "alt": "",
+            "fit": "cover",
+            "radius": 0,
+            "filter": "none",
+            "focalX": 50,
+            "focalY": 50,
+            "rotate": 0,
+            "flipX": false,
+            "flipY": false,
+            "blur": 0,
+            "zoom": 1,
+            "tint": "none",
+            "tintOpacity": 0
+          }
+        }
+      ]
+    },
+    {
+      "id": "sec_692fba99",
+      "background": {
+        "type": "transparent"
+      },
+      "padding": "sm",
+      "minHeight": "auto",
+      "align": "top",
+      "blocks": [
+        {
+          "id": "blk_1f4d2e07",
+          "layout": {
+            "col": 1,
+            "colSpan": 6,
+            "row": 1,
+            "rowSpan": 3
+          },
+          "type": "text",
+          "props": {
+            "content": "Animating in Unreal Engine",
+            "variant": "h3",
+            "align": "left",
+            "color": "foreground",
+            "transform": "none"
+          }
+        },
+        {
+          "id": "blk_70ae3754",
+          "layout": {
+            "col": 1,
+            "colSpan": 6,
+            "row": 5,
+            "rowSpan": 11
+          },
+          "type": "text",
+          "props": {
+            "content": "In one of my tasks, I also edited part of a reload animation to be reused as an inspection animation. The feature I was building was a tactical-shooter-style accurate reload, where the player swaps magazines instead of dropping the old one entirely and gaining a new full one infinitely.",
+            "variant": "body",
+            "align": "left",
+            "color": "foreground",
+            "transform": "none"
+          }
+        },
+        {
+          "id": "blk_1f17e468",
+          "layout": {
+            "col": 7,
+            "colSpan": 6,
+            "row": 1,
+            "rowSpan": 18
+          },
+          "type": "image",
+          "props": {
+            "src": "/uploads/image-mtckto4j.png",
+            "alt": "",
+            "fit": "cover",
+            "radius": 0,
+            "filter": "none",
+            "focalX": 50,
+            "focalY": 50,
+            "rotate": 0,
+            "flipX": false,
+            "flipY": false,
+            "blur": 0,
+            "zoom": 1,
+            "tint": "none",
+            "tintOpacity": 0
+          }
+        }
+      ]
+    },
+    {
+      "id": "sec_ba1fa8ad",
+      "background": {
+        "type": "transparent"
+      },
+      "padding": "lg",
+      "minHeight": "auto",
+      "align": "top",
+      "blocks": [
+        {
+          "id": "blk_66057503",
+          "layout": {
+            "col": 1,
+            "colSpan": 3,
+            "row": 1,
+            "rowSpan": 3
+          },
+          "type": "button",
+          "props": {
+            "label": "← Back to Home",
+            "href": "/",
+            "variant": "ghost",
+            "align": "left",
+            "newTab": false
+          }
+        }
+      ]
+    }
+  ]
 }
