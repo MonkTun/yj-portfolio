@@ -1,5 +1,5 @@
 import { notFound } from "next/navigation";
-import { listPages, loadPage } from "@/lib/content";
+import { listPages, loadPage, loadSiteConfig } from "@/lib/content";
 import { Editor } from "@/components/editor/Editor";
 
 export const dynamic = "force-dynamic";
@@ -27,11 +27,16 @@ export default async function EditPage({ params }: Props) {
     availablePages = [];
   }
 
+  // Project-wide tag library — the Editor keeps a live working copy and
+  // saves changes back to site.json through /api/admin/site.
+  const siteConfig = await loadSiteConfig();
+
   return (
     <Editor
       slug={slug}
       initialPage={page}
       availablePages={availablePages}
+      initialTags={siteConfig.tags}
     />
   );
 }

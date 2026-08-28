@@ -31,7 +31,6 @@
           },
           "mobile": {
             "layout": {
-              "col": 1,
               "colSpan": 12,
               "row": 1
             },
@@ -58,6 +57,12 @@
             "row": 20,
             "rowSpan": 3
           },
+          "mobile": {
+            "layout": {
+              "colSpan": 12,
+              "row": 19
+            }
+          },
           "type": "text",
           "props": {
             "content": "<em><strong>Game</strong><strong> Designer </strong>&amp;<strong> Programmer</strong></em>",
@@ -75,6 +80,12 @@
             "colSpan": 3,
             "row": 24,
             "rowSpan": 3
+          },
+          "mobile": {
+            "layout": {
+              "colSpan": 12,
+              "row": 22
+            }
           },
           "type": "socialLinks",
           "props": {
@@ -117,8 +128,14 @@
           "layout": {
             "col": 1,
             "colSpan": 6,
-            "row": 5,
+            "row": 4,
             "rowSpan": 7
+          },
+          "mobile": {
+            "layout": {
+              "colSpan": 12,
+              "row": 21
+            }
           },
           "type": "text",
           "props": {
@@ -130,169 +147,19 @@
           }
         },
         {
-          "id": "blk_fa6381af",
-          "layout": {
-            "col": 1,
-            "colSpan": 12,
-            "row": 22,
-            "rowSpan": 10,
-            "bleed": "both"
-          },
-          "mobile": {
-            "layout": {
-              "row": 1,
-              "rowSpan": 11
-            }
-          },
-          "type": "projectCarousel",
-          "props": {
-            "items": [
-              {
-                "src": "/uploads/br-posterwithpaperandtatter-mqg50uv2.webp",
-                "alt": "",
-                "title": "Project one",
-                "meta": "2024 — Role",
-                "description": "A short line about the work.",
-                "starred": false,
-                "filter": "none",
-                "focalX": 51,
-                "focalY": 1,
-                "rotate": 0,
-                "flipX": false,
-                "flipY": false,
-                "blur": 0,
-                "zoom": 1.15,
-                "tint": "none",
-                "tintOpacity": 0
-              },
-              {
-                "src": "/uploads/melonicon-mqg68s1r.webp",
-                "alt": "",
-                "title": "Project two",
-                "meta": "2023 — Role",
-                "description": "A short line about the work.",
-                "starred": false,
-                "filter": "none",
-                "focalX": 50,
-                "focalY": 50,
-                "rotate": 0,
-                "flipX": false,
-                "flipY": false,
-                "blur": 0,
-                "zoom": 1,
-                "tint": "none",
-                "tintOpacity": 0
-              },
-              {
-                "src": "/uploads/dawngeonlogo-mqg6b451.webp",
-                "alt": "",
-                "title": "New project",
-                "meta": "",
-                "description": "",
-                "starred": true,
-                "filter": "none",
-                "focalX": 50,
-                "focalY": 50,
-                "rotate": 0,
-                "flipX": false,
-                "flipY": false,
-                "blur": 0,
-                "zoom": 1,
-                "tint": "none",
-                "tintOpacity": 0
-              },
-              {
-                "src": "/uploads/overdawn-mqg6cusv.jpg",
-                "alt": "",
-                "title": "New project",
-                "meta": "",
-                "description": "",
-                "starred": true,
-                "filter": "none",
-                "focalX": 50,
-                "focalY": 50,
-                "rotate": 0,
-                "flipX": false,
-                "flipY": false,
-                "blur": 0,
-                "zoom": 1,
-                "tint": "none",
-                "tintOpacity": 0
-              },
-              {
-                "src": "/uploads/untitled-design-mqg70dct.png",
-                "alt": "",
-                "title": "New project",
-                "meta": "",
-                "description": "",
-                "starred": false,
-                "filter": "none",
-                "focalX": 54,
-                "focalY": 1,
-                "rotate": 0,
-                "flipX": false,
-                "flipY": false,
-                "blur": 0,
-                "zoom": 1,
-                "tint": "none",
-                "tintOpacity": 0
-              },
-              {
-                "src": "/projects/headlessHotelTitle.png",
-                "alt": "",
-                "title": "New project",
-                "meta": "",
-                "description": "",
-                "starred": false,
-                "filter": "none",
-                "focalX": 50,
-                "focalY": 50,
-                "rotate": 0,
-                "flipX": false,
-                "flipY": false,
-                "blur": 0,
-                "zoom": 1,
-                "tint": "none",
-                "tintOpacity": 0
-              },
-              {
-                "src": "/uploads/communityg-mqhaapeg.png",
-                "alt": "",
-                "title": "New project",
-                "meta": "",
-                "description": "",
-                "starred": false,
-                "filter": "none",
-                "focalX": 50,
-                "focalY": 50,
-                "rotate": 0,
-                "flipX": false,
-                "flipY": false,
-                "blur": 0,
-                "zoom": 1,
-                "tint": "none",
-                "tintOpacity": 0
-              }
-            ],
-            "variant": "marquee",
-            "cardWidth": 160,
-            "gap": 24,
-            "aspect": "1/1",
-            "radius": 44,
-            "edgeFade": true,
-            "showArrows": true,
-            "newTab": false,
-            "autoScrollSpeed": 55,
-            "pauseOnHover": true
-          }
-        },
-        {
           "id": "blk_ed0c1275",
           "layout": {
             "col": 8,
             "colSpan": 5,
             "row": 1,
             "rowSpan": 16
+          },
+          "mobile": {
+            "layout": {
+              "col": 1,
+              "colSpan": 12,
+              "row": 5
+            }
           },
           "type": "video",
           "props": {
@@ -302,7 +169,7 @@
             "loop": false,
             "controls": true,
             "aspect": "16/9",
-            "fit": "width",
+            "fit": "height",
             "radius": 0
           }
         },
@@ -314,10 +181,70 @@
             "row": 1,
             "rowSpan": 4
           },
+          "mobile": {
+            "layout": {
+              "colSpan": 12
+            }
+          },
           "type": "text",
           "props": {
             "content": "About Me",
             "variant": "h3",
+            "align": "left",
+            "color": "foreground",
+            "transform": "none"
+          }
+        },
+        {
+          "id": "blk_0f1a162a",
+          "layout": {
+            "col": 1,
+            "colSpan": 2,
+            "row": 7,
+            "rowSpan": 12
+          },
+          "mobile": {
+            "layout": {
+              "colSpan": 12,
+              "row": 28
+            }
+          },
+          "type": "image",
+          "props": {
+            "src": "/uploads/img-3880-mtcekuw9-no-bg-mtcel2iy.png",
+            "alt": "",
+            "fit": "contain",
+            "radius": 0,
+            "filter": "none",
+            "focalX": 50,
+            "focalY": 50,
+            "rotate": 0,
+            "flipX": false,
+            "flipY": false,
+            "blur": 0,
+            "zoom": 1,
+            "tint": "none",
+            "tintOpacity": 0
+          }
+        },
+        {
+          "id": "blk_8ca24b18",
+          "layout": {
+            "col": 1,
+            "colSpan": 3,
+            "row": 16,
+            "rowSpan": 2
+          },
+          "mobile": {
+            "layout": {
+              "colSpan": 12,
+              "row": 40
+            }
+          },
+          "type": "text",
+          "props": {
+            "content": "MY cat says hi to you :)",
+            "variant": "kicker",
             "align": "left",
             "color": "foreground",
             "transform": "none"
@@ -328,9 +255,22 @@
     {
       "id": "sec_1768d09a",
       "background": {
-        "type": "reverse"
+        "type": "image",
+        "src": "/uploads/neighborhoodbackground-mtcec4j6.jpg",
+        "fit": "both",
+        "overlay": 83,
+        "filter": "none",
+        "focalX": 50,
+        "focalY": 50,
+        "rotate": 0,
+        "flipX": false,
+        "flipY": false,
+        "blur": 0,
+        "zoom": 1,
+        "tint": "none",
+        "tintOpacity": 0
       },
-      "padding": "lg",
+      "padding": "md",
       "minHeight": "auto",
       "align": "center",
       "blocks": [
@@ -340,7 +280,13 @@
             "col": 1,
             "colSpan": 6,
             "row": 1,
-            "rowSpan": 16
+            "rowSpan": 18
+          },
+          "mobile": {
+            "layout": {
+              "colSpan": 12,
+              "rowSpan": 14
+            }
           },
           "type": "video",
           "props": {
@@ -366,7 +312,7 @@
             "layout": {
               "col": 1,
               "colSpan": 12,
-              "row": 31
+              "row": 17
             }
           },
           "type": "text",
@@ -390,7 +336,7 @@
             "layout": {
               "col": 1,
               "colSpan": 12,
-              "row": 33
+              "row": 19
             }
           },
           "type": "text",
@@ -407,20 +353,19 @@
           "layout": {
             "col": 8,
             "colSpan": 5,
-            "row": 7,
+            "row": 6,
             "rowSpan": 8
           },
           "mobile": {
             "layout": {
               "col": 1,
               "colSpan": 12,
-              "row": 36,
-              "rowSpan": 7
+              "row": 23
             }
           },
           "type": "text",
           "props": {
-            "content": "Neighborhoods is a cozy city sim where you shape streets to help people thrive, gather, and develop strong opinions about a particular bench. We're reimagining the city builder as a city fixer.",
+            "content": "Neighborhoods is a cozy city sim where you shape streets to help people thrive, gather, and develop strong opinions about a particular bench. We're reimagining the city builder as a city fixer. I worked with Unreal Engine and C++ with project.",
             "variant": "body",
             "align": "left",
             "color": "foreground",
@@ -439,7 +384,7 @@
             "layout": {
               "col": 1,
               "colSpan": 12,
-              "row": 43
+              "row": 38
             }
           },
           "type": "button",
@@ -459,6 +404,16 @@
             "row": 16,
             "rowSpan": 5
           },
+          "mobile": {
+            "layout": {
+              "col": 1,
+              "colSpan": 3,
+              "row": 32
+            },
+            "props": {
+              "fit": "contain"
+            }
+          },
           "type": "image",
           "props": {
             "src": "/uploads/neighborhoodsmix-mtbr58wd.avif",
@@ -475,6 +430,33 @@
             "zoom": 1,
             "tint": "none",
             "tintOpacity": 0
+          }
+        },
+        {
+          "id": "blk_03d0ab7d",
+          "layout": {
+            "col": 1,
+            "colSpan": 6,
+            "row": 23,
+            "rowSpan": 2
+          },
+          "mobile": {
+            "layout": {
+              "colSpan": 12,
+              "row": 43
+            }
+          },
+          "type": "tags",
+          "props": {
+            "tags": [
+              "C++",
+              "Blueprint",
+              "Unreal Engine",
+              "UI"
+            ],
+            "size": 12,
+            "gap": 8,
+            "align": "left"
           }
         }
       ]
@@ -513,7 +495,7 @@
             "layout": {
               "col": 1,
               "colSpan": 12,
-              "row": 31
+              "row": 19
             }
           },
           "type": "text",
@@ -537,7 +519,7 @@
             "layout": {
               "col": 1,
               "colSpan": 12,
-              "row": 33
+              "row": 21
             }
           },
           "type": "text",
@@ -554,20 +536,19 @@
           "layout": {
             "col": 8,
             "colSpan": 5,
-            "row": 7,
+            "row": 6,
             "rowSpan": 8
           },
           "mobile": {
             "layout": {
               "col": 1,
               "colSpan": 12,
-              "row": 36,
-              "rowSpan": 7
+              "row": 25
             }
           },
           "type": "text",
           "props": {
-            "content": "I directed and engineered a 2.5D bullet-time shooter in Unity. I built custom inventory, skill tree, and quest systems from the ground up in a 20+ person team. Wishlist now on Steam!",
+            "content": "This award winning 2.5D bullet-time shooter is a game that engineered and directed. I built custom inventory, skill tree, and quest systems from the ground up in a 20+ person team. Wishlist now on Steam!",
             "variant": "body",
             "align": "left",
             "color": "foreground",
@@ -585,9 +566,8 @@
           "mobile": {
             "layout": {
               "col": 1,
-              "colSpan": 4,
-              "row": 48,
-              "rowSpan": 4
+              "colSpan": 3,
+              "row": 33
             }
           },
           "type": "image",
@@ -619,9 +599,8 @@
           "mobile": {
             "layout": {
               "col": 4,
-              "colSpan": 4,
-              "row": 48,
-              "rowSpan": 4
+              "colSpan": 3,
+              "row": 33
             }
           },
           "type": "image",
@@ -648,7 +627,12 @@
             "col": 1,
             "colSpan": 6,
             "row": 1,
-            "rowSpan": 21
+            "rowSpan": 18
+          },
+          "mobile": {
+            "layout": {
+              "colSpan": 12
+            }
           },
           "type": "video",
           "props": {
@@ -674,7 +658,7 @@
             "layout": {
               "col": 1,
               "colSpan": 12,
-              "row": 43
+              "row": 41
             }
           },
           "type": "button",
@@ -685,16 +669,44 @@
             "align": "left",
             "newTab": false
           }
+        },
+        {
+          "id": "blk_21c7bded",
+          "layout": {
+            "col": 1,
+            "colSpan": 6,
+            "row": 23,
+            "rowSpan": 2
+          },
+          "mobile": {
+            "layout": {
+              "colSpan": 12,
+              "row": 46
+            }
+          },
+          "type": "tags",
+          "props": {
+            "tags": [
+              "Unity",
+              "c#",
+              "Programmer",
+              "Director",
+              "Designer"
+            ],
+            "size": 12,
+            "gap": 8,
+            "align": "left"
+          }
         }
       ]
     },
     {
-      "id": "sec_59705ad3",
+      "id": "sec_6e78d64f",
       "background": {
         "type": "image",
-        "src": "/projects/dawngeonTitle.png",
+        "src": "/uploads/screenshot-2026-08-27-at-5-59-18-pm-mtc8uyiy.webp",
         "fit": "both",
-        "overlay": 88,
+        "overlay": 76,
         "filter": "none",
         "focalX": 50,
         "focalY": 50,
@@ -706,120 +718,27 @@
         "tint": "none",
         "tintOpacity": 0
       },
-      "padding": "md",
-      "minHeight": "half",
+      "padding": "lg",
+      "minHeight": "auto",
       "align": "top",
       "blocks": [
         {
-          "id": "blk_30ad81f6",
-          "layout": {
-            "col": 8,
-            "colSpan": 5,
-            "row": 2,
-            "rowSpan": 1
-          },
-          "mobile": {
-            "layout": {
-              "col": 1,
-              "colSpan": 12,
-              "row": 85,
-              "rowSpan": 2
-            }
-          },
-          "type": "text",
-          "props": {
-            "content": "2022 — Solo developer",
-            "variant": "kicker",
-            "align": "left",
-            "color": "muted",
-            "transform": "none"
-          }
-        },
-        {
-          "id": "blk_b6a2a13b",
-          "layout": {
-            "col": 8,
-            "colSpan": 5,
-            "row": 4,
-            "rowSpan": 4
-          },
-          "mobile": {
-            "layout": {
-              "col": 1,
-              "colSpan": 12,
-              "row": 87,
-              "rowSpan": 4
-            }
-          },
-          "type": "text",
-          "props": {
-            "content": "Dawngeon",
-            "variant": "h3",
-            "align": "left",
-            "color": "foreground",
-            "transform": "none"
-          }
-        },
-        {
-          "id": "blk_bd11707a",
-          "layout": {
-            "col": 8,
-            "colSpan": 4,
-            "row": 8,
-            "rowSpan": 7
-          },
-          "mobile": {
-            "layout": {
-              "col": 1,
-              "colSpan": 12,
-              "row": 91,
-              "rowSpan": 8
-            }
-          },
-          "type": "text",
-          "props": {
-            "content": "I designed, self-taught, and developed a pixel rogue-like RPG for the App Store. 140K+ downloads, 4.6 stars, charted #130 in Adventure. My first ship. This is where my journey began.",
-            "variant": "body",
-            "align": "left",
-            "color": "foreground",
-            "transform": "none"
-          }
-        },
-        {
-          "id": "blk_9c0b7f39",
-          "layout": {
-            "col": 8,
-            "colSpan": 3,
-            "row": 18,
-            "rowSpan": 3
-          },
-          "mobile": {
-            "layout": {
-              "col": 1,
-              "colSpan": 12,
-              "row": 97
-            }
-          },
-          "type": "button",
-          "props": {
-            "label": "Read more →",
-            "href": "/work/dawngeon",
-            "variant": "ghost",
-            "align": "left",
-            "newTab": false
-          }
-        },
-        {
-          "id": "blk_c4a2ca4e",
+          "id": "blk_6165992c",
           "layout": {
             "col": 1,
             "colSpan": 6,
-            "row": 2,
-            "rowSpan": 20
+            "row": 1,
+            "rowSpan": 18
+          },
+          "mobile": {
+            "layout": {
+              "colSpan": 12,
+              "rowSpan": 14
+            }
           },
           "type": "video",
           "props": {
-            "url": "https://www.youtube.com/watch?v=25WQUfCgPzE",
+            "url": "https://www.youtube.com/watch?v=u599hoyOiYQ",
             "autoplay": false,
             "muted": false,
             "loop": false,
@@ -827,6 +746,128 @@
             "aspect": "16/9",
             "fit": "width",
             "radius": 0
+          }
+        },
+        {
+          "id": "blk_ebaa4a22",
+          "layout": {
+            "col": 8,
+            "colSpan": 5,
+            "row": 7,
+            "rowSpan": 8
+          },
+          "mobile": {
+            "layout": {
+              "col": 1,
+              "colSpan": 12,
+              "row": 25
+            }
+          },
+          "type": "text",
+          "props": {
+            "content": "You’re Melon, a tiny hamster with a huge goal. Collect mix-ins, roll fast, and build momentum to churn the biggest ice cream scoop ever in this whimsical, on-rails runner. In this Unity project I was an Engineer.",
+            "variant": "body",
+            "align": "left",
+            "color": "foreground",
+            "transform": "none"
+          }
+        },
+        {
+          "id": "blk_718f8905",
+          "layout": {
+            "col": 8,
+            "colSpan": 5,
+            "row": 1,
+            "rowSpan": 2
+          },
+          "mobile": {
+            "layout": {
+              "col": 1,
+              "colSpan": 12,
+              "row": 18
+            }
+          },
+          "type": "text",
+          "props": {
+            "content": "2026 — Gameplay ProgrammeR (Unity) @ USC (AGP)",
+            "variant": "kicker",
+            "align": "left",
+            "color": "muted",
+            "transform": "none"
+          }
+        },
+        {
+          "id": "blk_311cbc08",
+          "layout": {
+            "col": 8,
+            "colSpan": 5,
+            "row": 3,
+            "rowSpan": 4
+          },
+          "mobile": {
+            "layout": {
+              "col": 1,
+              "colSpan": 12,
+              "row": 20
+            }
+          },
+          "type": "text",
+          "props": {
+            "content": "Move Move Melon",
+            "variant": "h3",
+            "align": "left",
+            "color": "foreground",
+            "transform": "none"
+          }
+        },
+        {
+          "id": "blk_f382e41f",
+          "layout": {
+            "col": 8,
+            "colSpan": 3,
+            "row": 16,
+            "rowSpan": 3
+          },
+          "mobile": {
+            "layout": {
+              "col": 1,
+              "colSpan": 12,
+              "row": 34
+            }
+          },
+          "type": "button",
+          "props": {
+            "label": "Read more →",
+            "href": "/work/move-move-melon",
+            "variant": "ghost",
+            "align": "left",
+            "newTab": false
+          }
+        },
+        {
+          "id": "blk_4c0c47ab",
+          "layout": {
+            "col": 1,
+            "colSpan": 6,
+            "row": 23,
+            "rowSpan": 2
+          },
+          "mobile": {
+            "layout": {
+              "colSpan": 12,
+              "row": 38
+            }
+          },
+          "type": "tags",
+          "props": {
+            "tags": [
+              "Unity",
+              "c#",
+              "Programmer"
+            ],
+            "size": 12,
+            "gap": 8,
+            "align": "left"
           }
         }
       ]
@@ -863,9 +904,7 @@
           },
           "mobile": {
             "layout": {
-              "col": 1,
-              "colSpan": 12,
-              "row": 31
+              "colSpan": 12
             }
           },
           "type": "text",
@@ -887,9 +926,8 @@
           },
           "mobile": {
             "layout": {
-              "col": 1,
               "colSpan": 12,
-              "row": 33
+              "row": 22
             }
           },
           "type": "text",
@@ -911,10 +949,8 @@
           },
           "mobile": {
             "layout": {
-              "col": 1,
               "colSpan": 12,
-              "row": 36,
-              "rowSpan": 7
+              "row": 26
             }
           },
           "type": "text",
@@ -936,9 +972,8 @@
           },
           "mobile": {
             "layout": {
-              "col": 1,
               "colSpan": 12,
-              "row": 43
+              "row": 34
             }
           },
           "type": "button",
@@ -956,13 +991,20 @@
             "col": 8,
             "colSpan": 4,
             "row": 1,
-            "rowSpan": 20
+            "rowSpan": 19
+          },
+          "mobile": {
+            "layout": {
+              "col": 1,
+              "colSpan": 12,
+              "row": 3
+            }
           },
           "type": "image",
           "props": {
             "src": "/uploads/thanglogo-mtbt6cdz.webp",
             "alt": "",
-            "fit": "cover",
+            "fit": "contain",
             "radius": 0,
             "filter": "none",
             "focalX": 50,
@@ -974,6 +1016,34 @@
             "zoom": 1,
             "tint": "none",
             "tintOpacity": 0
+          }
+        },
+        {
+          "id": "blk_1a31d470",
+          "layout": {
+            "col": 6,
+            "colSpan": 6,
+            "row": 22,
+            "rowSpan": 1
+          },
+          "mobile": {
+            "layout": {
+              "col": 1,
+              "colSpan": 12,
+              "row": 38
+            }
+          },
+          "type": "tags",
+          "props": {
+            "tags": [
+              "Unreal Engine",
+              "C++",
+              "Programmer",
+              "Designer"
+            ],
+            "size": 12,
+            "gap": 8,
+            "align": "right"
           }
         }
       ]
@@ -996,7 +1066,7 @@
         "tint": "none",
         "tintOpacity": 0
       },
-      "padding": "lg",
+      "padding": "md",
       "minHeight": "auto",
       "align": "top",
       "blocks": [
@@ -1006,7 +1076,12 @@
             "col": 1,
             "colSpan": 6,
             "row": 1,
-            "rowSpan": 22
+            "rowSpan": 19
+          },
+          "mobile": {
+            "layout": {
+              "colSpan": 12
+            }
           },
           "type": "video",
           "props": {
@@ -1032,7 +1107,7 @@
             "layout": {
               "col": 1,
               "colSpan": 12,
-              "row": 31
+              "row": 17
             }
           },
           "type": "text",
@@ -1056,7 +1131,7 @@
             "layout": {
               "col": 1,
               "colSpan": 12,
-              "row": 33
+              "row": 19
             }
           },
           "type": "text",
@@ -1080,13 +1155,12 @@
             "layout": {
               "col": 1,
               "colSpan": 12,
-              "row": 36,
-              "rowSpan": 7
+              "row": 24
             }
           },
           "type": "text",
           "props": {
-            "content": "In Banana Republic, guerrilla fighters seize the supreme court. Neutralize terrorists, rescue hostages, choose to serve your country. Uncover a history of corruption and violence.",
+            "content": "In Banana Republic, guerrilla fighters seize the supreme court. Neutralize terrorists, rescue hostages, choose to serve your country. Uncover a history of corruption and violence. I was an engineer on this Unreal game.",
             "variant": "body",
             "align": "left",
             "color": "foreground",
@@ -1105,7 +1179,7 @@
             "layout": {
               "col": 1,
               "colSpan": 12,
-              "row": 43
+              "row": 34
             }
           },
           "type": "button",
@@ -1116,82 +1190,193 @@
             "align": "left",
             "newTab": false
           }
+        },
+        {
+          "id": "blk_ccbbb681",
+          "layout": {
+            "col": 1,
+            "colSpan": 6,
+            "row": 23,
+            "rowSpan": 2
+          },
+          "mobile": {
+            "layout": {
+              "colSpan": 12,
+              "row": 38
+            }
+          },
+          "type": "tags",
+          "props": {
+            "tags": [
+              "Programmer",
+              "Unreal Engine",
+              "Blueprint"
+            ],
+            "size": 12,
+            "gap": 8,
+            "align": "left"
+          }
         }
       ]
     },
     {
-      "id": "sec_6e78d64f",
+      "id": "sec_9ca821ad",
       "background": {
-        "type": "image",
-        "src": "/uploads/melon-mtbtkecm.jpg",
-        "fit": "both",
-        "overlay": 64,
-        "filter": "none",
-        "focalX": 50,
-        "focalY": 50,
-        "rotate": 0,
-        "flipX": false,
-        "flipY": false,
-        "blur": 0,
-        "zoom": 1,
-        "tint": "none",
-        "tintOpacity": 0
+        "type": "transparent"
       },
       "padding": "lg",
       "minHeight": "auto",
       "align": "top",
-      "dimUnhovered": true,
       "blocks": [
         {
-          "id": "blk_6165992c",
+          "id": "blk_f7ac7b64",
           "layout": {
             "col": 1,
-            "colSpan": 6,
-            "row": 1,
-            "rowSpan": 18
-          },
-          "type": "video",
-          "props": {
-            "url": "https://www.youtube.com/watch?v=u599hoyOiYQ",
-            "autoplay": false,
-            "muted": false,
-            "loop": false,
-            "controls": true,
-            "aspect": "16/9",
-            "fit": "width",
-            "radius": 0
-          }
-        },
-        {
-          "id": "blk_ebaa4a22",
-          "layout": {
-            "col": 8,
-            "colSpan": 5,
-            "row": 7,
-            "rowSpan": 8
+            "colSpan": 12,
+            "row": 5,
+            "rowSpan": 8,
+            "bleed": "both"
           },
           "mobile": {
             "layout": {
-              "col": 1,
-              "colSpan": 12,
-              "row": 36,
-              "rowSpan": 7
+              "row": 19
             }
           },
-          "type": "text",
+          "type": "projectCarousel",
           "props": {
-            "content": "You’re Melon, a tiny hamster with a huge goal. Collect mix-ins, roll fast, and build momentum to churn the biggest ice cream scoop ever in this whimsical, on-rails runner.",
-            "variant": "body",
-            "align": "left",
-            "color": "foreground",
-            "transform": "none"
+            "items": [
+              {
+                "src": "/uploads/br-posterwithpaperandtatter-mqg50uv2.webp",
+                "alt": "",
+                "title": "Project one",
+                "meta": "2024 — Role",
+                "description": "A short line about the work.",
+                "href": "/work/banana-republic",
+                "starred": false,
+                "filter": "none",
+                "focalX": 51,
+                "focalY": 1,
+                "rotate": 0,
+                "flipX": false,
+                "flipY": false,
+                "blur": 0,
+                "zoom": 1.15,
+                "tint": "none",
+                "tintOpacity": 0
+              },
+              {
+                "src": "/uploads/melonicon-mqg68s1r.webp",
+                "alt": "",
+                "title": "Project two",
+                "meta": "2023 — Role",
+                "description": "A short line about the work.",
+                "href": "/work/move-move-melon",
+                "starred": false,
+                "filter": "none",
+                "focalX": 50,
+                "focalY": 50,
+                "rotate": 0,
+                "flipX": false,
+                "flipY": false,
+                "blur": 0,
+                "zoom": 1,
+                "tint": "none",
+                "tintOpacity": 0
+              },
+              {
+                "src": "/uploads/dawngeonlogo-mqg6b451.webp",
+                "alt": "",
+                "title": "New project",
+                "meta": "",
+                "description": "",
+                "href": "/work/dawngeon",
+                "starred": true,
+                "filter": "none",
+                "focalX": 50,
+                "focalY": 50,
+                "rotate": 0,
+                "flipX": false,
+                "flipY": false,
+                "blur": 0,
+                "zoom": 1,
+                "tint": "none",
+                "tintOpacity": 0
+              },
+              {
+                "src": "/uploads/overdawn-mqg6cusv.jpg",
+                "alt": "",
+                "title": "New project",
+                "meta": "",
+                "description": "",
+                "href": "/work/overdawn",
+                "starred": true,
+                "filter": "none",
+                "focalX": 50,
+                "focalY": 50,
+                "rotate": 0,
+                "flipX": false,
+                "flipY": false,
+                "blur": 0,
+                "zoom": 1,
+                "tint": "none",
+                "tintOpacity": 0
+              },
+              {
+                "src": "/uploads/untitled-design-mqg70dct.png",
+                "alt": "",
+                "title": "New project",
+                "meta": "",
+                "description": "",
+                "href": "/work/thang",
+                "starred": false,
+                "filter": "none",
+                "focalX": 54,
+                "focalY": 1,
+                "rotate": 0,
+                "flipX": false,
+                "flipY": false,
+                "blur": 0,
+                "zoom": 1,
+                "tint": "none",
+                "tintOpacity": 0
+              },
+              {
+                "src": "/uploads/communityg-mqhaapeg.png",
+                "alt": "",
+                "title": "New project",
+                "meta": "",
+                "description": "",
+                "href": "/work/neighborhoods",
+                "starred": false,
+                "filter": "none",
+                "focalX": 50,
+                "focalY": 50,
+                "rotate": 0,
+                "flipX": false,
+                "flipY": false,
+                "blur": 0,
+                "zoom": 1,
+                "tint": "none",
+                "tintOpacity": 0
+              }
+            ],
+            "variant": "marquee",
+            "cardWidth": 112,
+            "gap": 24,
+            "aspect": "1/1",
+            "radius": 44,
+            "edgeFade": true,
+            "showArrows": true,
+            "newTab": false,
+            "autoScrollSpeed": 55,
+            "pauseOnHover": true
           }
         },
         {
-          "id": "blk_718f8905",
+          "id": "blk_2d641e7e",
           "layout": {
-            "col": 8,
-            "colSpan": 5,
+            "col": 11,
+            "colSpan": 2,
             "row": 1,
             "rowSpan": 2
           },
@@ -1199,64 +1384,71 @@
             "layout": {
               "col": 1,
               "colSpan": 12,
-              "row": 31
+              "row": 5
             }
           },
           "type": "text",
           "props": {
-            "content": "2026 — Gameplay ProgrammeR (Unity) @ USC (AGP)",
+            "content": "Thanks for visiting :D",
             "variant": "kicker",
-            "align": "left",
-            "color": "muted",
-            "transform": "none"
-          }
-        },
-        {
-          "id": "blk_311cbc08",
-          "layout": {
-            "col": 8,
-            "colSpan": 5,
-            "row": 3,
-            "rowSpan": 4
-          },
-          "mobile": {
-            "layout": {
-              "col": 1,
-              "colSpan": 12,
-              "row": 33
-            }
-          },
-          "type": "text",
-          "props": {
-            "content": "Move Move Melon",
-            "variant": "h3",
             "align": "left",
             "color": "foreground",
             "transform": "none"
           }
         },
         {
-          "id": "blk_f382e41f",
+          "id": "blk_db4e1110",
           "layout": {
-            "col": 8,
-            "colSpan": 3,
-            "row": 16,
-            "rowSpan": 3
+            "col": 11,
+            "colSpan": 2,
+            "row": 1,
+            "rowSpan": 12
           },
           "mobile": {
             "layout": {
               "col": 1,
               "colSpan": 12,
-              "row": 43
+              "row": 7
             }
           },
-          "type": "button",
+          "type": "image",
           "props": {
-            "label": "Read more →",
-            "href": "/work/move-move-melon",
-            "variant": "ghost",
+            "src": "/uploads/img-6099-mtcf58k1-no-bg-mtcf5g1n.png",
+            "alt": "",
+            "fit": "contain",
+            "radius": 0,
+            "filter": "none",
+            "focalX": 50,
+            "focalY": 50,
+            "rotate": 0,
+            "flipX": false,
+            "flipY": false,
+            "blur": 0,
+            "zoom": 1,
+            "tint": "none",
+            "tintOpacity": 0
+          }
+        },
+        {
+          "id": "blk_c32dc668",
+          "layout": {
+            "col": 1,
+            "colSpan": 5,
+            "row": 1,
+            "rowSpan": 4
+          },
+          "mobile": {
+            "layout": {
+              "colSpan": 12
+            }
+          },
+          "type": "text",
+          "props": {
+            "content": "All Projects",
+            "variant": "h3",
             "align": "left",
-            "newTab": false
+            "color": "foreground",
+            "transform": "none"
           }
         }
       ]
@@ -1280,7 +1472,6 @@
           },
           "mobile": {
             "layout": {
-              "col": 1,
               "colSpan": 12
             }
           },
@@ -1303,10 +1494,7 @@
           },
           "mobile": {
             "layout": {
-              "col": 1,
-              "colSpan": 12,
-              "row": 3,
-              "rowSpan": 7
+              "colSpan": 12
             }
           },
           "type": "text",
@@ -1329,9 +1517,8 @@
           },
           "mobile": {
             "layout": {
-              "col": 1,
               "colSpan": 12,
-              "row": 12
+              "row": 13
             }
           },
           "type": "text",
@@ -1350,6 +1537,13 @@
             "colSpan": 2,
             "row": 5,
             "rowSpan": 3
+          },
+          "mobile": {
+            "layout": {
+              "col": 1,
+              "colSpan": 12,
+              "row": 10
+            }
           },
           "type": "socialLinks",
           "props": {

@@ -2,5 +2,47 @@
   "homeSlug": "home",
   "constructionSlug": "construction",
   "notFoundSlug": "404",
-  "constructionMode": false
+  "constructionMode": false,
+  "tags": [
+    {
+      "name": "C++",
+      "color": "#c83c19"
+    },
+    {
+      "name": "c#",
+      "color": "#58823a"
+    },
+    {
+      "name": "Blueprint",
+      "color": "#396689"
+    },
+    {
+      "name": "Unreal Engine",
+      "color": "#553989"
+    },
+    {
+      "name": "Programmer",
+      "color": "#0061ff"
+    },
+    {
+      "name": "Director",
+      "color": "#89397e"
+    },
+    {
+      "name": "gamedev",
+      "color": "#b43c70"
+    },
+    {
+      "name": "UI",
+      "color": "#75b11b"
+    },
+    {
+      "name": "Unity",
+      "color": "#d31e34"
+    },
+    {
+      "name": "Designer",
+      "color": "#c08026"
+    }
+  ]
 }

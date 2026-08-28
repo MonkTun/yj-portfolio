@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
-import { listPages, loadPage } from "@/lib/content";
+import { listPages, loadPage, loadSiteConfig } from "@/lib/content";
 import { PageRenderer } from "@/components/PageRenderer";
 
 // Catch-all that serves any page authored under content/pages/<slug>.json
@@ -47,5 +47,8 @@ export default async function CatchAllPage({ params }: Props) {
   } catch {
     notFound();
   }
-  return <PageRenderer page={page} />;
+  // Tag library for Tags blocks — file read, no request data, so the
+  // route stays statically prerenderable.
+  const config = await loadSiteConfig();
+  return <PageRenderer page={page} tags={config.tags} />;
 }

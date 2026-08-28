@@ -11,6 +11,7 @@ import { Quote } from "@/components/atoms/Quote";
 import { Video } from "@/components/atoms/Video";
 import { ProjectCarousel } from "@/components/atoms/ProjectCarousel";
 import { SocialLinks } from "@/components/atoms/SocialLinks";
+import { Tags } from "@/components/atoms/Tags";
 
 type AtomEntry<P = unknown> = {
   type: BlockType;
@@ -176,6 +177,18 @@ export const atomRegistry: Record<BlockType, AtomEntry<any>> = {
       newTab: true,
     },
     defaultLayout: { colSpan: 3, rowSpan: 3 },
+  },
+  tags: {
+    type: "tags",
+    label: "Tags",
+    component: Tags,
+    defaultProps: {
+      tags: [],
+      size: 12,
+      gap: 8,
+      align: "left",
+    },
+    defaultLayout: { colSpan: 6, rowSpan: 2 },
   },
 };
 

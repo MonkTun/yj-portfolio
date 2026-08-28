@@ -16,6 +16,8 @@ import type {
   SocialLinksProps,
   SocialLinkItem,
   SocialPlatform,
+  TagsProps,
+  TagDef,
 } from "@/lib/schema";
 import {
   CAROUSEL_ITEM_EFFECT_DEFAULTS,
@@ -51,6 +53,9 @@ type Props = {
   availablePages?: string[];
   /** The slug currently being edited; excluded from the picker. */
   currentSlug?: string;
+  /** Project-wide tag library (site.json) — feeds the Tags block editor. */
+  siteTags?: TagDef[];
+  onUpdateSiteTags?: (tags: TagDef[]) => void;
   onUpdateMeta: (meta: Page["meta"]) => void;
   onUpdateSection: (sectionId: string, patch: Partial<Section>) => void;
   onUpdateSectionMobile: (
@@ -89,6 +94,8 @@ export function PropertiesPanel({
   device,
   availablePages = [],
   currentSlug,
+  siteTags = [],
+  onUpdateSiteTags,
   onUpdateMeta,
   onUpdateSection,
   onUpdateSectionMobile,
@@ -135,6 +142,8 @@ export function PropertiesPanel({
       device={device}
       availablePages={availablePages}
       currentSlug={currentSlug}
+      siteTags={siteTags}
+      onUpdateSiteTags={onUpdateSiteTags}
       onUpdate={(patch) =>
         onUpdateBlockProps(section.id, block.id, patch)
       }
@@ -491,6 +500,8 @@ function BlockProps({
   device,
   availablePages = [],
   currentSlug,
+  siteTags = [],
+  onUpdateSiteTags,
   onUpdate,
   onSetBleed,
   onSetMobileHidden,
@@ -500,6 +511,8 @@ function BlockProps({
   device: Device;
   availablePages?: string[];
   currentSlug?: string;
+  siteTags?: TagDef[];
+  onUpdateSiteTags?: (tags: TagDef[]) => void;
   /** onUpdate is already device-scoped at the Editor level — desktop calls
    *  patch `block.props`, mobile calls patch `block.mobile.props`. */
   onUpdate: (patch: Record<string, unknown>) => void;
@@ -596,12 +609,22 @@ function BlockProps({
       {block.type === "projectCarousel" && (
         <ProjectCarouselBlockProps
           props={block.props as ProjectCarouselProps}
+          availablePages={availablePages}
+          currentSlug={currentSlug}
           onUpdate={onUpdate}
         />
       )}
       {block.type === "socialLinks" && (
         <SocialLinksBlockProps
           props={block.props as SocialLinksProps}
+          onUpdate={onUpdate}
+        />
+      )}
+      {block.type === "tags" && (
+        <TagsBlockProps
+          props={block.props as TagsProps}
+          siteTags={siteTags}
+          onUpdateSiteTags={onUpdateSiteTags}
           onUpdate={onUpdate}
         />
       )}
@@ -719,7 +742,8 @@ function BlockMobileProps({
       {(block.type === "line" ||
         block.type === "quote" ||
         block.type === "projectCarousel" ||
-        block.type === "socialLinks") && (
+        block.type === "socialLinks" ||
+        block.type === "tags") && (
         <Hint>This block has no mobile-specific style overrides.</Hint>
       )}
 
@@ -1306,9 +1330,13 @@ function ImageBlockProps({
 
 function ProjectCarouselBlockProps({
   props,
+  availablePages = [],
+  currentSlug,
   onUpdate,
 }: {
   props: ProjectCarouselProps;
+  availablePages?: string[];
+  currentSlug?: string;
   onUpdate: (patch: Record<string, unknown>) => void;
 }) {
   const items = props.items;
@@ -1365,7 +1393,7 @@ function ProjectCarouselBlockProps({
       <Field label={`card width — ${props.cardWidth}px`}>
         <input
           type="range"
-          min={160}
+          min={80}
           max={640}
           step={8}
           value={props.cardWidth}
@@ -1576,6 +1604,12 @@ function ProjectCarouselBlockProps({
                 />
               </>
             )}
+            <PageLinkPicker
+              href={item.href ?? ""}
+              availablePages={availablePages}
+              currentSlug={currentSlug}
+              onPick={(href) => setItem(i, { href })}
+            />
             <input
               className={cn(inputCls, "font-sans text-xs")}
               placeholder="link href (optional)"
@@ -3747,25 +3781,6 @@ function ButtonBlockProps({
   currentSlug?: string;
   onUpdate: (patch: Record<string, unknown>) => void;
 }) {
-  // Construction is the public landing — link to it as "/" rather than
-  // "/construction" so behavior matches the routing.
-  const slugToHref = (slug: string) =>
-    slug === "construction" ? "/" : `/${slug}`;
-
-  // What's currently selected in the picker, derived from href. We pick the
-  // longest-matching slug so /work/dawngeon doesn't get matched as /work.
-  const pickerValue: string = (() => {
-    if (props.href === "/") return "construction";
-    const candidates = availablePages
-      .filter((s) => slugToHref(s) === props.href)
-      .sort((a, b) => b.length - a.length);
-    return candidates[0] ?? "";
-  })();
-
-  const pickablePages = availablePages.filter(
-    (s) => s !== currentSlug && s !== "404"
-  );
-
   return (
     <>
       <Field label="label">
@@ -3776,22 +3791,12 @@ function ButtonBlockProps({
         />
       </Field>
       <Field label="link to page">
-        <select
-          className={cn(inputCls, "appearance-none cursor-pointer")}
-          value={pickerValue}
-          onChange={(e) => {
-            const v = e.target.value;
-            if (!v) return; // "(custom URL)" — leave href as the user typed it
-            onUpdate({ href: slugToHref(v) });
-          }}
-        >
-          <option value="">(custom URL — type below)</option>
-          {pickablePages.map((slug) => (
-            <option key={slug} value={slug}>
-              {slug === "construction" ? "/  (construction)" : `/${slug}`}
-            </option>
-          ))}
-        </select>
+        <PageLinkPicker
+          href={props.href}
+          availablePages={availablePages}
+          currentSlug={currentSlug}
+          onPick={(href) => onUpdate({ href })}
+        />
       </Field>
       <Field label="href">
         <input
@@ -3823,6 +3828,276 @@ function ButtonBlockProps({
         />
       </Field>
     </>
+  );
+}
+
+/** Pill color for a tag created before its color is customized — the
+ *  accent green, matching the schema defaults for other data-side colors. */
+const DEFAULT_TAG_COLOR = "#5C8A3A";
+
+function TagsBlockProps({
+  props,
+  siteTags = [],
+  onUpdateSiteTags,
+  onUpdate,
+}: {
+  props: TagsProps;
+  siteTags?: TagDef[];
+  onUpdateSiteTags?: (tags: TagDef[]) => void;
+  onUpdate: (patch: Record<string, unknown>) => void;
+}) {
+  const [draft, setDraft] = useState("");
+
+  const setBlockTags = (tags: string[]) => onUpdate({ tags });
+
+  const addTag = () => {
+    const name = draft.trim();
+    if (!name) return;
+    setDraft("");
+    // Reuse the library entry if the name already exists (case-insensitive,
+    // keeping the library's canonical casing); otherwise create it so the
+    // tag becomes available project-wide.
+    const existing = siteTags.find(
+      (t) => t.name.toLowerCase() === name.toLowerCase()
+    );
+    if (!existing) {
+      onUpdateSiteTags?.([...siteTags, { name, color: DEFAULT_TAG_COLOR }]);
+    }
+    const canonical = existing?.name ?? name;
+    if (!props.tags.includes(canonical)) {
+      setBlockTags([...props.tags, canonical]);
+    }
+  };
+
+  const toggleOnBlock = (name: string) => {
+    setBlockTags(
+      props.tags.includes(name)
+        ? props.tags.filter((t) => t !== name)
+        : [...props.tags, name]
+    );
+  };
+
+  const setColor = (name: string, color: string) => {
+    onUpdateSiteTags?.(
+      siteTags.map((t) => (t.name === name ? { ...t, color } : t))
+    );
+  };
+
+  const removeFromLibrary = (name: string) => {
+    onUpdateSiteTags?.(siteTags.filter((t) => t.name !== name));
+    // Also drop it from this block; other pages still referencing it fall
+    // back to the accent color until re-added.
+    if (props.tags.includes(name)) {
+      setBlockTags(props.tags.filter((t) => t !== name));
+    }
+  };
+
+  // Names this block renders that have no library entry (a library edit in
+  // another session can drop entries while the page keeps the names). They
+  // render in the accent fallback on the canvas; surface them here so
+  // they're always reachable — picking a color re-creates the entry.
+  const missing = props.tags.filter(
+    (name) => !siteTags.some((t) => t.name === name)
+  );
+  const restore = (name: string, color: string) => {
+    onUpdateSiteTags?.([...siteTags, { name, color }]);
+  };
+
+  return (
+    <>
+      <Field label={`size — ${props.size}px`}>
+        <input
+          type="range"
+          min={9}
+          max={32}
+          step={1}
+          value={props.size}
+          onChange={(e) =>
+            onUpdate({ size: parseInt(e.target.value, 10) || 12 })
+          }
+          className="w-full accent-accent"
+        />
+      </Field>
+
+      <Field label={`gap — ${props.gap}px`}>
+        <input
+          type="range"
+          min={0}
+          max={48}
+          step={2}
+          value={props.gap}
+          onChange={(e) => onUpdate({ gap: parseInt(e.target.value, 10) || 0 })}
+          className="w-full accent-accent"
+        />
+      </Field>
+
+      <Field label="align">
+        <SegmentBar
+          options={["left", "center", "right"]}
+          value={props.align}
+          onChange={(v) => onUpdate({ align: v })}
+        />
+      </Field>
+
+      <hr className="rule" />
+
+      <Field label="add tag">
+        <div className="flex gap-2">
+          <input
+            className={inputCls}
+            placeholder="e.g. C++"
+            value={draft}
+            onChange={(e) => setDraft(e.target.value)}
+            onKeyDown={(e) => {
+              if (e.key === "Enter") {
+                e.preventDefault();
+                addTag();
+              }
+            }}
+          />
+          <button
+            type="button"
+            onClick={addTag}
+            className="kicker shrink-0 px-3 rounded-sm bg-accent text-accent-foreground hover:opacity-90 transition-opacity"
+          >
+            + Add
+          </button>
+        </div>
+        <p className="text-xs text-foreground/40 italic mt-1.5">
+          New names join the project-wide library below; existing names are
+          reused.
+        </p>
+      </Field>
+
+      <div className="space-y-2">
+        <span className="kicker">library · {siteTags.length}</span>
+        {siteTags.map((t) => {
+          const active = props.tags.includes(t.name);
+          return (
+            <div key={t.name} className="flex items-center gap-2">
+              <input
+                type="color"
+                value={t.color}
+                onChange={(e) => setColor(t.name, e.target.value)}
+                aria-label={`${t.name} color`}
+                title={`${t.name} color`}
+                className="h-7 w-9 shrink-0 cursor-pointer rounded-sm border border-border bg-transparent p-0.5"
+              />
+              <button
+                type="button"
+                onClick={() => toggleOnBlock(t.name)}
+                aria-pressed={active}
+                className={cn(
+                  "min-w-0 flex-1 truncate rounded-sm border px-2 py-1.5 text-left font-sans text-xs transition-colors",
+                  active
+                    ? "border-accent bg-accent/15 text-foreground"
+                    : "border-border text-foreground/70 hover:bg-foreground/5"
+                )}
+              >
+                {t.name}
+                {active && <span className="text-accent"> ✓</span>}
+              </button>
+              <CarouselItemBtn
+                label="Delete from library"
+                onClick={() => removeFromLibrary(t.name)}
+              >
+                ✕
+              </CarouselItemBtn>
+            </div>
+          );
+        })}
+        {missing.map((name) => (
+          <div key={name} className="flex items-center gap-2">
+            <input
+              type="color"
+              value={DEFAULT_TAG_COLOR}
+              onChange={(e) => restore(name, e.target.value)}
+              aria-label={`${name} color`}
+              title={`Pick a color to restore "${name}" to the library`}
+              className="h-7 w-9 shrink-0 cursor-pointer rounded-sm border border-dashed border-border bg-transparent p-0.5 opacity-60"
+            />
+            <button
+              type="button"
+              onClick={() => restore(name, DEFAULT_TAG_COLOR)}
+              title="Not in the library — click to restore it"
+              className="min-w-0 flex-1 truncate rounded-sm border border-dashed border-border px-2 py-1.5 text-left font-sans text-xs text-foreground/70 transition-colors hover:bg-foreground/5"
+            >
+              {name}
+              <span className="text-foreground/40 italic"> — restore</span>
+            </button>
+            <CarouselItemBtn
+              label="Remove from this block"
+              onClick={() => toggleOnBlock(name)}
+            >
+              ✕
+            </CarouselItemBtn>
+          </div>
+        ))}
+        {siteTags.length === 0 && missing.length === 0 && (
+          <Hint>No tags in the library yet — add one above.</Hint>
+        )}
+        {siteTags.length > 0 && (
+          <p className="text-xs text-foreground/40 italic">
+            Click a tag to toggle it on this block. Colors apply everywhere
+            the tag is used, on every page.
+          </p>
+        )}
+      </div>
+    </>
+  );
+}
+
+/** Dropdown of the site's pages that writes a normalized href on pick.
+ *  Shared between the button block and carousel item link fields; the
+ *  free-text href input next to it stays the escape hatch for external
+ *  URLs and anchors. */
+function PageLinkPicker({
+  href,
+  availablePages = [],
+  currentSlug,
+  onPick,
+}: {
+  href: string;
+  availablePages?: string[];
+  currentSlug?: string;
+  onPick: (href: string) => void;
+}) {
+  // Construction is the public landing — link to it as "/" rather than
+  // "/construction" so behavior matches the routing.
+  const slugToHref = (slug: string) =>
+    slug === "construction" ? "/" : `/${slug}`;
+
+  // What's currently selected in the picker, derived from href. We pick the
+  // longest-matching slug so /work/dawngeon doesn't get matched as /work.
+  const pickerValue: string = (() => {
+    if (href === "/") return "construction";
+    const candidates = availablePages
+      .filter((s) => slugToHref(s) === href)
+      .sort((a, b) => b.length - a.length);
+    return candidates[0] ?? "";
+  })();
+
+  const pickablePages = availablePages.filter(
+    (s) => s !== currentSlug && s !== "404"
+  );
+
+  return (
+    <select
+      className={cn(inputCls, "appearance-none cursor-pointer")}
+      value={pickerValue}
+      onChange={(e) => {
+        const v = e.target.value;
+        if (!v) return; // "(custom URL)" — leave href as the user typed it
+        onPick(slugToHref(v));
+      }}
+    >
+      <option value="">(custom URL — type below)</option>
+      {pickablePages.map((slug) => (
+        <option key={slug} value={slug}>
+          {slug === "construction" ? "/  (construction)" : `/${slug}`}
+        </option>
+      ))}
+    </select>
   );
 }
 

@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 
 import type {
@@ -9,7 +9,9 @@ import type {
   BlockType,
   Page,
   Section,
+  TagDef,
 } from "@/lib/schema";
+import { TagLibraryProvider } from "@/components/TagLibraryContext";
 import { atomRegistry, defaultsForBlock } from "@/lib/atom-registry";
 import { nextFreeRow } from "@/lib/rgl";
 import {
@@ -82,9 +84,16 @@ type Props = {
   initialPage: Page;
   /** Other page slugs in the project — used by the Button block's link picker. */
   availablePages?: string[];
+  /** Project-wide tag library from site.json — used by the Tags block. */
+  initialTags?: TagDef[];
 };
 
-export function Editor({ slug, initialPage, availablePages = [] }: Props) {
+export function Editor({
+  slug,
+  initialPage,
+  availablePages = [],
+  initialTags = [],
+}: Props) {
   const router = useRouter();
 
   const [savedPage, setSavedPage] = useState<Page>(initialPage);
@@ -112,6 +121,51 @@ export function Editor({ slug, initialPage, availablePages = [] }: Props) {
   // dirtiness correctly without double-stringifying the whole page on every
   // keystroke-triggered render.
   const dirty = page !== savedPage;
+
+  /* ---------------- project-wide tag library ---------------- */
+
+  // Lives in site.json, not the page — so it saves on its own channel,
+  // immediately (debounced for color-picker drags), outside the page's
+  // dirty/undo tracking.
+  const [siteTags, setSiteTags] = useState<TagDef[]>(initialTags);
+  const tagsSaveTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const updateSiteTags = useCallback((next: TagDef[]) => {
+    setSiteTags(next);
+    if (tagsSaveTimer.current) clearTimeout(tagsSaveTimer.current);
+    tagsSaveTimer.current = setTimeout(() => {
+      tagsSaveTimer.current = null;
+      fetch("/api/admin/site", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ tags: next }),
+      })
+        .then((res) => {
+          if (!res.ok) throw new Error(`HTTP ${res.status}`);
+        })
+        .catch(() => {
+          setStatus("error");
+          setErrorMessage("Failed to save the tag library to site.json");
+        });
+    }, 400);
+  }, []);
+
+  // The library is shared across every open editor session, and each save
+  // posts the WHOLE array — so a session left on a stale copy would clobber
+  // tags added elsewhere. Re-pull from disk whenever this tab regains focus
+  // (unless a local edit is still waiting to save, which must win).
+  useEffect(() => {
+    const refresh = () => {
+      if (tagsSaveTimer.current) return;
+      fetch("/api/admin/site")
+        .then((res) => (res.ok ? res.json() : null))
+        .then((config) => {
+          if (config && Array.isArray(config.tags)) setSiteTags(config.tags);
+        })
+        .catch(() => {});
+    };
+    window.addEventListener("focus", refresh);
+    return () => window.removeEventListener("focus", refresh);
+  }, []);
 
   /* ---------------- mutations + history ---------------- */
 
@@ -902,6 +956,7 @@ export function Editor({ slug, initialPage, availablePages = [] }: Props) {
   }
 
   return (
+    <TagLibraryProvider tags={siteTags}>
     <div className="h-screen flex flex-col">
       <Toolbar
         slug={slug}
@@ -968,6 +1023,8 @@ export function Editor({ slug, initialPage, availablePages = [] }: Props) {
             device={device}
             availablePages={availablePages}
             currentSlug={slug}
+            siteTags={siteTags}
+            onUpdateSiteTags={updateSiteTags}
             onUpdateMeta={updateMeta}
             onUpdateSection={updateSection}
             onUpdateSectionMobile={updateSectionMobile}
@@ -981,5 +1038,6 @@ export function Editor({ slug, initialPage, availablePages = [] }: Props) {
         </aside>
       </div>
     </div>
+    </TagLibraryProvider>
   );
 }

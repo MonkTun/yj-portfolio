@@ -245,7 +245,7 @@ export const projectCarouselPropsSchema = z.object({
    */
   variant: z.enum(["cards", "marquee"]).default("cards"),
   /** Card width in px. The strip scrolls horizontally past this width. */
-  cardWidth: z.number().int().min(160).max(640).default(320),
+  cardWidth: z.number().int().min(80).max(640).default(320),
   /** Gap between cards in px. */
   gap: z.number().int().min(0).max(96).default(24),
   /** Image aspect ratio per card (CSS aspect-ratio, e.g. "4/5"). */
@@ -307,6 +307,23 @@ export const socialLinksPropsSchema = z.object({
   newTab: z.boolean().default(true),
 });
 
+/**
+ * Row of tag pills (white label on a fully-rounded colored chip). Tags are
+ * defined once in the project-wide library (content/site.json — name +
+ * color) and referenced here by NAME, so recoloring "C++" in the library
+ * updates every page that uses it. Names missing from the library fall
+ * back to the accent token.
+ */
+export const tagsPropsSchema = z.object({
+  /** Tag names, resolved against the site tag library at render time. */
+  tags: z.array(z.string()).default([]),
+  /** Label font size in px; pill padding scales with it (em-based). */
+  size: z.number().int().min(9).max(32).default(12),
+  /** Gap between pills in px. */
+  gap: z.number().int().min(0).max(48).default(8),
+  align: z.enum(["left", "center", "right"]).default("left"),
+});
+
 /* ----- Discriminated union of block types ----- */
 
 const blockBase = {
@@ -333,6 +350,7 @@ export const blockSchema = z.discriminatedUnion("type", [
     type: z.literal("socialLinks"),
     props: socialLinksPropsSchema,
   }),
+  z.object({ ...blockBase, type: z.literal("tags"), props: tagsPropsSchema }),
 ]);
 
 /* ----- Section ----- */
@@ -460,11 +478,26 @@ export const pageSchema = z.object({
    When constructionMode is true, "/" renders constructionSlug — otherwise
    "/" renders homeSlug. notFoundSlug feeds the not-found route. ----- */
 
+const hexColor = z
+  .string()
+  .regex(/^#[0-9a-fA-F]{6}$/, "Use a 6-digit hex like #5C8A3A");
+
+/** One project-wide tag definition: a reusable name + its pill color.
+ *  Tags blocks reference these by name (see tagsPropsSchema). */
+export const tagDefSchema = z.object({
+  name: z.string().min(1).max(40),
+  color: hexColor,
+});
+
+export type TagDef = z.infer<typeof tagDefSchema>;
+
 export const siteConfigSchema = z.object({
   homeSlug: z.string().min(1).default("home"),
   constructionSlug: z.string().min(1).default("construction"),
   notFoundSlug: z.string().min(1).default("404"),
   constructionMode: z.boolean().default(true),
+  /** Project-wide tag library shared by every Tags block. */
+  tags: z.array(tagDefSchema).default([]),
 });
 
 export type SiteConfig = z.infer<typeof siteConfigSchema>;
@@ -473,10 +506,6 @@ export type SiteConfig = z.infer<typeof siteConfigSchema>;
    A palette is a named bundle of the seven core color tokens. Many can be
    saved; one is active and gets injected as CSS variables on <html> in
    src/app/layout.tsx. Lives at content/theme.json. */
-
-const hexColor = z
-  .string()
-  .regex(/^#[0-9a-fA-F]{6}$/, "Use a 6-digit hex like #5C8A3A");
 
 export const paletteColorsSchema = z.object({
   background: hexColor,
@@ -569,6 +598,7 @@ export type ProjectCarouselProps = z.infer<typeof projectCarouselPropsSchema>;
 export type SocialPlatform = z.infer<typeof socialPlatformSchema>;
 export type SocialLinkItem = z.infer<typeof socialLinkItemSchema>;
 export type SocialLinksProps = z.infer<typeof socialLinksPropsSchema>;
+export type TagsProps = z.infer<typeof tagsPropsSchema>;
 
 export type Section = z.infer<typeof sectionSchema>;
 export type SectionBackground = z.infer<typeof sectionBackgroundSchema>;

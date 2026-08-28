@@ -141,7 +141,7 @@
       "background": {
         "type": "transparent"
       },
-      "padding": "sm",
+      "padding": "md",
       "minHeight": "auto",
       "align": "top",
       "blocks": [
@@ -224,7 +224,7 @@
         "type": "color",
         "token": "surface"
       },
-      "padding": "sm",
+      "padding": "md",
       "minHeight": "auto",
       "align": "top",
       "blocks": [
