@@ -139,7 +139,7 @@
           },
           "type": "text",
           "props": {
-            "content": "Hello visitor! I am currently reworking this website, so some content is still a work in progress. Meanwhile, feel free to check out this portfolio reel video I made!",
+            "content": "I started making games in 2020. Dawngeon, my first title, gained over 20M impressions worldwide. I then directed Overdawn and interned at E-Line Media. I now work confidently in both Unreal and Unity.<br>\nMy portfolio reel is on the right, and selected work is below. Please enjoy your stay at my humble abode of a website.",
             "variant": "body",
             "align": "left",
             "color": "foreground",
@@ -149,10 +149,10 @@
         {
           "id": "blk_ed0c1275",
           "layout": {
-            "col": 8,
-            "colSpan": 5,
+            "col": 7,
+            "colSpan": 6,
             "row": 1,
-            "rowSpan": 16
+            "rowSpan": 19
           },
           "mobile": {
             "layout": {
@@ -200,7 +200,7 @@
           "layout": {
             "col": 1,
             "colSpan": 2,
-            "row": 7,
+            "row": 10,
             "rowSpan": 12
           },
           "mobile": {
@@ -232,7 +232,7 @@
           "layout": {
             "col": 1,
             "colSpan": 3,
-            "row": 16,
+            "row": 19,
             "rowSpan": 2
           },
           "mobile": {
