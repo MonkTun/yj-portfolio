@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { Analytics } from "@vercel/analytics/next";
 import localFont from "next/font/local";
 import {
   Bricolage_Grotesque,
@@ -156,6 +157,7 @@ export default async function RootLayout({
         {children}
         <div aria-hidden className="grain" />
         <div aria-hidden className="vignette" />
+        <Analytics />
       </body>
     </html>
   );
