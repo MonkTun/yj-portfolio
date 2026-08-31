@@ -1,18 +1,27 @@
 "use client";
 
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 
 import type {
   Block,
   BlockLayout,
   BlockType,
+  MirrorDef,
   Page,
   Section,
   TagDef,
 } from "@/lib/schema";
 import { TagLibraryProvider } from "@/components/TagLibraryContext";
-import { atomRegistry, defaultsForBlock } from "@/lib/atom-registry";
+import {
+  MirrorLibraryProvider,
+  findMirror,
+} from "@/components/MirrorLibraryContext";
+import {
+  atomRegistry,
+  defaultsForBlock,
+  isSourceBlockType,
+} from "@/lib/atom-registry";
 import { nextFreeRow } from "@/lib/rgl";
 import {
   autoStackPage,
@@ -79,6 +88,78 @@ function cloneBlocksRebased(blocks: Block[], baseRow: number): Block[] {
   });
 }
 
+type SiteLibraryKey = "tags" | "mirrors";
+
+/**
+ * A site.json array the editor keeps a live working copy of (the tag
+ * library, the mirror library). It lives outside the page, so it saves on
+ * its own channel — immediately, debounced for color-picker drags and
+ * keystrokes — outside the page's dirty/undo tracking.
+ *
+ * Each save posts the WHOLE array, and the library is shared by every open
+ * editor session, so a session left on a stale copy would clobber edits
+ * made elsewhere. We re-pull from disk whenever the tab regains focus
+ * (unless a local edit is still waiting to save, which must win).
+ *
+ * `update` accepts a value or an updater; updaters read the latest local
+ * copy (not a possibly-stale render's), so rapid per-keystroke patches to a
+ * mirror source compose correctly.
+ */
+function useSiteLibrary<T>(
+  key: SiteLibraryKey,
+  initial: T[],
+  onError: (message: string) => void,
+): [T[], (next: T[] | ((prev: T[]) => T[])) => void] {
+  const [value, setValue] = useState<T[]>(initial);
+  const latest = useRef<T[]>(initial);
+  const saveTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  const update = useCallback(
+    (next: T[] | ((prev: T[]) => T[])) => {
+      const resolved =
+        typeof next === "function" ? next(latest.current) : next;
+      latest.current = resolved;
+      setValue(resolved);
+      if (saveTimer.current) clearTimeout(saveTimer.current);
+      saveTimer.current = setTimeout(() => {
+        saveTimer.current = null;
+        fetch("/api/admin/site", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ [key]: latest.current }),
+        })
+          .then((res) => {
+            if (!res.ok) throw new Error(`HTTP ${res.status}`);
+          })
+          .catch(() => {
+            onError(`Failed to save the ${key} library to site.json`);
+          });
+      }, 400);
+    },
+    [key, onError],
+  );
+
+  useEffect(() => {
+    const refresh = () => {
+      if (saveTimer.current) return;
+      fetch("/api/admin/site")
+        .then((res) => (res.ok ? res.json() : null))
+        .then((config) => {
+          const fresh = config?.[key];
+          if (Array.isArray(fresh)) {
+            latest.current = fresh as T[];
+            setValue(fresh as T[]);
+          }
+        })
+        .catch(() => {});
+    };
+    window.addEventListener("focus", refresh);
+    return () => window.removeEventListener("focus", refresh);
+  }, [key]);
+
+  return [value, update];
+}
+
 type Props = {
   slug: string;
   initialPage: Page;
@@ -86,6 +167,8 @@ type Props = {
   availablePages?: string[];
   /** Project-wide tag library from site.json — used by the Tags block. */
   initialTags?: TagDef[];
+  /** Site-wide mirror library from site.json — sources for `mirror` blocks. */
+  initialMirrors?: MirrorDef[];
 };
 
 export function Editor({
@@ -93,6 +176,7 @@ export function Editor({
   initialPage,
   availablePages = [],
   initialTags = [],
+  initialMirrors = [],
 }: Props) {
   const router = useRouter();
 
@@ -122,50 +206,70 @@ export function Editor({
   // keystroke-triggered render.
   const dirty = page !== savedPage;
 
-  /* ---------------- project-wide tag library ---------------- */
+  /* ---------------- site libraries: tags + mirrors ---------------- */
 
-  // Lives in site.json, not the page — so it saves on its own channel,
-  // immediately (debounced for color-picker drags), outside the page's
-  // dirty/undo tracking.
-  const [siteTags, setSiteTags] = useState<TagDef[]>(initialTags);
-  const tagsSaveTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
-  const updateSiteTags = useCallback((next: TagDef[]) => {
-    setSiteTags(next);
-    if (tagsSaveTimer.current) clearTimeout(tagsSaveTimer.current);
-    tagsSaveTimer.current = setTimeout(() => {
-      tagsSaveTimer.current = null;
-      fetch("/api/admin/site", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ tags: next }),
-      })
-        .then((res) => {
-          if (!res.ok) throw new Error(`HTTP ${res.status}`);
-        })
-        .catch(() => {
-          setStatus("error");
-          setErrorMessage("Failed to save the tag library to site.json");
-        });
-    }, 400);
+  const reportLibraryError = useCallback((message: string) => {
+    setStatus("error");
+    setErrorMessage(message);
   }, []);
 
-  // The library is shared across every open editor session, and each save
-  // posts the WHOLE array — so a session left on a stale copy would clobber
-  // tags added elsewhere. Re-pull from disk whenever this tab regains focus
-  // (unless a local edit is still waiting to save, which must win).
-  useEffect(() => {
-    const refresh = () => {
-      if (tagsSaveTimer.current) return;
-      fetch("/api/admin/site")
-        .then((res) => (res.ok ? res.json() : null))
-        .then((config) => {
-          if (config && Array.isArray(config.tags)) setSiteTags(config.tags);
-        })
-        .catch(() => {});
-    };
-    window.addEventListener("focus", refresh);
-    return () => window.removeEventListener("focus", refresh);
-  }, []);
+  const [siteTags, updateSiteTags] = useSiteLibrary<TagDef>(
+    "tags",
+    initialTags,
+    reportLibraryError,
+  );
+  const [siteMirrors, updateSiteMirrors] = useSiteLibrary<MirrorDef>(
+    "mirrors",
+    initialMirrors,
+    reportLibraryError,
+  );
+
+  /** Patch a mirror source's props — the write-through every instance
+   *  (canvas inline edits, the properties panel) funnels into. */
+  const updateMirrorProps = useCallback(
+    (id: string, patch: Record<string, unknown>) => {
+      updateSiteMirrors((prev) =>
+        prev.map((m) =>
+          m.id === id
+            ? ({
+                ...m,
+                source: {
+                  ...m.source,
+                  props: { ...m.source.props, ...patch },
+                },
+              } as MirrorDef)
+            : m,
+        ),
+      );
+    },
+    [updateSiteMirrors],
+  );
+
+  const renameMirror = useCallback(
+    (id: string, name: string) => {
+      const trimmed = name.trim();
+      if (!trimmed) return;
+      updateSiteMirrors((prev) =>
+        prev.map((m) => (m.id === id ? { ...m, name: trimmed } : m)),
+      );
+    },
+    [updateSiteMirrors],
+  );
+
+  /** Remove a source. Instances anywhere keep pointing at the dead id and
+   *  render as "unlinked" until re-pointed or deleted — nothing is silently
+   *  rewritten on other pages. */
+  const deleteMirror = useCallback(
+    (id: string) => {
+      updateSiteMirrors((prev) => prev.filter((m) => m.id !== id));
+    },
+    [updateSiteMirrors],
+  );
+
+  const mirrorLibrary = useMemo(
+    () => ({ mirrors: siteMirrors, updateMirrorProps }),
+    [siteMirrors, updateMirrorProps],
+  );
 
   /* ---------------- mutations + history ---------------- */
 
@@ -472,7 +576,11 @@ export function Editor({
   );
 
   const addBlock = useCallback(
-    (sectionId: string, type: BlockType) => {
+    (
+      sectionId: string,
+      type: BlockType,
+      propsOverride?: Record<string, unknown>,
+    ) => {
       const sec = findSection(sectionId);
       if (!sec) return;
       const entry = atomRegistry[type];
@@ -496,7 +604,7 @@ export function Editor({
         // as a mobile override so the block lands where they expect *and*
         // the desktop fallback isn't broken.
         ...(device === "mobile" ? { mobile: { layout } } : {}),
-        props: defaultsForBlock(type),
+        props: { ...defaultsForBlock(type), ...propsOverride },
       } as Block;
       targetSec.blocks.push(newBlock);
       commit(next);
@@ -557,6 +665,67 @@ export function Editor({
       setSelection(blockSel(sectionId, dup.id));
     },
     [page, commit]
+  );
+
+  /* ---------------- mirrors: promote / detach ---------------- */
+
+  /**
+   * Turn a block into a mirror: its `{ type, props }` become a new library
+   * source and the block itself becomes the first instance (same id, same
+   * layout, so the selection and position don't move). The library saves
+   * immediately; the page still needs Save like any other edit — undoing
+   * this restores the plain block and leaves an unused source behind, which
+   * is harmless and deletable from the panel.
+   */
+  const makeMirror = useCallback(
+    (sectionId: string, blockId: string, name: string) => {
+      const block = page.sections
+        .find((s) => s.id === sectionId)
+        ?.blocks.find((b) => b.id === blockId);
+      if (!block || !isSourceBlockType(block.type)) return;
+      const def: MirrorDef = {
+        id: newId("mir"),
+        name: name.trim() || atomRegistry[block.type].label,
+        source: { type: block.type, props: clone(block.props) } as MirrorDef["source"],
+      };
+      updateSiteMirrors((prev) => [...prev, def]);
+
+      const next = clone(page);
+      const sec = next.sections.find((s) => s.id === sectionId)!;
+      const i = sec.blocks.findIndex((b) => b.id === blockId);
+      // pruneMobile drops mobile prop overrides that belonged to the old
+      // type (a mirror has none); hidden / layout overrides stay — position
+      // is per-instance.
+      sec.blocks[i] = pruneMobile({
+        ...sec.blocks[i],
+        type: "mirror",
+        props: { mirrorId: def.id },
+      } as Block);
+      commit(next);
+    },
+    [page, commit, updateSiteMirrors],
+  );
+
+  /** Replace a mirror instance with a standalone copy of its source. */
+  const detachMirror = useCallback(
+    (sectionId: string, blockId: string) => {
+      const block = page.sections
+        .find((s) => s.id === sectionId)
+        ?.blocks.find((b) => b.id === blockId);
+      if (!block || block.type !== "mirror") return;
+      const def = findMirror(siteMirrors, block.props.mirrorId);
+      if (!def) return;
+      const next = clone(page);
+      const sec = next.sections.find((s) => s.id === sectionId)!;
+      const i = sec.blocks.findIndex((b) => b.id === blockId);
+      sec.blocks[i] = {
+        ...sec.blocks[i],
+        type: def.source.type,
+        props: clone(def.source.props),
+      } as Block;
+      commit(next);
+    },
+    [page, commit, siteMirrors],
   );
 
   /** Duplicate several blocks at once as one history step. The copies are
@@ -957,6 +1126,7 @@ export function Editor({
 
   return (
     <TagLibraryProvider tags={siteTags}>
+    <MirrorLibraryProvider value={mirrorLibrary}>
     <div className="h-screen flex flex-col">
       <Toolbar
         slug={slug}
@@ -1025,6 +1195,12 @@ export function Editor({
             currentSlug={slug}
             siteTags={siteTags}
             onUpdateSiteTags={updateSiteTags}
+            siteMirrors={siteMirrors}
+            onUpdateMirrorProps={updateMirrorProps}
+            onRenameMirror={renameMirror}
+            onDeleteMirror={deleteMirror}
+            onMakeMirror={makeMirror}
+            onDetachMirror={detachMirror}
             onUpdateMeta={updateMeta}
             onUpdateSection={updateSection}
             onUpdateSectionMobile={updateSectionMobile}
@@ -1038,6 +1214,7 @@ export function Editor({
         </aside>
       </div>
     </div>
+    </MirrorLibraryProvider>
     </TagLibraryProvider>
   );
 }

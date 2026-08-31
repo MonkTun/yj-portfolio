@@ -23,5 +23,5 @@ export default async function NotFound() {
   } catch {
     page = await loadPage("404");
   }
-  return <PageRenderer page={page} tags={config.tags} />;
+  return <PageRenderer page={page} tags={config.tags} mirrors={config.mirrors} />;
 }

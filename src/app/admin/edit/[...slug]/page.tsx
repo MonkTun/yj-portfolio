@@ -37,6 +37,7 @@ export default async function EditPage({ params }: Props) {
       initialPage={page}
       availablePages={availablePages}
       initialTags={siteConfig.tags}
+      initialMirrors={siteConfig.mirrors}
     />
   );
 }

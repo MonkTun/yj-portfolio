@@ -50,5 +50,5 @@ export default async function CatchAllPage({ params }: Props) {
   // Tag library for Tags blocks — file read, no request data, so the
   // route stays statically prerenderable.
   const config = await loadSiteConfig();
-  return <PageRenderer page={page} tags={config.tags} />;
+  return <PageRenderer page={page} tags={config.tags} mirrors={config.mirrors} />;
 }

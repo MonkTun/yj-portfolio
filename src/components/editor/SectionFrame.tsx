@@ -40,7 +40,7 @@ type Props = {
   onDuplicateSection: () => void;
   onDeleteSection: () => void;
   onMoveSection: (direction: -1 | 1) => void;
-  onAddBlock: (type: BlockType) => void;
+  onAddBlock: (type: BlockType, props?: Record<string, unknown>) => void;
   onUpdateBlockProps: (
     blockId: string,
     patch: Record<string, unknown>,

@@ -28,6 +28,9 @@ export const MOBILE_OVERRIDABLE_KEYS: Record<BlockType, readonly string[]> = {
   projectCarousel: [],
   socialLinks: [],
   tags: [],
+  // Position is per-instance (layout), content is the shared source —
+  // there is nothing on the instance itself to override.
+  mirror: [],
 };
 
 export function isMobileOverridable(type: BlockType, key: string): boolean {

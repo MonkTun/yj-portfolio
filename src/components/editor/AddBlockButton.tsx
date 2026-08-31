@@ -3,19 +3,23 @@
 import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import { atomRegistry } from "@/lib/atom-registry";
+import { useMirrorLibrary } from "@/components/MirrorLibraryContext";
 import type { BlockType } from "@/lib/schema";
 import { cn } from "@/lib/utils";
 import { PlusIcon } from "./icons";
 
 type Props = {
-  onAdd: (type: BlockType) => void;
+  /** `props` seeds the new block on top of the registry defaults — used to
+   *  spawn a mirror instance already pointed at a library source. */
+  onAdd: (type: BlockType, props?: Record<string, unknown>) => void;
   visible: boolean;
 };
 
 /**
  * Floating "+ Add block" button that appears at the bottom-center of a
  * selected/hovered section. Click to open a glass picker with the atomic
- * block types. The picker renders in a body portal — the section and the
+ * block types, plus one entry per mirror in the site library — picking a
+ * mirror spawns an instance of it. The picker renders in a body portal — the section and the
  * canvas device frame are both overflow-hidden, so an in-tree popover
  * opening upward gets clipped by the section boundary.
  */
@@ -24,6 +28,12 @@ export function AddBlockButton({ onAdd, visible }: Props) {
   const ref = useRef<HTMLDivElement>(null);
   const panelRef = useRef<HTMLDivElement>(null);
   const [pos, setPos] = useState<{ left: number; bottom: number } | null>(null);
+  const { mirrors } = useMirrorLibrary();
+  // The bare "Mirror" type is only useful pointed at a source, so the grid
+  // lists sources by name instead of the generic entry.
+  const atomEntries = Object.values(atomRegistry).filter(
+    (entry) => entry.type !== "mirror",
+  );
 
   useLayoutEffect(() => {
     if (!open) return;
@@ -86,7 +96,7 @@ export function AddBlockButton({ onAdd, visible }: Props) {
           >
           <p className="kicker px-2 pt-1 pb-2">Block type</p>
           <ul className="grid grid-cols-2 gap-1">
-            {Object.values(atomRegistry).map((entry) => (
+            {atomEntries.map((entry) => (
               <li key={entry.type}>
                 <button
                   type="button"
@@ -106,6 +116,36 @@ export function AddBlockButton({ onAdd, visible }: Props) {
               </li>
             ))}
           </ul>
+          <p className="kicker px-2 pt-3 pb-2 border-t border-border mt-2">
+            Mirrors
+          </p>
+          {mirrors.length === 0 ? (
+            <p className="px-2 pb-1 text-xs text-foreground/40 italic">
+              None yet — select a block and press “Make mirror” in the panel.
+            </p>
+          ) : (
+            <ul className="grid grid-cols-2 gap-1">
+              {mirrors.map((m) => (
+                <li key={m.id}>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      onAdd("mirror", { mirrorId: m.id });
+                      setOpen(false);
+                    }}
+                    className="w-full text-left px-2 py-2 rounded-sm hover:bg-foreground/10 group transition-colors"
+                  >
+                    <span className="block text-sm text-foreground leading-tight truncate">
+                      {m.name}
+                    </span>
+                    <span className="kicker text-foreground/40 group-hover:text-accent">
+                      mirror · {atomRegistry[m.source.type].label}
+                    </span>
+                  </button>
+                </li>
+              ))}
+            </ul>
+          )}
           </div>,
           document.body
         )}

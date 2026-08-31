@@ -18,6 +18,8 @@ import type {
   SocialPlatform,
   TagsProps,
   TagDef,
+  BlockContent,
+  MirrorDef,
 } from "@/lib/schema";
 import {
   CAROUSEL_ITEM_EFFECT_DEFAULTS,
@@ -27,6 +29,7 @@ import { SOCIAL_PLATFORM_LABELS } from "@/components/atoms/SocialLinks";
 import { getYouTubeId } from "@/lib/youtube";
 import { uploadImageFile } from "@/lib/upload-image";
 import { atomRegistry } from "@/lib/atom-registry";
+import { findMirror } from "@/components/MirrorLibraryContext";
 import { cn } from "@/lib/utils";
 import {
   imageFilterCss,
@@ -56,6 +59,16 @@ type Props = {
   /** Project-wide tag library (site.json) — feeds the Tags block editor. */
   siteTags?: TagDef[];
   onUpdateSiteTags?: (tags: TagDef[]) => void;
+  /** Site-wide mirror library (site.json) + its mutations. Sources are
+   *  edited from any instance's panel; the page only stores references. */
+  siteMirrors?: MirrorDef[];
+  onUpdateMirrorProps?: (id: string, patch: Record<string, unknown>) => void;
+  onRenameMirror?: (id: string, name: string) => void;
+  onDeleteMirror?: (id: string) => void;
+  /** Promote a plain block into a new mirror source + first instance. */
+  onMakeMirror?: (sectionId: string, blockId: string, name: string) => void;
+  /** Replace a mirror instance with a standalone copy of its source. */
+  onDetachMirror?: (sectionId: string, blockId: string) => void;
   onUpdateMeta: (meta: Page["meta"]) => void;
   onUpdateSection: (sectionId: string, patch: Partial<Section>) => void;
   onUpdateSectionMobile: (
@@ -96,6 +109,12 @@ export function PropertiesPanel({
   currentSlug,
   siteTags = [],
   onUpdateSiteTags,
+  siteMirrors = [],
+  onUpdateMirrorProps,
+  onRenameMirror,
+  onDeleteMirror,
+  onMakeMirror,
+  onDetachMirror,
   onUpdateMeta,
   onUpdateSection,
   onUpdateSectionMobile,
@@ -139,11 +158,24 @@ export function PropertiesPanel({
   return (
     <BlockProps
       block={block}
+      page={page}
       device={device}
       availablePages={availablePages}
       currentSlug={currentSlug}
       siteTags={siteTags}
       onUpdateSiteTags={onUpdateSiteTags}
+      siteMirrors={siteMirrors}
+      onUpdateMirrorProps={onUpdateMirrorProps}
+      onRenameMirror={onRenameMirror}
+      onDeleteMirror={onDeleteMirror}
+      onMakeMirror={
+        onMakeMirror
+          ? (name) => onMakeMirror(section.id, block.id, name)
+          : undefined
+      }
+      onDetachMirror={
+        onDetachMirror ? () => onDetachMirror(section.id, block.id) : undefined
+      }
       onUpdate={(patch) =>
         onUpdateBlockProps(section.id, block.id, patch)
       }
@@ -497,22 +529,36 @@ function SectionMobileBanner() {
 
 function BlockProps({
   block,
+  page,
   device,
   availablePages = [],
   currentSlug,
   siteTags = [],
   onUpdateSiteTags,
+  siteMirrors = [],
+  onUpdateMirrorProps,
+  onRenameMirror,
+  onDeleteMirror,
+  onMakeMirror,
+  onDetachMirror,
   onUpdate,
   onSetBleed,
   onSetMobileHidden,
   onClearMobileOverrides,
 }: {
   block: Block;
+  page: Page;
   device: Device;
   availablePages?: string[];
   currentSlug?: string;
   siteTags?: TagDef[];
   onUpdateSiteTags?: (tags: TagDef[]) => void;
+  siteMirrors?: MirrorDef[];
+  onUpdateMirrorProps?: (id: string, patch: Record<string, unknown>) => void;
+  onRenameMirror?: (id: string, name: string) => void;
+  onDeleteMirror?: (id: string) => void;
+  onMakeMirror?: (name: string) => void;
+  onDetachMirror?: () => void;
   /** onUpdate is already device-scoped at the Editor level — desktop calls
    *  patch `block.props`, mobile calls patch `block.mobile.props`. */
   onUpdate: (patch: Record<string, unknown>) => void;
@@ -536,8 +582,92 @@ function BlockProps({
 
   return (
     <div className="p-5 space-y-5">
-      <SectionHead title={entry.label} subtitle={block.type} />
+      {block.type === "mirror" ? (
+        <MirrorBlockProps
+          block={block}
+          page={page}
+          siteMirrors={siteMirrors}
+          availablePages={availablePages}
+          currentSlug={currentSlug}
+          siteTags={siteTags}
+          onUpdateSiteTags={onUpdateSiteTags}
+          onUpdate={onUpdate}
+          onUpdateMirrorProps={onUpdateMirrorProps}
+          onRenameMirror={onRenameMirror}
+          onDeleteMirror={onDeleteMirror}
+          onDetach={onDetachMirror}
+        />
+      ) : (
+        <>
+          <SectionHead title={entry.label} subtitle={block.type}>
+            {onMakeMirror && (
+              <MakeMirrorControl
+                defaultName={entry.label}
+                onMake={onMakeMirror}
+              />
+            )}
+          </SectionHead>
+          <BlockTypeFields
+            block={block}
+            availablePages={availablePages}
+            currentSlug={currentSlug}
+            siteTags={siteTags}
+            onUpdateSiteTags={onUpdateSiteTags}
+            onUpdate={onUpdate}
+          />
+        </>
+      )}
 
+      <hr className="rule" />
+      <Field label="stretch / bleed">
+        <SegmentBar
+          options={["none", "left", "right", "both"]}
+          value={block.layout.bleed ?? "none"}
+          onChange={(v) => onSetBleed(v as Block["layout"]["bleed"])}
+        />
+        <p className="text-xs text-foreground/40 italic mt-1">
+          Stretches the block past the safe area to the section edge to
+          accentuate it. Best on a block sitting at that grid edge (left → col
+          1, right → ends at col 12).
+        </p>
+      </Field>
+
+      <hr className="rule" />
+      <Field label="layout">
+        <p className="text-xs text-foreground/50 italic font-sans">
+          col {block.layout.col}, span {block.layout.colSpan} · row{" "}
+          {block.layout.row ?? "auto"}, span {block.layout.rowSpan ?? "auto"}
+        </p>
+        <p className="text-xs text-foreground/40 italic mt-1">
+          Drag the block on the canvas to move; drag corner handles to resize.
+        </p>
+      </Field>
+    </div>
+  );
+}
+
+/* ============================================================
+   Per-type desktop fields — shared by a plain block and by a mirror's
+   source (which is a block minus its position).
+   ============================================================ */
+
+function BlockTypeFields({
+  block,
+  availablePages = [],
+  currentSlug,
+  siteTags = [],
+  onUpdateSiteTags,
+  onUpdate,
+}: {
+  block: BlockContent;
+  availablePages?: string[];
+  currentSlug?: string;
+  siteTags?: TagDef[];
+  onUpdateSiteTags?: (tags: TagDef[]) => void;
+  onUpdate: (patch: Record<string, unknown>) => void;
+}) {
+  return (
+    <>
       {block.type === "text" && (
         <TextBlockProps
           props={block.props as TextProps}
@@ -649,32 +779,207 @@ function BlockProps({
           </Field>
         </>
       )}
+    </>
+  );
+}
 
-      <hr className="rule" />
-      <Field label="stretch / bleed">
-        <SegmentBar
-          options={["none", "left", "right", "both"]}
-          value={block.layout.bleed ?? "none"}
-          onChange={(v) => onSetBleed(v as Block["layout"]["bleed"])}
-        />
-        <p className="text-xs text-foreground/40 italic mt-1">
-          Stretches the block past the safe area to the section edge to
-          accentuate it. Best on a block sitting at that grid edge (left → col
-          1, right → ends at col 12).
-        </p>
+/* ============================================================
+   Mirrors — promote a block, edit an instance's source.
+   ============================================================ */
+
+/** "Make mirror" affordance in a plain block's header: click, name it,
+ *  create. Sits inside SectionHead so it reads as an action on the block. */
+function MakeMirrorControl({
+  defaultName,
+  onMake,
+}: {
+  defaultName: string;
+  onMake: (name: string) => void;
+}) {
+  const [open, setOpen] = useState(false);
+  const [name, setName] = useState(defaultName);
+
+  if (!open) {
+    return (
+      <button
+        type="button"
+        onClick={() => {
+          setName(defaultName);
+          setOpen(true);
+        }}
+        title="Turn this block into a mirror — one source, placeable on any page"
+        className="kicker ml-auto px-2 py-1 rounded-sm border border-border text-foreground/70 hover:bg-foreground/10 hover:text-accent transition-colors"
+      >
+        Make mirror
+      </button>
+    );
+  }
+  return (
+    <form
+      className="ml-auto flex items-center gap-1"
+      onSubmit={(e) => {
+        e.preventDefault();
+        onMake(name);
+        setOpen(false);
+      }}
+    >
+      <input
+        autoFocus
+        className={cn(inputCls, "w-36 py-1 text-xs")}
+        value={name}
+        onChange={(e) => setName(e.target.value)}
+        placeholder="Mirror name"
+        onKeyDown={(e) => {
+          if (e.key === "Escape") setOpen(false);
+        }}
+      />
+      <button
+        type="submit"
+        className="kicker px-2 py-1 rounded-sm bg-accent text-accent-foreground"
+      >
+        Create
+      </button>
+    </form>
+  );
+}
+
+function MirrorBlockProps({
+  block,
+  page,
+  siteMirrors,
+  availablePages,
+  currentSlug,
+  siteTags,
+  onUpdateSiteTags,
+  onUpdate,
+  onUpdateMirrorProps,
+  onRenameMirror,
+  onDeleteMirror,
+  onDetach,
+}: {
+  block: Extract<Block, { type: "mirror" }>;
+  page: Page;
+  siteMirrors: MirrorDef[];
+  availablePages?: string[];
+  currentSlug?: string;
+  siteTags?: TagDef[];
+  onUpdateSiteTags?: (tags: TagDef[]) => void;
+  /** Patches the INSTANCE (only `mirrorId` lives there). */
+  onUpdate: (patch: Record<string, unknown>) => void;
+  onUpdateMirrorProps?: (id: string, patch: Record<string, unknown>) => void;
+  onRenameMirror?: (id: string, name: string) => void;
+  onDeleteMirror?: (id: string) => void;
+  onDetach?: () => void;
+}) {
+  const def = findMirror(siteMirrors, block.props.mirrorId);
+  const sourceEntry = def ? atomRegistry[def.source.type] : null;
+  const instancesHere = def
+    ? page.sections.reduce(
+        (n, s) =>
+          n +
+          s.blocks.filter(
+            (b) => b.type === "mirror" && b.props.mirrorId === def.id,
+          ).length,
+        0,
+      )
+    : 0;
+
+  return (
+    <>
+      <SectionHead
+        title={def?.name ?? "Mirror"}
+        subtitle={sourceEntry ? `mirror · ${sourceEntry.label}` : "mirror"}
+      />
+
+      <Field label="source">
+        <select
+          className={inputCls}
+          value={def ? def.id : ""}
+          onChange={(e) => onUpdate({ mirrorId: e.target.value })}
+        >
+          <option value="">— unassigned —</option>
+          {siteMirrors.map((m) => (
+            <option key={m.id} value={m.id}>
+              {m.name} · {atomRegistry[m.source.type].label}
+            </option>
+          ))}
+          {block.props.mirrorId && !def && (
+            <option value={block.props.mirrorId} disabled>
+              {block.props.mirrorId} (deleted)
+            </option>
+          )}
+        </select>
       </Field>
 
-      <hr className="rule" />
-      <Field label="layout">
-        <p className="text-xs text-foreground/50 italic font-sans">
-          col {block.layout.col}, span {block.layout.colSpan} · row{" "}
-          {block.layout.row ?? "auto"}, span {block.layout.rowSpan ?? "auto"}
-        </p>
-        <p className="text-xs text-foreground/40 italic mt-1">
-          Drag the block on the canvas to move; drag corner handles to resize.
-        </p>
-      </Field>
-    </div>
+      {!def ? (
+        <Hint>
+          {block.props.mirrorId
+            ? "This instance points at a source that no longer exists. Pick another source above, or delete the block."
+            : "An instance renders whatever source it points at. Pick one above — or create sources with “Make mirror” on any plain block."}
+        </Hint>
+      ) : (
+        <>
+          <div className="rounded-sm border border-accent/40 bg-accent/10 px-3 py-2 space-y-1">
+            <p className="kicker text-accent">Source of truth</p>
+            <p className="text-xs text-foreground/70 italic">
+              The fields below edit the shared source. {instancesHere}{" "}
+              {instancesHere === 1 ? "instance" : "instances"} on this page
+              {" "}— and every instance on other pages — update with it.
+              Position, bleed and mobile layout stay per-instance.
+            </p>
+          </div>
+
+          <Field label="mirror name">
+            <input
+              className={inputCls}
+              value={def.name}
+              onChange={(e) => onRenameMirror?.(def.id, e.target.value)}
+            />
+          </Field>
+
+          <div className="flex gap-2">
+            {onDetach && (
+              <button
+                type="button"
+                onClick={onDetach}
+                title="Replace this instance with a standalone copy of the source"
+                className="kicker flex-1 px-3 py-2 rounded-sm border border-border text-foreground/80 hover:bg-foreground/10 hover:text-accent transition-colors"
+              >
+                Detach copy
+              </button>
+            )}
+            {onDeleteMirror && (
+              <button
+                type="button"
+                onClick={() => {
+                  if (
+                    window.confirm(
+                      `Delete the mirror “${def.name}”? Instances on every page will show as unlinked until re-pointed or removed.`,
+                    )
+                  ) {
+                    onDeleteMirror(def.id);
+                  }
+                }}
+                className="kicker flex-1 px-3 py-2 rounded-sm border border-border text-foreground/80 hover:bg-foreground/10 hover:text-accent transition-colors"
+              >
+                Delete mirror
+              </button>
+            )}
+          </div>
+
+          <hr className="rule" />
+
+          <BlockTypeFields
+            block={def.source}
+            availablePages={availablePages}
+            currentSlug={currentSlug}
+            siteTags={siteTags}
+            onUpdateSiteTags={onUpdateSiteTags}
+            onUpdate={(patch) => onUpdateMirrorProps?.(def.id, patch)}
+          />
+        </>
+      )}
+    </>
   );
 }
 
@@ -745,6 +1050,13 @@ function BlockMobileProps({
         block.type === "socialLinks" ||
         block.type === "tags") && (
         <Hint>This block has no mobile-specific style overrides.</Hint>
+      )}
+      {block.type === "mirror" && (
+        <Hint>
+          A mirror instance only owns its position. Its content is the shared
+          source — edit that on desktop; layout and visibility here are
+          per-instance.
+        </Hint>
       )}
 
       <hr className="rule" />

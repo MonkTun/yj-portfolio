@@ -324,7 +324,56 @@ export const tagsPropsSchema = z.object({
   align: z.enum(["left", "center", "right"]).default("left"),
 });
 
+/**
+ * Mirror INSTANCE. A mirror is a Figma-style component: one source of truth
+ * (`MirrorDef` in content/site.json — a block type + its props) that can be
+ * placed any number of times on any page. The instance stores only the
+ * reference; its grid layout / bleed / mobile overrides stay per-instance
+ * because *where* something sits is local, *what* it is is shared. Editing
+ * the props of any instance edits the source, so every instance follows.
+ */
+export const mirrorPropsSchema = z.object({
+  /** Id of the `MirrorDef` this instance renders. Empty = unassigned. */
+  mirrorId: z.string().default(""),
+});
+
 /* ----- Discriminated union of block types ----- */
+
+/* `{ type, props }` per block type, without layout. These are what a mirror
+   definition stores (a source is a block minus its position), and the
+   placeable block variants below extend them with id + layout + mobile. A
+   mirror can't mirror a mirror, so `mirror` is not in this list. */
+const textContent = z.object({ type: z.literal("text"), props: textPropsSchema });
+const imageContent = z.object({ type: z.literal("image"), props: imagePropsSchema });
+const buttonContent = z.object({ type: z.literal("button"), props: buttonPropsSchema });
+const spacerContent = z.object({ type: z.literal("spacer"), props: spacerPropsSchema });
+const lineContent = z.object({ type: z.literal("line"), props: linePropsSchema });
+const quoteContent = z.object({ type: z.literal("quote"), props: quotePropsSchema });
+const videoContent = z.object({ type: z.literal("video"), props: videoPropsSchema });
+const projectCarouselContent = z.object({
+  type: z.literal("projectCarousel"),
+  props: projectCarouselPropsSchema,
+});
+const socialLinksContent = z.object({
+  type: z.literal("socialLinks"),
+  props: socialLinksPropsSchema,
+});
+const tagsContent = z.object({ type: z.literal("tags"), props: tagsPropsSchema });
+const mirrorContent = z.object({ type: z.literal("mirror"), props: mirrorPropsSchema });
+
+/** A block's content only — what a mirror source is. Never a `mirror`. */
+export const blockContentSchema = z.discriminatedUnion("type", [
+  textContent,
+  imageContent,
+  buttonContent,
+  spacerContent,
+  lineContent,
+  quoteContent,
+  videoContent,
+  projectCarouselContent,
+  socialLinksContent,
+  tagsContent,
+]);
 
 const blockBase = {
   id: z.string(),
@@ -333,25 +382,34 @@ const blockBase = {
 };
 
 export const blockSchema = z.discriminatedUnion("type", [
-  z.object({ ...blockBase, type: z.literal("text"), props: textPropsSchema }),
-  z.object({ ...blockBase, type: z.literal("image"), props: imagePropsSchema }),
-  z.object({ ...blockBase, type: z.literal("button"), props: buttonPropsSchema }),
-  z.object({ ...blockBase, type: z.literal("spacer"), props: spacerPropsSchema }),
-  z.object({ ...blockBase, type: z.literal("line"), props: linePropsSchema }),
-  z.object({ ...blockBase, type: z.literal("quote"), props: quotePropsSchema }),
-  z.object({ ...blockBase, type: z.literal("video"), props: videoPropsSchema }),
-  z.object({
-    ...blockBase,
-    type: z.literal("projectCarousel"),
-    props: projectCarouselPropsSchema,
-  }),
-  z.object({
-    ...blockBase,
-    type: z.literal("socialLinks"),
-    props: socialLinksPropsSchema,
-  }),
-  z.object({ ...blockBase, type: z.literal("tags"), props: tagsPropsSchema }),
+  textContent.extend(blockBase),
+  imageContent.extend(blockBase),
+  buttonContent.extend(blockBase),
+  spacerContent.extend(blockBase),
+  lineContent.extend(blockBase),
+  quoteContent.extend(blockBase),
+  videoContent.extend(blockBase),
+  projectCarouselContent.extend(blockBase),
+  socialLinksContent.extend(blockBase),
+  tagsContent.extend(blockBase),
+  mirrorContent.extend(blockBase),
 ]);
+
+/**
+ * Mirror DEFINITION — the single source of truth behind every `mirror`
+ * instance with this id. Site-wide (content/site.json, next to the tag
+ * library) because instances live on many pages. Renaming is free; deleting
+ * one leaves its instances rendering an "unlinked" placeholder until they're
+ * re-pointed or removed.
+ */
+export const mirrorDefSchema = z.object({
+  id: z.string().min(1).max(60),
+  /** Human label shown in the editor (layers panel, picker, properties). */
+  name: z.string().min(1).max(80),
+  source: blockContentSchema,
+});
+
+export type MirrorDef = z.infer<typeof mirrorDefSchema>;
 
 /* ----- Section ----- */
 
@@ -498,6 +556,8 @@ export const siteConfigSchema = z.object({
   constructionMode: z.boolean().default(true),
   /** Project-wide tag library shared by every Tags block. */
   tags: z.array(tagDefSchema).default([]),
+  /** Mirror library — source blocks that `mirror` instances render. */
+  mirrors: z.array(mirrorDefSchema).default([]),
 });
 
 export type SiteConfig = z.infer<typeof siteConfigSchema>;
@@ -579,6 +639,10 @@ export type Theme = z.infer<typeof themeSchema>;
 export type BlockLayout = z.infer<typeof blockLayoutSchema>;
 export type Block = z.infer<typeof blockSchema>;
 export type BlockType = Block["type"];
+/** `{ type, props }` of a non-mirror block — the shape a mirror source has. */
+export type BlockContent = z.infer<typeof blockContentSchema>;
+/** Block types a mirror may point at — everything except `mirror` itself. */
+export type SourceBlockType = BlockContent["type"];
 export type MobileBlockOverride = NonNullable<
   z.infer<typeof mobileBlockOverrideSchema>
 >;
@@ -599,6 +663,7 @@ export type SocialPlatform = z.infer<typeof socialPlatformSchema>;
 export type SocialLinkItem = z.infer<typeof socialLinkItemSchema>;
 export type SocialLinksProps = z.infer<typeof socialLinksPropsSchema>;
 export type TagsProps = z.infer<typeof tagsPropsSchema>;
+export type MirrorProps = z.infer<typeof mirrorPropsSchema>;
 
 export type Section = z.infer<typeof sectionSchema>;
 export type SectionBackground = z.infer<typeof sectionBackgroundSchema>;

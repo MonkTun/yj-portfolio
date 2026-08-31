@@ -1,12 +1,16 @@
-import type { Page, TagDef } from "@/lib/schema";
+import type { MirrorDef, Page, TagDef } from "@/lib/schema";
 import { SectionRenderer } from "./SectionRenderer";
 import { TagLibraryProvider } from "./TagLibraryContext";
+import { MirrorLibraryProvider } from "./MirrorLibraryContext";
 
 type Props = {
   page: Page;
   /** Project-wide tag library (site.json) — resolves Tags-block names to
    *  pill colors. Omitting it renders tags in the accent fallback. */
   tags?: TagDef[];
+  /** Mirror library (site.json) — resolves `mirror` instances to the source
+   *  block they render. Omitting it renders every instance as nothing. */
+  mirrors?: MirrorDef[];
 };
 
 /**
@@ -14,12 +18,14 @@ type Props = {
  * site uses this directly; the editor wraps each section in its own frame
  * but reuses SectionRenderer underneath via `renderBlock`.
  */
-export function PageRenderer({ page, tags = [] }: Props) {
+export function PageRenderer({ page, tags = [], mirrors = [] }: Props) {
   return (
     <TagLibraryProvider tags={tags}>
-      {page.sections.map((section) => (
-        <SectionRenderer key={section.id} section={section} />
-      ))}
+      <MirrorLibraryProvider value={{ mirrors }}>
+        {page.sections.map((section) => (
+          <SectionRenderer key={section.id} section={section} />
+        ))}
+      </MirrorLibraryProvider>
     </TagLibraryProvider>
   );
 }

@@ -9,13 +9,13 @@ type Props = {
   pages: string[];
 };
 
-const ROLE_LABELS: Record<keyof Omit<SiteConfig, "constructionMode" | "tags">, string> = {
+const ROLE_LABELS: Record<keyof Omit<SiteConfig, "constructionMode" | "tags" | "mirrors">, string> = {
   homeSlug: "Home",
   constructionSlug: "Construction",
   notFoundSlug: "404",
 };
 
-const ROLE_HINTS: Record<keyof Omit<SiteConfig, "constructionMode" | "tags">, string> = {
+const ROLE_HINTS: Record<keyof Omit<SiteConfig, "constructionMode" | "tags" | "mirrors">, string> = {
   homeSlug: "Renders at / when construction mode is off.",
   constructionSlug: "Renders at / when construction mode is on.",
   notFoundSlug: "Served for unknown URLs (Next.js not-found route).",

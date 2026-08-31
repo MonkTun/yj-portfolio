@@ -1,5 +1,5 @@
 import type { ComponentType } from "react";
-import type { Block, BlockType } from "@/lib/schema";
+import type { Block, BlockType, SourceBlockType } from "@/lib/schema";
 import { CAROUSEL_ITEM_EFFECT_DEFAULTS } from "@/lib/schema";
 
 import { Text } from "@/components/atoms/Text";
@@ -12,6 +12,7 @@ import { Video } from "@/components/atoms/Video";
 import { ProjectCarousel } from "@/components/atoms/ProjectCarousel";
 import { SocialLinks } from "@/components/atoms/SocialLinks";
 import { Tags } from "@/components/atoms/Tags";
+import { Mirror } from "@/components/atoms/Mirror";
 
 type AtomEntry<P = unknown> = {
   type: BlockType;
@@ -190,7 +191,22 @@ export const atomRegistry: Record<BlockType, AtomEntry<any>> = {
     },
     defaultLayout: { colSpan: 6, rowSpan: 2 },
   },
+  mirror: {
+    type: "mirror",
+    label: "Mirror",
+    component: Mirror,
+    // An instance is created pointing at a source (the add-block picker lists
+    // the library by name, "Make mirror" converts a block in place); an
+    // unassigned instance is a valid intermediate that renders a placeholder.
+    defaultProps: { mirrorId: "" },
+    defaultLayout: { colSpan: 12, rowSpan: 8 },
+  },
 };
+
+/** Registry entries a mirror source can be — everything except `mirror`. */
+export function isSourceBlockType(type: BlockType): type is SourceBlockType {
+  return type !== "mirror";
+}
 
 export function isBlockType(s: string): s is BlockType {
   return s in atomRegistry;

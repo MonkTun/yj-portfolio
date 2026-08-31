@@ -44,7 +44,11 @@ type Props = {
   onDeleteSection: (sectionId: string) => void;
   onMoveSection: (sectionId: string, direction: -1 | 1) => void;
   onReorderSections: (orderedIds: string[]) => void;
-  onAddBlock: (sectionId: string, type: BlockType) => void;
+  onAddBlock: (
+    sectionId: string,
+    type: BlockType,
+    props?: Record<string, unknown>,
+  ) => void;
   onUpdateBlockProps: (
     sectionId: string,
     blockId: string,
@@ -167,7 +171,7 @@ export function Canvas({
                   onDuplicateSection={() => onDuplicateSection(section.id)}
                   onDeleteSection={() => onDeleteSection(section.id)}
                   onMoveSection={(dir) => onMoveSection(section.id, dir)}
-                  onAddBlock={(type) => onAddBlock(section.id, type)}
+                  onAddBlock={(type, props) => onAddBlock(section.id, type, props)}
                   onUpdateBlockProps={(blockId, patch, target) =>
                     onUpdateBlockProps(section.id, blockId, patch, target)
                   }

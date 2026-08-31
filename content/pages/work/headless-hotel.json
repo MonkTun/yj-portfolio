@@ -470,11 +470,25 @@
       "align": "top",
       "blocks": [
         {
+          "id": "blk_dd330d3f",
+          "layout": {
+            "col": 1,
+            "colSpan": 12,
+            "row": 1,
+            "rowSpan": 8,
+            "bleed": "both"
+          },
+          "type": "mirror",
+          "props": {
+            "mirrorId": "mir_projects"
+          }
+        },
+        {
           "id": "blk_hh_outro_back",
           "layout": {
             "col": 1,
             "colSpan": 3,
-            "row": 1,
+            "row": 11,
             "rowSpan": 3
           },
           "mobile": {

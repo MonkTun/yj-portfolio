@@ -154,7 +154,7 @@
           },
           "type": "text",
           "props": {
-            "content": "I partnered  with level designers and created the Mix-In Editor. This tool is built using Unity's IMGUI framework.<br>This intuitive tool can paint, edit, and bake Mix-ins without having to touch any GameObjects manually. This tool has led in increase productivity in all level iterations speed by about 250%.",
+            "content": "I partnered  with level designers and created the Mix-In Editor. This tool is built using Unity's IMGUI framework.<br>This intuitive tool can paint, edit, and bake Mix-ins without having to touch any GameObjects manually. This tool has led in increase productivity in all level iterations speed by about 150%.",
             "variant": "body",
             "align": "left",
             "color": "foreground",
@@ -369,11 +369,25 @@
       "align": "top",
       "blocks": [
         {
+          "id": "blk_591ef4c2",
+          "layout": {
+            "col": 1,
+            "colSpan": 12,
+            "row": 1,
+            "rowSpan": 8,
+            "bleed": "both"
+          },
+          "type": "mirror",
+          "props": {
+            "mirrorId": "mir_projects"
+          }
+        },
+        {
           "id": "blk_mmm_outro_back",
           "layout": {
             "col": 1,
             "colSpan": 3,
-            "row": 1,
+            "row": 11,
             "rowSpan": 3
           },
           "mobile": {

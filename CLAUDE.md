@@ -170,6 +170,16 @@ That's it. No purple gradients, no neon, no glow halos, no scanlines, no mesh bl
 - Tailwind for styling. Avoid one-off CSS files unless there's a real reason; global tokens in `globals.css` are the exception.
 - Don't reintroduce Vite, CRA, or any non-Next build tooling.
 
+## Mirrors (Aug 2026)
+
+A **mirror** is the editor's component/instance system: one source of truth, placeable any number of times on any page.
+
+- **Source**: `MirrorDef { id, name, source: { type, props } }` in `content/site.json → mirrors` (next to the tag library — same load/save channel, same debounced `/api/admin/site` POST from the editor via `useSiteLibrary` in `Editor.tsx`). A source is a block minus its position; `blockContentSchema` in `schema.ts` is that shape, and `blockSchema` variants are built by `.extend`-ing it. A mirror can't mirror a mirror.
+- **Instance**: a `mirror` block whose props are only `{ mirrorId }`. Layout / bleed / `mobile.hidden` / `mobile.layout` stay per-instance (where it sits is local; what it is is shared). `MOBILE_OVERRIDABLE_KEYS.mirror = []`.
+- **Rendering**: the `Mirror` atom (`atoms/Mirror.tsx`) looks the id up in `MirrorLibraryContext` (provided by `PageRenderer` on the public site — every `(site)` route passes `config.mirrors` — and by `Editor` with a live copy) and renders the source's registry component. In the editor it re-wraps that atom in an `EditProvider` whose updaters write to the source, so inline edits on any instance propagate to all of them. It imports `atomRegistry` while the registry imports it — intentional cycle, safe because the registry is read at render time only.
+- **Editor**: "Make mirror" in a plain block's panel header promotes it in place (same block id → selection/position don't jump; the library saves immediately, the page still needs Save). A mirror's panel edits the source (banner says so), renames, "Detach copy", "Delete mirror" (instances elsewhere then render an *unlinked* placeholder in the editor and nothing on the public site — they're never rewritten behind your back). "+ Add block" lists each mirror by name and spawns an instance already pointed at it (`onAdd(type, props?)`).
+- **The home "All projects" carousel is `mir_projects`**, and every `work/*` page has an instance of it directly above its back-to-home button (`col 1 / span 12 / rowSpan 8 / bleed both`, button shifted down 10 rows). Edit the carousel on any page — it's the same one.
+
 ## Job tracker (dev-only, Aug 2026)
 
 `/admin/jobs` is a private internship/job tracker + resume studio — a third admin surface next to the page editors, never deployed (same `src/proxy.ts` dev gate as the rest of admin).

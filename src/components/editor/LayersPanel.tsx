@@ -18,6 +18,10 @@ import { CSS } from "@dnd-kit/utilities";
 
 import type { Block, Page, Section } from "@/lib/schema";
 import { atomRegistry } from "@/lib/atom-registry";
+import {
+  findMirror,
+  useMirrorLibrary,
+} from "@/components/MirrorLibraryContext";
 import { cn } from "@/lib/utils";
 import { TrashIcon } from "./icons";
 import type { Selection } from "./Editor";
@@ -309,6 +313,12 @@ function BlockRow({
     selection.sectionId === section.id &&
     selection.blockIds.includes(block.id);
   const entry = atomRegistry[block.type];
+  const { mirrors } = useMirrorLibrary();
+  // A mirror row names its source so instances are tellable apart.
+  const label =
+    block.type === "mirror"
+      ? `${entry.label} · ${findMirror(mirrors, block.props.mirrorId)?.name ?? "unlinked"}`
+      : entry.label;
 
   return (
     <li
@@ -345,7 +355,7 @@ function BlockRow({
         }
         className="flex-1 text-left py-1.5 pr-2 truncate"
       >
-        <span className="block text-xs">{entry.label}</span>
+        <span className="block text-xs">{label}</span>
       </button>
       <button
         type="button"

@@ -49,5 +49,5 @@ export default async function Page() {
       page = await loadPage("construction");
     }
   }
-  return <PageRenderer page={page} tags={config.tags} />;
+  return <PageRenderer page={page} tags={config.tags} mirrors={config.mirrors} />;
 }

@@ -289,7 +289,7 @@
           },
           "type": "text",
           "props": {
-            "content": "After releasing Dawngeon in high school, I started Overdawn as a solo project. The game iterated for years, starting as a PvP game and slowly finding its identity as a bullet-hell, bullet-time shooter. When I came to USC, I brought the game with me and started assembling a team of people who shared the vision. Recruiting wasn't easy, but through game development clubs and networking events, the team grew to 30+ programmers, artists, designers, and writers. As the director and lead engineer of Overdawn, I'm grateful every day for the people who keep this game alive.<br><br>None of it would exist without countless all-nighters with teammates who became  my close friends. ",
+            "content": "After releasing Dawngeon in high school, I started Overdawn as a solo project. The game iterated for years, starting as a PvP game and slowly finding its identity as a bullet-hell, bullet-time shooter. When I came to USC, I brought the game with me and started assembling a team of people who shared the vision. Recruiting wasn't easy, but through game development clubs and networking events, the team grew to 20+ programmers, artists, designers, and writers. As the director and lead engineer of Overdawn, I'm grateful every day for the people who keep this game alive.<br><br>None of it would exist without countless all-nighters with teammates who became  my close friends. ",
             "variant": "body",
             "align": "left",
             "color": "foreground",
@@ -1619,11 +1619,25 @@
       "align": "top",
       "blocks": [
         {
+          "id": "blk_4d320708",
+          "layout": {
+            "col": 1,
+            "colSpan": 12,
+            "row": 1,
+            "rowSpan": 8,
+            "bleed": "both"
+          },
+          "type": "mirror",
+          "props": {
+            "mirrorId": "mir_projects"
+          }
+        },
+        {
           "id": "blk_od_outro_back",
           "layout": {
             "col": 1,
             "colSpan": 3,
-            "row": 1,
+            "row": 11,
             "rowSpan": 3
           },
           "mobile": {
