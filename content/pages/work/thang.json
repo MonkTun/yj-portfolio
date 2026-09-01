@@ -21,20 +21,6 @@
       "align": "top",
       "blocks": [
         {
-          "id": "blk_9865fd8d",
-          "layout": {
-            "col": 4,
-            "colSpan": 6,
-            "row": 1,
-            "rowSpan": 13
-          },
-          "mobile": {
-            "layout": {
-              "col": 1,
-              "colSpan": 12,
-              "rowSpan": 9
-            }
-          },
           "type": "image",
           "props": {
             "src": "/uploads/thang-logo-mtcj3cwv.webp",
@@ -51,6 +37,20 @@
             "zoom": 1,
             "tint": "none",
             "tintOpacity": 0
+          },
+          "id": "blk_9865fd8d",
+          "layout": {
+            "col": 4,
+            "colSpan": 6,
+            "row": 1,
+            "rowSpan": 13
+          },
+          "mobile": {
+            "layout": {
+              "col": 1,
+              "colSpan": 12,
+              "rowSpan": 9
+            }
           }
         }
       ]
@@ -65,6 +65,14 @@
       "align": "top",
       "blocks": [
         {
+          "type": "text",
+          "props": {
+            "content": "About the Project",
+            "variant": "h3",
+            "align": "left",
+            "color": "foreground",
+            "transform": "none"
+          },
           "id": "blk_th_unreal_h3",
           "layout": {
             "col": 1,
@@ -76,17 +84,17 @@
             "layout": {
               "colSpan": 12
             }
-          },
-          "type": "text",
-          "props": {
-            "content": "About the Project",
-            "variant": "h3",
-            "align": "left",
-            "color": "foreground",
-            "transform": "none"
           }
         },
         {
+          "type": "text",
+          "props": {
+            "content": "Thang is a whimsical shooter party game where you freeze your teammates into powerful weapons. The game loop is simple. You freeze them, you throw them into an oven, you get more powerful popsicle themed weapons that freeze your friends even faster or funnier.This project started with the same Overdawn crew. We wanted a game we could play together so we made one. I was an associate director, 3d modeler, programmer, and designer of this project.",
+            "variant": "body",
+            "align": "left",
+            "color": "foreground",
+            "transform": "none"
+          },
           "id": "blk_th_unreal_body",
           "layout": {
             "col": 1,
@@ -98,14 +106,6 @@
             "layout": {
               "rowSpan": 16
             }
-          },
-          "type": "text",
-          "props": {
-            "content": "Thang is a whimsical shooter party game where you freeze your teammates into powerful weapons. The game loop is simple. You freeze them, you throw them into an oven, you get more powerful popsicle themed weapons that freeze your friends even faster or funnier.This project started with the same Overdawn crew. We wanted a game we could play together so we made one. I was an associate director, 3d modeler, programmer, and designer of this project.",
-            "variant": "body",
-            "align": "left",
-            "color": "foreground",
-            "transform": "none"
           }
         }
       ]
@@ -120,6 +120,14 @@
       "align": "top",
       "blocks": [
         {
+          "type": "text",
+          "props": {
+            "content": "Server-side rewind for latency-free input",
+            "variant": "h3",
+            "align": "left",
+            "color": "foreground",
+            "transform": "none"
+          },
           "id": "blk_th_core_h3",
           "layout": {
             "col": 1,
@@ -131,17 +139,17 @@
             "layout": {
               "colSpan": 12
             }
-          },
-          "type": "text",
-          "props": {
-            "content": "Server-side rewind for latency-free input",
-            "variant": "h3",
-            "align": "left",
-            "color": "foreground",
-            "transform": "none"
           }
         },
         {
+          "type": "text",
+          "props": {
+            "content": "Embarking on this journey, I immediately knew a shooter like this needs lag compensation. <br>First time learning Unreal Engine through this project, I immediately enrolled in Stephen Ulibarri's UE5 Networking course and fell in love with it. After completing the course,  I engineered 5+ core systems, including a server-side rewind algorithm for latency compensation that lets shooting, freeze states, and tag mechanics all feel instantaneous regardless of the player's connection.",
+            "variant": "body",
+            "align": "left",
+            "color": "foreground",
+            "transform": "none"
+          },
           "id": "blk_th_core_body",
           "layout": {
             "col": 1,
@@ -155,32 +163,9 @@
               "row": 22,
               "rowSpan": 18
             }
-          },
-          "type": "text",
-          "props": {
-            "content": "Embarking on this journey, I immediately knew a shooter like this needs lag compensation. <br>First time learning Unreal Engine through this project, I immediately enrolled in Stephen Ulibarri's UE5 Networking course and fell in love with it. After completing the course,  I engineered 5+ core systems, including a server-side rewind algorithm for latency compensation that lets shooting, freeze states, and tag mechanics all feel instantaneous regardless of the player's connection.",
-            "variant": "body",
-            "align": "left",
-            "color": "foreground",
-            "transform": "none"
           }
         },
         {
-          "id": "blk_6663729f",
-          "layout": {
-            "col": 8,
-            "colSpan": 5,
-            "row": 1,
-            "rowSpan": 16
-          },
-          "mobile": {
-            "layout": {
-              "col": 1,
-              "colSpan": 12,
-              "row": 7,
-              "rowSpan": 13
-            }
-          },
           "type": "image",
           "props": {
             "src": "/uploads/thangs-mtcjcbbf.png",
@@ -197,6 +182,158 @@
             "zoom": 1,
             "tint": "none",
             "tintOpacity": 0
+          },
+          "id": "blk_6663729f",
+          "layout": {
+            "col": 8,
+            "colSpan": 5,
+            "row": 1,
+            "rowSpan": 16
+          },
+          "mobile": {
+            "layout": {
+              "col": 1,
+              "colSpan": 12,
+              "row": 7,
+              "rowSpan": 13
+            }
+          }
+        },
+        {
+          "type": "video",
+          "props": {
+            "url": "https://youtu.be/dEGiZ8dU_U8",
+            "autoplay": false,
+            "muted": false,
+            "loop": false,
+            "controls": true,
+            "aspect": "16/9",
+            "fit": "height",
+            "radius": 0
+          },
+          "id": "blk_a5b27285",
+          "layout": {
+            "col": 1,
+            "colSpan": 6,
+            "row": 21,
+            "rowSpan": 20
+          },
+          "mobile": {
+            "layout": {
+              "colSpan": 12,
+              "row": 42,
+              "rowSpan": 14
+            }
+          }
+        },
+        {
+          "type": "text",
+          "props": {
+            "content": "This server-side rewind lag compensation is implemented by attaching hitboxes per-bone, recording a 4-second position history each server frame, and performing the rewind algorithm. On a hit claim, the server rewinds the victim's boxes to the reported time, re-traces, and restores them. This is one of the popular lag-compensation algorithm to ensure accurate and reliable hit registerations for competitive games so high-ping players hit what they saw on screen.<br>The rewind is sub-frame accurate. A claimed hit time is interpolated between the two straddling history frames instead of snapping to the nearest one.<br>I also extended one rewind core to four weapon lanes. This includes hitscan ray, slow projectile, scatter, and melee sphere-sweep.",
+            "variant": "body",
+            "align": "left",
+            "color": "foreground",
+            "transform": "none"
+          },
+          "id": "blk_5a9d101a",
+          "layout": {
+            "col": 7,
+            "colSpan": 6,
+            "row": 21,
+            "rowSpan": 20
+          },
+          "mobile": {
+            "layout": {
+              "col": 1,
+              "colSpan": 12,
+              "row": 58,
+              "rowSpan": 27
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "sec_15c4e582",
+      "background": {
+        "type": "transparent"
+      },
+      "padding": "md",
+      "minHeight": "auto",
+      "align": "top",
+      "blocks": [
+        {
+          "type": "text",
+          "props": {
+            "content": "Replay System",
+            "variant": "h3",
+            "align": "left",
+            "color": "foreground",
+            "transform": "none"
+          },
+          "id": "blk_9dfed6bc",
+          "layout": {
+            "col": 1,
+            "colSpan": 7,
+            "row": 1,
+            "rowSpan": 4
+          },
+          "mobile": {
+            "layout": {
+              "colSpan": 12
+            }
+          }
+        },
+        {
+          "type": "text",
+          "props": {
+            "content": "I built a match replay system on Unreal's DemoNetDriver. The listen host records from beginning to end into a .replay file, and I also added  a menu-side browser lists, plays, deletes, exports and imports them. This required no backend, no extra bandwidth for players, which was perfect for the indie multiplayer game, Thang. I also refactored decent amount of gameplay code to support this replay system. This refactor includes migrating to COND_ReplayOrOwner, mirroring RPCs into COND_ReplayOnly, adjusting HUD and widgets to be replay aware.",
+            "variant": "body",
+            "align": "left",
+            "color": "foreground",
+            "transform": "none"
+          },
+          "id": "blk_f2844d66",
+          "layout": {
+            "col": 1,
+            "colSpan": 6,
+            "row": 5,
+            "rowSpan": 16
+          },
+          "mobile": {
+            "layout": {
+              "colSpan": 12,
+              "row": 21,
+              "rowSpan": 19
+            }
+          }
+        },
+        {
+          "type": "video",
+          "props": {
+            "url": "https://youtu.be/kxMpa_9F6mg",
+            "autoplay": false,
+            "muted": false,
+            "loop": false,
+            "controls": true,
+            "aspect": "16/9",
+            "fit": "height",
+            "radius": 0
+          },
+          "id": "blk_c2a0c4a8",
+          "layout": {
+            "col": 7,
+            "colSpan": 6,
+            "row": 1,
+            "rowSpan": 20
+          },
+          "mobile": {
+            "layout": {
+              "col": 1,
+              "colSpan": 12,
+              "row": 5,
+              "rowSpan": 14
+            }
           }
         }
       ]
@@ -224,6 +361,14 @@
       "align": "top",
       "blocks": [
         {
+          "type": "text",
+          "props": {
+            "content": "Architecture",
+            "variant": "h3",
+            "align": "left",
+            "color": "foreground",
+            "transform": "none"
+          },
           "id": "blk_th_stack_h3",
           "layout": {
             "col": 1,
@@ -235,17 +380,17 @@
             "layout": {
               "colSpan": 12
             }
-          },
-          "type": "text",
-          "props": {
-            "content": "Architecture",
-            "variant": "h3",
-            "align": "left",
-            "color": "foreground",
-            "transform": "none"
           }
         },
         {
+          "type": "text",
+          "props": {
+            "content": "Originally, Thang had a RESTful Next.js / Node.js backend with MongoDB underneath. Its Identity flew through Firebase Auth and the backend lived on Vercel. This architecture prepared the game for more competitive settings allowing matchmaking and hosting dedicated servers. However, this was simply too much for an indie party game, so I had to find a cheaper alternative. We pivoted back to P2P and simplified networking stack into EOS. This allows us to keep the maintenance cost of the game to be $0. ",
+            "variant": "body",
+            "align": "left",
+            "color": "foreground",
+            "transform": "none"
+          },
           "id": "blk_th_stack_body",
           "layout": {
             "col": 1,
@@ -257,14 +402,6 @@
             "layout": {
               "rowSpan": 18
             }
-          },
-          "type": "text",
-          "props": {
-            "content": "Originally, Thang had a RESTful Next.js / Node.js backend with MongoDB underneath. Its Identity flew through Firebase Auth and the backend lived on Vercel. This architecture prepared the game for more competitive settings allowing matchmaking and hosting dedicated servers. However, this was simply too much for an indie party game, so I had to find a cheaper alternative. We pivoted back to P2P and simplified networking stack into EOS. This allows us to keep the maintenance cost of the game to be $0. ",
-            "variant": "body",
-            "align": "left",
-            "color": "foreground",
-            "transform": "none"
           }
         }
       ]
@@ -279,6 +416,14 @@
       "align": "top",
       "blocks": [
         {
+          "type": "text",
+          "props": {
+            "content": "3D Artist",
+            "variant": "h3",
+            "align": "left",
+            "color": "foreground",
+            "transform": "none"
+          },
           "id": "blk_a48ab008",
           "layout": {
             "col": 1,
@@ -290,17 +435,17 @@
             "layout": {
               "colSpan": 12
             }
-          },
-          "type": "text",
-          "props": {
-            "content": "3D Artist",
-            "variant": "h3",
-            "align": "left",
-            "color": "foreground",
-            "transform": "none"
           }
         },
         {
+          "type": "text",
+          "props": {
+            "content": "I modeled some weapons and the player characters in Thang. I first started by conceptualizing the character design and iterating based on the team's feedback. I designed art pipeline from Blender to Unreal Engine ensuring all new cosmetics items work on the same player model. The end result is a cute and unique player character that can be customized to the player's own unique style.",
+            "variant": "body",
+            "align": "left",
+            "color": "foreground",
+            "transform": "none"
+          },
           "id": "blk_f92591f0",
           "layout": {
             "col": 1,
@@ -314,31 +459,9 @@
               "row": 41,
               "rowSpan": 14
             }
-          },
-          "type": "text",
-          "props": {
-            "content": "I modeled some weapons and the player characters in Thang. I first started by conceptualizing the character design and iterating based on the team's feedback. I designed art pipeline from Blender to Unreal Engine ensuring all new cosmetics items work on the same player model. The end result is a cute and unique player character that can be customized to the player's own unique style.",
-            "variant": "body",
-            "align": "left",
-            "color": "foreground",
-            "transform": "none"
           }
         },
         {
-          "id": "blk_42511526",
-          "layout": {
-            "col": 7,
-            "colSpan": 3,
-            "row": 1,
-            "rowSpan": 16
-          },
-          "mobile": {
-            "layout": {
-              "col": 1,
-              "colSpan": 9,
-              "row": 5
-            }
-          },
           "type": "image",
           "props": {
             "src": "/uploads/thangconcept-mtcjm0ik.png",
@@ -355,12 +478,10 @@
             "zoom": 1,
             "tint": "none",
             "tintOpacity": 0
-          }
-        },
-        {
-          "id": "blk_4bbfa0fc",
+          },
+          "id": "blk_42511526",
           "layout": {
-            "col": 10,
+            "col": 7,
             "colSpan": 3,
             "row": 1,
             "rowSpan": 16
@@ -369,9 +490,11 @@
             "layout": {
               "col": 1,
               "colSpan": 9,
-              "row": 23
+              "row": 5
             }
-          },
+          }
+        },
+        {
           "type": "image",
           "props": {
             "src": "/uploads/thangbear3-mtcjmlwm.png",
@@ -388,23 +511,23 @@
             "zoom": 1,
             "tint": "none",
             "tintOpacity": 0
-          }
-        },
-        {
-          "id": "blk_ba824574",
+          },
+          "id": "blk_4bbfa0fc",
           "layout": {
-            "col": 1,
-            "colSpan": 6,
-            "row": 18,
-            "rowSpan": 29
+            "col": 10,
+            "colSpan": 3,
+            "row": 1,
+            "rowSpan": 16
           },
           "mobile": {
             "layout": {
-              "colSpan": 12,
-              "row": 58,
-              "rowSpan": 19
+              "col": 1,
+              "colSpan": 9,
+              "row": 23
             }
-          },
+          }
+        },
+        {
           "type": "image",
           "props": {
             "src": "/uploads/thangbear-mtcjoext.png",
@@ -421,24 +544,23 @@
             "zoom": 1,
             "tint": "none",
             "tintOpacity": 0
-          }
-        },
-        {
-          "id": "blk_e065d812",
+          },
+          "id": "blk_ba824574",
           "layout": {
-            "col": 7,
-            "colSpan": 5,
-            "row": 21,
-            "rowSpan": 7
+            "col": 1,
+            "colSpan": 6,
+            "row": 18,
+            "rowSpan": 29
           },
           "mobile": {
             "layout": {
-              "col": 1,
               "colSpan": 12,
-              "row": 79,
-              "rowSpan": 6
+              "row": 58,
+              "rowSpan": 19
             }
-          },
+          }
+        },
+        {
           "type": "image",
           "props": {
             "src": "/uploads/thangart-mtcjrhxg.png",
@@ -455,9 +577,32 @@
             "zoom": 1,
             "tint": "none",
             "tintOpacity": 0
+          },
+          "id": "blk_e065d812",
+          "layout": {
+            "col": 7,
+            "colSpan": 5,
+            "row": 21,
+            "rowSpan": 7
+          },
+          "mobile": {
+            "layout": {
+              "col": 1,
+              "colSpan": 12,
+              "row": 79,
+              "rowSpan": 6
+            }
           }
         },
         {
+          "type": "text",
+          "props": {
+            "content": "Using my favorite art software, Aseprite, I also drew character eyes and animated them in Unreal Engine using its shader graph and linking the logic via adding custom eye cpo",
+            "variant": "body",
+            "align": "left",
+            "color": "foreground",
+            "transform": "none"
+          },
           "id": "blk_5ba5ac3c",
           "layout": {
             "col": 7,
@@ -471,14 +616,6 @@
               "colSpan": 12,
               "row": 87
             }
-          },
-          "type": "text",
-          "props": {
-            "content": "Using my favorite art software, Aseprite, I also drew character eyes and animated them in Unreal Engine using its shader graph and linking the logic via adding custom eye cpo",
-            "variant": "body",
-            "align": "left",
-            "color": "foreground",
-            "transform": "none"
           }
         }
       ]
@@ -493,6 +630,14 @@
       "align": "top",
       "blocks": [
         {
+          "type": "text",
+          "props": {
+            "content": "Gameplay Programming",
+            "variant": "h3",
+            "align": "left",
+            "color": "foreground",
+            "transform": "none"
+          },
           "id": "blk_81939e9e",
           "layout": {
             "col": 1,
@@ -504,17 +649,17 @@
             "layout": {
               "colSpan": 12
             }
-          },
-          "type": "text",
-          "props": {
-            "content": "Gameplay Programming",
-            "variant": "h3",
-            "align": "left",
-            "color": "foreground",
-            "transform": "none"
           }
         },
         {
+          "type": "text",
+          "props": {
+            "content": "I worked on key gameplay features.<br><br><strong>Parring</strong>: players can right click and do parring. I ensured this mechanic is network accurate and server authoritative by extending the lagCompensation component.<br><br><strong>Popsicles</strong>: Players can turn into popsicles when thrown into oven.<br><br>And so much more!",
+            "variant": "body",
+            "align": "left",
+            "color": "foreground",
+            "transform": "none"
+          },
           "id": "blk_571df779",
           "layout": {
             "col": 1,
@@ -528,32 +673,9 @@
               "row": 20,
               "rowSpan": 18
             }
-          },
-          "type": "text",
-          "props": {
-            "content": "I worked on key gameplay features.<br><br><strong>Parring</strong>: players can right click and do parring. I ensured this mechanic is network accurate and server authoritative by extending the lagCompensation component.<br><br><strong>Popsicles</strong>: Players can turn into popsicles when thrown into oven.<br><br>And so much more!",
-            "variant": "body",
-            "align": "left",
-            "color": "foreground",
-            "transform": "none"
           }
         },
         {
-          "id": "blk_25e96f2b",
-          "layout": {
-            "col": 7,
-            "colSpan": 6,
-            "row": 1,
-            "rowSpan": 19
-          },
-          "mobile": {
-            "layout": {
-              "col": 1,
-              "colSpan": 12,
-              "row": 5,
-              "rowSpan": 13
-            }
-          },
           "type": "image",
           "props": {
             "src": "/uploads/thangparring-mtcjwnru.png",
@@ -570,6 +692,21 @@
             "zoom": 1,
             "tint": "none",
             "tintOpacity": 0
+          },
+          "id": "blk_25e96f2b",
+          "layout": {
+            "col": 7,
+            "colSpan": 6,
+            "row": 1,
+            "rowSpan": 19
+          },
+          "mobile": {
+            "layout": {
+              "col": 1,
+              "colSpan": 12,
+              "row": 5,
+              "rowSpan": 13
+            }
           }
         }
       ]
@@ -584,6 +721,10 @@
       "align": "top",
       "blocks": [
         {
+          "type": "mirror",
+          "props": {
+            "mirrorId": "mir_projects"
+          },
           "id": "blk_e07074c1",
           "layout": {
             "col": 1,
@@ -591,13 +732,17 @@
             "row": 1,
             "rowSpan": 8,
             "bleed": "both"
-          },
-          "type": "mirror",
-          "props": {
-            "mirrorId": "mir_projects"
           }
         },
         {
+          "type": "button",
+          "props": {
+            "label": "← Back to Home",
+            "href": "/",
+            "variant": "ghost",
+            "align": "left",
+            "newTab": false
+          },
           "id": "blk_th_outro_back",
           "layout": {
             "col": 2,
@@ -610,14 +755,6 @@
               "col": 1,
               "colSpan": 12
             }
-          },
-          "type": "button",
-          "props": {
-            "label": "← Back to index",
-            "href": "/",
-            "variant": "ghost",
-            "align": "left",
-            "newTab": false
           }
         }
       ]
