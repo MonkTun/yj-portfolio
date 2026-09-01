@@ -81,7 +81,7 @@
           },
           "type": "text",
           "props": {
-            "content": "Banana Republic is a MFA Thesis project by Nicolas Gomez Velandia, and I had an extreme pleasure to be part of his journey. As a gameplay programmer of the project, I touched on a few meaningful gameplay features such as shooting, quest, and objective system. ",
+            "content": "Banana Republic is an MFA thesis project by Nicolas Gomez Velandia, and I had the extreme pleasure of being part of his journey. As a gameplay programmer of the project, I touched on a few meaningful gameplay features such as the shooting, quest, and objective systems. ",
             "variant": "body",
             "align": "left",
             "color": "foreground",

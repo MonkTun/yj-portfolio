@@ -270,7 +270,7 @@
           },
           "type": "text",
           "props": {
-            "content": "You can pick up, store, and use the things you find. The inventory ties directly into the puzzle layer, you can craft the items to unlock new tools and potentially a key to the escape.",
+            "content": "You can pick up, store, and use the things you find. The inventory ties directly into the puzzle layer. You can craft the items to unlock new tools and potentially a key to the escape.",
             "variant": "body",
             "align": "left",
             "color": "foreground",
@@ -362,7 +362,7 @@
           },
           "type": "text",
           "props": {
-            "content": "I designed and implemented crafting system of the game in 2 days. Used Unity's Scriptable Object to create recipes that can be easily added and modified in the editor.",
+            "content": "I designed and implemented the crafting system of the game in 2 days. Used Unity's Scriptable Object to create recipes that can be easily added and modified in the editor.",
             "variant": "body",
             "align": "left",
             "color": "foreground",
@@ -451,7 +451,7 @@
           },
           "type": "text",
           "props": {
-            "content": "Designed and animated the player character. Tuned the controller and the surrounding physics so movement reads as responsive but afraid.Bloom, color grading, and ambient occlusion through Unity's Post-Processing Stack to push the atmosphere closer to the horror ambience that we wanted.",
+            "content": "Designed and animated the player character. Tuned the controller and the surrounding physics so movement reads as responsive but afraid. Bloom, color grading, and ambient occlusion through Unity's Post-Processing Stack to push the atmosphere closer to the horror ambience that we wanted.",
             "variant": "body",
             "align": "left",
             "color": "foreground",

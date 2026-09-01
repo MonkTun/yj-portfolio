@@ -233,7 +233,7 @@
         {
           "type": "text",
           "props": {
-            "content": "MY cat says hi to you :)",
+            "content": "My cat says hi to you :)",
             "variant": "kicker",
             "align": "left",
             "color": "foreground",
@@ -306,7 +306,7 @@
         {
           "type": "text",
           "props": {
-            "content": "2026 — Gameplay programming Intern @ E-Line Media",
+            "content": "2026 — Gameplay programming intern @ E-Line Media",
             "variant": "kicker",
             "align": "left",
             "color": "muted",
@@ -355,7 +355,7 @@
         {
           "type": "text",
           "props": {
-            "content": "Neighborhoods is a cozy city simulator. On a team of 15, I worked with Unreal Engine and C++ to build and add on to variety of gameplay features.",
+            "content": "Neighborhoods is a cozy city simulator. On a team of 15, I worked with Unreal Engine and C++ to build and add on to a variety of gameplay features.",
             "variant": "body",
             "align": "left",
             "color": "foreground",
@@ -491,7 +491,7 @@
         {
           "type": "text",
           "props": {
-            "content": "2026 — Multiplayer engineer @ Overdawn STUDIO",
+            "content": "2026 — Multiplayer engineer @ Overdawn Studio",
             "variant": "kicker",
             "align": "left",
             "color": "muted",
@@ -538,7 +538,7 @@
         {
           "type": "text",
           "props": {
-            "content": "A casual freeze-tag shooter built on UE5 and C++. Freeze your friends into popsicles and unlock powerful and whimsical weapons! I architected and engineered many multiplayer system, and also designed and collaborated with other designers.",
+            "content": "A casual freeze-tag shooter built on UE5 and C++. Freeze your friends into popsicles and unlock powerful and whimsical weapons! I architected and engineered many multiplayer systems, and also designed and collaborated with other designers.",
             "variant": "body",
             "align": "left",
             "color": "foreground",
@@ -664,7 +664,7 @@
         {
           "type": "text",
           "props": {
-            "content": "2025 — Director / Lead engineer @ Overdawn STudio",
+            "content": "2025 — Director / Lead engineer @ Overdawn Studio",
             "variant": "kicker",
             "align": "left",
             "color": "muted",
@@ -713,7 +713,7 @@
         {
           "type": "text",
           "props": {
-            "content": "This award winning 2.5D bullet-time shooter is a game that engineered and directed. I built custom inventory, skill tree, and quest systems from the ground up in a 20+ person team. Wishlist now on Steam!",
+            "content": "This award winning 2.5D bullet-time shooter is a game that I engineered and directed. I built custom inventory, skill tree, and quest systems from the ground up in a 20+ person team. Wishlist now on Steam!",
             "variant": "body",
             "align": "left",
             "color": "foreground",
@@ -1107,7 +1107,7 @@
         {
           "type": "text",
           "props": {
-            "content": "You’re Melon, a tiny hamster with a huge goal. Collect mix-ins, roll fast, and build momentum to churn the biggest ice cream scoop ever in this whimsical, on-rails runner. In this Unity project I was an Engineer.",
+            "content": "You’re Melon, a tiny hamster with a huge goal. Collect mix-ins, roll fast, and build momentum to churn the biggest ice cream scoop ever in this whimsical, on-rails runner. In this Unity project, I was an engineer.",
             "variant": "body",
             "align": "left",
             "color": "foreground",
@@ -1131,7 +1131,7 @@
         {
           "type": "text",
           "props": {
-            "content": "2026 — Gameplay ProgrammeR (Unity) @ USC (AGP)",
+            "content": "2026 — Gameplay programmer (Unity) @ USC (AGP)",
             "variant": "kicker",
             "align": "left",
             "color": "muted",

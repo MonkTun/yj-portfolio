@@ -101,7 +101,7 @@
         {
           "type": "text",
           "props": {
-            "content": "This summer (2026), I interned at E-Line Media, a Phoenix-based video game studio with a long history of creating games that emphasize social impact. I was specifically a part of the Neighborhoods, a game in which, instead of just building a soaring skyline of skyscrapers, you listen to your neighbors' daily struggles and complaints and focus on improving the community. This highly anticipated title has generated millions of impressions, reached over 60,000 wishlists on Steam, and received a positive reception at its announcement, garnering over 300,000 views on the Mix Summer Showcase. I am forever proud and grateful to be part of the journey, contributing as a gameplay programmer. ",
+            "content": "This summer (2026), I interned at E-Line Media, a Phoenix-based video game studio with a long history of creating games that emphasize social impact. I was specifically a part of Neighborhoods, a game in which, instead of just building a soaring skyline of skyscrapers, you listen to your neighbors' daily struggles and complaints and focus on improving the community. This highly anticipated title has generated millions of impressions, reached over 60,000 wishlists on Steam, and received a positive reception at its announcement, garnering over 300,000 views on the Mix Summer Showcase. I am forever proud and grateful to be part of the journey, contributing as a gameplay programmer. ",
             "variant": "body",
             "align": "left",
             "color": "foreground",
@@ -174,7 +174,7 @@
         {
           "type": "text",
           "props": {
-            "content": "One of the unique aspect of the game is a natural progress of the narrative that reacts to the player action that is placing new decorations, fixing the streets, or demolishing their homes. <br><br>Now I was tasked with upgrading a dialogue system to build contexts of the world, create chatters (a conversation with more than two npcs), and polishing the trigger.  ",
+            "content": "One of the unique aspects of the game is the natural progress of the narrative that reacts to player actions, like placing new decorations, fixing the streets, or demolishing their homes. <br><br>Now I was tasked with upgrading a dialogue system to build contexts of the world, create chatters (a conversation with more than two NPCs), and polish the trigger.  ",
             "variant": "body",
             "align": "left",
             "color": "foreground",
@@ -226,7 +226,7 @@
         {
           "type": "text",
           "props": {
-            "content": "Chatter Sytem",
+            "content": "Chatter System",
             "variant": "h3",
             "align": "left",
             "color": "foreground",
@@ -249,7 +249,7 @@
         {
           "type": "text",
           "props": {
-            "content": "As an gameplay programming intern who just joined the project, I started by breaking down this project into smaller tasks. First, I started by creating Blueprint events using Latent action. I refactored and expanded the DialogueManager which helped me familiarize myself with the overall system. These exposed blueprint nodes were especially helpful for the designers so that an quests or tutorial system can wait for a completion of dialogue. Then, I focused on contexts gathering and chatter triggering part of the feature. I created debug commands that can be called directly in the editor, so it's easier to iterate. Then I worked on the algorithm that randomly select a chatter by weights, gather appropriate NPCs, and propagate the chatter pending state to appropriate actor so that an chatter pop up shows up correctly. While working on this system, I learned to expand on an existing complex system and write code that ensures future readability.",
+            "content": "As a gameplay programming intern who just joined the project, I started by breaking down this project into smaller tasks. First, I started by creating Blueprint events using Latent action. I refactored and expanded the DialogueManager, which helped me familiarize myself with the overall system. These exposed blueprint nodes were especially helpful for the designers so that a quest or tutorial system can wait for the completion of a dialogue. Then, I focused on the context gathering and chatter triggering part of the feature. I created debug commands that can be called directly in the editor, so it's easier to iterate. Then I worked on the algorithm that randomly selects a chatter by weight, gathers appropriate NPCs, and propagates the chatter pending state to the appropriate actors so that a chatter popup shows up correctly. While working on this system, I learned to expand on an existing complex system and write code that ensures future readability.",
             "variant": "body",
             "align": "left",
             "color": "foreground",
@@ -374,7 +374,7 @@
         {
           "type": "text",
           "props": {
-            "content": "Each building with business in Neighborhoods has footfall range which indicates how far the business reaches. Originally, this footfall range was a simple UE default debug circle, and I was tasked to improving the footfall range to be grid base and more visually appealing.In this task, I explored deep into how the grid system works in this game. <br>1. From reading GridManager, GridActor, and many interconnected systems, I first started adding debug squares for each affected tile. I then created A* inspired algorithm to search for tiles that are connected and not disconnected by roads. The algorithm compensates intersections so a building reaches further in absolute distance via intersections.<br>2. Now it was time to add mesh to each tile visualization. The tile already had procedurally generated mesh component and I quickly connected it with a grid material created by the designers.<br><br>3. While working on the material implementation, I soon noticed that the generated mesh is missing UV mappings. This step involved me creating a new material in unreal engine that only showed materials on the mesh so I could make accurate measurement whether my fixes for the procedurally generated mesh is accurate. <br><br>4. I finally fixed the UV mappings and made it so that each tile understands the boundaries and accurately display its borders.",
+            "content": "Each building with a business in Neighborhoods has a footfall range, which indicates how far the business reaches. Originally, this footfall range was a simple UE default debug circle, and I was tasked with improving the footfall range to be grid based and more visually appealing. In this task, I explored deep into how the grid system works in this game. <br>1. From reading GridManager, GridActor, and many interconnected systems, I first started adding debug squares for each affected tile. I then created an A* inspired algorithm to search for tiles that are connected and not disconnected by roads. The algorithm compensates for intersections so a building reaches further in absolute distance via intersections.<br>2. Now it was time to add a mesh to each tile visualization. The tile already had a procedurally generated mesh component and I quickly connected it with a grid material created by the designers.<br><br>3. While working on the material implementation, I soon noticed that the generated mesh was missing UV mappings. This step involved creating a new material in Unreal Engine that only showed materials on the mesh so I could accurately measure whether my fixes for the procedurally generated mesh were accurate. <br><br>4. I finally fixed the UV mappings and made it so that each tile understands the boundaries and accurately displays its borders.",
             "variant": "body",
             "align": "left",
             "color": "foreground",
@@ -484,7 +484,7 @@
         {
           "type": "text",
           "props": {
-            "content": "I also closely worked closely with UI designers to implement two distinct UI for the game.<br><br>In implementing Decor Palette, I expanded on Common UI inherited classes to create custom grid button arrays. This class was designed so that it builds from column to rows ,which was a specifically requested design spec. I also implementing combo filter systems, creating new structs to handle data management efficiently. <br><br>For the building info panel, I learned to use animation Unreal's UMG. This was genuinely one of the most fun and rewarding task. Animating each tabs to the vision of the UI designer was truly fullfilling.",
+            "content": "I also worked closely with UI designers to implement two distinct UIs for the game.<br><br>In implementing Decor Palette, I expanded on Common UI inherited classes to create custom grid button arrays. This class was designed so that it builds from columns to rows, which was a specifically requested design spec. I also implemented combo filter systems, creating new structs to handle data management efficiently. <br><br>For the building info panel, I learned to use animations in Unreal's UMG. This was genuinely one of the most fun and rewarding tasks. Animating each tab to the vision of the UI designer was truly fulfilling.",
             "variant": "body",
             "align": "left",
             "color": "foreground",
@@ -568,7 +568,7 @@
         {
           "type": "text",
           "props": {
-            "content": "I also worked on the tutorial system of the game, which was crucial to many demo released during my time at Neighborhoods. I carefully expanded on common UI inherited classes to support both world-space and screen-space placement of the arrow. Furthermore, I carefully documented customization steps for the designers. Appropriate blueprints functions were also exposed, equipping designers with all the tools available.",
+            "content": "I also worked on the tutorial system of the game, which was crucial to many demos released during my time at Neighborhoods. I carefully expanded on Common UI inherited classes to support both world-space and screen-space placement of the arrow. Furthermore, I carefully documented customization steps for the designers. Appropriate Blueprint functions were also exposed, equipping designers with all the tools available.",
             "variant": "body",
             "align": "left",
             "color": "foreground",
@@ -653,7 +653,7 @@
         {
           "type": "text",
           "props": {
-            "content": "I developed options menu from scratch first designing the user-flow then implementing the wiring of each content.  I worked with Common UI and Unreal's Project settings, and I've gained deep understanding of how both graphical and custom settings are saved and applied in professional games.",
+            "content": "I developed the options menu from scratch, first designing the user flow, then implementing the wiring of each option. I worked with Common UI and Unreal's Project Settings, and I've gained a deep understanding of how both graphical and custom settings are saved and applied in professional games.",
             "variant": "body",
             "align": "left",
             "color": "foreground",
@@ -742,7 +742,7 @@
         {
           "type": "text",
           "props": {
-            "content": "A fun side quest. I added graffitis that surrounds the abandon buildings over time. I created custom data table and documentations to allow designers to easily customize the graffiti such as its image, size, and rotation.",
+            "content": "A fun side quest. I added graffiti that surrounds the abandoned buildings over time. I created a custom data table and documentation to allow designers to easily customize the graffiti such as its image, size, and rotation.",
             "variant": "body",
             "align": "left",
             "color": "foreground",

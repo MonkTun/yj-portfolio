@@ -226,7 +226,7 @@
           },
           "type": "text",
           "props": {
-            "content": "<strong>Weapons</strong>: As a roguelike adventure, weapons and projectile are crucial to Dawngeon. It's a way to make each run unique, and combining unique weapons, items, and upgrades allow for crazy combos.",
+            "content": "<strong>Weapons</strong>: As a roguelike adventure, weapons and projectiles are crucial to Dawngeon. It's a way to make each run unique, and combining unique weapons, items, and upgrades allows for crazy combos.",
             "variant": "body",
             "align": "left",
             "color": "foreground",
@@ -249,7 +249,7 @@
           },
           "type": "text",
           "props": {
-            "content": "<strong>AI</strong>: I programmed pathfinding, decision-making, and combat tactics layered on a state machine. The state machine has three simple states: patrol, chase, attack. This was only made possibly by watching and learning from countless Brackeys Video.",
+            "content": "<strong>AI</strong>: I programmed pathfinding, decision-making, and combat tactics layered on a state machine. The state machine has three simple states: patrol, chase, attack. This was only made possible by watching and learning from countless Brackeys videos.",
             "variant": "body",
             "align": "left",
             "color": "foreground",
@@ -272,7 +272,7 @@
           },
           "type": "text",
           "props": {
-            "content": "<strong>Procedurally generated world</strong>: I programmed a dungeon generator that composes modular rooms, enemy distributions, and item placements differently every run. As replayability is the genre's promise, this was one of the crutical gameplay feature.",
+            "content": "<strong>Procedurally generated world</strong>: I programmed a dungeon generator that composes modular rooms, enemy distributions, and item placements differently every run. As replayability is the genre's promise, this was one of the crucial gameplay features.",
             "variant": "body",
             "align": "left",
             "color": "foreground",
@@ -295,7 +295,7 @@
           },
           "type": "text",
           "props": {
-            "content": "<strong>Cooking</strong>: I conceptualized and implemented a cooking system. Inspired by Legend of Zelda BOTW, Players can combine ingredients found in the dungeon into meals that heal and hand out buffs. ",
+            "content": "<strong>Cooking</strong>: I conceptualized and implemented a cooking system. Inspired by Legend of Zelda BOTW, players can combine ingredients found in the dungeon into meals that heal and hand out buffs. ",
             "variant": "body",
             "align": "left",
             "color": "foreground",

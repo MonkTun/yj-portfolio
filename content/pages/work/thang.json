@@ -89,7 +89,7 @@
         {
           "type": "text",
           "props": {
-            "content": "Thang is a whimsical shooter party game where you freeze your teammates into powerful weapons. The game loop is simple. You freeze them, you throw them into an oven, you get more powerful popsicle themed weapons that freeze your friends even faster or funnier.This project started with the same Overdawn crew. We wanted a game we could play together so we made one. I was an associate director, 3d modeler, programmer, and designer of this project.",
+            "content": "Thang is a whimsical shooter party game where you freeze your teammates into powerful weapons. The game loop is simple. You freeze them, you throw them into an oven, you get more powerful popsicle themed weapons that freeze your friends even faster or funnier. This project started with the same Overdawn crew. We wanted a game we could play together so we made one. I was an associate director, 3D modeler, programmer, and designer of this project.",
             "variant": "body",
             "align": "left",
             "color": "foreground",
@@ -144,7 +144,7 @@
         {
           "type": "text",
           "props": {
-            "content": "Embarking on this journey, I immediately knew a shooter like this needs lag compensation. <br>First time learning Unreal Engine through this project, I immediately enrolled in Stephen Ulibarri's UE5 Networking course and fell in love with it. After completing the course,  I engineered 5+ core systems, including a server-side rewind algorithm for latency compensation that lets shooting, freeze states, and tag mechanics all feel instantaneous regardless of the player's connection.",
+            "content": "Embarking on this journey, I immediately knew a shooter like this needs lag compensation. <br>Since this was my first time learning Unreal Engine, I immediately enrolled in Stephen Ulibarri's UE5 Networking course and fell in love with it. After completing the course, I engineered 5+ core systems, including a server-side rewind algorithm for latency compensation that lets shooting, freeze states, and tag mechanics all feel instantaneous regardless of the player's connection.",
             "variant": "body",
             "align": "left",
             "color": "foreground",
@@ -229,7 +229,7 @@
         {
           "type": "text",
           "props": {
-            "content": "This server-side rewind lag compensation is implemented by attaching hitboxes per-bone, recording a 4-second position history each server frame, and performing the rewind algorithm. On a hit claim, the server rewinds the victim's boxes to the reported time, re-traces, and restores them. This is one of the popular lag-compensation algorithm to ensure accurate and reliable hit registerations for competitive games so high-ping players hit what they saw on screen.<br>The rewind is sub-frame accurate. A claimed hit time is interpolated between the two straddling history frames instead of snapping to the nearest one.<br>I also extended one rewind core to four weapon lanes. This includes hitscan ray, slow projectile, scatter, and melee sphere-sweep.",
+            "content": "This server-side rewind lag compensation is implemented by attaching hitboxes per-bone, recording a 4-second position history each server frame, and performing the rewind algorithm. On a hit claim, the server rewinds the victim's boxes to the reported time, re-traces, and restores them. This is one of the popular lag-compensation algorithms that ensures accurate and reliable hit registration for competitive games, so high-ping players hit what they saw on screen.<br>The rewind is sub-frame accurate. A claimed hit time is interpolated between the two straddling history frames instead of snapping to the nearest one.<br>I also extended one rewind core to four weapon lanes. This includes hitscan ray, slow projectile, scatter, and melee sphere-sweep.",
             "variant": "body",
             "align": "left",
             "color": "foreground",
@@ -287,7 +287,7 @@
         {
           "type": "text",
           "props": {
-            "content": "I built a match replay system on Unreal's DemoNetDriver. The listen host records from beginning to end into a .replay file, and I also added  a menu-side browser lists, plays, deletes, exports and imports them. This required no backend, no extra bandwidth for players, which was perfect for the indie multiplayer game, Thang. I also refactored decent amount of gameplay code to support this replay system. This refactor includes migrating to COND_ReplayOrOwner, mirroring RPCs into COND_ReplayOnly, adjusting HUD and widgets to be replay aware.",
+            "content": "I built a match replay system on Unreal's DemoNetDriver. The listen host records from beginning to end into a .replay file, and I also added a menu-side browser that lists, plays, deletes, exports, and imports them. This required no backend and no extra bandwidth for players, which was perfect for the indie multiplayer game, Thang. I also refactored a decent amount of gameplay code to support this replay system. This refactor includes migrating to COND_ReplayOrOwner, mirroring RPCs into COND_ReplayOnly, and adjusting the HUD and widgets to be replay aware.",
             "variant": "body",
             "align": "left",
             "color": "foreground",
@@ -385,7 +385,7 @@
         {
           "type": "text",
           "props": {
-            "content": "Originally, Thang had a RESTful Next.js / Node.js backend with MongoDB underneath. Its Identity flew through Firebase Auth and the backend lived on Vercel. This architecture prepared the game for more competitive settings allowing matchmaking and hosting dedicated servers. However, this was simply too much for an indie party game, so I had to find a cheaper alternative. We pivoted back to P2P and simplified networking stack into EOS. This allows us to keep the maintenance cost of the game to be $0. ",
+            "content": "Originally, Thang had a RESTful Next.js / Node.js backend with MongoDB underneath. Identity flowed through Firebase Auth and the backend lived on Vercel. This architecture prepared the game for more competitive settings, allowing matchmaking and hosting dedicated servers. However, this was simply too much for an indie party game, so I had to find a cheaper alternative. We pivoted back to P2P and simplified the networking stack into EOS. This allows us to keep the maintenance cost of the game at $0. ",
             "variant": "body",
             "align": "left",
             "color": "foreground",
@@ -440,7 +440,7 @@
         {
           "type": "text",
           "props": {
-            "content": "I modeled some weapons and the player characters in Thang. I first started by conceptualizing the character design and iterating based on the team's feedback. I designed art pipeline from Blender to Unreal Engine ensuring all new cosmetics items work on the same player model. The end result is a cute and unique player character that can be customized to the player's own unique style.",
+            "content": "I modeled some weapons and the player characters in Thang. I first started by conceptualizing the character design and iterating based on the team's feedback. I designed the art pipeline from Blender to Unreal Engine, ensuring all new cosmetic items work on the same player model. The end result is a cute and unique player character that can be customized to the player's own unique style.",
             "variant": "body",
             "align": "left",
             "color": "foreground",
@@ -597,7 +597,7 @@
         {
           "type": "text",
           "props": {
-            "content": "Using my favorite art software, Aseprite, I also drew character eyes and animated them in Unreal Engine using its shader graph and linking the logic via adding custom eye cpo",
+            "content": "Using my favorite art software, Aseprite, I also drew character eyes and animated them in Unreal Engine using its shader graph and linking the logic via a custom eye component.",
             "variant": "body",
             "align": "left",
             "color": "foreground",
@@ -654,7 +654,7 @@
         {
           "type": "text",
           "props": {
-            "content": "I worked on key gameplay features.<br><br><strong>Parring</strong>: players can right click and do parring. I ensured this mechanic is network accurate and server authoritative by extending the lagCompensation component.<br><br><strong>Popsicles</strong>: Players can turn into popsicles when thrown into oven.<br><br>And so much more!",
+            "content": "I worked on key gameplay features.<br><br><strong>Parrying</strong>: players can right click and parry. I ensured this mechanic is network accurate and server authoritative by extending the lagCompensation component.<br><br><strong>Popsicles</strong>: Players can turn into popsicles when thrown into the oven.<br><br>And so much more!",
             "variant": "body",
             "align": "left",
             "color": "foreground",

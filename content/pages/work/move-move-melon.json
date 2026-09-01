@@ -154,7 +154,7 @@
           },
           "type": "text",
           "props": {
-            "content": "I partnered  with level designers and created the Mix-In Editor. This tool is built using Unity's IMGUI framework.<br>This intuitive tool can paint, edit, and bake Mix-ins without having to touch any GameObjects manually. This tool has led in increase productivity in all level iterations speed by about 150%.",
+            "content": "I partnered with level designers and created the Mix-In Editor. This tool is built using Unity's IMGUI framework.<br>This intuitive tool can paint, edit, and bake Mix-ins without having to touch any GameObjects manually. This tool has increased productivity and level iteration speed by about 150%.",
             "variant": "body",
             "align": "left",
             "color": "foreground",
@@ -177,7 +177,7 @@
           },
           "type": "text",
           "props": {
-            "content": "One of Move-Move-Melon's primary mechanic is this simple but addicting mechanic of collecting Mix-ins. However, it was difficult to iterate fast on the level designs as placing mix-ins wasn't intuitive at all. Designers had to manually add new gameObjects, dragging the prefab and adjusting the position manually.",
+            "content": "One of Move-Move-Melon's primary mechanics is this simple but addicting mechanic of collecting Mix-ins. However, it was difficult to iterate fast on the level designs as placing mix-ins wasn't intuitive at all. Designers had to manually add new gameObjects, dragging the prefab and adjusting the position manually.",
             "variant": "body",
             "align": "left",
             "color": "foreground",
@@ -228,7 +228,7 @@
           },
           "type": "text",
           "props": {
-            "content": "Other than mix-ins, I also expanded the editor as a hub for all designer tools, adding checkpoint painter and level settings editor as well. I overall shipped about 4 designer-friendly editor tools that streamlined level design and asset management.",
+            "content": "Other than mix-ins, I also expanded the editor as a hub for all designer tools, adding a checkpoint painter and a level settings editor as well. I overall shipped about 4 designer-friendly editor tools that streamlined level design and asset management.",
             "variant": "body",
             "align": "left",
             "color": "foreground",
@@ -328,7 +328,7 @@
           },
           "type": "text",
           "props": {
-            "content": "<strong>UI manager &amp; joystick</strong>: I worked on a persistent-singleton UI manager that owns menus, HUDs, and pop-ups across scenes. Plus, a dynamic joystick for mobile that gives players intuitive, responsive input that naturally follows the thumb.<br><br><strong>Debugging</strong>: Integrated Quantum Console for in-game commands, state inspection, and live troubleshooting. Tracked down memory leaks and shader regressions and shipped fixes to keep the build healthy across a fast-moving team.<br><br><strong>Player</strong>: I also worked on improving player feel: Acceleration that scales with the mix-ins the player has collected. On the engineering side, I also optimized movement and manager scripts to eliminate stale references and redundant instances, and migrated the surrounding logic onto an event-driven architecture for modularity.",
+            "content": "<strong>UI manager &amp; joystick</strong>: I worked on a persistent-singleton UI manager that owns menus, HUDs, and pop-ups across scenes. Plus, a dynamic joystick for mobile that gives players intuitive, responsive input that naturally follows the thumb.<br><br><strong>Debugging</strong>: Integrated Quantum Console for in-game commands, state inspection, and live troubleshooting. Tracked down memory leaks and shader regressions and shipped fixes to keep the build healthy across a fast-moving team.<br><br><strong>Player</strong>: I also worked on improving player feel: acceleration that scales with the mix-ins the player has collected. On the engineering side, I also optimized movement and manager scripts to eliminate stale references and redundant instances, and migrated the surrounding logic onto an event-driven architecture for modularity.",
             "variant": "body",
             "align": "left",
             "color": "foreground",
