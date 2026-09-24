@@ -260,6 +260,64 @@ export const sectionTemplates: SectionTemplate[] = [
     }),
   },
   {
+    id: "post-header",
+    label: "Post header",
+    description: "Blog post opening — date kicker, big title, standfirst.",
+    preview: {
+      w: 12,
+      h: 12,
+      blocks: [
+        { x: 1, y: 0, w: 3, h: 1, tone: "muted" },
+        { x: 1, y: 2, w: 9, h: 5, tone: "fg" },
+        { x: 1, y: 8, w: 7, h: 3, tone: "muted" },
+      ],
+    },
+    build: () => ({
+      background: { type: "transparent" },
+      padding: "xl",
+      minHeight: "auto",
+      align: "top",
+      blocks: [
+        {
+          type: "text",
+          layout: { col: 2, colSpan: 4, row: 1, rowSpan: 2 },
+          props: {
+            content: "2026-01-01 — Notes",
+            variant: "kicker",
+            align: "left",
+            color: "muted",
+          },
+        },
+        {
+          type: "text",
+          layout: { col: 2, colSpan: 10, row: 3, rowSpan: 20 },
+          props: {
+            content: "Post title.",
+            variant: "h1",
+            align: "left",
+            color: "foreground",
+          },
+        },
+        {
+          type: "text",
+          layout: { col: 2, colSpan: 7, row: 24, rowSpan: 5 },
+          props: {
+            content:
+              "<em>A one-sentence standfirst — what this post is about and why it's worth the scroll.</em>",
+            variant: "body",
+            align: "left",
+            color: "foreground",
+          },
+        },
+        {
+          type: "line",
+          layout: { col: 2, colSpan: 10, row: 30, rowSpan: 1 },
+          props: { thickness: 1, color: "border" },
+        },
+      ],
+    }),
+  },
+  {
     id: "footer",
     label: "Footer",
     description: "Email lockup + link list + colophon.",

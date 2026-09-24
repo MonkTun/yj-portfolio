@@ -1,10 +1,11 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import type { Section } from "@/lib/schema";
 import { youtubeEmbedUrl } from "@/lib/youtube";
 import { imageTintBgClass } from "@/components/atoms/imageStyles";
 import { cn } from "@/lib/utils";
+import { MediaSkeleton } from "@/components/atoms/MediaSkeleton";
 
 // YouTube's IFrame API only honors a fixed set of playback rates; other
 // values either do nothing or get rounded silently. Snap to the closest
@@ -32,6 +33,11 @@ export function SectionVideoBackground({
   bg: Section["background"];
 }) {
   const iframeRef = useRef<HTMLIFrameElement | null>(null);
+  // Which URL has a live player. The iframe is server-rendered, so its
+  // `load` may fire before hydration; the player answering our "listening"
+  // nudge (any message from it) is the reliable signal instead. Keyed on
+  // the URL so swapping videos in the editor brings the shimmer back.
+  const [readyUrl, setReadyUrl] = useState<string | null>(null);
 
   useEffect(() => {
     if (bg.type !== "video") return;
@@ -67,6 +73,7 @@ export function SectionVideoBackground({
         data = e.data as typeof data;
       }
       if (!data) return;
+      setReadyUrl(bg.type === "video" ? bg.url : null);
       // Re-apply on every "playing" tick — YouTube resets the rate when
       // looping a muted background, so a one-shot setter drifts back to 1×.
       if (data.event === "onReady") applyRate();
@@ -156,6 +163,7 @@ export function SectionVideoBackground({
             loading="lazy"
             tabIndex={-1}
             aria-hidden
+            onLoad={() => setReadyUrl(bg.url)}
           />
         </div>
       </div>
@@ -173,6 +181,9 @@ export function SectionVideoBackground({
           style={{ opacity: bg.tintOpacity / 100 }}
         />
       )}
+      {/* Above the overlay/tint: it stands in for the media, so it
+          shouldn't be dimmed like the media is. */}
+      <MediaSkeleton loaded={readyUrl === bg.url} />
     </>
   );
 }

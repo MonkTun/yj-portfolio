@@ -25,9 +25,15 @@ const IMAGE_EXT = new Set([
   ".svg",
 ]);
 
+const PDF_EXT = new Set([".pdf"]);
+
 type Item = { src: string; name: string; size: number; mtime: number };
 
-async function listRoot(dir: string, urlPrefix: string): Promise<Item[]> {
+async function listRoot(
+  dir: string,
+  urlPrefix: string,
+  exts: Set<string>
+): Promise<Item[]> {
   const abs = path.join(PUBLIC_DIR, dir);
   let entries: string[];
   try {
@@ -38,7 +44,7 @@ async function listRoot(dir: string, urlPrefix: string): Promise<Item[]> {
   }
   return Promise.all(
     entries
-      .filter((name) => IMAGE_EXT.has(path.extname(name).toLowerCase()))
+      .filter((name) => exts.has(path.extname(name).toLowerCase()))
       .map(async (name) => {
         const stat = await fs.stat(path.join(abs, name));
         return {
@@ -54,15 +60,21 @@ async function listRoot(dir: string, urlPrefix: string): Promise<Item[]> {
 /**
  * Lists every file currently in /public/uploads and /public/projects as a
  * merged image library for the editor. Newest first, by mtime.
+ * `?kind=pdf` lists PDFs instead (the PDF block's library).
  */
-export async function GET() {
+export async function GET(req: Request) {
   if (process.env.NODE_ENV !== "development") {
     return new NextResponse(null, { status: 404 });
   }
 
+  const exts =
+    new URL(req.url).searchParams.get("kind") === "pdf" ? PDF_EXT : IMAGE_EXT;
+
   try {
     const lists = await Promise.all(
-      LIBRARY_ROOTS.map(({ dir, urlPrefix }) => listRoot(dir, urlPrefix))
+      LIBRARY_ROOTS.map(({ dir, urlPrefix }) =>
+        listRoot(dir, urlPrefix, exts)
+      )
     );
     const items = lists.flat().sort((a, b) => b.mtime - a.mtime);
     return NextResponse.json({ items });

@@ -3,6 +3,7 @@ import { revalidatePath } from "next/cache";
 import { z } from "zod";
 import { promises as fs } from "node:fs";
 import path from "node:path";
+import { BLOG_SLUG, createPost, unlistPage } from "@/lib/blog";
 import { loadSiteConfig, savePage } from "@/lib/content";
 import type { Page } from "@/lib/schema";
 
@@ -21,6 +22,14 @@ const bodySchema = z.object({
         "Slug must be lowercase letters, digits, dashes, and forward-slashes only.",
     }),
   title: z.string().min(1).max(120).optional(),
+  /** Present = scaffold a blog post and add it to the post list
+   *  (see lib/blog.ts) instead of creating a blank page. */
+  post: z
+    .object({
+      date: z.string().trim().max(40),
+      summary: z.string().trim().max(300).default(""),
+    })
+    .optional(),
 });
 
 function devOnly(): NextResponse | null {
@@ -55,13 +64,28 @@ export async function POST(req: Request) {
     // Doesn't exist — good, we can create it.
   }
 
-  const blank: Page = {
-    meta: { title: body.title ?? body.slug },
-    sections: [],
-  };
-
+  let resized: string[] = [];
   try {
-    await savePage(body.slug, blank);
+    if (body.post) {
+      if (!body.slug.startsWith(`${BLOG_SLUG}/`) || !body.title) {
+        return NextResponse.json(
+          { error: `A post needs a title and a slug under ${BLOG_SLUG}/.` },
+          { status: 400 }
+        );
+      }
+      ({ resized } = await createPost({
+        slug: body.slug,
+        title: body.title,
+        date: body.post.date,
+        summary: body.post.summary,
+      }));
+    } else {
+      const blank: Page = {
+        meta: { title: body.title ?? body.slug },
+        sections: [],
+      };
+      await savePage(body.slug, blank);
+    }
   } catch (err) {
     return NextResponse.json(
       { error: "Failed to create page", detail: String(err) },
@@ -76,7 +100,7 @@ export async function POST(req: Request) {
     // Outside render context — non-fatal in dev.
   }
 
-  return NextResponse.json({ ok: true, slug: body.slug });
+  return NextResponse.json({ ok: true, slug: body.slug, resized });
 }
 
 const deleteBodySchema = z.object({
@@ -131,6 +155,21 @@ export async function DELETE(req: Request) {
     );
   }
 
+  // A deleted post comes off the post list with it, so the list never
+  // links to a 404.
+  let unlisted = 0;
+  try {
+    unlisted = await unlistPage(body.slug);
+  } catch (err) {
+    return NextResponse.json(
+      {
+        error: "Page deleted, but updating the post list failed",
+        detail: String(err),
+      },
+      { status: 500 }
+    );
+  }
+
   try {
     revalidatePath("/");
     revalidatePath("/admin");
@@ -138,5 +177,5 @@ export async function DELETE(req: Request) {
     // Outside render context — non-fatal in dev.
   }
 
-  return NextResponse.json({ ok: true });
+  return NextResponse.json({ ok: true, unlisted });
 }

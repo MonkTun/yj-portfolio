@@ -126,6 +126,12 @@
   --accent: #5C8A3A;
   --accent-foreground: #FFFFFF;
   --ring: #5C8A3A;
+  /* Announcement strip — pure white glass by YJ's call (Sep 2026), the one
+     white surface on the site. Its ink is the page ground, pinned here so
+     the admin's light override (which flips --background) can't turn the
+     preview's text white-on-white. */
+  --announcement: #FFFFFF;
+  --announcement-foreground: var(--background);
 
   /* ---------- shadcn primitives — retuned to fit the dark theme ----------
      These tokens get pulled in whenever a shadcn component is used; their
@@ -166,6 +172,17 @@
   --duration: 600ms;
   --duration-slow: 900ms;
   --ease: cubic-bezier(0.16, 1, 0.3, 1);
+  /* Per-item delay step for staggered list entrances (site menu). */
+  --stagger: 60ms;
+  /* One left-to-right sweep of the media loading skeleton. */
+  --duration-shimmer: 1600ms;
+
+  /* The page's own ground and ink, captured here — computed on <html>, so
+     they hold the active palette's values even inside a reverse section,
+     which flips --background / --foreground for its contents. Viewer
+     frames (PDF, code) restore them to stay a dark window on any section. */
+  --page-background: var(--background);
+  --page-foreground: var(--foreground);
 }
 
 /* ---------- light admin override: warm paper ----------
@@ -222,6 +239,9 @@ body:has(.admin-light) .vignette {
 
   --font-display: var(--font-display);
   --font-body: var(--font-body);
+  /* Code listings and file names (Code block). Plex Mono by name — the
+     bare `font-mono` utility is Tailwind's system stack. */
+  --font-code: var(--font-ibm-plex-mono), ui-monospace, monospace;
 
   --radius-sm: var(--radius-sm);
   --radius-md: var(--radius);
@@ -479,6 +499,29 @@ body {
   }
 }
 
+/* Project Grid tiles (atoms/ProjectGrid.tsx) — the media layer is greyed
+   and dimmed until the tile is hovered or focused; the hover is the color.
+   Touch devices have no hover, so they get color outright. Only filter
+   transitions here (opacity/filter are allowed under reduced motion); the
+   scale lives on a motion-safe utility in the atom. Layout-only rule (no
+   color tokens), so it can sit unlayered like the edge fade. */
+.project-tile-media {
+  filter: grayscale(1) brightness(0.72);
+  transition: filter var(--duration) var(--ease);
+}
+.group:hover > .project-tile-media,
+.group:focus-visible > .project-tile-media {
+  filter: none;
+}
+/* Phones: no hover to reveal the color, so the tiles are never greyed —
+   gated on both the pointer capability and the site's md breakpoint, so a
+   phone-width viewport in a desktop browser behaves the same. */
+@media (hover: none), (max-width: 767px) {
+  .project-tile-media {
+    filter: none;
+  }
+}
+
 /* Horizontal edge fade for the project carousel — softens cards entering /
    leaving the strip. The black is a mask sentinel (alpha only), never a
    visible color, so it doesn't need to track the palette. */
@@ -578,6 +621,259 @@ body {
 }
 .react-grid-item > .react-resizable-handle-s {
   bottom: -6px; left: 50%; transform: translateX(-50%); cursor: ns-resize;
+}
+
+/* ============================================================
+   Media skeleton — loading placeholder for images and embeds.
+   A surface panel with a soft cream band sweeping left → right;
+   fades out when the media fires `load`. Under reduced motion the
+   sweep collapses to a slow opacity pulse.
+   ============================================================ */
+
+@layer components {
+  .media-skeleton {
+    position: absolute;
+    inset: 0;
+    overflow: hidden;
+    pointer-events: none;
+    background: var(--surface);
+    transition: opacity var(--duration) var(--ease);
+  }
+  .media-skeleton::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    transform: translateX(-100%);
+    background: linear-gradient(
+      90deg,
+      transparent,
+      color-mix(in oklab, var(--foreground) 7%, transparent),
+      transparent
+    );
+    animation: media-shimmer var(--duration-shimmer) ease-in-out infinite;
+  }
+  .media-skeleton[data-loaded="true"] {
+    opacity: 0;
+  }
+  .media-skeleton[data-loaded="true"]::after {
+    animation-play-state: paused;
+  }
+}
+
+@keyframes media-shimmer {
+  to { transform: translateX(100%); }
+}
+@keyframes media-pulse {
+  from { opacity: 0.4; }
+  to   { opacity: 1; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .media-skeleton::after {
+    transform: none;
+    background: color-mix(in oklab, var(--foreground) 4%, transparent);
+    animation: media-pulse var(--duration-shimmer) ease-in-out infinite alternate;
+  }
+}
+
+/* ============================================================
+   Announcement — the dismissable strip over the top of the page.
+   White frosted glass with dark type, the inverse of the page. Slides
+   down after the page's own reveal has started and slides back up on
+   dismiss (SiteAnnouncement waits for `announcement-out*` to end
+   before unmounting). Reduced motion: opacity-only.
+   ============================================================ */
+
+@layer components {
+  .announcement {
+    color: var(--announcement-foreground);
+    background: color-mix(in oklab, var(--announcement) 97%, transparent);
+    backdrop-filter: blur(20px) saturate(140%);
+    -webkit-backdrop-filter: blur(20px) saturate(140%);
+    animation: announcement-in var(--duration-slow) var(--ease) var(--duration) both;
+  }
+  .announcement[data-leaving="true"] {
+    animation: announcement-out var(--duration) var(--ease) forwards;
+  }
+}
+
+@keyframes announcement-in {
+  from { transform: translateY(-100%); }
+  to   { transform: translateY(0); }
+}
+@keyframes announcement-out {
+  from { transform: translateY(0); }
+  to   { transform: translateY(-100%); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .announcement {
+    animation-name: fade-in;
+  }
+  .announcement[data-leaving="true"] {
+    animation-name: announcement-out-fade;
+  }
+}
+@keyframes fade-in {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+@keyframes announcement-out-fade {
+  from { opacity: 1; }
+  to   { opacity: 0; }
+}
+
+/* ============================================================
+   Overlay — the full-screen viewer shared by the image lightbox, the
+   PDF reader and the code viewer (atoms/Overlay.tsx). The backdrop is
+   the page ground at near-full strength (the work is the only thing
+   lit); the content eases up out of 98%. Overlay unmounts when
+   `overlay-backdrop-out` ends. Reduced motion: opacity only.
+   ============================================================ */
+
+@layer components {
+  .overlay-backdrop {
+    background: color-mix(in oklab, var(--background) 94%, transparent);
+    /* Prefixed FIRST: the CSS minifier folds the pair into one property
+       and keeps only the last-written form, so unprefixed-then-webkit
+       ships as webkit-only and Chrome/Firefox get no blur at all. */
+    -webkit-backdrop-filter: blur(8px);
+    backdrop-filter: blur(8px);
+    animation: fade-in var(--duration) var(--ease) both;
+  }
+  .overlay-panel {
+    animation: overlay-in var(--duration) var(--ease) both;
+  }
+  .overlay[data-closing="true"] .overlay-backdrop {
+    animation: overlay-backdrop-out var(--duration-fast) var(--ease) forwards;
+  }
+  .overlay[data-closing="true"] .overlay-panel {
+    animation: overlay-out var(--duration-fast) var(--ease) forwards;
+  }
+}
+
+@keyframes overlay-in {
+  from { opacity: 0; transform: translateY(12px) scale(0.98); }
+  to   { opacity: 1; transform: none; }
+}
+@keyframes overlay-out {
+  from { opacity: 1; transform: none; }
+  to   { opacity: 0; transform: translateY(8px) scale(0.98); }
+}
+@keyframes overlay-backdrop-out {
+  from { opacity: 1; }
+  to   { opacity: 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .overlay-panel {
+    animation-name: fade-in;
+  }
+  .overlay[data-closing="true"] .overlay-panel {
+    animation-name: overlay-backdrop-out;
+  }
+}
+
+/* ============================================================
+   Viewer frames — the PDF and Code blocks' surface. Restores the
+   page's own ground/ink (see --page-* in :root) so the frame reads
+   as a dark window even on a reverse section.
+   ============================================================ */
+
+@layer components {
+  .viewer-frame {
+    --background: var(--page-background);
+    --foreground: var(--page-foreground);
+    background: var(--surface);
+    color: var(--foreground);
+    border: 1px solid var(--border);
+  }
+
+  /* Syntax colors, derived from the palette — never a second accent.
+     Keywords in a lifted moss, strings in a moss-tinted cream, comments
+     recede into sepia italic; function and type names carry weight, not
+     hue. Declared on the listing so a palette swap follows. */
+  .code-listing {
+    --code-text: color-mix(in oklab, var(--foreground) 86%, transparent);
+    --code-keyword: color-mix(in oklab, var(--accent) 72%, var(--foreground));
+    --code-string: color-mix(in oklab, var(--accent) 32%, var(--foreground));
+    --code-dim: color-mix(in oklab, var(--foreground) 55%, transparent);
+    font-family: var(--font-ibm-plex-mono), ui-monospace, monospace;
+    font-feature-settings: normal;
+    line-height: 1.65;
+    tab-size: 4;
+    color: var(--code-text);
+  }
+  .code-gutter {
+    background: var(--surface);
+    color: var(--muted-foreground);
+    opacity: 0.7;
+  }
+  .code-listing .hljs-keyword,
+  .code-listing .hljs-selector-tag,
+  .code-listing .hljs-literal,
+  .code-listing .hljs-number,
+  .code-listing .hljs-name,
+  .code-listing .hljs-section,
+  .code-listing .hljs-symbol,
+  .code-listing .hljs-bullet,
+  .code-listing .hljs-link {
+    color: var(--code-keyword);
+  }
+  .code-listing .hljs-string,
+  .code-listing .hljs-regexp,
+  .code-listing .hljs-char\.escape,
+  .code-listing .hljs-template-tag,
+  .code-listing .hljs-selector-attr,
+  .code-listing .hljs-selector-pseudo {
+    color: var(--code-string);
+  }
+  .code-listing .hljs-comment,
+  .code-listing .hljs-quote,
+  .code-listing .hljs-doctag {
+    color: var(--muted-foreground);
+    font-style: italic;
+  }
+  .code-listing .hljs-meta,
+  .code-listing .hljs-tag,
+  .code-listing .hljs-punctuation,
+  .code-listing .hljs-operator {
+    color: var(--code-dim);
+  }
+  .code-listing .hljs-meta .hljs-string,
+  .code-listing .hljs-meta .hljs-keyword {
+    color: inherit;
+  }
+  .code-listing .hljs-title,
+  .code-listing .hljs-type,
+  .code-listing .hljs-built_in,
+  .code-listing .hljs-selector-class,
+  .code-listing .hljs-selector-id {
+    color: var(--foreground);
+    font-weight: 500;
+  }
+  .code-listing .hljs-attr,
+  .code-listing .hljs-attribute,
+  .code-listing .hljs-property,
+  .code-listing .hljs-variable,
+  .code-listing .hljs-template-variable,
+  .code-listing .hljs-params {
+    color: var(--code-text);
+  }
+  .code-listing .hljs-emphasis {
+    font-style: italic;
+  }
+  .code-listing .hljs-strong {
+    font-weight: 500;
+  }
+}
+
+/* Fades an element's last ~3rem to nothing — the "there's more" edge on
+   clipped viewer blocks. A mask, so only alpha matters: the gradient's
+   black is opacity, not a color. Invisible when the content ends early. */
+.fade-bottom {
+  -webkit-mask-image: linear-gradient(to bottom, black calc(100% - 3rem), transparent);
+  mask-image: linear-gradient(to bottom, black calc(100% - 3rem), transparent);
 }
 
 /* ============================================================

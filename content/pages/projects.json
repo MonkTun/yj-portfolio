@@ -1,0 +1,288 @@
+{
+  "meta": {
+    "title": "Projects — Youngje Park",
+    "description": "Games, tools, and art — everything I've shipped or am shipping."
+  },
+  "sections": [
+    {
+      "id": "sec_projects_hero",
+      "background": {
+        "type": "image",
+        "src": "/uploads/allnighter4-mtchmoqs.webp",
+        "fit": "both",
+        "overlay": 90,
+        "filter": "none",
+        "focalX": 50,
+        "focalY": 40,
+        "rotate": 0,
+        "flipX": false,
+        "flipY": false,
+        "blur": 0,
+        "zoom": 1,
+        "tint": "none",
+        "tintOpacity": 0
+      },
+      "padding": "xl",
+      "minHeight": "half",
+      "align": "bottom",
+      "blocks": [
+        {
+          "type": "line",
+          "props": {
+            "thickness": 1,
+            "color": "border"
+          },
+          "id": "blk_projects_rule",
+          "layout": {
+            "col": 5,
+            "colSpan": 8,
+            "row": 1,
+            "rowSpan": 1
+          }
+        },
+        {
+          "type": "text",
+          "props": {
+            "content": "PROJECTS",
+            "variant": "h1",
+            "align": "left",
+            "color": "foreground",
+            "transform": "none",
+            "lineHeight": 0.92,
+            "letterSpacing": -0.025
+          },
+          "id": "blk_projects_h1",
+          "layout": {
+            "col": 1,
+            "colSpan": 9,
+            "row": 1,
+            "rowSpan": 10
+          }
+        }
+      ]
+    },
+    {
+      "id": "sec_projects_grid",
+      "background": {
+        "type": "transparent"
+      },
+      "padding": "md",
+      "minHeight": "auto",
+      "align": "top",
+      "blocks": [
+        {
+          "type": "projectGrid",
+          "props": {
+            "items": [
+              {
+                "src": "/uploads/neighborhoodbackground-mtcec4j6.jpg",
+                "alt": "Neighborhoods",
+                "title": "",
+                "titleSrc": "/uploads/e-line-watermark-mtbzb0fz-crop-mtbzjid2.png",
+                "titleWidth": 60,
+                "meta": "",
+                "href": "/work/neighborhoods",
+                "focalX": 50,
+                "focalY": 50
+              },
+              {
+                "src": "/uploads/game-trailer-thumbnail-1920-x-1080-px-mtbsm0ua.png",
+                "alt": "Overdawn",
+                "title": "",
+                "titleSrc": "/uploads/overdawnlogo-mtcgqpze.png",
+                "titleWidth": 90,
+                "meta": "",
+                "href": "/work/overdawn",
+                "focalX": 50,
+                "focalY": 50
+              },
+              {
+                "src": "/uploads/thang-mtbsuoo7.webp",
+                "alt": "Thang",
+                "title": "Thang",
+                "titleSrc": "/uploads/thang-logo-mtcj3cwv.webp",
+                "titleWidth": 90,
+                "meta": "",
+                "href": "/work/thang",
+                "focalX": 50,
+                "focalY": 50
+              },
+              {
+                "src": "/uploads/melon-mtbtkecm.jpg",
+                "alt": "Move Move Melon",
+                "title": "Move Move Melon",
+                "titleSrc": "/uploads/melonlogo-mtc5kve8.png",
+                "titleWidth": 70,
+                "meta": "",
+                "href": "/work/move-move-melon",
+                "focalX": 50,
+                "focalY": 50
+              },
+              {
+                "src": "/projects/dawngeonTitle.png",
+                "alt": "Dawngeon",
+                "title": "Dawngeon",
+                "titleSrc": "/projects/DawngeonLogo.png",
+                "titleWidth": 60,
+                "meta": "",
+                "href": "/work/dawngeon",
+                "focalX": 50,
+                "focalY": 48
+              },
+              {
+                "src": "/uploads/br-posterwithpaperandtatter-mqg50uv2.webp",
+                "alt": "Banana Republic",
+                "title": "Banana Republic",
+                "titleSrc": "/uploads/banna-mtckdzpf.png",
+                "titleWidth": 75,
+                "meta": "",
+                "href": "/work/banana-republic",
+                "focalX": 50,
+                "focalY": 55
+              },
+              {
+                "src": "/projects/headlessHotelTitle.png",
+                "alt": "Headless Hotel",
+                "title": "Headless Hotel",
+                "titleSrc": "",
+                "titleWidth": 60,
+                "meta": "",
+                "href": "/work/headless-hotel",
+                "focalX": 50,
+                "focalY": 50
+              }
+            ],
+            "columns": 2,
+            "gap": 16,
+            "aspect": "16/9",
+            "radius": 4,
+            "greyUntilHover": true,
+            "showMeta": true,
+            "newTab": false
+          },
+          "id": "blk_projects_grid",
+          "layout": {
+            "col": 1,
+            "colSpan": 12,
+            "row": 1,
+            "rowSpan": 87
+          },
+          "mobile": {
+            "layout": {
+              "rowSpan": 102
+            },
+            "props": {
+              "columns": 1
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "sec_footer",
+      "background": {
+        "type": "reverse"
+      },
+      "padding": "lg",
+      "minHeight": "auto",
+      "align": "top",
+      "blocks": [
+        {
+          "type": "mirror",
+          "props": {
+            "mirrorId": "mir_footer_kicker"
+          },
+          "id": "blk_footer_kicker_projects",
+          "layout": {
+            "col": 1,
+            "colSpan": 6,
+            "row": 1,
+            "rowSpan": 2
+          },
+          "mobile": {
+            "layout": {
+              "colSpan": 12
+            }
+          }
+        },
+        {
+          "type": "mirror",
+          "props": {
+            "mirrorId": "mir_footer_email"
+          },
+          "id": "blk_footer_email_projects",
+          "layout": {
+            "col": 1,
+            "colSpan": 7,
+            "row": 3,
+            "rowSpan": 5
+          },
+          "mobile": {
+            "layout": {
+              "colSpan": 12,
+              "rowSpan": 13
+            }
+          }
+        },
+        {
+          "type": "mirror",
+          "props": {
+            "mirrorId": "mir_footer_nav"
+          },
+          "id": "blk_footer_nav_projects",
+          "layout": {
+            "col": 1,
+            "colSpan": 4,
+            "row": 11,
+            "rowSpan": 9
+          },
+          "mobile": {
+            "layout": {
+              "colSpan": 8
+            }
+          }
+        },
+        {
+          "type": "mirror",
+          "props": {
+            "mirrorId": "mir_footer_colophon"
+          },
+          "id": "blk_footer_colophon_projects",
+          "layout": {
+            "col": 1,
+            "colSpan": 10,
+            "row": 22,
+            "rowSpan": 1
+          },
+          "mobile": {
+            "layout": {
+              "colSpan": 12,
+              "row": 31,
+              "rowSpan": 3
+            }
+          }
+        },
+        {
+          "type": "mirror",
+          "props": {
+            "mirrorId": "mir_footer_social"
+          },
+          "id": "blk_footer_social_projects",
+          "layout": {
+            "col": 11,
+            "colSpan": 2,
+            "row": 5,
+            "rowSpan": 3
+          },
+          "mobile": {
+            "layout": {
+              "col": 1,
+              "colSpan": 12,
+              "row": 27
+            }
+          }
+        }
+      ]
+    }
+  ]
+}

@@ -107,6 +107,52 @@
               "rowSpan": 16
             }
           }
+        },
+        {
+          "type": "text",
+          "props": {
+            "content": "Overview",
+            "variant": "kicker",
+            "align": "left",
+            "color": "muted",
+            "transform": "none"
+          },
+          "id": "blk_th_overview_kicker",
+          "layout": {
+            "col": 1,
+            "colSpan": 12,
+            "row": 14,
+            "rowSpan": 2
+          },
+          "mobile": {
+            "layout": {
+              "row": 22,
+              "rowSpan": 2
+            }
+          }
+        },
+        {
+          "type": "text",
+          "props": {
+            "content": "• Programmer — Unreal Engine C++: server-side rewind, replay system, parrying<br>• Backend — Next.js + MongoDB on Vercel, then P2P on EOS<br>• 3D artist — characters and weapons in Blender, cosmetics pipeline<br>• Designer — TPS/FPS freeze-tag loop, popsicle weapons<br>• Associate director — the Overdawn crew's party game",
+            "variant": "body",
+            "align": "left",
+            "color": "foreground",
+            "transform": "none"
+          },
+          "id": "blk_th_overview",
+          "layout": {
+            "col": 1,
+            "colSpan": 12,
+            "row": 16,
+            "rowSpan": 11
+          },
+          "mobile": {
+            "layout": {
+              "row": 24,
+              "rowSpan": 16
+            }
+          }
         }
       ]
     },
@@ -754,6 +800,112 @@
             "layout": {
               "col": 1,
               "colSpan": 12
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "sec_footer",
+      "background": {
+        "type": "reverse"
+      },
+      "padding": "lg",
+      "minHeight": "auto",
+      "align": "top",
+      "blocks": [
+        {
+          "type": "mirror",
+          "props": {
+            "mirrorId": "mir_footer_kicker"
+          },
+          "id": "blk_footer_kicker_thang",
+          "layout": {
+            "col": 1,
+            "colSpan": 6,
+            "row": 1,
+            "rowSpan": 2
+          },
+          "mobile": {
+            "layout": {
+              "colSpan": 12
+            }
+          }
+        },
+        {
+          "type": "mirror",
+          "props": {
+            "mirrorId": "mir_footer_email"
+          },
+          "id": "blk_footer_email_thang",
+          "layout": {
+            "col": 1,
+            "colSpan": 7,
+            "row": 3,
+            "rowSpan": 5
+          },
+          "mobile": {
+            "layout": {
+              "colSpan": 12,
+              "rowSpan": 13
+            }
+          }
+        },
+        {
+          "type": "mirror",
+          "props": {
+            "mirrorId": "mir_footer_nav"
+          },
+          "id": "blk_footer_nav_thang",
+          "layout": {
+            "col": 1,
+            "colSpan": 4,
+            "row": 11,
+            "rowSpan": 9
+          },
+          "mobile": {
+            "layout": {
+              "colSpan": 8
+            }
+          }
+        },
+        {
+          "type": "mirror",
+          "props": {
+            "mirrorId": "mir_footer_colophon"
+          },
+          "id": "blk_footer_colophon_thang",
+          "layout": {
+            "col": 1,
+            "colSpan": 10,
+            "row": 22,
+            "rowSpan": 1
+          },
+          "mobile": {
+            "layout": {
+              "colSpan": 12,
+              "row": 31,
+              "rowSpan": 3
+            }
+          }
+        },
+        {
+          "type": "mirror",
+          "props": {
+            "mirrorId": "mir_footer_social"
+          },
+          "id": "blk_footer_social_thang",
+          "layout": {
+            "col": 11,
+            "colSpan": 2,
+            "row": 5,
+            "rowSpan": 3
+          },
+          "mobile": {
+            "layout": {
+              "col": 1,
+              "colSpan": 12,
+              "row": 27
             }
           }
         }

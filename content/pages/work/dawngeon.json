@@ -162,6 +162,52 @@
             "align": "left",
             "newTab": true
           }
+        },
+        {
+          "type": "text",
+          "props": {
+            "content": "Overview",
+            "variant": "kicker",
+            "align": "left",
+            "color": "muted",
+            "transform": "none"
+          },
+          "id": "blk_dg_overview_kicker",
+          "layout": {
+            "col": 1,
+            "colSpan": 12,
+            "row": 23,
+            "rowSpan": 2
+          },
+          "mobile": {
+            "layout": {
+              "row": 39,
+              "rowSpan": 2
+            }
+          }
+        },
+        {
+          "type": "text",
+          "props": {
+            "content": "• Solo developer — Unity / C#, released on the iOS App Store<br>• Programmer — weapons, enemy AI state machine, procedural dungeons<br>• Designer — cooking system, story mode, handcrafted pixel levels<br>• Artist — pixel art and music",
+            "variant": "body",
+            "align": "left",
+            "color": "foreground",
+            "transform": "none"
+          },
+          "id": "blk_dg_overview",
+          "layout": {
+            "col": 1,
+            "colSpan": 12,
+            "row": 25,
+            "rowSpan": 9
+          },
+          "mobile": {
+            "layout": {
+              "row": 41,
+              "rowSpan": 13
+            }
+          }
         }
       ]
     },
@@ -392,6 +438,112 @@
             "variant": "ghost",
             "align": "left",
             "newTab": false
+          }
+        }
+      ]
+    },
+    {
+      "id": "sec_footer",
+      "background": {
+        "type": "reverse"
+      },
+      "padding": "lg",
+      "minHeight": "auto",
+      "align": "top",
+      "blocks": [
+        {
+          "type": "mirror",
+          "props": {
+            "mirrorId": "mir_footer_kicker"
+          },
+          "id": "blk_footer_kicker_dawngeon",
+          "layout": {
+            "col": 1,
+            "colSpan": 6,
+            "row": 1,
+            "rowSpan": 2
+          },
+          "mobile": {
+            "layout": {
+              "colSpan": 12
+            }
+          }
+        },
+        {
+          "type": "mirror",
+          "props": {
+            "mirrorId": "mir_footer_email"
+          },
+          "id": "blk_footer_email_dawngeon",
+          "layout": {
+            "col": 1,
+            "colSpan": 7,
+            "row": 3,
+            "rowSpan": 5
+          },
+          "mobile": {
+            "layout": {
+              "colSpan": 12,
+              "rowSpan": 13
+            }
+          }
+        },
+        {
+          "type": "mirror",
+          "props": {
+            "mirrorId": "mir_footer_nav"
+          },
+          "id": "blk_footer_nav_dawngeon",
+          "layout": {
+            "col": 1,
+            "colSpan": 4,
+            "row": 11,
+            "rowSpan": 9
+          },
+          "mobile": {
+            "layout": {
+              "colSpan": 8
+            }
+          }
+        },
+        {
+          "type": "mirror",
+          "props": {
+            "mirrorId": "mir_footer_colophon"
+          },
+          "id": "blk_footer_colophon_dawngeon",
+          "layout": {
+            "col": 1,
+            "colSpan": 10,
+            "row": 22,
+            "rowSpan": 1
+          },
+          "mobile": {
+            "layout": {
+              "colSpan": 12,
+              "row": 31,
+              "rowSpan": 3
+            }
+          }
+        },
+        {
+          "type": "mirror",
+          "props": {
+            "mirrorId": "mir_footer_social"
+          },
+          "id": "blk_footer_social_dawngeon",
+          "layout": {
+            "col": 11,
+            "colSpan": 2,
+            "row": 5,
+            "rowSpan": 3
+          },
+          "mobile": {
+            "layout": {
+              "col": 1,
+              "colSpan": 12,
+              "row": 27
+            }
           }
         }
       ]

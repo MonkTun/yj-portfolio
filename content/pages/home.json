@@ -589,7 +589,8 @@
               "Unreal Engine",
               "C++",
               "Programmer",
-              "Designer"
+              "Designer",
+              "TPS/FPS"
             ],
             "size": 12,
             "gap": 8,
@@ -1520,13 +1521,9 @@
       "align": "top",
       "blocks": [
         {
-          "type": "text",
+          "type": "mirror",
           "props": {
-            "content": "Get in touch",
-            "variant": "kicker",
-            "align": "left",
-            "color": "muted",
-            "transform": "none"
+            "mirrorId": "mir_footer_kicker"
           },
           "id": "blk_footer_kicker",
           "layout": {
@@ -1542,21 +1539,16 @@
           }
         },
         {
-          "type": "text",
+          "type": "mirror",
           "props": {
-            "content": "peroni014@gmail.com",
-            "variant": "h2",
-            "align": "left",
-            "color": "foreground",
-            "transform": "none",
-            "fontSize": 87
+            "mirrorId": "mir_footer_email"
           },
           "id": "blk_footer_email",
           "layout": {
             "col": 1,
             "colSpan": 7,
             "row": 3,
-            "rowSpan": 7
+            "rowSpan": 5
           },
           "mobile": {
             "layout": {
@@ -1566,52 +1558,47 @@
           }
         },
         {
-          "type": "text",
+          "type": "mirror",
           "props": {
-            "content": "© Youngje Park<br>Website made possible BY claude code",
-            "variant": "kicker",
-            "align": "left",
-            "color": "muted",
-            "transform": "none"
+            "mirrorId": "mir_footer_nav"
+          },
+          "id": "blk_footer_nav",
+          "layout": {
+            "col": 1,
+            "colSpan": 4,
+            "row": 11,
+            "rowSpan": 9
+          },
+          "mobile": {
+            "layout": {
+              "colSpan": 8
+            }
+          }
+        },
+        {
+          "type": "mirror",
+          "props": {
+            "mirrorId": "mir_footer_colophon"
           },
           "id": "blk_footer_colophon",
           "layout": {
             "col": 1,
             "colSpan": 10,
-            "row": 12,
+            "row": 22,
             "rowSpan": 1
           },
           "mobile": {
             "layout": {
               "colSpan": 12,
-              "row": 23,
+              "row": 31,
               "rowSpan": 3
             }
           }
         },
         {
-          "type": "socialLinks",
+          "type": "mirror",
           "props": {
-            "items": [
-              {
-                "platform": "linkedin",
-                "href": "https://www.linkedin.com/in/youngjepark1"
-              },
-              {
-                "platform": "discord",
-                "href": "https://discord.com/users/340039649084833792"
-              },
-              {
-                "platform": "github",
-                "href": "https://github.com/MonkTun"
-              }
-            ],
-            "variant": "icons",
-            "size": 20,
-            "gap": 20,
-            "align": "right",
-            "color": "foreground",
-            "newTab": true
+            "mirrorId": "mir_footer_social"
           },
           "id": "blk_754e0bc4",
           "layout": {
@@ -1624,7 +1611,7 @@
             "layout": {
               "col": 1,
               "colSpan": 12,
-              "row": 18
+              "row": 27
             }
           }
         }

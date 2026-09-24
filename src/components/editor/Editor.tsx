@@ -603,7 +603,18 @@ export function Editor({
         // If the user is in mobile mode, also seed the same coordinates
         // as a mobile override so the block lands where they expect *and*
         // the desktop fallback isn't broken.
-        ...(device === "mobile" ? { mobile: { layout } } : {}),
+        // Registry-seeded mobile prop overrides (e.g. a grid's phone column
+        // count) — the desktop defaults alone can be wrong on a phone.
+        ...(device === "mobile" || entry.defaultMobileProps
+          ? {
+              mobile: {
+                ...(device === "mobile" ? { layout } : {}),
+                ...(entry.defaultMobileProps
+                  ? { props: { ...entry.defaultMobileProps } }
+                  : {}),
+              },
+            }
+          : {}),
         props: { ...defaultsForBlock(type), ...propsOverride },
       } as Block;
       targetSec.blocks.push(newBlock);

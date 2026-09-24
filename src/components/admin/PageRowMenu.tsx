@@ -7,9 +7,11 @@ import type { SiteConfig } from "@/lib/schema";
 type Props = {
   slug: string;
   config: SiteConfig;
+  /** The post list links here — deleting also takes it off the list. */
+  listed?: boolean;
 };
 
-export function PageRowMenu({ slug, config }: Props) {
+export function PageRowMenu({ slug, config, listed }: Props) {
   const router = useRouter();
   const [open, setOpen] = useState(false);
   const [busy, setBusy] = useState<string | null>(null);
@@ -71,7 +73,9 @@ export function PageRowMenu({ slug, config }: Props) {
 
   async function remove() {
     const ok = window.confirm(
-      `Delete /${slug}?\n\nThis removes content/pages/${slug}.json and can't be undone from the UI.`
+      `Delete /${slug}?\n\nThis removes content/pages/${slug}.json${
+        listed ? " and takes it off the blog list" : ""
+      }, and can't be undone from the UI.`
     );
     if (!ok) return;
     const res = await fetch("/api/admin/page", {

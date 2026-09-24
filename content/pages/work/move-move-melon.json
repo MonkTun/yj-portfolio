@@ -91,13 +91,13 @@
           "layout": {
             "col": 1,
             "colSpan": 3,
-            "row": 10,
+            "row": 22,
             "rowSpan": 2
           },
           "mobile": {
             "layout": {
               "colSpan": 12,
-              "row": 13
+              "row": 29
             }
           },
           "type": "button",
@@ -124,6 +124,52 @@
             "align": "left",
             "color": "foreground",
             "transform": "none"
+          }
+        },
+        {
+          "type": "text",
+          "props": {
+            "content": "Overview",
+            "variant": "kicker",
+            "align": "left",
+            "color": "muted",
+            "transform": "none"
+          },
+          "id": "blk_mmm_overview_kicker",
+          "layout": {
+            "col": 1,
+            "colSpan": 12,
+            "row": 10,
+            "rowSpan": 2
+          },
+          "mobile": {
+            "layout": {
+              "row": 13,
+              "rowSpan": 2
+            }
+          }
+        },
+        {
+          "type": "text",
+          "props": {
+            "content": "• Programmer — Unity / C# on a 40+ person AGP team<br>• Designer tools — Mix-In Editor and three more IMGUI tools<br>• UI — persistent UI manager, mobile joystick<br>• Player feel, debugging, and an event-driven refactor",
+            "variant": "body",
+            "align": "left",
+            "color": "foreground",
+            "transform": "none"
+          },
+          "id": "blk_mmm_overview",
+          "layout": {
+            "col": 1,
+            "colSpan": 12,
+            "row": 12,
+            "rowSpan": 9
+          },
+          "mobile": {
+            "layout": {
+              "row": 15,
+              "rowSpan": 13
+            }
           }
         }
       ]
@@ -402,6 +448,112 @@
             "variant": "ghost",
             "align": "left",
             "newTab": false
+          }
+        }
+      ]
+    },
+    {
+      "id": "sec_footer",
+      "background": {
+        "type": "reverse"
+      },
+      "padding": "lg",
+      "minHeight": "auto",
+      "align": "top",
+      "blocks": [
+        {
+          "type": "mirror",
+          "props": {
+            "mirrorId": "mir_footer_kicker"
+          },
+          "id": "blk_footer_kicker_move_move_melon",
+          "layout": {
+            "col": 1,
+            "colSpan": 6,
+            "row": 1,
+            "rowSpan": 2
+          },
+          "mobile": {
+            "layout": {
+              "colSpan": 12
+            }
+          }
+        },
+        {
+          "type": "mirror",
+          "props": {
+            "mirrorId": "mir_footer_email"
+          },
+          "id": "blk_footer_email_move_move_melon",
+          "layout": {
+            "col": 1,
+            "colSpan": 7,
+            "row": 3,
+            "rowSpan": 5
+          },
+          "mobile": {
+            "layout": {
+              "colSpan": 12,
+              "rowSpan": 13
+            }
+          }
+        },
+        {
+          "type": "mirror",
+          "props": {
+            "mirrorId": "mir_footer_nav"
+          },
+          "id": "blk_footer_nav_move_move_melon",
+          "layout": {
+            "col": 1,
+            "colSpan": 4,
+            "row": 11,
+            "rowSpan": 9
+          },
+          "mobile": {
+            "layout": {
+              "colSpan": 8
+            }
+          }
+        },
+        {
+          "type": "mirror",
+          "props": {
+            "mirrorId": "mir_footer_colophon"
+          },
+          "id": "blk_footer_colophon_move_move_melon",
+          "layout": {
+            "col": 1,
+            "colSpan": 10,
+            "row": 22,
+            "rowSpan": 1
+          },
+          "mobile": {
+            "layout": {
+              "colSpan": 12,
+              "row": 31,
+              "rowSpan": 3
+            }
+          }
+        },
+        {
+          "type": "mirror",
+          "props": {
+            "mirrorId": "mir_footer_social"
+          },
+          "id": "blk_footer_social_move_move_melon",
+          "layout": {
+            "col": 11,
+            "colSpan": 2,
+            "row": 5,
+            "rowSpan": 3
+          },
+          "mobile": {
+            "layout": {
+              "col": 1,
+              "colSpan": 12,
+              "row": 27
+            }
           }
         }
       ]

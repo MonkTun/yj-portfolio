@@ -139,6 +139,9 @@ export const imagePropsSchema = z.object({
   tint: imageTintSchema.default("none"),
   /** 0–100; opacity of the tint overlay. */
   tintOpacity: z.number().int().min(0).max(100).default(0),
+  /** Click to open the image full-screen (the page-wide lightbox). On by
+   *  default for every image; ignored when `href` makes it a link. */
+  lightbox: z.boolean().default(true),
 });
 
 export const buttonPropsSchema = z.object({
@@ -182,6 +185,71 @@ export const videoPropsSchema = z.object({
   fit: z.enum(["width", "height"]).default("width"),
   /** Corner radius in px. */
   radius: z.number().int().min(0).max(200).default(0),
+});
+
+/**
+ * Embedded PDF. The block shows one page as a cover, sized to the block;
+ * clicking opens every page in a full-screen reader overlay. Rendered with
+ * pdf.js (loaded on demand) so it looks the same on every browser — native
+ * PDF iframes are blank on Android and single-page on iOS.
+ */
+export const pdfPropsSchema = z.object({
+  /** Path to the PDF, e.g. "/uploads/resume.pdf". */
+  src: z.string(),
+  /** Display title — the overlay header and the block's caption strip.
+   *  Empty falls back to the file name. */
+  title: z.string().default(""),
+  /** Which page the block shows as its cover (clamped to the page count). */
+  page: z.number().int().min(1).default(1),
+  /** "contain" shows the whole cover page; "width" fills the block's width
+   *  and crops the bottom of the page with a fade. */
+  fit: z.enum(["contain", "width"]).default("contain"),
+  /** Caption strip (title + page count) along the bottom of the block. */
+  showCaption: z.boolean().default(true),
+  /** Corner radius in px. */
+  radius: z.number().int().min(0).max(200).default(0),
+});
+
+/** Languages the Code block highlights. Each maps to a highlight.js grammar
+ *  loaded on demand (lib/code-languages.ts); "plaintext" skips highlighting. */
+export const codeLanguageSchema = z.enum([
+  "plaintext",
+  "cpp",
+  "c",
+  "csharp",
+  "javascript",
+  "typescript",
+  "python",
+  "glsl",
+  "lua",
+  "rust",
+  "go",
+  "java",
+  "swift",
+  "json",
+  "yaml",
+  "bash",
+  "html",
+  "css",
+  "sql",
+]);
+
+/**
+ * Code viewer. The block is a framed, syntax-highlighted excerpt sized to
+ * the block (overflow fades out at the bottom); clicking opens the whole
+ * listing in a full-screen overlay with a copy button.
+ */
+export const codePropsSchema = z.object({
+  code: z.string(),
+  language: codeLanguageSchema.default("cpp"),
+  /** Shown in the block's header bar, e.g. "PlayerController.cpp". Empty
+   *  falls back to the language name. */
+  filename: z.string().default(""),
+  lineNumbers: z.boolean().default(true),
+  /** Code size in px inside the block (the overlay uses its own size). */
+  fontSize: z.number().int().min(10).max(24).default(13),
+  /** Corner radius in px. */
+  radius: z.number().int().min(0).max(200).default(4),
 });
 
 /** One project card inside a Project Carousel. */
@@ -269,6 +337,42 @@ export const projectCarouselPropsSchema = z.object({
 });
 
 /** Platforms the Social Links block knows how to draw an icon for. */
+/* ----- Project Grid -----
+   A rectangular tile grid for the /projects index: every tile is a
+   background image with either a title image (logo) or display text set
+   over it. Tiles sit desaturated until hovered — the hover is the color.
+   `columns` is the md+ count; the phone count is a per-block mobile
+   override of the same key (MOBILE_OVERRIDABLE_KEYS.projectGrid), so it
+   rides the existing desktop/mobile merge instead of a second prop. */
+export const projectGridItemSchema = z.object({
+  /** Background image. */
+  src: z.string().default(""),
+  alt: z.string().default(""),
+  /** Display-type title; also the accessible name when a title image is set. */
+  title: z.string().default(""),
+  /** Optional title image (logo / wordmark) rendered instead of the text. */
+  titleSrc: z.string().default(""),
+  /** Width of the title image as a % of the tile. */
+  titleWidth: z.number().int().min(10).max(100).default(60),
+  /** Mono kicker in the tile corner — e.g. "2024 — Unity". */
+  meta: z.string().default(""),
+  href: z.string().optional(),
+  focalX: z.number().min(0).max(100).default(50),
+  focalY: z.number().min(0).max(100).default(50),
+});
+
+export const projectGridPropsSchema = z.object({
+  items: z.array(projectGridItemSchema).default([]),
+  columns: z.number().int().min(1).max(6).default(3),
+  gap: z.number().int().min(0).max(96).default(16),
+  aspect: z.string().default("16/9"),
+  radius: z.number().int().min(0).max(200).default(4),
+  /** Tiles are greyed out until hovered (always in color on touch). */
+  greyUntilHover: z.boolean().default(true),
+  showMeta: z.boolean().default(true),
+  newTab: z.boolean().default(false),
+});
+
 export const socialPlatformSchema = z.enum([
   "linkedin",
   "discord",
@@ -337,6 +441,67 @@ export const mirrorPropsSchema = z.object({
   mirrorId: z.string().default(""),
 });
 
+/**
+ * One entry in a Post List — a blog post (or any dated piece) the list links
+ * to. Same idea as a carousel item, minus the image: the blog is text-first.
+ * `date` is a free string so YJ can write "2026-09-02" or "Sep 2026".
+ */
+export const postListItemSchema = z.object({
+  title: z.string().default(""),
+  /** Mono kicker beside the title — a date, or any short label. */
+  date: z.string().default(""),
+  /** One-line summary under the title. */
+  summary: z.string().default(""),
+  /** Link — usually the post's own page, e.g. "/blog/hello-world". */
+  href: z.string().optional(),
+});
+
+/**
+ * Vertical editorial index of posts — the blog's table of contents. Built to
+ * be a mirror (`mir_posts`) so the same list sits on the blog index and at the
+ * foot of every post; add a post once and every instance follows.
+ */
+export const postListPropsSchema = z.object({
+  items: z.array(postListItemSchema).default([]),
+  /** Show a two-digit running number in front of each entry. */
+  numbered: z.boolean().default(true),
+  /** Render the summary line (off = title + date only, a tighter index). */
+  showSummary: z.boolean().default(true),
+  /** Title scale — "lg" is the blog-index size, "md" fits a post's outro. */
+  size: z.enum(["md", "lg"]).default("lg"),
+  /** Open links in a new tab. */
+  newTab: z.boolean().default(false),
+});
+
+/**
+ * One entry in a Nav Links block — a site destination. `href` is a page path
+ * ("/blog") or a hash into home ("/#sec_footer"); external URLs work too.
+ */
+export const navLinkItemSchema = z.object({
+  label: z.string().default(""),
+  href: z.string().default(""),
+});
+
+/**
+ * Nav Links — the site's navigation as an oversized display-type list, one
+ * hairline-divided row per destination (the phone menu's look, set into the
+ * page). Lives in the footer as the `mir_footer_nav` mirror so every page
+ * carries the same links; the fixed navbar (`SiteNav`) is dormant.
+ */
+export const navLinksPropsSchema = z.object({
+  items: z.array(navLinkItemSchema).default([]),
+  /** Label size in px on md+; phones scale it down with the viewport. */
+  fontSize: z.number().min(16).max(256).default(64),
+  /** Hairline rules above, between and below the rows. */
+  rules: z.boolean().default(true),
+  /** Light the row that matches the current route in the accent. */
+  highlightCurrent: z.boolean().default(true),
+  /** Trailing arrow on every row so the labels read as links. */
+  arrow: z.boolean().default(true),
+  /** Open links in a new tab. */
+  newTab: z.boolean().default(false),
+});
+
 /* ----- Discriminated union of block types ----- */
 
 /* `{ type, props }` per block type, without layout. These are what a mirror
@@ -350,9 +515,15 @@ const spacerContent = z.object({ type: z.literal("spacer"), props: spacerPropsSc
 const lineContent = z.object({ type: z.literal("line"), props: linePropsSchema });
 const quoteContent = z.object({ type: z.literal("quote"), props: quotePropsSchema });
 const videoContent = z.object({ type: z.literal("video"), props: videoPropsSchema });
+const pdfContent = z.object({ type: z.literal("pdf"), props: pdfPropsSchema });
+const codeContent = z.object({ type: z.literal("code"), props: codePropsSchema });
 const projectCarouselContent = z.object({
   type: z.literal("projectCarousel"),
   props: projectCarouselPropsSchema,
+});
+const projectGridContent = z.object({
+  type: z.literal("projectGrid"),
+  props: projectGridPropsSchema,
 });
 const socialLinksContent = z.object({
   type: z.literal("socialLinks"),
@@ -360,6 +531,8 @@ const socialLinksContent = z.object({
 });
 const tagsContent = z.object({ type: z.literal("tags"), props: tagsPropsSchema });
 const mirrorContent = z.object({ type: z.literal("mirror"), props: mirrorPropsSchema });
+const postListContent = z.object({ type: z.literal("postList"), props: postListPropsSchema });
+const navLinksContent = z.object({ type: z.literal("navLinks"), props: navLinksPropsSchema });
 
 /** A block's content only — what a mirror source is. Never a `mirror`. */
 export const blockContentSchema = z.discriminatedUnion("type", [
@@ -370,9 +543,14 @@ export const blockContentSchema = z.discriminatedUnion("type", [
   lineContent,
   quoteContent,
   videoContent,
+  pdfContent,
+  codeContent,
   projectCarouselContent,
+  projectGridContent,
   socialLinksContent,
   tagsContent,
+  postListContent,
+  navLinksContent,
 ]);
 
 const blockBase = {
@@ -389,9 +567,14 @@ export const blockSchema = z.discriminatedUnion("type", [
   lineContent.extend(blockBase),
   quoteContent.extend(blockBase),
   videoContent.extend(blockBase),
+  pdfContent.extend(blockBase),
+  codeContent.extend(blockBase),
   projectCarouselContent.extend(blockBase),
+  projectGridContent.extend(blockBase),
   socialLinksContent.extend(blockBase),
   tagsContent.extend(blockBase),
+  postListContent.extend(blockBase),
+  navLinksContent.extend(blockBase),
   mirrorContent.extend(blockBase),
 ]);
 
@@ -549,6 +732,50 @@ export const tagDefSchema = z.object({
 
 export type TagDef = z.infer<typeof tagDefSchema>;
 
+/** One link in the site-wide navigation bar. `href` is a path ("/blog"),
+ *  a hash deep-link into a page section ("/#sec_footer"), or a full URL. */
+export const navItemSchema = z.object({
+  label: z.string().min(1).max(40),
+  href: z.string().min(1).max(300),
+});
+
+export type NavItem = z.infer<typeof navItemSchema>;
+
+/**
+ * Site-wide navigation (the floating Menu pill + dropdown / overlay every
+ * public page renders via `SiteNav`). Lives in content/site.json next to routing so it's edited from
+ * /admin/routing rather than per page — the bar is chrome, not page content.
+ */
+export const navSchema = z.object({
+  /** Turn the menu off entirely (e.g. while the site is one long page). */
+  enabled: z.boolean().default(true),
+  items: z.array(navItemSchema).default([]),
+});
+
+export type NavConfig = z.infer<typeof navSchema>;
+
+/**
+ * Site-wide announcement — the dismissable strip that slides over the top
+ * of every public page (`SiteAnnouncement`). Edited at /admin/routing next
+ * to the navigation. A visitor's dismissal is remembered per message
+ * (keyed on its text + link + revision), so publishing a new message — or
+ * re-announcing the same one — shows it again.
+ */
+export const announcementSchema = z.object({
+  enabled: z.boolean().default(false),
+  /** Optional mono kicker before the message; empty hides it. */
+  label: z.string().max(30).default(""),
+  message: z.string().max(300).default(""),
+  /** Optional trailing link — shown only when both are set. */
+  linkLabel: z.string().max(40).default(""),
+  href: z.string().max(300).default(""),
+  /** Bumped by "Re-announce" to show an unchanged message again to
+   *  visitors who dismissed it — part of the dismissal key. */
+  revision: z.number().int().min(0).default(0),
+});
+
+export type AnnouncementConfig = z.infer<typeof announcementSchema>;
+
 export const siteConfigSchema = z.object({
   homeSlug: z.string().min(1).default("home"),
   constructionSlug: z.string().min(1).default("construction"),
@@ -558,6 +785,12 @@ export const siteConfigSchema = z.object({
   tags: z.array(tagDefSchema).default([]),
   /** Mirror library — source blocks that `mirror` instances render. */
   mirrors: z.array(mirrorDefSchema).default([]),
+  /** Site-wide navigation bar. `prefault` (not `default`) so a missing key
+   *  is parsed through navSchema and picks up the nested defaults — zod 4's
+   *  `.default()` returns its value verbatim. */
+  nav: navSchema.prefault({}),
+  /** Dismissable top-of-screen banner. `prefault` for the same reason. */
+  announcement: announcementSchema.prefault({}),
 });
 
 export type SiteConfig = z.infer<typeof siteConfigSchema>;
@@ -657,13 +890,22 @@ export type SpacerProps = z.infer<typeof spacerPropsSchema>;
 export type LineProps = z.infer<typeof linePropsSchema>;
 export type QuoteProps = z.infer<typeof quotePropsSchema>;
 export type VideoProps = z.infer<typeof videoPropsSchema>;
+export type PdfProps = z.infer<typeof pdfPropsSchema>;
+export type CodeLanguage = z.infer<typeof codeLanguageSchema>;
+export type CodeProps = z.infer<typeof codePropsSchema>;
 export type CarouselItem = z.infer<typeof carouselItemSchema>;
 export type ProjectCarouselProps = z.infer<typeof projectCarouselPropsSchema>;
+export type ProjectGridItem = z.infer<typeof projectGridItemSchema>;
+export type ProjectGridProps = z.infer<typeof projectGridPropsSchema>;
 export type SocialPlatform = z.infer<typeof socialPlatformSchema>;
 export type SocialLinkItem = z.infer<typeof socialLinkItemSchema>;
 export type SocialLinksProps = z.infer<typeof socialLinksPropsSchema>;
 export type TagsProps = z.infer<typeof tagsPropsSchema>;
 export type MirrorProps = z.infer<typeof mirrorPropsSchema>;
+export type PostListItem = z.infer<typeof postListItemSchema>;
+export type PostListProps = z.infer<typeof postListPropsSchema>;
+export type NavLinkItem = z.infer<typeof navLinkItemSchema>;
+export type NavLinksProps = z.infer<typeof navLinksPropsSchema>;
 
 export type Section = z.infer<typeof sectionSchema>;
 export type SectionBackground = z.infer<typeof sectionBackgroundSchema>;

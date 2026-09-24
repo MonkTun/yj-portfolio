@@ -1,10 +1,13 @@
 "use client";
 
-import { useRef, useState } from "react";
+import { useRef, useState, useSyncExternalStore } from "react";
 import type { VideoProps } from "@/lib/schema";
 import { cn } from "@/lib/utils";
 import { youtubeEmbedUrl } from "@/lib/youtube";
 import { useEdit } from "@/components/EditContext";
+import { MediaSkeleton } from "./MediaSkeleton";
+
+const noopSubscribe = () => () => {};
 
 /** "16/9" → 16/9 as a number. Tolerates spaces and bare numbers. */
 function parseAspectRatio(aspect: string): number {
@@ -47,12 +50,22 @@ export function Video(props: VideoProps) {
   const ratio = parseAspectRatio(aspect);
   const iframeRef = useRef<HTMLIFrameElement | null>(null);
   const [engaged, setEngaged] = useState(false);
+  // The iframe mounts client-side only, so its `load` always fires after
+  // React is listening — a cross-origin frame can't be polled for "already
+  // loaded" the way an <img> can. Until then (and until the player
+  // loads) the shimmer skeleton holds the frame.
+  const mounted = useSyncExternalStore(
+    noopSubscribe,
+    () => true,
+    () => false,
+  );
+  const [loadedEmbed, setLoadedEmbed] = useState<string | null>(null);
 
   function engage() {
     setEngaged(true);
     iframeRef.current?.contentWindow?.postMessage(
       JSON.stringify({ event: "command", func: "playVideo", args: [] }),
-      "*"
+      "*",
     );
   }
 
@@ -62,31 +75,38 @@ export function Video(props: VideoProps) {
         "relative overflow-hidden",
         fit === "height" ? "max-h-full max-w-full" : "w-full",
         radius === 0 && "rounded-sm",
-        !embed && "bg-surface border border-border"
+        !embed && "bg-surface border border-border",
       )}
       style={{
         aspectRatio: aspect || "16/9",
         borderRadius: radius ? `${radius}px` : undefined,
         // Fill the cell's height; cap at its width. The frame keeps its
         // aspect ratio, so when width binds the whole frame shrinks.
-        width: fit === "height" ? `min(100cqw, calc(100cqh * ${ratio}))` : undefined,
+        width:
+          fit === "height" ? `min(100cqw, calc(100cqh * ${ratio}))` : undefined,
       }}
       onPointerLeave={editing ? undefined : () => setEngaged(false)}
     >
       {embed ? (
         <>
-          <iframe
-            ref={iframeRef}
-            src={embed}
-            title="YouTube video"
-            className={cn(
-              "absolute inset-0 h-full w-full",
-              !editing && engaged ? "pointer-events-auto" : "pointer-events-none"
-            )}
-            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-            allowFullScreen
-            loading="lazy"
-          />
+          {mounted && (
+            <iframe
+              ref={iframeRef}
+              src={embed}
+              title="YouTube video"
+              className={cn(
+                "absolute inset-0 h-full w-full",
+                !editing && engaged
+                  ? "pointer-events-auto"
+                  : "pointer-events-none",
+              )}
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+              allowFullScreen
+              loading="lazy"
+              onLoad={() => setLoadedEmbed(embed)}
+            />
+          )}
+          <MediaSkeleton loaded={loadedEmbed === embed} />
           {!editing && !engaged && (
             <div
               className="absolute inset-0 cursor-pointer"

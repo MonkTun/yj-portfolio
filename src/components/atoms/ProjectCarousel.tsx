@@ -13,6 +13,7 @@ import {
   imageTransformCss,
   isOptimizableImageSrc,
 } from "./imageStyles";
+import { MediaSkeleton, useMediaLoaded } from "./MediaSkeleton";
 
 /**
  * Horizontal project carousel. Two variants share one block:
@@ -154,6 +155,7 @@ function CarouselImage({
   radius: number;
   cardWidth: number;
 }) {
+  const { loaded, mediaProps } = useMediaLoaded(item.src);
   const tintClass = imageTintBgClass[item.tint];
   const showTint = tintClass !== null && item.tintOpacity > 0;
 
@@ -183,6 +185,7 @@ function CarouselImage({
             // Tiles render at exactly cardWidth px, so the optimizer can
             // serve a variant that size instead of the full original.
             <NextImage
+              {...mediaProps}
               src={item.src}
               alt={item.alt}
               fill
@@ -194,6 +197,7 @@ function CarouselImage({
           ) : (
             // eslint-disable-next-line @next/next/no-img-element
             <img
+              {...mediaProps}
               src={item.src}
               alt={item.alt}
               draggable={false}
@@ -203,6 +207,7 @@ function CarouselImage({
               className="absolute inset-0 h-full w-full object-cover"
             />
           )}
+          <MediaSkeleton loaded={loaded} />
           {showTint && (
             <div
               aria-hidden

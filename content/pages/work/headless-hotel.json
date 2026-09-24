@@ -96,6 +96,56 @@
             "color": "foreground",
             "transform": "none"
           }
+        },
+        {
+          "type": "text",
+          "props": {
+            "content": "Overview",
+            "variant": "kicker",
+            "align": "left",
+            "color": "muted",
+            "transform": "none"
+          },
+          "id": "blk_hh_overview_kicker",
+          "layout": {
+            "col": 2,
+            "colSpan": 7,
+            "row": 21,
+            "rowSpan": 2
+          },
+          "mobile": {
+            "layout": {
+              "col": 1,
+              "colSpan": 12,
+              "row": 23,
+              "rowSpan": 2
+            }
+          }
+        },
+        {
+          "type": "text",
+          "props": {
+            "content": "• Unity / C#, made in 7 days for Brackey's 2024 Game Jam<br>• Programmer — inventory, crafting, player controller<br>• Designer — the puzzle layer that gates the escape<br>• Artist — player animation, post-processing for the horror mood",
+            "variant": "body",
+            "align": "left",
+            "color": "foreground",
+            "transform": "none"
+          },
+          "id": "blk_hh_overview",
+          "layout": {
+            "col": 2,
+            "colSpan": 7,
+            "row": 23,
+            "rowSpan": 9
+          },
+          "mobile": {
+            "layout": {
+              "col": 1,
+              "colSpan": 12,
+              "row": 25,
+              "rowSpan": 13
+            }
+          }
         }
       ]
     },
@@ -503,6 +553,112 @@
             "variant": "ghost",
             "align": "left",
             "newTab": false
+          }
+        }
+      ]
+    },
+    {
+      "id": "sec_footer",
+      "background": {
+        "type": "reverse"
+      },
+      "padding": "lg",
+      "minHeight": "auto",
+      "align": "top",
+      "blocks": [
+        {
+          "type": "mirror",
+          "props": {
+            "mirrorId": "mir_footer_kicker"
+          },
+          "id": "blk_footer_kicker_headless_hotel",
+          "layout": {
+            "col": 1,
+            "colSpan": 6,
+            "row": 1,
+            "rowSpan": 2
+          },
+          "mobile": {
+            "layout": {
+              "colSpan": 12
+            }
+          }
+        },
+        {
+          "type": "mirror",
+          "props": {
+            "mirrorId": "mir_footer_email"
+          },
+          "id": "blk_footer_email_headless_hotel",
+          "layout": {
+            "col": 1,
+            "colSpan": 7,
+            "row": 3,
+            "rowSpan": 5
+          },
+          "mobile": {
+            "layout": {
+              "colSpan": 12,
+              "rowSpan": 13
+            }
+          }
+        },
+        {
+          "type": "mirror",
+          "props": {
+            "mirrorId": "mir_footer_nav"
+          },
+          "id": "blk_footer_nav_headless_hotel",
+          "layout": {
+            "col": 1,
+            "colSpan": 4,
+            "row": 11,
+            "rowSpan": 9
+          },
+          "mobile": {
+            "layout": {
+              "colSpan": 8
+            }
+          }
+        },
+        {
+          "type": "mirror",
+          "props": {
+            "mirrorId": "mir_footer_colophon"
+          },
+          "id": "blk_footer_colophon_headless_hotel",
+          "layout": {
+            "col": 1,
+            "colSpan": 10,
+            "row": 22,
+            "rowSpan": 1
+          },
+          "mobile": {
+            "layout": {
+              "colSpan": 12,
+              "row": 31,
+              "rowSpan": 3
+            }
+          }
+        },
+        {
+          "type": "mirror",
+          "props": {
+            "mirrorId": "mir_footer_social"
+          },
+          "id": "blk_footer_social_headless_hotel",
+          "layout": {
+            "col": 11,
+            "colSpan": 2,
+            "row": 5,
+            "rowSpan": 3
+          },
+          "mobile": {
+            "layout": {
+              "col": 1,
+              "colSpan": 12,
+              "row": 27
+            }
           }
         }
       ]

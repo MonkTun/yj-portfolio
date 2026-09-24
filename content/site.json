@@ -47,6 +47,10 @@
     {
       "name": "Artist",
       "color": "#398966"
+    },
+    {
+      "name": "TPS/FPS",
+      "color": "#000000"
     }
   ],
   "mirrors": [
@@ -184,6 +188,148 @@
           "pauseOnHover": true
         }
       }
+    },
+    {
+      "id": "mir_posts",
+      "name": "All posts",
+      "source": {
+        "type": "postList",
+        "props": {
+          "items": [
+            {
+              "title": "Crashball #1",
+              "date": "2026-09-23",
+              "summary": "Project Announcement",
+              "href": "/blog/crashball-devlog-1"
+            }
+          ],
+          "numbered": true,
+          "showSummary": true,
+          "size": "lg",
+          "newTab": false
+        }
+      }
+    },
+    {
+      "id": "mir_footer_kicker",
+      "name": "Footer kicker",
+      "source": {
+        "type": "text",
+        "props": {
+          "content": "Get in touch",
+          "variant": "kicker",
+          "align": "left",
+          "color": "muted",
+          "transform": "none"
+        }
+      }
+    },
+    {
+      "id": "mir_footer_email",
+      "name": "Footer email",
+      "source": {
+        "type": "text",
+        "props": {
+          "content": "peroni014@gmail.com",
+          "variant": "h2",
+          "align": "left",
+          "color": "foreground",
+          "transform": "none",
+          "fontSize": 87
+        }
+      }
+    },
+    {
+      "id": "mir_footer_nav",
+      "name": "Footer nav",
+      "source": {
+        "type": "navLinks",
+        "props": {
+          "items": [
+            {
+              "label": "Home",
+              "href": "/"
+            },
+            {
+              "label": "Projects",
+              "href": "/projects"
+            },
+            {
+              "label": "Blog",
+              "href": "/blog"
+            }
+          ],
+          "fontSize": 28,
+          "rules": true,
+          "highlightCurrent": true,
+          "arrow": true,
+          "newTab": false
+        }
+      }
+    },
+    {
+      "id": "mir_footer_colophon",
+      "name": "Footer colophon",
+      "source": {
+        "type": "text",
+        "props": {
+          "content": "© Youngje Park<br>Website made possible BY claude code",
+          "variant": "kicker",
+          "align": "left",
+          "color": "muted",
+          "transform": "none"
+        }
+      }
+    },
+    {
+      "id": "mir_footer_social",
+      "name": "Footer socials",
+      "source": {
+        "type": "socialLinks",
+        "props": {
+          "items": [
+            {
+              "platform": "linkedin",
+              "href": "https://www.linkedin.com/in/youngjepark1"
+            },
+            {
+              "platform": "discord",
+              "href": "https://discord.com/users/340039649084833792"
+            },
+            {
+              "platform": "github",
+              "href": "https://github.com/MonkTun"
+            }
+          ],
+          "variant": "icons",
+          "size": 20,
+          "gap": 20,
+          "align": "right",
+          "color": "foreground",
+          "newTab": true
+        }
+      }
     }
-  ]
+  ],
+  "nav": {
+    "enabled": false,
+    "items": [
+      {
+        "label": "Home",
+        "href": "/"
+      },
+      {
+        "label": "Blog",
+        "href": "/blog"
+      }
+    ]
+  },
+  "announcement": {
+    "enabled": true,
+    "label": "",
+    "message": "Hey I am reimagining my portfolio to include more detailed step by step progress with some code snippets. check back in a few days",
+    "linkLabel": "",
+    "href": "",
+    "revision": 1
+  }
 }

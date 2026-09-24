@@ -1,0 +1,195 @@
+{
+  "meta": {
+    "title": "Blog — Youngje Park",
+    "description": "Notes on making games, tools, and this site."
+  },
+  "sections": [
+    {
+      "id": "sec_blog_hero",
+      "background": {
+        "type": "image",
+        "src": "/uploads/allnighter2-mtcha6ms.webp",
+        "fit": "both",
+        "overlay": 90,
+        "filter": "none",
+        "focalX": 50,
+        "focalY": 50,
+        "rotate": 0,
+        "flipX": false,
+        "flipY": false,
+        "blur": 0,
+        "zoom": 1,
+        "tint": "none",
+        "tintOpacity": 0
+      },
+      "padding": "xl",
+      "minHeight": "half",
+      "align": "bottom",
+      "blocks": [
+        {
+          "type": "line",
+          "props": {
+            "thickness": 1,
+            "color": "border"
+          },
+          "id": "blk_blog_rule",
+          "layout": {
+            "col": 5,
+            "colSpan": 8,
+            "row": 1,
+            "rowSpan": 1
+          }
+        },
+        {
+          "type": "text",
+          "props": {
+            "content": "BLOG",
+            "variant": "h1",
+            "align": "left",
+            "color": "foreground",
+            "transform": "none",
+            "lineHeight": 0.92,
+            "letterSpacing": -0.025
+          },
+          "id": "blk_blog_h1",
+          "layout": {
+            "col": 1,
+            "colSpan": 10,
+            "row": 3,
+            "rowSpan": 9
+          }
+        }
+      ]
+    },
+    {
+      "id": "sec_blog_list",
+      "background": {
+        "type": "transparent"
+      },
+      "padding": "md",
+      "minHeight": "auto",
+      "align": "top",
+      "blocks": [
+        {
+          "type": "mirror",
+          "props": {
+            "mirrorId": "mir_posts"
+          },
+          "id": "blk_blog_posts",
+          "layout": {
+            "col": 1,
+            "colSpan": 12,
+            "row": 1,
+            "rowSpan": 20
+          }
+        }
+      ]
+    },
+    {
+      "id": "sec_footer_blog",
+      "background": {
+        "type": "reverse"
+      },
+      "padding": "lg",
+      "minHeight": "auto",
+      "align": "top",
+      "blocks": [
+        {
+          "type": "mirror",
+          "props": {
+            "mirrorId": "mir_footer_kicker"
+          },
+          "id": "blk_footer_kicker_blog",
+          "layout": {
+            "col": 1,
+            "colSpan": 6,
+            "row": 1,
+            "rowSpan": 2
+          },
+          "mobile": {
+            "layout": {
+              "colSpan": 12
+            }
+          }
+        },
+        {
+          "type": "mirror",
+          "props": {
+            "mirrorId": "mir_footer_email"
+          },
+          "id": "blk_footer_email_blog",
+          "layout": {
+            "col": 1,
+            "colSpan": 7,
+            "row": 3,
+            "rowSpan": 5
+          },
+          "mobile": {
+            "layout": {
+              "colSpan": 12,
+              "rowSpan": 13
+            }
+          }
+        },
+        {
+          "type": "mirror",
+          "props": {
+            "mirrorId": "mir_footer_nav"
+          },
+          "id": "blk_footer_nav_blog",
+          "layout": {
+            "col": 1,
+            "colSpan": 4,
+            "row": 11,
+            "rowSpan": 9
+          },
+          "mobile": {
+            "layout": {
+              "colSpan": 8
+            }
+          }
+        },
+        {
+          "type": "mirror",
+          "props": {
+            "mirrorId": "mir_footer_colophon"
+          },
+          "id": "blk_footer_colophon_blog",
+          "layout": {
+            "col": 1,
+            "colSpan": 10,
+            "row": 22,
+            "rowSpan": 1
+          },
+          "mobile": {
+            "layout": {
+              "colSpan": 12,
+              "row": 31,
+              "rowSpan": 3
+            }
+          }
+        },
+        {
+          "type": "mirror",
+          "props": {
+            "mirrorId": "mir_footer_social"
+          },
+          "id": "blk_footer_social_blog",
+          "layout": {
+            "col": 11,
+            "colSpan": 2,
+            "row": 5,
+            "rowSpan": 3
+          },
+          "mobile": {
+            "layout": {
+              "col": 1,
+              "colSpan": 12,
+              "row": 27
+            }
+          }
+        }
+      ]
+    }
+  ]
+}

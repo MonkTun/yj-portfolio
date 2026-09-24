@@ -1,5 +1,7 @@
 import { listPages, loadSiteConfig } from "@/lib/content";
 import { RoutingPanel } from "@/components/admin/RoutingPanel";
+import { NavPanel } from "@/components/admin/NavPanel";
+import { AnnouncementPanel } from "@/components/admin/AnnouncementPanel";
 
 export const dynamic = "force-dynamic";
 
@@ -18,8 +20,13 @@ export default async function RoutingIndex() {
         </p>
       </header>
 
-      <div className="mt-10">
+      <div className="mt-10 space-y-10">
         <RoutingPanel initialConfig={config} pages={slugs} />
+        <AnnouncementPanel
+          initialAnnouncement={config.announcement}
+          pages={slugs}
+        />
+        <NavPanel initialNav={config.nav} pages={slugs} />
       </div>
     </>
   );

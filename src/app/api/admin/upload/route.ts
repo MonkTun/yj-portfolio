@@ -17,6 +17,8 @@ const ALLOWED_EXT = new Set([
   ".webp",
   ".avif",
   ".svg",
+  // PDF blocks. Stored as-is — nothing below re-encodes them.
+  ".pdf",
 ]);
 
 /**

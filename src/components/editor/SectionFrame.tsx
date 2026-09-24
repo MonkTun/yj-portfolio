@@ -9,8 +9,8 @@ import type {
   BlockType,
   Section,
 } from "@/lib/schema";
+import { SectionImageBackground } from "@/components/SectionImageBackground";
 import {
-  SectionImageBackground,
   sectionBackgroundStyle,
   sectionEditorClasses,
 } from "@/components/SectionRenderer";

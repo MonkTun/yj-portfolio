@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { listedSlugs } from "@/lib/blog";
 import { listPages, loadSiteConfig } from "@/lib/content";
 import { NewPageForm } from "@/components/admin/NewPageForm";
 import { PageRowMenu } from "@/components/admin/PageRowMenu";
@@ -17,11 +18,16 @@ function publicLabel(slug: string, config: SiteConfig): string {
   return `/${slug}`;
 }
 
-function roleBadges(slug: string, config: SiteConfig): string[] {
+function roleBadges(
+  slug: string,
+  config: SiteConfig,
+  listed: Set<string>,
+): string[] {
   const out: string[] = [];
   if (slug === config.homeSlug) out.push("home");
   if (slug === config.constructionSlug) out.push("construction");
   if (slug === config.notFoundSlug) out.push("404");
+  if (listed.has(slug)) out.push("in blog list");
   return out;
 }
 
@@ -70,6 +76,7 @@ function buildGroups(slugs: string[]): Group[] {
 export default async function PagesIndex() {
   const [slugs, config] = await Promise.all([listPages(), loadSiteConfig()]);
   const groups = buildGroups(slugs);
+  const listed = listedSlugs(config);
 
   return (
     <>
@@ -88,7 +95,12 @@ export default async function PagesIndex() {
 
       <div className="mt-12 space-y-12">
         {groups.map((group) => (
-          <PageGroup key={group.key} group={group} config={config} />
+          <PageGroup
+            key={group.key}
+            group={group}
+            config={config}
+            listed={listed}
+          />
         ))}
       </div>
 
@@ -106,9 +118,11 @@ export default async function PagesIndex() {
 function PageGroup({
   group,
   config,
+  listed,
 }: {
   group: Group;
   config: SiteConfig;
+  listed: Set<string>;
 }) {
   return (
     <section>
@@ -120,7 +134,7 @@ function PageGroup({
       </header>
       <ul className="divide-y divide-border">
         {group.slugs.map((slug) => {
-          const badges = roleBadges(slug, config);
+          const badges = roleBadges(slug, config, listed);
           return (
             <li
               key={slug}
@@ -150,7 +164,11 @@ function PageGroup({
                   Edit →
                 </span>
               </Link>
-              <PageRowMenu slug={slug} config={config} />
+              <PageRowMenu
+                slug={slug}
+                config={config}
+                listed={listed.has(slug)}
+              />
             </li>
           );
         })}

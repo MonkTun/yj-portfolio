@@ -9,13 +9,16 @@ type Props = {
   pages: string[];
 };
 
-const ROLE_LABELS: Record<keyof Omit<SiteConfig, "constructionMode" | "tags" | "mirrors">, string> = {
+/** The page-slug roles this panel assigns (the rest of SiteConfig has its own panels). */
+type RoleKey = keyof Pick<SiteConfig, "homeSlug" | "constructionSlug" | "notFoundSlug">;
+
+const ROLE_LABELS: Record<RoleKey, string> = {
   homeSlug: "Home",
   constructionSlug: "Construction",
   notFoundSlug: "404",
 };
 
-const ROLE_HINTS: Record<keyof Omit<SiteConfig, "constructionMode" | "tags" | "mirrors">, string> = {
+const ROLE_HINTS: Record<RoleKey, string> = {
   homeSlug: "Renders at / when construction mode is off.",
   constructionSlug: "Renders at / when construction mode is on.",
   notFoundSlug: "Served for unknown URLs (Next.js not-found route).",

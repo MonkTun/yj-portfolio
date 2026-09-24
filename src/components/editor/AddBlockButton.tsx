@@ -1,12 +1,12 @@
 "use client";
 
-import { useEffect, useLayoutEffect, useRef, useState } from "react";
-import { createPortal } from "react-dom";
+import { useState } from "react";
 import { atomRegistry } from "@/lib/atom-registry";
 import { useMirrorLibrary } from "@/components/MirrorLibraryContext";
 import type { BlockType } from "@/lib/schema";
 import { cn } from "@/lib/utils";
 import { PlusIcon } from "./icons";
+import { Modal } from "./Modal";
 
 type Props = {
   /** `props` seeds the new block on top of the registry defaults — used to
@@ -15,19 +15,19 @@ type Props = {
   visible: boolean;
 };
 
+const pickCls =
+  "w-full text-left px-2 py-2 rounded-sm hover:bg-foreground/10 group transition-colors";
+
 /**
  * Floating "+ Add block" button that appears at the bottom-center of a
- * selected/hovered section. Click to open a glass picker with the atomic
+ * selected/hovered section. Click to open a centered picker with the atomic
  * block types, plus one entry per mirror in the site library — picking a
- * mirror spawns an instance of it. The picker renders in a body portal — the section and the
- * canvas device frame are both overflow-hidden, so an in-tree popover
- * opening upward gets clipped by the section boundary.
+ * mirror spawns an instance of it. The picker is a viewport-centered modal
+ * rather than a popover anchored to the button: anchored, it grew upward off
+ * the top of the screen once the type + mirror lists got long.
  */
 export function AddBlockButton({ onAdd, visible }: Props) {
   const [open, setOpen] = useState(false);
-  const ref = useRef<HTMLDivElement>(null);
-  const panelRef = useRef<HTMLDivElement>(null);
-  const [pos, setPos] = useState<{ left: number; bottom: number } | null>(null);
   const { mirrors } = useMirrorLibrary();
   // The bare "Mirror" type is only useful pointed at a source, so the grid
   // lists sources by name instead of the generic entry.
@@ -35,40 +35,16 @@ export function AddBlockButton({ onAdd, visible }: Props) {
     (entry) => entry.type !== "mirror",
   );
 
-  useLayoutEffect(() => {
-    if (!open) return;
-    function place() {
-      const rect = ref.current?.getBoundingClientRect();
-      if (!rect) return;
-      setPos({
-        left: rect.left + rect.width / 2,
-        bottom: window.innerHeight - rect.top + 12,
-      });
-    }
-    place();
-    window.addEventListener("resize", place);
-    window.addEventListener("scroll", place, true);
-    return () => {
-      window.removeEventListener("resize", place);
-      window.removeEventListener("scroll", place, true);
-    };
-  }, [open]);
+  function add(type: BlockType, props?: Record<string, unknown>) {
+    onAdd(type, props);
+    setOpen(false);
+  }
 
-  useEffect(() => {
-    if (!open) return;
-    function handler(e: MouseEvent) {
-      const target = e.target as Node;
-      if (ref.current?.contains(target)) return;
-      if (panelRef.current?.contains(target)) return;
-      setOpen(false);
-    }
-    document.addEventListener("mousedown", handler);
-    return () => document.removeEventListener("mousedown", handler);
-  }, [open]);
-
+  // The modal portals to <body>, but React events still bubble through the
+  // component tree — stopping them on this wrapper keeps picks and backdrop
+  // clicks from also selecting / deselecting the section behind the overlay.
   return (
     <div
-      ref={ref}
       onClick={(e) => e.stopPropagation()}
       onMouseDown={(e) => e.stopPropagation()}
       className={cn(
@@ -78,33 +54,22 @@ export function AddBlockButton({ onAdd, visible }: Props) {
     >
       <button
         type="button"
-        onClick={() => setOpen((o) => !o)}
+        onClick={() => setOpen(true)}
         className="kicker glass-strong rounded-full h-9 px-4 flex items-center gap-2 text-foreground hover:text-accent transition-colors shadow-2xl"
       >
         <PlusIcon /> Add block
       </button>
 
-      {open &&
-        pos &&
-        createPortal(
-          <div
-            ref={panelRef}
-            onClick={(e) => e.stopPropagation()}
-            onMouseDown={(e) => e.stopPropagation()}
-            style={{ left: pos.left, bottom: pos.bottom }}
-            className="fixed -translate-x-1/2 z-100 bg-surface border border-border rounded-md p-2 w-72 shadow-2xl"
-          >
-          <p className="kicker px-2 pt-1 pb-2">Block type</p>
-          <ul className="grid grid-cols-2 gap-1">
+      {open && (
+        <Modal title="Add block" size="lg" onClose={() => setOpen(false)}>
+          <p className="kicker px-2 pb-2">Block type</p>
+          <ul className="grid grid-cols-2 sm:grid-cols-3 gap-1">
             {atomEntries.map((entry) => (
               <li key={entry.type}>
                 <button
                   type="button"
-                  onClick={() => {
-                    onAdd(entry.type);
-                    setOpen(false);
-                  }}
-                  className="w-full text-left px-2 py-2 rounded-sm hover:bg-foreground/10 group transition-colors"
+                  onClick={() => add(entry.type)}
+                  className={pickCls}
                 >
                   <span className="block text-sm text-foreground leading-tight">
                     {entry.label}
@@ -124,16 +89,13 @@ export function AddBlockButton({ onAdd, visible }: Props) {
               None yet — select a block and press “Make mirror” in the panel.
             </p>
           ) : (
-            <ul className="grid grid-cols-2 gap-1">
+            <ul className="grid grid-cols-2 sm:grid-cols-3 gap-1">
               {mirrors.map((m) => (
                 <li key={m.id}>
                   <button
                     type="button"
-                    onClick={() => {
-                      onAdd("mirror", { mirrorId: m.id });
-                      setOpen(false);
-                    }}
-                    className="w-full text-left px-2 py-2 rounded-sm hover:bg-foreground/10 group transition-colors"
+                    onClick={() => add("mirror", { mirrorId: m.id })}
+                    className={pickCls}
                   >
                     <span className="block text-sm text-foreground leading-tight truncate">
                       {m.name}
@@ -146,9 +108,8 @@ export function AddBlockButton({ onAdd, visible }: Props) {
               ))}
             </ul>
           )}
-          </div>,
-          document.body
-        )}
+        </Modal>
+      )}
     </div>
   );
 }

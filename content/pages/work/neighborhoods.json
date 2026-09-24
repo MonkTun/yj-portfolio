@@ -150,13 +150,59 @@
           "layout": {
             "col": 1,
             "colSpan": 3,
-            "row": 16,
+            "row": 27,
             "rowSpan": 2
           },
           "mobile": {
             "layout": {
               "colSpan": 12,
-              "row": 30
+              "row": 45
+            }
+          }
+        },
+        {
+          "type": "text",
+          "props": {
+            "content": "Overview",
+            "variant": "kicker",
+            "align": "left",
+            "color": "muted",
+            "transform": "none"
+          },
+          "id": "blk_nb_overview_kicker",
+          "layout": {
+            "col": 1,
+            "colSpan": 12,
+            "row": 15,
+            "rowSpan": 2
+          },
+          "mobile": {
+            "layout": {
+              "row": 29,
+              "rowSpan": 2
+            }
+          }
+        },
+        {
+          "type": "text",
+          "props": {
+            "content": "• Gameplay programming in C++ — chatter, footfall range, tutorial, graffiti<br>• UI engineering — options menu, decor palette, building info panels<br>• Blueprint tooling for designers — exposed nodes, debug commands, docs<br>• Audio wiring — MetaSounds and audio modulation",
+            "variant": "body",
+            "align": "left",
+            "color": "foreground",
+            "transform": "none"
+          },
+          "id": "blk_nb_overview",
+          "layout": {
+            "col": 1,
+            "colSpan": 12,
+            "row": 17,
+            "rowSpan": 9
+          },
+          "mobile": {
+            "layout": {
+              "row": 31,
+              "rowSpan": 13
             }
           }
         }
@@ -796,6 +842,112 @@
             "layout": {
               "colSpan": 12,
               "row": 47
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "sec_footer",
+      "background": {
+        "type": "reverse"
+      },
+      "padding": "lg",
+      "minHeight": "auto",
+      "align": "top",
+      "blocks": [
+        {
+          "type": "mirror",
+          "props": {
+            "mirrorId": "mir_footer_kicker"
+          },
+          "id": "blk_footer_kicker_neighborhoods",
+          "layout": {
+            "col": 1,
+            "colSpan": 6,
+            "row": 1,
+            "rowSpan": 2
+          },
+          "mobile": {
+            "layout": {
+              "colSpan": 12
+            }
+          }
+        },
+        {
+          "type": "mirror",
+          "props": {
+            "mirrorId": "mir_footer_email"
+          },
+          "id": "blk_footer_email_neighborhoods",
+          "layout": {
+            "col": 1,
+            "colSpan": 7,
+            "row": 3,
+            "rowSpan": 5
+          },
+          "mobile": {
+            "layout": {
+              "colSpan": 12,
+              "rowSpan": 13
+            }
+          }
+        },
+        {
+          "type": "mirror",
+          "props": {
+            "mirrorId": "mir_footer_nav"
+          },
+          "id": "blk_footer_nav_neighborhoods",
+          "layout": {
+            "col": 1,
+            "colSpan": 4,
+            "row": 11,
+            "rowSpan": 9
+          },
+          "mobile": {
+            "layout": {
+              "colSpan": 8
+            }
+          }
+        },
+        {
+          "type": "mirror",
+          "props": {
+            "mirrorId": "mir_footer_colophon"
+          },
+          "id": "blk_footer_colophon_neighborhoods",
+          "layout": {
+            "col": 1,
+            "colSpan": 10,
+            "row": 22,
+            "rowSpan": 1
+          },
+          "mobile": {
+            "layout": {
+              "colSpan": 12,
+              "row": 31,
+              "rowSpan": 3
+            }
+          }
+        },
+        {
+          "type": "mirror",
+          "props": {
+            "mirrorId": "mir_footer_social"
+          },
+          "id": "blk_footer_social_neighborhoods",
+          "layout": {
+            "col": 11,
+            "colSpan": 2,
+            "row": 5,
+            "rowSpan": 3
+          },
+          "mobile": {
+            "layout": {
+              "col": 1,
+              "colSpan": 12,
+              "row": 27
             }
           }
         }

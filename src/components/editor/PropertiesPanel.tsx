@@ -1,7 +1,6 @@
 "use client";
 
 import { useCallback, useEffect, useRef, useState } from "react";
-import { createPortal } from "react-dom";
 
 import type {
   Page,
@@ -11,8 +10,13 @@ import type {
   TextProps,
   ImageProps,
   VideoProps,
+  PdfProps,
+  CodeProps,
+  CodeLanguage,
   ProjectCarouselProps,
   CarouselItem,
+  ProjectGridProps,
+  ProjectGridItem,
   SocialLinksProps,
   SocialLinkItem,
   SocialPlatform,
@@ -20,11 +24,17 @@ import type {
   TagDef,
   BlockContent,
   MirrorDef,
+  PostListProps,
+  PostListItem,
+  NavLinksProps,
+  NavLinkItem,
 } from "@/lib/schema";
 import {
   CAROUSEL_ITEM_EFFECT_DEFAULTS,
+  codeLanguageSchema,
   socialPlatformSchema,
 } from "@/lib/schema";
+import { CODE_LANGUAGE_LABELS } from "@/lib/code-languages";
 import { SOCIAL_PLATFORM_LABELS } from "@/components/atoms/SocialLinks";
 import { getYouTubeId } from "@/lib/youtube";
 import { uploadImageFile } from "@/lib/upload-image";
@@ -44,6 +54,7 @@ import {
 } from "@/lib/responsive";
 import { isMobileOverridable } from "@/lib/mobile-overrides";
 import type { Selection } from "./Editor";
+import { Modal } from "./Modal";
 
 const inputCls =
   "w-full bg-background border border-border rounded-sm px-3 py-2 text-foreground font-body text-sm focus:outline-none focus:border-accent transition-colors";
@@ -736,9 +747,23 @@ function BlockTypeFields({
           onUpdate={onUpdate}
         />
       )}
+      {block.type === "pdf" && (
+        <PdfBlockProps props={block.props as PdfProps} onUpdate={onUpdate} />
+      )}
+      {block.type === "code" && (
+        <CodeBlockProps props={block.props as CodeProps} onUpdate={onUpdate} />
+      )}
       {block.type === "projectCarousel" && (
         <ProjectCarouselBlockProps
           props={block.props as ProjectCarouselProps}
+          availablePages={availablePages}
+          currentSlug={currentSlug}
+          onUpdate={onUpdate}
+        />
+      )}
+      {block.type === "projectGrid" && (
+        <ProjectGridBlockProps
+          props={block.props as ProjectGridProps}
           availablePages={availablePages}
           currentSlug={currentSlug}
           onUpdate={onUpdate}
@@ -755,6 +780,22 @@ function BlockTypeFields({
           props={block.props as TagsProps}
           siteTags={siteTags}
           onUpdateSiteTags={onUpdateSiteTags}
+          onUpdate={onUpdate}
+        />
+      )}
+      {block.type === "postList" && (
+        <PostListBlockProps
+          props={block.props as PostListProps}
+          availablePages={availablePages}
+          currentSlug={currentSlug}
+          onUpdate={onUpdate}
+        />
+      )}
+      {block.type === "navLinks" && (
+        <NavLinksBlockProps
+          props={block.props as NavLinksProps}
+          availablePages={availablePages}
+          currentSlug={currentSlug}
           onUpdate={onUpdate}
         />
       )}
@@ -1041,14 +1082,29 @@ function BlockMobileProps({
       {block.type === "video" && (
         <MobileVideoProps block={block} merged={merged} onUpdate={onUpdate} />
       )}
+      {block.type === "pdf" && (
+        <MobilePdfProps block={block} merged={merged} onUpdate={onUpdate} />
+      )}
+      {block.type === "code" && (
+        <MobileCodeProps block={block} merged={merged} onUpdate={onUpdate} />
+      )}
       {block.type === "spacer" && (
         <MobileSpacerProps block={block} merged={merged} onUpdate={onUpdate} />
+      )}
+      {block.type === "projectGrid" && (
+        <MobileProjectGridProps
+          block={block}
+          merged={merged}
+          onUpdate={onUpdate}
+        />
       )}
       {(block.type === "line" ||
         block.type === "quote" ||
         block.type === "projectCarousel" ||
         block.type === "socialLinks" ||
-        block.type === "tags") && (
+        block.type === "tags" ||
+        block.type === "postList" ||
+        block.type === "navLinks") && (
         <Hint>This block has no mobile-specific style overrides.</Hint>
       )}
       {block.type === "mirror" && (
@@ -1338,6 +1394,63 @@ function MobileVideoProps({
   );
 }
 
+function MobilePdfProps({
+  block,
+  merged,
+  onUpdate,
+}: {
+  block: Block;
+  merged: Block;
+  onUpdate: (patch: Record<string, unknown>) => void;
+}) {
+  const props = merged.props as PdfProps;
+  return (
+    <FieldShell
+      label="fit"
+      state={mFieldState(block, "fit")}
+      onReset={() => onUpdate({ fit: undefined })}
+    >
+      <SegmentBar
+        options={["contain", "width"]}
+        labels={{ contain: "Whole page", width: "Width" }}
+        value={props.fit}
+        onChange={(v) => onUpdate({ fit: v })}
+      />
+    </FieldShell>
+  );
+}
+
+function MobileCodeProps({
+  block,
+  merged,
+  onUpdate,
+}: {
+  block: Block;
+  merged: Block;
+  onUpdate: (patch: Record<string, unknown>) => void;
+}) {
+  const props = merged.props as CodeProps;
+  return (
+    <FieldShell
+      label={`code size — ${props.fontSize}px`}
+      state={mFieldState(block, "fontSize")}
+      onReset={() => onUpdate({ fontSize: undefined })}
+    >
+      <input
+        type="range"
+        min={10}
+        max={24}
+        step={1}
+        value={props.fontSize}
+        onChange={(e) =>
+          onUpdate({ fontSize: parseInt(e.target.value, 10) || 13 })
+        }
+        className="w-full accent-accent"
+      />
+    </FieldShell>
+  );
+}
+
 function MobileSpacerProps({
   block,
   merged,
@@ -1363,6 +1476,72 @@ function MobileSpacerProps({
         }
       />
     </FieldShell>
+  );
+}
+
+/**
+ * Project grid on a phone: the column count is the whole point of the
+ * override (a 3-up desktop grid is 1-up on a phone), with gap and aspect
+ * along for the ride so a 16:9 desktop tile can go 4:3 when it's alone in
+ * its row.
+ */
+function MobileProjectGridProps({
+  block,
+  merged,
+  onUpdate,
+}: {
+  block: Block;
+  merged: Block;
+  onUpdate: (patch: Record<string, unknown>) => void;
+}) {
+  const props = merged.props as ProjectGridProps;
+  const desktop = block.props as ProjectGridProps;
+  return (
+    <>
+      <FieldShell
+        label={`columns — ${props.columns}`}
+        state={mFieldState(block, "columns")}
+        onReset={() => onUpdate({ columns: undefined })}
+      >
+        <SegmentBar
+          options={["1", "2", "3"]}
+          value={String(props.columns)}
+          onChange={(v) => onUpdate({ columns: parseInt(v, 10) || 1 })}
+        />
+        <p className="text-xs text-foreground/40 italic mt-1">
+          Desktop uses {desktop.columns}.
+        </p>
+      </FieldShell>
+      <FieldShell
+        label={`gap — ${props.gap}px`}
+        state={mFieldState(block, "gap")}
+        onReset={() => onUpdate({ gap: undefined })}
+      >
+        <input
+          type="range"
+          min={0}
+          max={64}
+          step={2}
+          value={props.gap}
+          onChange={(e) =>
+            onUpdate({ gap: parseInt(e.target.value, 10) || 0 })
+          }
+          className="w-full accent-accent"
+        />
+      </FieldShell>
+      <FieldShell
+        label="tile ratio"
+        state={mFieldState(block, "aspect")}
+        onReset={() => onUpdate({ aspect: undefined })}
+      >
+        <SegmentBar
+          options={GRID_ASPECTS}
+          labels={GRID_ASPECT_LABELS}
+          value={props.aspect}
+          onChange={(v) => onUpdate({ aspect: v })}
+        />
+      </FieldShell>
+    </>
   );
 }
 
@@ -1633,6 +1812,21 @@ function ImageBlockProps({
           value={props.href ?? ""}
           onChange={(e) => onUpdate({ href: e.target.value || undefined })}
         />
+      </Field>
+
+      <Field label="click to enlarge">
+        <ToggleBtn
+          label={props.lightbox ? "Lightbox on" : "Lightbox off"}
+          active={props.lightbox && !props.href}
+          onToggle={() => onUpdate({ lightbox: !props.lightbox })}
+        />
+        <p className="text-xs text-foreground/40 italic mt-1.5">
+          {props.href
+            ? "Off while the image links somewhere — the link wins."
+            : props.lightbox
+              ? "On the site, a click opens the image full-screen and pages through every image on the page."
+              : "The image stays put when clicked."}
+        </p>
       </Field>
     </>
   );
@@ -1944,6 +2138,288 @@ function ProjectCarouselBlockProps({
   );
 }
 
+const GRID_ASPECTS = ["16/9", "3/2", "4/3", "1/1", "4/5", "21/9"];
+const GRID_ASPECT_LABELS: Record<string, string> = {
+  "16/9": "16:9",
+  "3/2": "3:2",
+  "4/3": "4:3",
+  "1/1": "Square",
+  "4/5": "4:5",
+  "21/9": "21:9",
+};
+
+function ProjectGridBlockProps({
+  props,
+  availablePages = [],
+  currentSlug,
+  onUpdate,
+}: {
+  props: ProjectGridProps;
+  availablePages?: string[];
+  currentSlug?: string;
+  onUpdate: (patch: Record<string, unknown>) => void;
+}) {
+  const items = props.items;
+
+  const setItem = (i: number, patch: Partial<ProjectGridItem>) => {
+    onUpdate({
+      items: items.map((it, idx) => (idx === i ? { ...it, ...patch } : it)),
+    });
+  };
+  const addItem = () => {
+    onUpdate({
+      items: [
+        ...items,
+        {
+          src: "",
+          alt: "",
+          title: "New project",
+          titleSrc: "",
+          titleWidth: 60,
+          meta: "",
+          focalX: 50,
+          focalY: 50,
+        },
+      ],
+    });
+  };
+  const removeItem = (i: number) => {
+    onUpdate({ items: items.filter((_, idx) => idx !== i) });
+  };
+  const move = (i: number, dir: -1 | 1) => {
+    const j = i + dir;
+    if (j < 0 || j >= items.length) return;
+    const next = items.slice();
+    [next[i], next[j]] = [next[j], next[i]];
+    onUpdate({ items: next });
+  };
+
+  return (
+    <>
+      <Field label={`columns — ${props.columns}`}>
+        <SegmentBar
+          options={["1", "2", "3", "4", "5", "6"]}
+          value={String(props.columns)}
+          onChange={(v) => onUpdate({ columns: parseInt(v, 10) || 3 })}
+        />
+        <p className="text-xs text-foreground/40 italic mt-1.5">
+          Desktop count. Switch the canvas to mobile to set the phone count
+          (new grids start at 1 there).
+        </p>
+      </Field>
+
+      <Field label={`gap — ${props.gap}px`}>
+        <input
+          type="range"
+          min={0}
+          max={96}
+          step={2}
+          value={props.gap}
+          onChange={(e) =>
+            onUpdate({ gap: parseInt(e.target.value, 10) || 0 })
+          }
+          className="w-full accent-accent"
+        />
+      </Field>
+
+      <Field label="tile ratio">
+        <SegmentBar
+          options={GRID_ASPECTS}
+          labels={GRID_ASPECT_LABELS}
+          value={props.aspect}
+          onChange={(v) => onUpdate({ aspect: v })}
+        />
+        <input
+          className={cn(inputCls, "font-sans text-xs mt-2")}
+          placeholder="custom, e.g. 5/7"
+          value={props.aspect}
+          onChange={(e) => onUpdate({ aspect: e.target.value || "16/9" })}
+        />
+      </Field>
+
+      <Field label={`corner radius — ${props.radius}px`}>
+        <input
+          type="range"
+          min={0}
+          max={120}
+          step={1}
+          value={props.radius}
+          onChange={(e) =>
+            onUpdate({ radius: parseInt(e.target.value, 10) || 0 })
+          }
+          className="w-full accent-accent"
+        />
+      </Field>
+
+      <div className="flex gap-2">
+        <Field label="grey until hover">
+          <ToggleBtn
+            label={props.greyUntilHover ? "On" : "Off"}
+            active={props.greyUntilHover}
+            onToggle={() =>
+              onUpdate({ greyUntilHover: !props.greyUntilHover })
+            }
+          />
+        </Field>
+        <Field label="meta line">
+          <ToggleBtn
+            label={props.showMeta ? "Shown" : "Hidden"}
+            active={props.showMeta}
+            onToggle={() => onUpdate({ showMeta: !props.showMeta })}
+          />
+        </Field>
+        <Field label="links">
+          <ToggleBtn
+            label={props.newTab ? "New tab" : "Same tab"}
+            active={props.newTab}
+            onToggle={() => onUpdate({ newTab: !props.newTab })}
+          />
+        </Field>
+      </div>
+
+      <hr className="rule" />
+
+      <div className="flex items-center justify-between">
+        <span className="kicker">projects · {items.length}</span>
+        <button
+          type="button"
+          onClick={addItem}
+          className="kicker px-2 py-1.5 rounded-sm bg-accent text-accent-foreground hover:opacity-90 transition-opacity"
+        >
+          + Add project
+        </button>
+      </div>
+
+      <div className="space-y-4">
+        {items.map((item, i) => (
+          <div
+            key={i}
+            className="rounded-sm border border-border bg-background/40 p-3 space-y-3"
+          >
+            <div className="flex items-center justify-between">
+              <span className="kicker text-foreground/50">#{i + 1}</span>
+              <div className="flex gap-1">
+                <CarouselItemBtn
+                  label="Move up"
+                  disabled={i === 0}
+                  onClick={() => move(i, -1)}
+                >
+                  ↑
+                </CarouselItemBtn>
+                <CarouselItemBtn
+                  label="Move down"
+                  disabled={i === items.length - 1}
+                  onClick={() => move(i, 1)}
+                >
+                  ↓
+                </CarouselItemBtn>
+                <CarouselItemBtn label="Remove" onClick={() => removeItem(i)}>
+                  ✕
+                </CarouselItemBtn>
+              </div>
+            </div>
+
+            <ImageDialog
+              value={item.src}
+              label="background image"
+              onChange={(src) => setItem(i, { src })}
+            />
+            <div className="flex gap-2">
+              <label className="block flex-1">
+                <span className="kicker block mb-1">focal x — {item.focalX}%</span>
+                <input
+                  type="range"
+                  min={0}
+                  max={100}
+                  step={1}
+                  value={item.focalX}
+                  onChange={(e) =>
+                    setItem(i, { focalX: parseInt(e.target.value, 10) || 0 })
+                  }
+                  className="w-full accent-accent"
+                />
+              </label>
+              <label className="block flex-1">
+                <span className="kicker block mb-1">focal y — {item.focalY}%</span>
+                <input
+                  type="range"
+                  min={0}
+                  max={100}
+                  step={1}
+                  value={item.focalY}
+                  onChange={(e) =>
+                    setItem(i, { focalY: parseInt(e.target.value, 10) || 0 })
+                  }
+                  className="w-full accent-accent"
+                />
+              </label>
+            </div>
+
+            <input
+              className={inputCls}
+              placeholder="title — leave empty if the background carries the logo"
+              value={item.title}
+              onChange={(e) => setItem(i, { title: e.target.value })}
+            />
+            <ImageDialog
+              value={item.titleSrc}
+              label="title image (optional — replaces the text)"
+              onChange={(titleSrc) => setItem(i, { titleSrc })}
+            />
+            {item.titleSrc && (
+              <label className="block">
+                <span className="kicker block mb-1">
+                  title width — {item.titleWidth}%
+                </span>
+                <input
+                  type="range"
+                  min={10}
+                  max={100}
+                  step={5}
+                  value={item.titleWidth}
+                  onChange={(e) =>
+                    setItem(i, {
+                      titleWidth: parseInt(e.target.value, 10) || 60,
+                    })
+                  }
+                  className="w-full accent-accent"
+                />
+              </label>
+            )}
+            <input
+              className={inputCls}
+              placeholder="meta — e.g. 2024 — Unity"
+              value={item.meta}
+              onChange={(e) => setItem(i, { meta: e.target.value })}
+            />
+            <PageLinkPicker
+              href={item.href ?? ""}
+              availablePages={availablePages}
+              currentSlug={currentSlug}
+              onPick={(href) => setItem(i, { href })}
+            />
+            <input
+              className={cn(inputCls, "font-sans text-xs")}
+              placeholder="link href (optional)"
+              value={item.href ?? ""}
+              onChange={(e) =>
+                setItem(i, { href: e.target.value || undefined })
+              }
+            />
+            <input
+              className={inputCls}
+              placeholder="alt text"
+              value={item.alt}
+              onChange={(e) => setItem(i, { alt: e.target.value })}
+            />
+          </div>
+        ))}
+        {items.length === 0 && <Hint>No projects yet. Add one above.</Hint>}
+      </div>
+    </>
+  );
+}
+
 function SocialLinksBlockProps({
   props,
   onUpdate,
@@ -2110,6 +2586,311 @@ function SocialLinksBlockProps({
               onChange={(e) =>
                 setItem(i, { label: e.target.value || undefined })
               }
+            />
+          </div>
+        ))}
+        {items.length === 0 && <Hint>No links yet. Add one above.</Hint>}
+      </div>
+    </>
+  );
+}
+
+/* ---------------- post list ---------------- */
+
+function PostListBlockProps({
+  props,
+  availablePages = [],
+  currentSlug,
+  onUpdate,
+}: {
+  props: PostListProps;
+  availablePages?: string[];
+  currentSlug?: string;
+  onUpdate: (patch: Record<string, unknown>) => void;
+}) {
+  const items = props.items;
+
+  const setItem = (i: number, patch: Partial<PostListItem>) => {
+    onUpdate({
+      items: items.map((it, idx) => (idx === i ? { ...it, ...patch } : it)),
+    });
+  };
+  const addItem = () => {
+    onUpdate({
+      items: [{ title: "", date: "", summary: "", href: "" }, ...items],
+    });
+  };
+  const removeItem = (i: number) => {
+    onUpdate({ items: items.filter((_, idx) => idx !== i) });
+  };
+  const move = (i: number, dir: -1 | 1) => {
+    const j = i + dir;
+    if (j < 0 || j >= items.length) return;
+    const next = items.slice();
+    [next[i], next[j]] = [next[j], next[i]];
+    onUpdate({ items: next });
+  };
+
+  return (
+    <>
+      <Field label="title size">
+        <SegmentBar
+          options={["md", "lg"]}
+          labels={{ md: "Medium", lg: "Large" }}
+          value={props.size}
+          onChange={(v) => onUpdate({ size: v })}
+        />
+        <p className="text-xs text-foreground/40 italic mt-1.5">
+          Large for the blog index; medium for a post&apos;s outro list.
+        </p>
+      </Field>
+
+      <div className="flex flex-wrap gap-1.5">
+        <ToggleBtn
+          label="Numbered"
+          active={props.numbered}
+          onToggle={() => onUpdate({ numbered: !props.numbered })}
+        />
+        <ToggleBtn
+          label="Summaries"
+          active={props.showSummary}
+          onToggle={() => onUpdate({ showSummary: !props.showSummary })}
+        />
+        <ToggleBtn
+          label={props.newTab ? "New tab" : "Same tab"}
+          active={props.newTab}
+          onToggle={() => onUpdate({ newTab: !props.newTab })}
+        />
+      </div>
+
+      <hr className="rule" />
+
+      <div className="flex items-center justify-between">
+        <span className="kicker">posts · {items.length}</span>
+        <button
+          type="button"
+          onClick={addItem}
+          className="kicker px-2 py-1.5 rounded-sm bg-accent text-accent-foreground hover:opacity-90 transition-opacity"
+        >
+          + Add post
+        </button>
+      </div>
+      <Hint>
+        New posts go on top — newest first, like a journal. Write the post as
+        its own page (e.g. <code className="font-sans">blog/my-post</code>),
+        then point an entry at it here.
+      </Hint>
+
+      <div className="space-y-4">
+        {items.map((item, i) => (
+          <div
+            key={i}
+            className="rounded-sm border border-border bg-background/40 p-3 space-y-3"
+          >
+            <div className="flex items-center justify-between">
+              <span className="kicker text-foreground/50">
+                #{String(i + 1).padStart(2, "0")}
+              </span>
+              <div className="flex gap-1">
+                <CarouselItemBtn
+                  label="Move up"
+                  disabled={i === 0}
+                  onClick={() => move(i, -1)}
+                >
+                  ↑
+                </CarouselItemBtn>
+                <CarouselItemBtn
+                  label="Move down"
+                  disabled={i === items.length - 1}
+                  onClick={() => move(i, 1)}
+                >
+                  ↓
+                </CarouselItemBtn>
+                <CarouselItemBtn label="Remove" onClick={() => removeItem(i)}>
+                  ✕
+                </CarouselItemBtn>
+              </div>
+            </div>
+
+            <input
+              className={inputCls}
+              placeholder="Title"
+              value={item.title}
+              onChange={(e) => setItem(i, { title: e.target.value })}
+            />
+            <input
+              className={cn(inputCls, "font-sans text-xs")}
+              placeholder="Date — 2026-09-02, Sep 2026, …"
+              value={item.date}
+              onChange={(e) => setItem(i, { date: e.target.value })}
+            />
+            <textarea
+              rows={2}
+              className={inputCls}
+              placeholder="One-line summary"
+              value={item.summary}
+              onChange={(e) => setItem(i, { summary: e.target.value })}
+            />
+            <PageLinkPicker
+              href={item.href ?? ""}
+              availablePages={availablePages}
+              currentSlug={currentSlug}
+              onPick={(href) => setItem(i, { href })}
+            />
+            <input
+              className={cn(inputCls, "font-sans text-xs")}
+              placeholder="/blog/my-post"
+              value={item.href ?? ""}
+              onChange={(e) => setItem(i, { href: e.target.value })}
+            />
+          </div>
+        ))}
+        {items.length === 0 && <Hint>No posts yet. Add one above.</Hint>}
+      </div>
+    </>
+  );
+}
+
+/* ---------------- nav links ---------------- */
+
+function NavLinksBlockProps({
+  props,
+  availablePages = [],
+  currentSlug,
+  onUpdate,
+}: {
+  props: NavLinksProps;
+  availablePages?: string[];
+  currentSlug?: string;
+  onUpdate: (patch: Record<string, unknown>) => void;
+}) {
+  const items = props.items;
+
+  const setItem = (i: number, patch: Partial<NavLinkItem>) => {
+    onUpdate({
+      items: items.map((it, idx) => (idx === i ? { ...it, ...patch } : it)),
+    });
+  };
+  const addItem = () => {
+    onUpdate({ items: [...items, { label: "", href: "" }] });
+  };
+  const removeItem = (i: number) => {
+    onUpdate({ items: items.filter((_, idx) => idx !== i) });
+  };
+  const move = (i: number, dir: -1 | 1) => {
+    const j = i + dir;
+    if (j < 0 || j >= items.length) return;
+    const next = items.slice();
+    [next[i], next[j]] = [next[j], next[i]];
+    onUpdate({ items: next });
+  };
+
+  return (
+    <>
+      <Field label="label size (px) — phones scale down with the viewport">
+        <input
+          type="number"
+          min={16}
+          max={256}
+          className={inputCls}
+          value={props.fontSize}
+          onChange={(e) => {
+            const n = parseInt(e.target.value, 10);
+            if (Number.isFinite(n)) onUpdate({ fontSize: n });
+          }}
+        />
+      </Field>
+
+      <div className="flex flex-wrap gap-1.5">
+        <ToggleBtn
+          label="Hairlines"
+          active={props.rules}
+          onToggle={() => onUpdate({ rules: !props.rules })}
+        />
+        <ToggleBtn
+          label="Light current page"
+          active={props.highlightCurrent}
+          onToggle={() =>
+            onUpdate({ highlightCurrent: !props.highlightCurrent })
+          }
+        />
+        <ToggleBtn
+          label="Arrows"
+          active={props.arrow}
+          onToggle={() => onUpdate({ arrow: !props.arrow })}
+        />
+        <ToggleBtn
+          label={props.newTab ? "New tab" : "Same tab"}
+          active={props.newTab}
+          onToggle={() => onUpdate({ newTab: !props.newTab })}
+        />
+      </div>
+
+      <hr className="rule" />
+
+      <div className="flex items-center justify-between">
+        <span className="kicker">links · {items.length}</span>
+        <button
+          type="button"
+          onClick={addItem}
+          className="kicker px-2 py-1.5 rounded-sm bg-accent text-accent-foreground hover:opacity-90 transition-opacity"
+        >
+          + Add link
+        </button>
+      </div>
+      <Hint>
+        A page path (<code className="font-sans">/blog</code>), a hash into
+        home (<code className="font-sans">/#sec_footer</code>), or a full URL.
+      </Hint>
+
+      <div className="space-y-4">
+        {items.map((item, i) => (
+          <div
+            key={i}
+            className="rounded-sm border border-border bg-background/40 p-3 space-y-3"
+          >
+            <div className="flex items-center justify-between">
+              <span className="kicker text-foreground/50">
+                #{String(i + 1).padStart(2, "0")}
+              </span>
+              <div className="flex gap-1">
+                <CarouselItemBtn
+                  label="Move up"
+                  disabled={i === 0}
+                  onClick={() => move(i, -1)}
+                >
+                  ↑
+                </CarouselItemBtn>
+                <CarouselItemBtn
+                  label="Move down"
+                  disabled={i === items.length - 1}
+                  onClick={() => move(i, 1)}
+                >
+                  ↓
+                </CarouselItemBtn>
+                <CarouselItemBtn label="Remove" onClick={() => removeItem(i)}>
+                  ✕
+                </CarouselItemBtn>
+              </div>
+            </div>
+
+            <input
+              className={inputCls}
+              placeholder="Label"
+              value={item.label}
+              onChange={(e) => setItem(i, { label: e.target.value })}
+            />
+            <PageLinkPicker
+              href={item.href}
+              availablePages={availablePages}
+              currentSlug={currentSlug}
+              onPick={(href) => setItem(i, { href })}
+            />
+            <input
+              className={cn(inputCls, "font-sans text-xs")}
+              placeholder="/blog"
+              value={item.href}
+              onChange={(e) => setItem(i, { href: e.target.value })}
             />
           </div>
         ))}
@@ -3571,58 +4352,6 @@ function CropTool({
    so every place that chooses an image gets the same affordances (including
    selecting from the library) without duplicating the controls. */
 
-function Modal({
-  title,
-  onClose,
-  children,
-}: {
-  title: string;
-  onClose: () => void;
-  children: React.ReactNode;
-}) {
-  useEffect(() => {
-    const onKey = (e: KeyboardEvent) => {
-      if (e.key === "Escape") onClose();
-    };
-    document.addEventListener("keydown", onKey);
-    const prevOverflow = document.body.style.overflow;
-    document.body.style.overflow = "hidden";
-    return () => {
-      document.removeEventListener("keydown", onKey);
-      document.body.style.overflow = prevOverflow;
-    };
-  }, [onClose]);
-
-  return createPortal(
-    <div
-      className="fixed inset-0 z-[100] flex items-center justify-center p-4"
-      role="dialog"
-      aria-modal="true"
-      aria-label={title}
-    >
-      <div
-        className="absolute inset-0 bg-background/70 backdrop-blur-sm"
-        onClick={onClose}
-      />
-      <div className="glass-panel relative z-10 w-full max-w-lg max-h-[85vh] overflow-y-auto rounded-md border border-border p-5 shadow-2xl">
-        <div className="mb-4 flex items-center justify-between">
-          <h2 className="font-display text-lg text-foreground">{title}</h2>
-          <button
-            type="button"
-            aria-label="Close"
-            onClick={onClose}
-            className="grid h-7 w-7 place-items-center rounded-sm border border-border text-foreground/60 hover:bg-foreground/10 hover:text-accent transition-colors"
-          >
-            ✕
-          </button>
-        </div>
-        {children}
-      </div>
-    </div>,
-    document.body
-  );
-}
-
 /** The per-image effect set the dialog's "Adjust" tab edits. Common to the
  *  Image block, section backgrounds, and carousel items. */
 type ImageEffectValues = {
@@ -4047,6 +4776,339 @@ function VideoBlockProps({
           }}
         />
       </Field>
+    </>
+  );
+}
+
+/* ---------------- pdf ---------------- */
+
+function PdfBlockProps({
+  props,
+  onUpdate,
+}: {
+  props: PdfProps;
+  onUpdate: (patch: Record<string, unknown>) => void;
+}) {
+  const [libraryVersion, setLibraryVersion] = useState(0);
+  return (
+    <>
+      <Field label="upload">
+        <PdfUploader
+          onUploaded={(src) => {
+            onUpdate({ src });
+            setLibraryVersion((v) => v + 1);
+          }}
+        />
+      </Field>
+
+      <Field label="library">
+        <PdfLibrary
+          version={libraryVersion}
+          currentSrc={props.src}
+          onPick={(src) => onUpdate({ src })}
+        />
+      </Field>
+
+      <Field label="src (manual path)">
+        <input
+          className={cn(inputCls, "font-sans text-xs")}
+          placeholder="/uploads/document.pdf"
+          value={props.src}
+          onChange={(e) => onUpdate({ src: e.target.value })}
+        />
+      </Field>
+
+      <hr className="rule" />
+
+      <Field label="title">
+        <input
+          className={inputCls}
+          placeholder="Defaults to the file name"
+          value={props.title}
+          onChange={(e) => onUpdate({ title: e.target.value })}
+        />
+      </Field>
+
+      <Field label="cover page">
+        <input
+          type="number"
+          min={1}
+          className={inputCls}
+          value={props.page}
+          onChange={(e) =>
+            onUpdate({ page: Math.max(1, parseInt(e.target.value, 10) || 1) })
+          }
+        />
+      </Field>
+
+      <Field label="fit">
+        <SegmentBar
+          options={["contain", "width"]}
+          labels={{ contain: "Whole page", width: "Width" }}
+          value={props.fit}
+          onChange={(v) => onUpdate({ fit: v })}
+        />
+        <p className="text-xs text-foreground/40 italic mt-1.5">
+          {props.fit === "width"
+            ? "Fills the block's width; the bottom of the page fades out."
+            : "The whole cover page, centered in the block."}
+        </p>
+      </Field>
+
+      <Field label="caption">
+        <ToggleBtn
+          label="Title + page count"
+          active={props.showCaption}
+          onToggle={() => onUpdate({ showCaption: !props.showCaption })}
+        />
+      </Field>
+
+      <Field label={`corner radius — ${props.radius}px`}>
+        <input
+          type="range"
+          min={0}
+          max={120}
+          step={1}
+          value={props.radius}
+          onChange={(e) =>
+            onUpdate({ radius: parseInt(e.target.value, 10) || 0 })
+          }
+          className="w-full accent-accent"
+        />
+      </Field>
+
+      <Hint>
+        On the site, a click opens every page in a full-screen reader.
+      </Hint>
+    </>
+  );
+}
+
+function PdfUploader({ onUploaded }: { onUploaded: (src: string) => void }) {
+  const [dragging, setDragging] = useState(false);
+  const [busy, setBusy] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+
+  async function upload(file: File | undefined) {
+    if (!file) return;
+    setBusy(true);
+    setError(null);
+    try {
+      // The shared upload path — its image downscale passes a PDF through.
+      onUploaded(await uploadImageFile(file));
+    } catch (err) {
+      console.error("[PdfUploader] upload failed:", err);
+      setError(err instanceof Error ? err.message : String(err));
+    } finally {
+      setBusy(false);
+    }
+  }
+
+  return (
+    <div className="space-y-2">
+      <label
+        onDragOver={(e) => {
+          e.preventDefault();
+          setDragging(true);
+        }}
+        onDragLeave={() => setDragging(false)}
+        onDrop={(e) => {
+          e.preventDefault();
+          setDragging(false);
+          void upload(e.dataTransfer.files[0]);
+        }}
+        className={cn(
+          "flex cursor-pointer select-none items-center justify-center rounded-sm border-2 border-dashed px-3 py-5 text-center transition-colors",
+          dragging
+            ? "border-accent bg-accent/10"
+            : "border-border bg-background/40 hover:border-foreground/40"
+        )}
+      >
+        <span className="pointer-events-none text-xs italic text-foreground/60">
+          {busy
+            ? "Uploading…"
+            : dragging
+              ? "Drop to upload"
+              : "Click to choose, or drag a PDF here"}
+        </span>
+        <input
+          type="file"
+          accept="application/pdf,.pdf"
+          className="sr-only"
+          onChange={(e) => {
+            void upload(e.target.files?.[0]);
+            e.target.value = "";
+          }}
+        />
+      </label>
+      {error && <p className="text-xs text-accent italic break-all">{error}</p>}
+    </div>
+  );
+}
+
+function PdfLibrary({
+  version,
+  currentSrc,
+  onPick,
+}: {
+  version: number;
+  currentSrc: string;
+  onPick: (src: string) => void;
+}) {
+  const [items, setItems] = useState<LibraryItem[] | null>(null);
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    let cancelled = false;
+    fetch("/api/admin/uploads?kind=pdf")
+      .then(async (res) => {
+        if (!res.ok) throw new Error(`List failed (${res.status})`);
+        const j = (await res.json()) as { items: LibraryItem[] };
+        if (!cancelled) setItems(j.items);
+      })
+      .catch((err) => {
+        if (!cancelled) setError(err instanceof Error ? err.message : String(err));
+      });
+    return () => {
+      cancelled = true;
+    };
+  }, [version]);
+
+  if (error) return <p className="text-xs text-accent italic">{error}</p>;
+  if (items === null) {
+    return <p className="text-xs text-foreground/40 italic">Loading…</p>;
+  }
+  if (items.length === 0) {
+    return (
+      <p className="text-xs text-foreground/40 italic">
+        No PDFs uploaded yet. Drop one above.
+      </p>
+    );
+  }
+  return (
+    <div className="max-h-48 space-y-1 overflow-y-auto pr-1">
+      {items.map((item) => (
+        <button
+          key={item.src}
+          type="button"
+          onClick={() => onPick(item.src)}
+          className={cn(
+            "flex w-full items-center gap-2 rounded-sm border px-2 py-1.5 text-left font-sans text-xs transition-colors",
+            item.src === currentSrc
+              ? "border-accent bg-accent/15 text-foreground"
+              : "border-border text-foreground/70 hover:bg-foreground/5"
+          )}
+        >
+          <span className="min-w-0 flex-1 truncate">{item.name}</span>
+          <span className="shrink-0 tabular-nums text-foreground/40">
+            {(item.size / (1024 * 1024)).toFixed(1)} MB
+          </span>
+        </button>
+      ))}
+    </div>
+  );
+}
+
+/* ---------------- code ---------------- */
+
+const CODE_INDENT = "    ";
+
+function CodeBlockProps({
+  props,
+  onUpdate,
+}: {
+  props: CodeProps;
+  onUpdate: (patch: Record<string, unknown>) => void;
+}) {
+  return (
+    <>
+      <Field label="file name (optional)">
+        <input
+          className={cn(inputCls, "font-code text-xs")}
+          placeholder="PlayerController.cpp"
+          value={props.filename}
+          onChange={(e) => onUpdate({ filename: e.target.value })}
+        />
+      </Field>
+
+      <Field label="language">
+        <select
+          className={cn(inputCls, "cursor-pointer")}
+          value={props.language}
+          onChange={(e) =>
+            onUpdate({ language: e.target.value as CodeLanguage })
+          }
+        >
+          {codeLanguageSchema.options.map((lang) => (
+            <option key={lang} value={lang}>
+              {CODE_LANGUAGE_LABELS[lang]}
+            </option>
+          ))}
+        </select>
+      </Field>
+
+      <Field label="code">
+        <textarea
+          rows={14}
+          spellCheck={false}
+          wrap="off"
+          className={cn(inputCls, "font-code text-xs leading-relaxed")}
+          value={props.code}
+          onChange={(e) => onUpdate({ code: e.target.value })}
+          onKeyDown={(e) => {
+            // Tab indents instead of leaving the field.
+            if (e.key !== "Tab" || e.shiftKey) return;
+            e.preventDefault();
+            const el = e.currentTarget;
+            const { selectionStart: a, selectionEnd: b, value } = el;
+            onUpdate({ code: value.slice(0, a) + CODE_INDENT + value.slice(b) });
+            requestAnimationFrame(() => {
+              el.selectionStart = el.selectionEnd = a + CODE_INDENT.length;
+            });
+          }}
+        />
+      </Field>
+
+      <Field label="line numbers">
+        <ToggleBtn
+          label={props.lineNumbers ? "Shown" : "Hidden"}
+          active={props.lineNumbers}
+          onToggle={() => onUpdate({ lineNumbers: !props.lineNumbers })}
+        />
+      </Field>
+
+      <Field label={`code size — ${props.fontSize}px`}>
+        <input
+          type="range"
+          min={10}
+          max={24}
+          step={1}
+          value={props.fontSize}
+          onChange={(e) =>
+            onUpdate({ fontSize: parseInt(e.target.value, 10) || 13 })
+          }
+          className="w-full accent-accent"
+        />
+      </Field>
+
+      <Field label={`corner radius — ${props.radius}px`}>
+        <input
+          type="range"
+          min={0}
+          max={120}
+          step={1}
+          value={props.radius}
+          onChange={(e) =>
+            onUpdate({ radius: parseInt(e.target.value, 10) || 0 })
+          }
+          className="w-full accent-accent"
+        />
+      </Field>
+
+      <Hint>
+        The block shows as much as fits; on the site a click opens the whole
+        listing full-screen with a copy button.
+      </Hint>
     </>
   );
 }

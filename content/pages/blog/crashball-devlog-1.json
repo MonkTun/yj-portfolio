@@ -1,0 +1,285 @@
+{
+  "meta": {
+    "title": "Crashball Devlog #1"
+  },
+  "sections": [
+    {
+      "id": "sec_9e324df9",
+      "background": {
+        "type": "image",
+        "src": "/uploads/crashball-document-1-muf00yyj.png",
+        "fit": "both",
+        "overlay": 63,
+        "filter": "none",
+        "focalX": 50,
+        "focalY": 50,
+        "rotate": 0,
+        "flipX": false,
+        "flipY": false,
+        "blur": 0,
+        "zoom": 1,
+        "tint": "none",
+        "tintOpacity": 0
+      },
+      "padding": "lg",
+      "minHeight": "auto",
+      "align": "top",
+      "blocks": [
+        {
+          "type": "image",
+          "props": {
+            "src": "/uploads/crashball-hero-1-muf01srh.png",
+            "alt": "",
+            "fit": "cover",
+            "radius": 0,
+            "filter": "none",
+            "focalX": 50,
+            "focalY": 50,
+            "rotate": 0,
+            "flipX": false,
+            "flipY": false,
+            "blur": 0,
+            "zoom": 1,
+            "tint": "none",
+            "tintOpacity": 0,
+            "lightbox": true
+          },
+          "id": "blk_3a4f1a0d",
+          "layout": {
+            "col": 3,
+            "colSpan": 8,
+            "row": 1,
+            "rowSpan": 26
+          }
+        }
+      ]
+    },
+    {
+      "id": "sec_e7c038de",
+      "background": {
+        "type": "transparent"
+      },
+      "padding": "lg",
+      "minHeight": "auto",
+      "align": "top",
+      "blocks": [
+        {
+          "type": "pdf",
+          "props": {
+            "src": "/uploads/crashball-yj-park-muf08lhh.pdf",
+            "title": "",
+            "page": 1,
+            "fit": "contain",
+            "showCaption": true,
+            "radius": 0
+          },
+          "id": "blk_71ba3a0f",
+          "layout": {
+            "col": 4,
+            "colSpan": 6,
+            "row": 9,
+            "rowSpan": 41
+          }
+        },
+        {
+          "type": "text",
+          "props": {
+            "content": "Devlog #1",
+            "variant": "h2",
+            "align": "left",
+            "color": "foreground",
+            "transform": "none"
+          },
+          "id": "blk_ea5c85c9",
+          "layout": {
+            "col": 5,
+            "colSpan": 4,
+            "row": 1,
+            "rowSpan": 6
+          }
+        }
+      ]
+    },
+    {
+      "id": "sec_b9a4b6da",
+      "background": {
+        "type": "image",
+        "src": "/uploads/polished-slash-muf0qlgc.webp",
+        "fit": "both",
+        "overlay": 72,
+        "filter": "none",
+        "focalX": 50,
+        "focalY": 50,
+        "rotate": 0,
+        "flipX": false,
+        "flipY": false,
+        "blur": 0,
+        "zoom": 1,
+        "tint": "none",
+        "tintOpacity": 0
+      },
+      "padding": "lg",
+      "minHeight": "auto",
+      "align": "top",
+      "blocks": [
+        {
+          "type": "text",
+          "props": {
+            "content": "Soccer is one of the most popular sports in the world, and many video games attempted recreating the same fantasy as a realistic replica. Kind of exaggerating though. Fifa - one of the most famous soccer titles - is a topdown simulator and has inspired many sub genres of realistic sports simulator. <br><br>Games like Rocket League broke this formula and expanded the boundary of what soccer can be. You dribble and shoot while driving a racing car. The movement is extremely difficult but it’s also why it makes successful shots highly rewarding. But the aspect that I wanted to focus on is the format: action driven, third person, arena battler. Of course on top of soccer. <br><br>I believe there’s a market for soccer games with more fantasy elements. Take OmegaStrikers, for example, although the game fell off its cliff, the MOBA meets soccer format was highly successful. It’s highly stylized, combat is dynamic with unique skills, and keeps the same team-driven soccer play. <br><br>Rematch is Rocket League without cars. It’s third person, and it feels like you are playing soccer as a real player. Sure the controls are more simplified for WASD controls but its action is highly satisfying. It's easier to perform the crazy tricks like rainbow flicks (it’s literally a button click) but used as a skill to evade tackle and combined with the rest of the gameplay, it’s fun. It fulfills your soccer fantasy as a soccer player but I want to take the fantasy further. <br><br>Imagine a swordman, mage, and gunner. I’m working on Crashball: Third person action arena battler meets soccer. <br><br>Actually I didn't mean to make a soccer game. It first started with a slightly different pitch. You with a bat swing to hit the ball and the enemy. You can also grab a ball like American Football and you can throw it to another person to double the size of the ball and only then you can throw it to score it. So I started prototyping this version of Crashball first. But experimenting with swordsman assets while implementing the bat animation gave me a hint. Perhaps it doesn't have to be a bat. Hitting a ball with a bat (which in fact was a sword model) felt more natural and more interesting.<br>I wanted to then test where I can take the swords further in a soccer game. I implemented combo actions and jump attacks each with different power of strike when hitting the ball. It felt like I was playing Zelda but you can hit a ball. It was easier to explain the game too. It’s a soccer game with swords. Instant hook and it worked on Reddit.<br><br>People gave feedback on how they saw action as a critical part of this game, and people suggested adding more movement abilities like wall run. So I did and this was the beginning of a rabbit hole of high movement creep. <br><br>Wall run was fine. It allowed players to cover wider arena and a bit of verticality. It raised me question. The ball is primarily on the ground. Why do players even need to wall run? Game like rocketLeague makes sense to have wall sticking ability that allows player to combo with dash to jump higher to hit the ball and most importantly made driving smooth up and down. There were three parts to this answer: A lets make the player run faster on wall run so we incentivize wall running B lets add obstacles that people can parkour on. <br><br>Adding grapple hooks made me struggle even more. Getting the movement right was the first part plus finding the right animation. But the grapple hook naturally made the player way faster than the ball. And the feedback I got was that it still felt disconnected from the rest of the gameplay. I have mixed thoughts about grapple mechanics and it really is fun when used together with ball ride - it makes the chase really dynamic but it seems too difficult to show that use for new players. <br><br>I am still in the process of finding the fun. It’s the early iteration of the game and I am really excited where I will bring Crashball too. ",
+            "variant": "body",
+            "align": "left",
+            "color": "foreground",
+            "transform": "none"
+          },
+          "id": "blk_3ea1183c",
+          "layout": {
+            "col": 1,
+            "colSpan": 12,
+            "row": 1,
+            "rowSpan": 76
+          }
+        }
+      ]
+    },
+    {
+      "id": "sec_outro",
+      "background": {
+        "type": "transparent"
+      },
+      "padding": "lg",
+      "minHeight": "auto",
+      "align": "top",
+      "blocks": [
+        {
+          "type": "button",
+          "props": {
+            "label": "← Back to the blog",
+            "href": "/blog",
+            "variant": "ghost",
+            "align": "left",
+            "newTab": false
+          },
+          "id": "blk_1ddf8b04",
+          "layout": {
+            "col": 1,
+            "colSpan": 3,
+            "row": 1,
+            "rowSpan": 3
+          },
+          "mobile": {
+            "layout": {
+              "col": 1,
+              "colSpan": 12
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "sec_footer",
+      "background": {
+        "type": "reverse"
+      },
+      "padding": "lg",
+      "minHeight": "auto",
+      "align": "top",
+      "blocks": [
+        {
+          "type": "mirror",
+          "props": {
+            "mirrorId": "mir_footer_kicker"
+          },
+          "id": "blk_footer_kicker_crashball",
+          "layout": {
+            "col": 1,
+            "colSpan": 6,
+            "row": 1,
+            "rowSpan": 2
+          },
+          "mobile": {
+            "layout": {
+              "colSpan": 12
+            }
+          }
+        },
+        {
+          "type": "mirror",
+          "props": {
+            "mirrorId": "mir_footer_email"
+          },
+          "id": "blk_footer_email_crashball",
+          "layout": {
+            "col": 1,
+            "colSpan": 7,
+            "row": 3,
+            "rowSpan": 5
+          },
+          "mobile": {
+            "layout": {
+              "colSpan": 12,
+              "rowSpan": 13
+            }
+          }
+        },
+        {
+          "type": "mirror",
+          "props": {
+            "mirrorId": "mir_footer_nav"
+          },
+          "id": "blk_footer_nav_crashball",
+          "layout": {
+            "col": 1,
+            "colSpan": 4,
+            "row": 11,
+            "rowSpan": 9
+          },
+          "mobile": {
+            "layout": {
+              "colSpan": 8
+            }
+          }
+        },
+        {
+          "type": "mirror",
+          "props": {
+            "mirrorId": "mir_footer_colophon"
+          },
+          "id": "blk_footer_colophon_crashball",
+          "layout": {
+            "col": 1,
+            "colSpan": 10,
+            "row": 22,
+            "rowSpan": 1
+          },
+          "mobile": {
+            "layout": {
+              "colSpan": 12,
+              "row": 31,
+              "rowSpan": 3
+            }
+          }
+        },
+        {
+          "type": "mirror",
+          "props": {
+            "mirrorId": "mir_footer_social"
+          },
+          "id": "blk_footer_social_crashball",
+          "layout": {
+            "col": 11,
+            "colSpan": 2,
+            "row": 5,
+            "rowSpan": 3
+          },
+          "mobile": {
+            "layout": {
+              "col": 1,
+              "colSpan": 12,
+              "row": 27
+            }
+          }
+        }
+      ]
+    }
+  ]
+}

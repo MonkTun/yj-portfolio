@@ -1,9 +1,11 @@
 "use client";
 
+import { useRef } from "react";
 import NextImage from "next/image";
 
 import type { ImageProps } from "@/lib/schema";
 import { cn } from "@/lib/utils";
+import { useLightboxItem } from "@/components/Lightbox";
 
 import {
   imageFilterAndBlurCss,
@@ -12,6 +14,7 @@ import {
   imageTransformCss,
   isOptimizableImageSrc,
 } from "./imageStyles";
+import { MediaSkeleton, useMediaLoaded } from "./MediaSkeleton";
 
 /** Content column is max-w-7xl, so no block image ever renders wider. */
 const BLOCK_IMAGE_SIZES = "(max-width: 768px) 100vw, 1280px";
@@ -34,7 +37,16 @@ export function Image(props: ImageProps) {
     zoom,
     tint,
     tintOpacity,
+    lightbox,
   } = props;
+
+  // A link wins over the lightbox; the page's LightboxProvider (public site
+  // only) supplies `open`, so in the editor a click still just selects.
+  const buttonRef = useRef<HTMLButtonElement>(null);
+  const enlarge = useLightboxItem(
+    buttonRef,
+    src && !href && lightbox ? { src, alt, filter } : null,
+  );
 
   const wrapperStyle: React.CSSProperties = {
     aspectRatio: aspect || undefined,
@@ -48,8 +60,19 @@ export function Image(props: ImageProps) {
     transformOrigin: `${focalX}% ${focalY}%`,
   };
 
+  const { loaded, mediaProps } = useMediaLoaded(src);
+
   const tintClass = imageTintBgClass[tint];
   const showTint = tintClass !== null && tintOpacity > 0;
+
+  // Zoomable images lean in a touch on hover — the cue that they open.
+  // `scale` is its own CSS property, so it composes with the inline
+  // transform (rotate / flip / zoom) instead of replacing it.
+  const mediaCls = cn(
+    fit === "cover" ? "object-cover" : "object-contain",
+    enlarge &&
+      "motion-safe:transition-[scale] motion-safe:duration-[var(--duration)] motion-safe:ease-[var(--ease)] motion-safe:group-hover:scale-[1.02]",
+  );
 
   const inner = (
     <div
@@ -70,27 +93,27 @@ export function Image(props: ImageProps) {
             // keeps the exact absolute-positioning contract of the old
             // <img>, and the focal/filter/transform styles pass through.
             <NextImage
+              {...mediaProps}
               src={src}
               alt={alt}
               fill
               sizes={BLOCK_IMAGE_SIZES}
               style={imgStyle}
-              className={fit === "cover" ? "object-cover" : "object-contain"}
+              className={mediaCls}
             />
           ) : (
             // eslint-disable-next-line @next/next/no-img-element
             <img
+              {...mediaProps}
               src={src}
               alt={alt}
               loading="lazy"
               decoding="async"
               style={imgStyle}
-              className={cn(
-                "absolute inset-0 h-full w-full",
-                fit === "cover" ? "object-cover" : "object-contain"
-              )}
+              className={cn("absolute inset-0 h-full w-full", mediaCls)}
             />
           )}
+          <MediaSkeleton loaded={loaded} />
           {showTint && (
             <div
               aria-hidden
@@ -127,6 +150,19 @@ export function Image(props: ImageProps) {
       <a href={href} className="block w-full h-full">
         {inner}
       </a>
+    );
+  }
+  if (enlarge) {
+    return (
+      <button
+        ref={buttonRef}
+        type="button"
+        onClick={enlarge}
+        aria-label={alt ? `Enlarge image: ${alt}` : "Enlarge image"}
+        className="group block h-full w-full cursor-zoom-in text-left focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
+      >
+        {inner}
+      </button>
     );
   }
   return inner;

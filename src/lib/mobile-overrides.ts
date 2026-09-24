@@ -25,9 +25,18 @@ export const MOBILE_OVERRIDABLE_KEYS: Record<BlockType, readonly string[]> = {
   line: [],
   quote: [],
   video: ["aspect", "radius"],
+  pdf: ["fit"],
+  // A narrow phone column fits fewer characters — shrink the type instead
+  // of clipping every line.
+  code: ["fontSize"],
   projectCarousel: [],
+  // The phone column count lives here (not as a second prop) so it rides
+  // the same merge as every other per-breakpoint style override.
+  projectGrid: ["columns", "gap", "aspect"],
   socialLinks: [],
   tags: [],
+  postList: [],
+  navLinks: [],
   // Position is per-instance (layout), content is the shared source —
   // there is nothing on the instance itself to override.
   mirror: [],

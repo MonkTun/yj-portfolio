@@ -9,10 +9,15 @@ import { Spacer } from "@/components/atoms/Spacer";
 import { Line } from "@/components/atoms/Line";
 import { Quote } from "@/components/atoms/Quote";
 import { Video } from "@/components/atoms/Video";
+import { Pdf } from "@/components/atoms/Pdf";
+import { Code } from "@/components/atoms/Code";
 import { ProjectCarousel } from "@/components/atoms/ProjectCarousel";
+import { ProjectGrid } from "@/components/atoms/ProjectGrid";
 import { SocialLinks } from "@/components/atoms/SocialLinks";
 import { Tags } from "@/components/atoms/Tags";
 import { Mirror } from "@/components/atoms/Mirror";
+import { PostList } from "@/components/atoms/PostList";
+import { NavLinks } from "@/components/atoms/NavLinks";
 
 type AtomEntry<P = unknown> = {
   type: BlockType;
@@ -26,6 +31,10 @@ type AtomEntry<P = unknown> = {
    *  1, these have to be whole modules too — otherwise a freshly added block
    *  jumps the first time it's dragged. */
   defaultLayout: { colSpan: number; rowSpan: number };
+  /** Mobile prop overrides seeded when the block is added (keys must be in
+   *  MOBILE_OVERRIDABLE_KEYS for the type). For blocks whose desktop default
+   *  is wrong on a phone — a 3-column grid should land as 1 column. */
+  defaultMobileProps?: Record<string, unknown>;
 };
 
 /**
@@ -68,6 +77,7 @@ export const atomRegistry: Record<BlockType, AtomEntry<any>> = {
       zoom: 1,
       tint: "none",
       tintOpacity: 0,
+      lightbox: true,
     },
     defaultLayout: { colSpan: 6, rowSpan: 15 },
   },
@@ -123,6 +133,42 @@ export const atomRegistry: Record<BlockType, AtomEntry<any>> = {
     },
     defaultLayout: { colSpan: 8, rowSpan: 18 },
   },
+  pdf: {
+    type: "pdf",
+    label: "PDF",
+    component: Pdf,
+    defaultProps: {
+      src: "",
+      title: "",
+      page: 1,
+      fit: "contain",
+      showCaption: true,
+      radius: 0,
+    },
+    // Roughly a portrait page plus the caption strip.
+    defaultLayout: { colSpan: 4, rowSpan: 30 },
+  },
+  code: {
+    type: "code",
+    label: "Code",
+    component: Code,
+    defaultProps: {
+      code: [
+        "// Paste your code here.",
+        "void APlayer::Tick(float DeltaTime)",
+        "{",
+        "    Super::Tick(DeltaTime);",
+        "    Velocity += Gravity * DeltaTime;",
+        "}",
+      ].join("\n"),
+      language: "cpp",
+      filename: "",
+      lineNumbers: true,
+      fontSize: 13,
+      radius: 4,
+    },
+    defaultLayout: { colSpan: 6, rowSpan: 16 },
+  },
   projectCarousel: {
     type: "projectCarousel",
     label: "Project Carousel",
@@ -161,6 +207,54 @@ export const atomRegistry: Record<BlockType, AtomEntry<any>> = {
     },
     defaultLayout: { colSpan: 12, rowSpan: 33 },
   },
+  projectGrid: {
+    type: "projectGrid",
+    label: "Project Grid",
+    component: ProjectGrid,
+    defaultProps: {
+      items: [
+        {
+          src: "",
+          alt: "",
+          title: "Project one",
+          titleSrc: "",
+          titleWidth: 60,
+          meta: "2024 — Role",
+          focalX: 50,
+          focalY: 50,
+        },
+        {
+          src: "",
+          alt: "",
+          title: "Project two",
+          titleSrc: "",
+          titleWidth: 60,
+          meta: "2023 — Role",
+          focalX: 50,
+          focalY: 50,
+        },
+        {
+          src: "",
+          alt: "",
+          title: "Project three",
+          titleSrc: "",
+          titleWidth: 60,
+          meta: "2022 — Role",
+          focalX: 50,
+          focalY: 50,
+        },
+      ],
+      columns: 3,
+      gap: 16,
+      aspect: "16/9",
+      radius: 4,
+      greyUntilHover: true,
+      showMeta: true,
+      newTab: false,
+    },
+    defaultMobileProps: { columns: 1 },
+    defaultLayout: { colSpan: 12, rowSpan: 30 },
+  },
   socialLinks: {
     type: "socialLinks",
     label: "Social Links",
@@ -190,6 +284,49 @@ export const atomRegistry: Record<BlockType, AtomEntry<any>> = {
       align: "left",
     },
     defaultLayout: { colSpan: 6, rowSpan: 2 },
+  },
+  postList: {
+    type: "postList",
+    label: "Post List",
+    component: PostList,
+    defaultProps: {
+      items: [
+        {
+          title: "First post",
+          date: "2026-01-01",
+          summary: "A line about what this post covers.",
+          href: "",
+        },
+        {
+          title: "Second post",
+          date: "2026-01-02",
+          summary: "A line about what this post covers.",
+          href: "",
+        },
+      ],
+      numbered: true,
+      showSummary: true,
+      size: "lg",
+      newTab: false,
+    },
+    defaultLayout: { colSpan: 12, rowSpan: 16 },
+  },
+  navLinks: {
+    type: "navLinks",
+    label: "Nav Links",
+    component: NavLinks,
+    defaultProps: {
+      items: [
+        { label: "Home", href: "/" },
+        { label: "Blog", href: "/blog" },
+      ],
+      fontSize: 28,
+      rules: true,
+      highlightCurrent: true,
+      arrow: true,
+      newTab: false,
+    },
+    defaultLayout: { colSpan: 4, rowSpan: 9 },
   },
   mirror: {
     type: "mirror",
