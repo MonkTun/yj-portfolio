@@ -325,7 +325,7 @@
     ]
   },
   "announcement": {
-    "enabled": true,
+    "enabled": false,
     "label": "",
     "message": "Hey I am reimagining my portfolio to include more detailed step by step progress with some code snippets. check back in a few days",
     "linkLabel": "",
